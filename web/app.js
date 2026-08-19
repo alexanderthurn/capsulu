@@ -465,6 +465,19 @@ function setupEventListeners() {
         });
     }
 
+    const btnDownloadCapsule = document.getElementById('btnDownloadCapsule');
+    const aiStep3Group = document.getElementById('aiStep3Group');
+
+    if (btnDownloadCapsule) {
+        btnDownloadCapsule.addEventListener('click', (e) => {
+            e.preventDefault();
+            downloadCurrentCapsule();
+            if (btnCopyAiPrompt) {
+                btnCopyAiPrompt.classList.add('step-suggested');
+            }
+        });
+    }
+
     if (btnCopyAiPrompt) {
         btnCopyAiPrompt.addEventListener('click', () => {
             const text = document.getElementById('aiPromptTextarea')?.textContent || '';
@@ -472,14 +485,27 @@ function setupEventListeners() {
                 const icon = document.getElementById('copyPromptIcon');
                 const label = document.getElementById('copyPromptText');
                 if (icon) icon.textContent = '✓';
-                if (label) label.textContent = 'Copied to Clipboard!';
+                if (label) label.textContent = '2. Copied!';
                 btnCopyAiPrompt.classList.add('copied');
+                btnCopyAiPrompt.classList.remove('step-suggested');
+
+                if (aiStep3Group) {
+                    aiStep3Group.classList.add('visible');
+                    aiStep3Group.classList.add('step-suggested');
+                }
+
                 setTimeout(() => {
                     if (icon) icon.textContent = '📋';
-                    if (label) label.textContent = 'Copy AI Prompt';
+                    if (label) label.textContent = '2. Copy Prompt';
                     btnCopyAiPrompt.classList.remove('copied');
                 }, 2500);
             });
+        });
+    }
+
+    if (aiStep3Group) {
+        aiStep3Group.addEventListener('click', () => {
+            aiStep3Group.classList.remove('step-suggested');
         });
     }
 
@@ -2714,14 +2740,101 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
 function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
     const card = document.getElementById('aiPromptCard');
     const textarea = document.getElementById('aiPromptTextarea');
-    const downloadBtn = document.getElementById('btnDownloadCapsule');
     if (!card || !textarea) return;
 
     const promptText = generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey);
     textarea.textContent = promptText;
 
-    if (downloadBtn) {
-        downloadBtn.href = imgSrc || '#';
-        downloadBtn.download = `${(gameName || 'steam_capsule').toLowerCase().replace(/[^a-z0-9]/g, '_')}_capsule.jpg`;
+    // Reset step suggestion highlights for new analysis
+    const btnCopy = document.getElementById('btnCopyAiPrompt');
+    if (btnCopy) btnCopy.classList.remove('step-suggested');
+    const step3 = document.getElementById('aiStep3Group');
+    if (step3) {
+        step3.classList.remove('visible');
+        step3.classList.remove('step-suggested');
+    }
+}
+
+/**
+ * Reliably downloads the currently analyzed capsule artwork directly to the browser Downloads folder
+ */
+async function downloadCurrentCapsule() {
+    const filename = `${(currentLoadedGameName || 'steam_capsule').toLowerCase().replace(/[^a-z0-9]/g, '_')}_capsule.jpg`;
+    const btn = document.getElementById('btnDownloadCapsule');
+    const btnText = document.getElementById('downloadBtnText');
+
+    if (btnText) btnText.textContent = '1. Downloading...';
+    if (btn) btn.classList.add('downloading');
+
+    function resetBtn(success = true) {
+        if (btnText) btnText.textContent = success ? '1. Downloaded!' : '1. Download Art';
+        setTimeout(() => {
+            if (btnText) btnText.textContent = '1. Download Art';
+            if (btn) btn.classList.remove('downloading');
+        }, 2000);
+    }
+
+    function triggerBlob(blob) {
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+        resetBtn(true);
+    }
+
+    // 1. Try to export directly from cvCanvas (crisp render)
+    if (cvCanvas && cvCanvas.width > 0) {
+        try {
+            cvCanvas.toBlob((blob) => {
+                if (blob && blob.size > 0) {
+                    triggerBlob(blob);
+                    return;
+                }
+                fallbackDownload();
+            }, 'image/jpeg', 0.95);
+            return;
+        } catch (e) {
+            console.warn('Canvas export tainted by cross-origin image, using blob fetch:', e);
+        }
+    }
+
+    fallbackDownload();
+
+    async function fallbackDownload() {
+        if (!currentLoadedImgSrc) {
+            resetBtn(false);
+            return;
+        }
+
+        try {
+            let fetchUrl = currentLoadedImgSrc;
+            if (currentLoadedImgSrc.startsWith('http://') || currentLoadedImgSrc.startsWith('https://')) {
+                fetchUrl = `https://images.weserv.nl/?url=${encodeURIComponent(currentLoadedImgSrc)}&output=jpg`;
+            }
+            const res = await fetch(fetchUrl);
+            if (res.ok) {
+                const blob = await res.blob();
+                triggerBlob(blob);
+                return;
+            }
+        } catch (err) {
+            console.warn('Blob fetch failed, falling back to direct anchor:', err);
+        }
+
+        // Fallback: direct download link
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = currentLoadedImgSrc;
+        a.download = filename;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        resetBtn(true);
     }
 }

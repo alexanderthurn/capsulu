@@ -89,7 +89,7 @@
 
                 <!-- Navigation Tabs -->
                 <div class="steam-nav-links">
-                    <button class="nav-tab-btn active" id="navHomeBtn" type="button">Home</button>
+                    <button class="nav-tab-btn active" id="navHomeBtn" type="button">Rater</button>
                     <button class="nav-tab-btn" id="navBenchmarkBtn" type="button">Benchmark</button>
                     <button class="nav-tab-btn" id="navAiBtn" type="button">AI</button>
                 </div>
@@ -418,24 +418,39 @@
                             <!-- Injected via JS -->
                         </div>
 
-                        <!-- AI Art Fix Prompt Card (Attach Image + Paste in Gemini, ChatGPT, Claude) -->
+                        <!-- Improve with AI Card -->
                         <div class="ai-prompt-card" id="aiPromptCard">
                             <div class="ai-prompt-header">
                                 <div class="ai-prompt-title-group">
-                                    <span class="ai-prompt-badge">✨ AI Art Fix Prompt (Attach Image + Paste)</span>
-                                    <span class="ai-prompt-subtext">1. Download your capsule ➔ 2. Attach it to Gemini,
-                                        ChatGPT, or Claude ➔ 3. Paste this prompt</span>
+                                    <h3 class="ai-prompt-title">✨ Improve with AI</h3>
                                 </div>
-                                <div class="ai-prompt-actions">
-                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg"
-                                        title="Download capsule image to attach into your AI chat">
-                                        <span>⬇️</span> Download Art
-                                    </a>
-                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt"
-                                        title="Copy prompt to clipboard">
-                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI
-                                            Prompt</span>
+                                <div class="ai-prompt-steps-bar">
+                                    <!-- Step 1: Download -->
+                                    <button type="button" id="btnDownloadCapsule" class="btn-ai-action btn-download-capsule"
+                                        title="Download capsule image to your computer">
+                                        <span>⬇️</span> <span id="downloadBtnText">1. Download Art</span>
                                     </button>
+
+                                    <!-- Step 2: Copy Prompt -->
+                                    <button type="button" class="btn-ai-action btn-copy-prompt" id="btnCopyAiPrompt"
+                                        title="Copy tailored fix prompt to clipboard">
+                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">2. Copy Prompt</span>
+                                    </button>
+
+                                    <!-- Step 3: Paste in AI Chat (Inline quick launch targets) -->
+                                    <div class="ai-chat-quick-group" id="aiStep3Group">
+                                        <span class="ai-chat-group-label">3. Paste in AI:</span>
+                                        <div class="ai-chat-targets-inline">
+                                            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+                                                class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
+                                            <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
+                                                class="ai-target-pill" title="Open Claude in new tab">Claude ↗</a>
+                                            <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
+                                                class="ai-target-pill" title="Open Google Gemini in new tab">Gemini ↗</a>
+                                            <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer"
+                                                class="ai-target-pill" title="Open Cursor in new tab">Cursor ↗</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="ai-prompt-box">
