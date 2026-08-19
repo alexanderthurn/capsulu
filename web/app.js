@@ -2470,7 +2470,7 @@ function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all')
     const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8000';
     const apiLink = appid 
         ? `${origin}/api/rate?appid=${appid}&format=markdown` 
-        : `${origin}/api/rate?image_url=${encodeURIComponent(imgSrc || '')}&format=markdown`;
+        : (imgSrc && !imgSrc.startsWith('data:') ? `${origin}/api/rate?image_url=${encodeURIComponent(imgSrc)}&format=markdown` : null);
     
     // Contrast assessment
     let contrastGuidance = "";
@@ -2506,13 +2506,14 @@ function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all')
     // 120px scale readability
     let scaleGuidance = `• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue).`;
 
-    const prompt = `I am revising the Steam Store header capsule art (460x215) for "${nameStr}".
+    const reportLine = apiLink ? `\n• Live Benchmark Report: ${apiLink}` : '';
 
-Artwork Image: ${imgSrc || '(Uploaded image)'}
-Live Benchmark Report: ${apiLink}
-Current Capsule Score: ${scores.overallScore}/100 (${scores.tierName})
+    const prompt = `I have attached my current Steam Store header capsule art (460x215) for "${nameStr}".
 
-Please optimize and refine this capsule artwork with the following empirical Steam benchmark adjustments:
+Current Capsulu Evaluation:
+• Overall Score: ${scores.overallScore}/100 (${scores.tierName})${reportLine}
+
+Please analyze the attached capsule image and help me optimize and revise this artwork based on empirical Steam store data (benchmarked against 28,754 Steam games):
 
 1. Dynamic Contrast & Lighting:
 ${contrastGuidance}
@@ -2529,7 +2530,7 @@ ${vignetteGuidance}
 5. Thumbnail Downscaling (120px Discovery Queue):
 ${scaleGuidance}
 
-Compliance: Adhere strictly to Steam asset rules (no review quotes, no discount banners, no non-title text). Generate the revised capsule concept [or step-by-step digital painting instructions].`;
+Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Please provide a detailed visual critique and step-by-step instructions [or generate the revised capsule concept].`;
 
     return prompt;
 }

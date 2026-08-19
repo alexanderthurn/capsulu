@@ -376,20 +376,20 @@
                             <!-- Injected via JS -->
                         </div>
 
-                        <!-- AI Art Fix Prompt Card (1-Click Copy for ChatGPT, Claude, Midjourney, Photoshop) -->
+                        <!-- AI Art Fix Prompt Card (Attach Image + Paste in Gemini, ChatGPT, Claude) -->
                         <div class="ai-prompt-card" id="aiPromptCard">
                             <div class="ai-prompt-header">
                                 <div class="ai-prompt-title-group">
-                                    <span class="ai-prompt-badge">✨ AI Art Fix Prompt</span>
-                                    <span class="ai-prompt-subtext">Copy and paste into ChatGPT, Claude, Midjourney, or Photoshop Generative Fill to optimize this capsule</span>
+                                    <span class="ai-prompt-badge">✨ AI Art Fix Prompt (Attach Image + Paste)</span>
+                                    <span class="ai-prompt-subtext">1. Download your capsule ➔ 2. Attach it to Gemini, ChatGPT, or Claude ➔ 3. Paste this prompt</span>
                                 </div>
                                 <div class="ai-prompt-actions">
-                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt" title="Copy ready-to-use prompt to clipboard">
-                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI Prompt</span>
-                                    </button>
-                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg" title="Download capsule image to upload into AI chat">
+                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg" title="Download capsule image to attach into your AI chat">
                                         <span>⬇️</span> Download Art
                                     </a>
+                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt" title="Copy prompt to clipboard">
+                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI Prompt</span>
+                                    </button>
                                 </div>
                             </div>
                             <div class="ai-prompt-box">
@@ -943,16 +943,17 @@ Workflow:
                     <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically generates a custom prompt tailored to that capsule's exact CV deficits. Here is the general structure:</p>
                     
                     <div class="ai-code-wrapper">
-                        <pre class="ai-code-block" id="aiGenArtPromptExample">I am revising the Steam Store header capsule art (460x215) for "[Game Title]".
+                        <pre class="ai-code-block" id="aiGenArtPromptExample">I have attached my current Steam Store header capsule art (460x215) for "[Game Title]".
 
-Key Art Adjustments needed based on 28,754 Steam games empirical study:
-1. Contrast: Push specular highlights and deepen cast shadows (std dev >= 63.0).
-2. Saliency: Add warm amber/golden rim-lighting to pop against Steam dark #171a21 UI.
-3. Typography: Title text at Top Left needs >= 4.5:1 WCAG AA contrast (add drop shadow or scrim).
-4. Focal Vignette: Apply 15% radial perimeter darkening to guide eye to center hero.
+Please analyze the attached capsule image and help me optimize and revise this artwork based on empirical Steam store data (benchmarked against 28,754 Steam games):
+
+1. Dynamic Contrast: Push specular highlights and deepen shadows (std dev >= 63.0).
+2. Color Saliency: Add warm amber/golden rim-lighting to pop against Steam dark #171a21 UI.
+3. Title Typography: Title text at Top Left needs >= 4.5:1 WCAG AA contrast (add drop shadow or scrim).
+4. Compositional Vignette: Apply 15% radial perimeter darkening to guide eye to center hero.
 5. 120px Discovery Queue: Keep primary character silhouette crisp and readable at tiny scale.
 
-Adhere strictly to Steam rules: clean title typography only, no review scores, no discount stickers.</pre>
+Compliance: Adhere strictly to Steam rules (clean title typography only, no review scores, no discount stickers). Please describe visual revisions in detail [or generate the improved artwork].</pre>
                         <button type="button" class="btn-copy-code" id="btnCopyGenPrompt">📋 Copy Template</button>
                     </div>
                 </div>
