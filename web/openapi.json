@@ -1,0 +1,69 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Capsulu Steam Capsule Intelligence API",
+    "description": "Rates and benchmarks Steam store capsule artwork against 28,754 Steam games using Computer Vision.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://capsulu.feuerware.com"
+    }
+  ],
+  "paths": {
+    "/api/rate": {
+      "get": {
+        "operationId": "rateCapsule",
+        "summary": "Rate and benchmark a Steam store capsule",
+        "description": "Analyzes dynamic contrast, warmth saliency, and typography legibility for a Steam game capsule.",
+        "parameters": [
+          {
+            "name": "appid",
+            "in": "query",
+            "required": false,
+            "description": "Steam App ID (e.g. 1145360 for Hades)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "required": false,
+            "description": "Full Steam Store URL (e.g. https://store.steampowered.com/app/4429000/DICEPTION/)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Response format ('markdown' or 'json')",
+            "schema": {
+              "type": "string",
+              "default": "markdown"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful evaluation report",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

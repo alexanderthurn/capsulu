@@ -916,16 +916,14 @@ Workflow:
    - Or upload a capsule image file directly into the chat
 
 2. Retrieve the empirical Computer Vision benchmark:
-   - For Steam links or AppIDs, fetch:
+   - If you have network/API access or Custom GPT Action configured:
      GET http://localhost:8000/api/rate?appid=&lt;APPID&gt;&amp;format=markdown
      (or GET http://localhost:8000/api/rate?url=&lt;STEAM_URL&gt;&amp;format=markdown)
-   - For public image URLs, fetch:
-     GET http://localhost:8000/api/rate?image_url=&lt;IMAGE_URL&gt;&amp;format=markdown
-   - For uploaded images in chat: inspect the artwork visually and compare against Capsulu's 28,754-game benchmarks (Dynamic Contrast std dev &gt;= 63.0, Warmth ~45%, Title WCAG &gt;= 4.5:1, Center Spotlight).
+   - If network fetching is blocked by sandbox policy, inspect the uploaded capsule image directly against Capsulu's empirical benchmarks (Dynamic Contrast std dev &gt;= 63.0, Warmth ~45%, Title WCAG &gt;= 4.5:1, Center Spotlight).
 
 3. Present the Capsulu Assessment:
    - Show the overall score (e.g. # 🏆 Capsule Score: 95 / 100) and Global Rating tier in BIG text at the very top.
-   - Summarize the key Computer Vision findings and recommendations.
+   - Summarize key findings for Dynamic Contrast, Warmth Saliency, and Typography.
    - Show the "AI Art Fix Prompt".
 
 4. Offer to Fix &amp; Generate the Art:
