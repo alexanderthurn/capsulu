@@ -528,39 +528,77 @@ async function handleUrlInput(updateUrlBar = true) {
     if (appid) {
         showLoading(true);
 
-        try {
-            const apiRes = await fetch(`/api/steam-details?appid=${appid}`);
-            if (apiRes.ok) {
-                const data = await apiRes.json();
-                if (data.success && data.header_image) {
-                    const finalName = data.name || gameTitle;
-                    let displayPrice = data.price;
-                    if (data.is_coming_soon && data.release_date) {
-                        displayPrice = `Coming Soon (${data.release_date})`;
+        let detailsData = null;
+        const endpointCandidates = [
+            `api.php?appid=${appid}`,
+            `/api/steam-details?appid=${appid}`,
+            `https://corsproxy.io/?url=${encodeURIComponent('https://store.steampowered.com/api/appdetails?appids=' + appid)}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent('https://store.steampowered.com/api/appdetails?appids=' + appid)}`
+        ];
+
+        for (const ep of endpointCandidates) {
+            try {
+                const apiRes = await fetch(ep);
+                if (apiRes.ok) {
+                    const raw = await apiRes.json();
+                    if (raw && raw.success && raw.header_image) {
+                        detailsData = raw;
+                        break;
+                    } else if (raw && raw[appid] && raw[appid].data) {
+                        const d = raw[appid].data;
+                        const isComingSoon = d.release_date && d.release_date.coming_soon;
+                        let priceStr = "Free";
+                        if (d.is_free) priceStr = "Free to Play";
+                        else if (d.price_overview) priceStr = d.price_overview.final_formatted || "Free";
+                        else if (isComingSoon) priceStr = "Coming Soon";
+
+                        detailsData = {
+                            success: true,
+                            appid: Number(appid),
+                            name: d.name,
+                            header_image: d.header_image,
+                            price: priceStr,
+                            is_coming_soon: isComingSoon,
+                            release_date: d.release_date ? d.release_date.date : "",
+                            genres: (d.genres || []).map(g => g.description)
+                        };
+                        break;
                     }
-
-                    saveRecentItem({
-                        name: finalName,
-                        appid: appid,
-                        url: storeUrl,
-                        imageUrl: data.header_image,
-                        price: displayPrice,
-                        tags: data.genres
-                    });
-
-                    loadImageWithFallbacks(
-                        [data.header_image, `https://images.weserv.nl/?url=${encodeURIComponent(data.header_image)}`],
-                        finalName,
-                        displayPrice,
-                        data.genres,
-                        appid,
-                        storeUrl
-                    );
-                    return;
                 }
+            } catch (err) {
+                // Continue to next endpoint candidate
             }
-        } catch (err) {
-            console.warn('Local API details endpoint unavailable, falling back to direct CDN URLs:', err);
+        }
+
+        if (detailsData && detailsData.header_image) {
+            const finalName = detailsData.name || gameTitle;
+            let displayPrice = detailsData.price;
+            if (detailsData.is_coming_soon && detailsData.release_date) {
+                displayPrice = `Coming Soon (${detailsData.release_date})`;
+            }
+
+            saveRecentItem({
+                name: finalName,
+                appid: appid,
+                url: storeUrl,
+                imageUrl: detailsData.header_image,
+                price: displayPrice,
+                tags: detailsData.genres
+            });
+
+            loadImageWithFallbacks(
+                [
+                    `https://images.weserv.nl/?url=${encodeURIComponent(detailsData.header_image)}`,
+                    `https://wsrv.nl/?url=${encodeURIComponent(detailsData.header_image)}`,
+                    detailsData.header_image
+                ],
+                finalName,
+                displayPrice,
+                detailsData.genres,
+                appid,
+                storeUrl
+            );
+            return;
         }
 
         // Fallback candidate URLs in priority order

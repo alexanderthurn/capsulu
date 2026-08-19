@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Route /api/steam-details to api.php
+RewriteRule ^api/steam-details/?$ api.php [QSA,L]
+RewriteRule ^api/rate/?$ api.php [QSA,L]
+</IfModule>
+
+# Enable CORS for static assets
+<IfModule mod_headers.c>
+Header set Access-Control-Allow-Origin "*"
+</IfModule>
