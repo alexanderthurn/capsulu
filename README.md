@@ -51,8 +51,8 @@ Our computer vision pipeline analyzed 28,754 Steam capsules to discover what vis
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/alexanderthurn/steam-capsulu.git
-cd steam-capsulu
+git clone https://github.com/alexanderthurn/capsulu.git
+cd capsulu
 ```
 
 ### 2. Install Python Dependencies
@@ -73,7 +73,7 @@ Open **[http://localhost:8000](http://localhost:8000)** in your browser!
 ## 📁 Repository Structure
 
 ```
-steam-capsulu/
+capsulu/
 ├── web/                           # Client-side web application
 │   ├── index.html                 # Main interface & dashboard
 │   ├── style.css                  # Steam dark theme & responsive styles
