@@ -149,23 +149,23 @@ def analyze_capsule_image(img_bytes):
     if overall_score >= 88:
         tier = "🏆 Mega-Hit Grade"
         percentile = "Top 10% on Steam"
-        headline = "Exceptional, High-Converting Key Art"
+        headline = "Exceptional"
     elif overall_score >= 75:
         tier = "🌟 Solid Indie Grade"
         percentile = "Top 35% on Steam"
-        headline = "Strong Visual Foundation"
+        headline = "Strong"
     elif overall_score >= 60:
         tier = "📊 Moderate Visibility"
         percentile = "Median 50% on Steam"
-        headline = "Average Store Visibility"
+        headline = "Average"
     elif overall_score >= 48:
         tier = "📉 Struggling Grade"
         percentile = "Bottom 30% on Steam"
-        headline = "Low Store Contrast Risk"
+        headline = "Low"
     else:
         tier = "🕳️ Near-Zero Flop Risk"
         percentile = "Bottom 15% on Steam"
-        headline = "Critical Contrast & Clarity Issues"
+        headline = "Critical"
 
     # Action Items
     recommendations = []

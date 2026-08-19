@@ -71,5 +71,8 @@ scratch/
 scratch_*.py
 *.zip
 *.tar.gz
+*.raw
+*.bin
+*.tmp
 web/export/
 web/downloads/

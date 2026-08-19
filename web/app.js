@@ -926,7 +926,7 @@ function runComputerVision(img) {
     const isCenterFocused = spotlightRatio > 0;
 
     const dominantColors = extractDominantColors(colorSamples);
-    const textAnalysis = analyzeTextAndLogo(data, lumArray, w, h);
+    const textAnalysis = analyzeTitleText(data, lumArray, w, h);
 
     return {
         avgBrightness: round(avgBrightness, 1),
@@ -955,124 +955,214 @@ function runComputerVision(img) {
 }
 
 /**
- * Detect Text & Logo Position, Relative Size %, and Contrast Clarity
- * Using 9-Zone Spatial Gradient Density & Local Luminance Analysis
+ * Detect Game Title Typography Position, Relative Size %, and Contrast Clarity
+ * Isolates letter glyphs (vertical stroke run-lengths >= 10px) and finds the
+ * primary horizontal title text baseline band, adhering to Steam graphical asset rules.
  */
-function analyzeTextAndLogo(rgbaData, lumArray, w, h) {
+function analyzeTitleText(rgbaData, lumArray, w, h) {
     const totalPixels = w * h;
-    
-    // 9 Spatial Zone Definitions (3x3 grid)
-    const zones = {
-        top_left:   { x1: 0.0,  y1: 0.0,  x2: 0.33, y2: 0.33, label: "Top Left" },
-        top_center: { x1: 0.33, y1: 0.0,  x2: 0.67, y2: 0.33, label: "Top Center" },
-        top_right:  { x1: 0.67, y1: 0.0,  x2: 1.0,  y2: 0.33, label: "Top Right" },
-        mid_left:   { x1: 0.0,  y1: 0.33, x2: 0.33, y2: 0.67, label: "Middle Left" },
-        mid_center: { x1: 0.33, y1: 0.33, x2: 0.67, y2: 0.67, label: "Middle Center" },
-        mid_right:  { x1: 0.67, y1: 0.33, x2: 1.0,  y2: 0.67, label: "Middle Right" },
-        bot_left:   { x1: 0.0,  y1: 0.67, x2: 0.33, y2: 1.0,  label: "Bottom Left" },
-        bot_center: { x1: 0.33, y1: 0.67, x2: 0.67, y2: 1.0,  label: "Bottom Center" },
-        bot_right:  { x1: 0.67, y1: 0.67, x2: 1.0,  y2: 1.0,  label: "Bottom Right" }
-    };
 
-    // 1. Grid of block stroke gradients (16x16 pixel blocks)
-    const blockSize = 16;
+    // 1. Horizontal gradient steps across pixels (detecting letter glyph edges)
+    const diffX = new Uint8Array(totalPixels);
+    for (let y = 0; y < h; y++) {
+        const rowOffset = y * w;
+        for (let x = 0; x < w - 1; x++) {
+            const idx = rowOffset + x;
+            const diff = Math.abs(lumArray[idx + 1] - lumArray[idx]);
+            if (diff > 36) diffX[idx] = 1;
+        }
+    }
+
+    // 2. Vertical stroke run-length filter
+    // Letter stems (H, A, D, E, S) have continuous vertical edges spanning >= 10px.
+    // Particle noise, flame embers, and film grain span < 8px and are rejected.
+    const vertRun = new Int16Array(totalPixels);
+    for (let x = 0; x < w - 1; x++) {
+        let run = 0;
+        for (let y = 0; y < h; y++) {
+            const idx = y * w + x;
+            if (diffX[idx]) {
+                run++;
+                vertRun[idx] = run;
+            } else {
+                if (run > 0) {
+                    for (let k = 1; k <= run; k++) {
+                        vertRun[(y - k) * w + x] = run;
+                    }
+                    run = 0;
+                }
+            }
+        }
+        if (run > 0) {
+            for (let k = 1; k <= run; k++) {
+                vertRun[(h - k) * w + x] = run;
+            }
+        }
+    }
+
+    // 3. Block-level letter stem density (10x10 blocks)
+    const blockSize = 10;
     const gridCols = Math.floor(w / blockSize);
     const gridRows = Math.floor(h / blockSize);
-    const blockScores = new Float32Array(gridCols * gridRows);
+    const stemBlocks = new Float32Array(gridCols * gridRows);
+    const blockMinL = new Float32Array(gridCols * gridRows);
+    const blockMaxL = new Float32Array(gridCols * gridRows);
     const blockLums = new Float32Array(gridCols * gridRows);
 
-    let maxBlockScore = 0;
     for (let by = 0; by < gridRows; by++) {
+        const y1 = by * blockSize;
+        const y2 = Math.min(h, (by + 1) * blockSize);
         for (let bx = 0; bx < gridCols; bx++) {
-            let strokeEdges = 0;
+            const x1 = bx * blockSize;
+            const x2 = Math.min(w, (bx + 1) * blockSize);
+
+            let stemCount = 0;
+            let minL = 255;
+            let maxL = 0;
             let sumL = 0;
             let count = 0;
 
-            const startX = bx * blockSize;
-            const startY = by * blockSize;
-
-            for (let y = startY + 1; y < startY + blockSize - 1; y++) {
-                for (let x = startX + 1; x < startX + blockSize - 1; x++) {
-                    const gx = 
-                        -1 * lumArray[(y - 1) * w + (x - 1)] + 1 * lumArray[(y - 1) * w + (x + 1)] +
-                        -2 * lumArray[y * w + (x - 1)]       + 2 * lumArray[y * w + (x + 1)] +
-                        -1 * lumArray[(y + 1) * w + (x - 1)] + 1 * lumArray[(y + 1) * w + (x + 1)];
-
-                    const gy = 
-                        -1 * lumArray[(y - 1) * w + (x - 1)] + -2 * lumArray[(y - 1) * w + x] + -1 * lumArray[(y - 1) * w + (x + 1)] +
-                         1 * lumArray[(y + 1) * w + (x - 1)] +  2 * lumArray[(y + 1) * w + x] +  1 * lumArray[(y + 1) * w + (x + 1)];
-
-                    const mag = Math.sqrt(gx * gx + gy * gy);
-                    if (mag > 60) strokeEdges++;
-                    sumL += lumArray[y * w + x];
+            for (let y = y1; y < y2; y++) {
+                const rowOffset = y * w;
+                for (let x = x1; x < x2; x++) {
+                    const idx = rowOffset + x;
+                    const l = lumArray[idx];
+                    if (l < minL) minL = l;
+                    if (l > maxL) maxL = l;
+                    sumL += l;
                     count++;
+
+                    if (vertRun[idx] >= 10) {
+                        stemCount++;
+                    }
                 }
             }
 
-            const score = strokeEdges / (count || 1);
-            const idx = by * gridCols + bx;
-            blockScores[idx] = score;
-            blockLums[idx] = sumL / (count || 1);
-            if (score > maxBlockScore) maxBlockScore = score;
+            const bRange = maxL - minL;
+            const bIdx = by * gridCols + bx;
+            blockLums[bIdx] = sumL / (count || 1);
+            blockMinL[bIdx] = minL;
+            blockMaxL[bIdx] = maxL;
+
+            if (stemCount >= 2 && bRange > 42) {
+                const cr = (maxL + 5.0) / (minL + 5.0);
+                stemBlocks[bIdx] = stemCount * (bRange / 255.0) * Math.min(10.0, cr);
+            }
         }
     }
 
-    // 2. Zone density accumulation
-    const zoneDensity = {};
-    Object.keys(zones).forEach(k => zoneDensity[k] = 0);
+    // 4. Find the dominant horizontal text line band (sliding window of 3 to 6 rows)
+    let bestBandScore = -1;
+    let bestRStart = 0, bestREnd = gridRows;
+    let bestCStart = 0, bestCEnd = gridCols;
 
-    for (let by = 0; by < gridRows; by++) {
-        const ry = (by + 0.5) / gridRows;
-        for (let bx = 0; bx < gridCols; bx++) {
-            const rx = (bx + 0.5) / gridCols;
-            const score = blockScores[by * gridCols + bx];
+    for (const bandH of [3, 4, 5, 6]) {
+        for (let r0 = 0; r0 <= gridRows - bandH; r0++) {
+            const r1 = r0 + bandH;
+            const colSums = new Float32Array(gridCols);
 
-            for (const [zKey, z] of Object.entries(zones)) {
-                if (rx >= z.x1 && rx < z.x2 && ry >= z.y1 && ry < z.y2) {
-                    zoneDensity[zKey] += score;
-                    break;
+            for (let r = r0; r < r1; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    colSums[c] += stemBlocks[r * gridCols + c];
+                }
+            }
+
+            let activeCols = [];
+            for (let c = 0; c < gridCols; c++) {
+                if (colSums[c] > 1.0) activeCols.push(c);
+            }
+
+            if (activeCols.length >= 3) {
+                const cMin = activeCols[0];
+                const cMax = activeCols[activeCols.length - 1];
+                const spanLen = cMax - cMin + 1;
+
+                let energy = 0;
+                for (let c = cMin; c <= cMax; c++) {
+                    energy += colSums[c];
+                }
+                const density = energy / Math.max(spanLen, 1);
+                const score = energy * Math.sqrt(density);
+
+                if (score > bestBandScore) {
+                    bestBandScore = score;
+                    bestRStart = r0;
+                    bestREnd = r1;
+                    bestCStart = cMin;
+                    bestCEnd = cMax;
                 }
             }
         }
     }
 
-    // Find zone with highest typographic edge concentration
-    let topZoneKey = "mid_center";
-    let topZoneScore = -1;
-    for (const [zKey, score] of Object.entries(zoneDensity)) {
-        if (score > topZoneScore) {
-            topZoneScore = score;
-            topZoneKey = zKey;
-        }
-    }
+    // Calculate centroid of the dominant title text band
+    let cy = 0.5;
+    let cx = 0.5;
+    let minXNorm = 0.3;
+    let maxXNorm = 0.7;
 
-    // 3. Estimate Logo Bounding Box & Area Size %
-    const threshold = Math.max(0.12, maxBlockScore * 0.45);
-    let minBX = gridCols, maxBX = 0, minBY = gridRows, maxBY = 0;
-    let activeBlocks = 0;
+    let titleWeight = 0;
+    let sumR = 0;
+    let sumC = 0;
 
-    for (let by = 0; by < gridRows; by++) {
-        for (let bx = 0; bx < gridCols; bx++) {
-            if (blockScores[by * gridCols + bx] >= threshold) {
-                activeBlocks++;
-                if (bx < minBX) minBX = bx;
-                if (bx > maxBX) maxBX = bx;
-                if (by < minBY) minBY = by;
-                if (by > maxBY) maxBY = by;
+    for (let r = bestRStart; r < bestREnd && r < gridRows; r++) {
+        for (let c = bestCStart; c <= bestCEnd && c < gridCols; c++) {
+            const score = stemBlocks[r * gridCols + c];
+            if (score > 0) {
+                titleWeight += score;
+                sumR += (r - bestRStart) * score;
+                sumC += (c - bestCStart) * score;
             }
         }
     }
 
-    let sizePct = 18.5;
-    if (activeBlocks >= 2 && maxBX >= minBX && maxBY >= minBY) {
-        const spanW = (maxBX - minBX + 1) * blockSize;
-        const spanH = (maxBY - minBY + 1) * blockSize;
-        sizePct = Math.min(45, Math.max(8, round((spanW * spanH / totalPixels) * 100, 1)));
+    if (titleWeight > 0) {
+        const cyLocal = sumR / titleWeight;
+        const cxLocal = sumC / titleWeight;
+        cy = (bestRStart + cyLocal + 0.5) / gridRows;
+        cx = (bestCStart + cxLocal + 0.5) / gridCols;
+        minXNorm = bestCStart / gridCols;
+        maxXNorm = (bestCEnd + 1) / gridCols;
     }
 
-    // Classify size
+    // Classify Y Axis
+    let yKey = 'mid';
+    let yLabel = 'Middle';
+    if (cy < 0.38) {
+        yKey = 'top';
+        yLabel = 'Top';
+    } else if (cy > 0.62) {
+        yKey = 'bot';
+        yLabel = 'Bottom';
+    }
+
+    // Classify X Axis
+    let xKey = 'center';
+    let xLabel = 'Center';
+    if (minXNorm < 0.12 && cx < 0.44) {
+        xKey = 'left';
+        xLabel = 'Left';
+    } else if (maxXNorm > 0.88 && cx > 0.56) {
+        xKey = 'right';
+        xLabel = 'Right';
+    } else if (cx < 0.38) {
+        xKey = 'left';
+        xLabel = 'Left';
+    } else if (cx > 0.62) {
+        xKey = 'right';
+        xLabel = 'Right';
+    }
+
+    const zoneKey = `${yKey}_${xKey}`;
+    const zoneLabel = `${yLabel} ${xLabel}`;
+
+    const spanW = (bestCEnd - bestCStart + 1) * blockSize;
+    const spanH = (bestREnd - bestRStart) * blockSize;
+    const sizePct = Math.min(45, Math.max(8, round((spanW * spanH / totalPixels) * 100, 1)));
+
+    // Size classification
     let sizeClass = "medium";
-    let sizeLabel = "Optimal (15-28%)";
+    let sizeLabel = "Optimal (14-28%)";
     if (sizePct > 28) {
         sizeClass = "large";
         sizeLabel = "Dominant (>28%)";
@@ -1081,30 +1171,28 @@ function analyzeTextAndLogo(rgbaData, lumArray, w, h) {
         sizeLabel = "Compact (<14%)";
     }
 
-    // 4. Calculate Local Text-to-Background WCAG Contrast Ratio
-    const targetZ = zones[topZoneKey];
-    const zStartBX = Math.floor(targetZ.x1 * gridCols);
-    const zEndBX = Math.ceil(targetZ.x2 * gridCols);
-    const zStartBY = Math.floor(targetZ.y1 * gridRows);
-    const zEndBY = Math.ceil(targetZ.y2 * gridRows);
+    // Contrast Ratio in Detected Title Text Region
+    let darkest = 255;
+    let brightest = 0;
+    let bgSamples = [];
 
-    const insideLums = [];
-    for (let by = zStartBY; by < zEndBY && by < gridRows; by++) {
-        for (let bx = zStartBX; bx < zEndBX && bx < gridCols; bx++) {
-            const idx = by * gridCols + bx;
-            insideLums.push(blockLums[idx]);
+    for (let r = bestRStart; r < bestREnd && r < gridRows; r++) {
+        for (let c = bestCStart; c <= bestCEnd && c < gridCols; c++) {
+            const idx = r * gridCols + c;
+            if (stemBlocks[idx] > 0) {
+                if (blockMinL[idx] < darkest) darkest = blockMinL[idx];
+                if (blockMaxL[idx] > brightest) brightest = blockMaxL[idx];
+                bgSamples.push(blockLums[idx]);
+            }
         }
     }
 
-    insideLums.sort((a, b) => a - b);
     let contrastRatio = 3.5;
-    if (insideLums.length >= 4) {
-        const darkest = insideLums[0];
-        const brightest = insideLums[insideLums.length - 1];
-        const bgEstimate = insideLums[Math.floor(insideLums.length * 0.3)];
-        
+    if (brightest > darkest && bgSamples.length > 0) {
+        bgSamples.sort((a, b) => a - b);
+        const bgEst = bgSamples[Math.floor(bgSamples.length * 0.3)];
         const l1 = brightest / 255.0;
-        const l2 = Math.max(0, (darkest + bgEstimate) / (2 * 255.0));
+        const l2 = Math.max(0, (darkest + bgEst) / (2 * 255.0));
         contrastRatio = round((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05), 1);
         if (contrastRatio < 1.1) contrastRatio = 1.2;
         if (contrastRatio > 21.0) contrastRatio = 21.0;
@@ -1124,8 +1212,8 @@ function analyzeTextAndLogo(rgbaData, lumArray, w, h) {
     }
 
     return {
-        zoneKey: topZoneKey,
-        zoneLabel: zones[topZoneKey].label,
+        zoneKey: zoneKey,
+        zoneLabel: zoneLabel,
         sizePct: sizePct,
         sizeClass: sizeClass,
         sizeLabel: sizeLabel,
@@ -1229,37 +1317,38 @@ function evaluateScores(cv) {
     let tierName = "🏆 Mega-Hit Grade";
     let tierBadgeClass = "badge-gold";
     let percentile = "Top 10% of Steam Capsules";
-    let headline = "High-Converting Store Art";
+    let headline = "Exceptional";
     let summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
 
     if (overallScore >= 88) {
         tierName = "🏆 Mega-Hit Grade";
         tierBadgeClass = "badge-gold";
         percentile = "Top 10% of Steam Capsules";
-        headline = "Exceptional, High-Converting Key Art";
+        headline = "Exceptional";
+        summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
     } else if (overallScore >= 75) {
         tierName = "🌟 Solid Indie Grade";
         tierBadgeClass = "badge-green";
         percentile = "Top 35% of Steam Capsules";
-        headline = "Strong Visual Foundation";
+        headline = "Strong";
         summary = "Well-balanced capsule with solid contrast and focal hierarchy. Minor tweaks to highlight contrast can push it to top-tier.";
     } else if (overallScore >= 60) {
         tierName = "📊 Moderate Visibility";
         tierBadgeClass = "badge-blue";
         percentile = "Median 50% Distribution";
-        headline = "Average Store Visibility";
+        headline = "Average";
         summary = "Readable, but risks blending into the browse queue due to neutral color temperatures or softer midtone contrast.";
     } else if (overallScore >= 48) {
         tierName = "📉 Struggling Grade";
         tierBadgeClass = "badge-orange";
         percentile = "Bottom 30% of Steam Capsules";
-        headline = "Low Store Contrast Risk";
+        headline = "Low";
         summary = "Artwork is too flat or dark. When scaled down to small browse cards, character details and title text will blur together.";
     } else {
         tierName = "🕳️ Near-Zero Flop Risk";
         tierBadgeClass = "badge-red";
         percentile = "Bottom 15% of Steam Capsules";
-        headline = "Critical Contrast & Clarity Issues";
+        headline = "Critical";
         summary = "Your capsule lacks dynamic highlights, deep shadows, and color punch. Highly recommended to re-render with higher contrast lighting.";
     }
 
@@ -1441,26 +1530,6 @@ function getCategoryBenchmark(categoryKey) {
  */
 function switchGenreLens(genreKey) {
     currentGenreLens = genreKey || 'all';
-
-    // Update genre pill buttons active state in hero banner
-    document.querySelectorAll('.genre-pill-btn').forEach(btn => {
-        const t = btn.textContent.trim().toLowerCase();
-        if (t === currentGenreLens.toLowerCase()) {
-            btn.classList.add('active-genre-pill');
-        } else {
-            btn.classList.remove('active-genre-pill');
-        }
-    });
-
-    // Update tag pill buttons active state in hero banner
-    document.querySelectorAll('.tag-pill-btn').forEach(btn => {
-        const t = btn.textContent.trim().toLowerCase();
-        if (t === currentGenreLens.toLowerCase()) {
-            btn.classList.add('active-tag-pill');
-        } else {
-            btn.classList.remove('active-tag-pill');
-        }
-    });
 
     // Update all dropdowns across panels
     document.querySelectorAll('.genre-sync-dropdown').forEach(dropdown => {
@@ -1763,15 +1832,8 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     currentLoadedTags = tags || [];
     currentLoadedGenres = genres || [];
 
-    // Detect target genre or respect user manual dropdown selection
-    let initialGenre = 'all';
-    if (typeof genreSelectDropdown !== 'undefined' && genreSelectDropdown && genreSelectDropdown.value !== 'all') {
-        initialGenre = genreSelectDropdown.value;
-    } else {
-        const detected = detectGenreFromTags(tags) || (genres && genres[0]);
-        if (detected) initialGenre = detected;
-    }
-    currentGenreLens = initialGenre;
+    // Default comparison selection is always All Steam Games ('all')
+    currentGenreLens = 'all';
 
     // 1. Update TOP HERO CARD with Big Game Title, Direct Steam Link, and Image
     document.getElementById('resultHeroCapsuleImg').src = imgSrc;
@@ -1829,18 +1891,10 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
         if (genreList.length > 0) {
             heroGenresGroup.style.display = 'inline-flex';
             genreList.forEach(g => {
-                const btn = document.createElement('button');
-                btn.className = 'genre-pill-btn';
-                btn.type = 'button';
-                btn.textContent = g;
-                btn.title = `Benchmark against Genre "${g}"`;
-                if (currentGenreLens.toLowerCase() === g.toLowerCase()) {
-                    btn.classList.add('active-genre-pill');
-                }
-                btn.addEventListener('click', () => {
-                    switchGenreLens(g);
-                });
-                heroGenresContainer.appendChild(btn);
+                const badge = document.createElement('span');
+                badge.className = 'genre-pill-badge';
+                badge.textContent = g;
+                heroGenresContainer.appendChild(badge);
             });
         } else {
             heroGenresGroup.style.display = 'none';
@@ -1852,19 +1906,11 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
         heroTagsContainer.innerHTML = '';
         if (tagList.length > 0) {
             heroTagsGroup.style.display = 'inline-flex';
-            tagList.slice(0, 10).forEach(t => {
-                const btn = document.createElement('button');
-                btn.className = 'tag-pill-btn';
-                btn.type = 'button';
-                btn.textContent = t;
-                btn.title = `Benchmark against Tag "${t}"`;
-                if (currentGenreLens.toLowerCase() === t.toLowerCase()) {
-                    btn.classList.add('active-tag-pill');
-                }
-                btn.addEventListener('click', () => {
-                    switchGenreLens(t);
-                });
-                heroTagsContainer.appendChild(btn);
+            tagList.forEach(t => {
+                const badge = document.createElement('span');
+                badge.className = 'tag-pill-badge';
+                badge.textContent = t;
+                heroTagsContainer.appendChild(badge);
             });
         } else {
             heroTagsGroup.style.display = 'none';
@@ -1889,10 +1935,15 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     gaugeFill.style.stroke = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
 
     const tierBadge = document.getElementById('predictedTierBadge');
-    tierBadge.textContent = scores.tierName;
-    tierBadge.className = `tier-badge ${scores.tierBadgeClass}`;
+    if (tierBadge) {
+        tierBadge.textContent = scores.tierName;
+        tierBadge.className = `tier-badge ${scores.tierBadgeClass}`;
+    }
 
-    document.getElementById('percentileText').textContent = scores.percentile;
+    const percentileElem = document.getElementById('percentileText');
+    if (percentileElem) {
+        percentileElem.textContent = scores.percentile;
+    }
     document.getElementById('scoreHeadline').textContent = scores.headline;
     document.getElementById('scoreSummary').textContent = scores.summary;
 
@@ -1977,7 +2028,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
         qmSubText.textContent = cv.titleContrast >= 4.5 ? '✓ Meets WCAG AA standard' : '⚠️ Text risks blending into art';
     }
 
-    // Logo Placement & Coverage Quick Metric
+    // Title Placement & Coverage Quick Metric
     const qsLogoZoneElem = document.getElementById('qsLogoZone');
     if (qsLogoZoneElem) {
         qsLogoZoneElem.textContent = `${cv.titleZone} (${cv.titleSizePct}%)`;
@@ -1990,7 +2041,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     }
     const qmSubLogoZone = document.getElementById('qmSubLogoZone');
     if (qmSubLogoZone) {
-        qmSubLogoZone.textContent = cv.titleSizePct >= 12 ? '✓ Clear at 120px scale' : '⚠️ Logo may be too small in queue';
+        qmSubLogoZone.textContent = cv.titleSizePct >= 14 ? '✓ Clear at 120px scale' : '⚠️ Title text may be too small in queue';
     }
 
     // 6. Update Palette Swatches & D3 Cake Diagram
@@ -2034,6 +2085,9 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     // 8. Generate Tailored Checklist
     generateChecklist(cv, scores, currentGenreLens);
 
+    // 8.5 Bind Click-to-Scroll on Quick Metric Cells
+    bindQuickMetricsScroll();
+
     // Show Dashboard & Smooth Scroll
     resultsDashboard.style.display = 'block';
     
@@ -2049,6 +2103,67 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
             });
         }
     }, 50);
+}
+
+/**
+ * Scroll to Design Recommendations & Highlight the Target Checklist Item
+ */
+function scrollToRecommendation(recId) {
+    const recsPanel = document.getElementById('recsPanel');
+    if (!recsPanel) return;
+
+    const nav = document.querySelector('.steam-global-nav');
+    const navHeight = nav ? nav.offsetHeight : 64;
+    const targetY = recsPanel.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+
+    window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'smooth'
+    });
+
+    if (recId) {
+        setTimeout(() => {
+            const card = document.getElementById(recId);
+            if (card) {
+                card.classList.remove('rec-highlight-pulse');
+                void card.offsetWidth; // trigger reflow
+                card.classList.add('rec-highlight-pulse');
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }, 350);
+    }
+}
+
+/**
+ * Bind Quick Metric Cells to Scroll to their Respective Recommendation Cards
+ */
+function bindQuickMetricsScroll() {
+    const qmBindings = [
+        { id: 'qmCellContrast', recId: 'rec-contrast' },
+        { id: 'qmCellPalette', recId: 'rec-palette' },
+        { id: 'qmCellEntropy', recId: 'rec-entropy' },
+        { id: 'qmCellFocus', recId: 'rec-focus' },
+        { id: 'qmCellText', recId: 'rec-text' },
+        { id: 'qmCellLogoZone', recId: 'rec-logo-zone' },
+        { id: 'mRowContrast', recId: 'rec-contrast' },
+        { id: 'mRowWarmth', recId: 'rec-palette' },
+        { id: 'mRowEntropy', recId: 'rec-entropy' },
+        { id: 'mRowEdge', recId: 'rec-edge' },
+        { id: 'mRowFocus', recId: 'rec-focus' },
+        { id: 'mRowText', recId: 'rec-text' }
+    ];
+
+    qmBindings.forEach(b => {
+        const elem = document.getElementById(b.id);
+        if (elem && !elem.dataset.boundScroll) {
+            elem.dataset.boundScroll = 'true';
+            elem.style.cursor = 'pointer';
+            elem.title = 'Click to view design recommendation';
+            elem.addEventListener('click', () => {
+                scrollToRecommendation(b.recId);
+            });
+        }
+    });
 }
 
 function formatZoneName(zoneKey) {
@@ -2094,7 +2209,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
 
     const items = [];
 
-    // Genre-specific tailored card at the top
+    // 1. Genre-specific tailored card at the top
     let targetGenre = genreKey;
     if (!targetGenre || targetGenre === 'all') {
         targetGenre = detectGenreFromTags(currentLoadedTags) || 'Action';
@@ -2103,96 +2218,152 @@ function generateChecklist(cv, scores, genreKey = 'all') {
     if (typeof benchmarksData !== 'undefined' && benchmarksData.genres && benchmarksData.genres[targetGenre]) {
         const gMeta = benchmarksData.genres[targetGenre];
         items.push({
+            id: 'rec-tag',
             status: 'pass',
             title: `🏷️ ${targetGenre} Tag Market Advice`,
             desc: gMeta.tip
         });
     }
 
-    // Title Contrast & Readability item
+    // 2. Title Contrast & Readability
     if (cv.titleContrast >= 4.5) {
         items.push({
+            id: 'rec-text',
             status: 'pass',
-            title: 'Title Logo Contrast & Legibility',
+            title: 'Title Typography Contrast & Legibility',
             desc: `Your title typography achieves a strong ${cv.titleContrast}:1 contrast ratio against the backdrop (WCAG AA standard). It will remain sharp on small mobile screens and browse carousels.`
         });
     } else if (cv.titleContrast >= 3.0) {
         items.push({
+            id: 'rec-text',
             status: 'warn',
-            title: 'Enhance Title Logo Backdrop Contrast',
-            desc: `Title contrast is moderate (${cv.titleContrast}:1 vs 5.2:1 Mega-Hit avg). Consider adding a subtle dark drop shadow or stroke outline behind the logo to prevent blending into the background.`
+            title: 'Enhance Title Text Backdrop Contrast',
+            desc: `Title contrast is moderate (${cv.titleContrast}:1 vs 5.2:1 Mega-Hit avg). Consider adding a subtle dark drop shadow, outer stroke outline, or dark scrim behind the title text to prevent blending into the background.`
         });
     } else {
         items.push({
+            id: 'rec-text',
             status: 'fail',
             title: 'Critical: Low Title Contrast (< 3.0:1)',
-            desc: `Your title contrast (${cv.titleContrast}:1) is very low. The logo blends directly into the artwork and may be unreadable at 120px browse resolutions. Add a dark scrim or highlight stroke.`
+            desc: `Your title contrast (${cv.titleContrast}:1) is very low. The title text blends directly into the artwork and may be unreadable at 120px browse resolutions. Add a dark scrim, heavy drop shadow, or highlight stroke.`
         });
     }
 
-    // Contrast item
+    // 3. Title Placement & Scale Coverage
+    if (cv.titleSizePct >= 14 && cv.titleSizePct <= 28) {
+        items.push({
+            id: 'rec-logo-zone',
+            status: 'pass',
+            title: 'Title Placement & Sizing',
+            desc: `Your title text occupies ${cv.titleSizePct}% of the capsule in the ${cv.titleZone} zone, hitting the optimal commercial balance between title readability and hero art visibility.`
+        });
+    } else if (cv.titleSizePct < 14) {
+        items.push({
+            id: 'rec-logo-zone',
+            status: 'warn',
+            title: 'Increase Title Text Scale',
+            desc: `Title text coverage is relatively compact (${cv.titleSizePct}% vs optimal 18-25%). Scale up the title typography by 15-25% in the ${cv.titleZone} area so game branding remains instantly recognizable when downscaled to 120px browse thumbnails.`
+        });
+    } else {
+        items.push({
+            id: 'rec-logo-zone',
+            status: 'warn',
+            title: 'Scale Down Title Text to Reveal Artwork',
+            desc: `Title text occupies ${cv.titleSizePct}% of the frame (dominant coverage). It may obscure key character silhouettes, action focal points, or environmental lighting. Trim outer text padding by 10-15%.`
+        });
+    }
+
+    // 4. Contrast item
     if (cv.brightnessStd >= 62) {
         items.push({
+            id: 'rec-contrast',
             status: 'pass',
             title: 'Dynamic Range & Contrast',
             desc: `Your contrast score (${cv.brightnessStd}) matches or exceeds the Mega-Hit average (63.0). Highlights and shadow values are clearly separated.`
         });
     } else {
         items.push({
+            id: 'rec-contrast',
             status: 'fail',
             title: 'Low Dynamic Range (Flat Midtones)',
             desc: `Your contrast (${cv.brightnessStd}) is below the Mega-Hit benchmark (63.0). Increase the brightness of your key light and deepen background shadows by 15-20%.`
         });
     }
 
-    // Warmth item
+    // 5. Warmth / Saliency item
     if (cv.warmPct >= 45) {
         items.push({
+            id: 'rec-palette',
             status: 'pass',
             title: 'Steam UI Saliency',
             desc: `Warm accent colors (${cv.warmPct}%) provide strong chromatic contrast against Steam's dark navy client.`
         });
     } else {
         items.push({
+            id: 'rec-palette',
             status: 'warn',
             title: 'Add Warm Accent Lighting',
             desc: `Your palette is primarily neutral/cool (${cv.neutralPct}% neutral). Add a warm rim-light, fire ember, or golden title glow to immediately pop on Steam.`
         });
     }
 
-    // Entropy item
+    // 6. Entropy item
     if (cv.entropy >= 6.8) {
         items.push({
+            id: 'rec-entropy',
             status: 'pass',
             title: 'Rendering Depth & Texture',
             desc: `High Shannon entropy (${cv.entropy} bits) indicates rich tonal gradients and professional key art rendering.`
         });
     } else {
         items.push({
+            id: 'rec-entropy',
             status: 'fail',
             title: 'Soft / Low Information Depth',
-            desc: `Entropy is low (${cv.entropy} bits vs 6.99 benchmark). Avoid flat unlit 3D models or washed-out backgrounds.`
+            desc: `Entropy is low (${cv.entropy} bits vs 6.99 benchmark). Avoid flat unlit 3D models or washed-out backgrounds. Enhance texture sharpness and ambient lighting.`
         });
     }
 
-    // Composition item
+    // 7. Composition / Spotlight item
     if (cv.isCenterFocused) {
         items.push({
+            id: 'rec-focus',
             status: 'pass',
             title: 'Hero Spotlight Composition',
-            desc: `Light is concentrated on the center character, framing the focal subject and guiding the viewer's eye.`
+            desc: `Light is concentrated on the center character (+${cv.spotlightRatio}), framing the focal subject and guiding the viewer's eye.`
         });
     } else {
         items.push({
+            id: 'rec-focus',
             status: 'warn',
             title: 'Apply Edge Vignetting',
-            desc: `Light is currently scattered around the borders. Darken the outer 15% edges to lock attention on your hero character.`
+            desc: `Light is currently scattered around the outer borders. Darken the outer 15% borders with a radial vignette to lock attention on your central hero.`
+        });
+    }
+
+    // 8. Edge Line Density
+    if (cv.edgeDensity >= 13.0) {
+        items.push({
+            id: 'rec-edge',
+            status: 'pass',
+            title: 'Silhouette & Structural Sharpness',
+            desc: `Crisp line definition (${cv.edgeDensity}%) ensures silhouettes remain distinct even when downscaled to small carousel cards.`
+        });
+    } else {
+        items.push({
+            id: 'rec-edge',
+            status: 'warn',
+            title: 'Sharpen Character Silhouettes',
+            desc: `Edge density is softer than average (${cv.edgeDensity}% vs 14.2% Mega-Hit avg). Add crisp rim-lighting or sharpen character outlines to separate layers.`
         });
     }
 
     items.forEach(item => {
         const card = document.createElement('div');
         card.className = `check-item-card item-${item.status}`;
+        if (item.id) {
+            card.id = item.id;
+        }
         card.innerHTML = `
             <div class="item-badge-icon icon-${item.status}">
                 ${item.status === 'pass' ? '✓' : item.status === 'warn' ? '!' : '✕'}

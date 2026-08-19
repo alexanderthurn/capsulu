@@ -223,11 +223,7 @@
 
                             <!-- Centered Rating Verdict & Summary -->
                             <div class="score-meta-group-centered">
-                                <div class="tier-pill-row tier-pill-row-centered">
-                                    <span class="tier-badge" id="predictedTierBadge">Mega-Hit Grade</span>
-                                    <span class="percentile-badge" id="percentileText">Top 10% on Steam</span>
-                                </div>
-                                <h2 class="score-title" id="scoreHeadline">High-Converting Store Art</h2>
+                                <h2 class="score-title" id="scoreHeadline">Exceptional</h2>
                                 <p class="score-desc" id="scoreSummary">Your capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.</p>
                             </div>
 
@@ -274,11 +270,11 @@
                                 </div>
                                 <div class="qm-cell" id="qmCellLogoZone">
                                     <div class="qm-header-row">
-                                        <span class="qm-label">📍 Logo Placement</span>
+                                        <span class="qm-label">📍 Title Placement</span>
                                         <span class="qm-badge" id="qmBadgeLogoZone">--</span>
                                     </div>
                                     <span class="qm-val" id="qsLogoZone">--</span>
-                                    <span class="qm-sub" id="qmSubLogoZone">Capsule area coverage</span>
+                                    <span class="qm-sub" id="qmSubLogoZone">Title text area coverage</span>
                                 </div>
                             </div>
                         </section>
@@ -494,7 +490,7 @@
 
                     <div class="metrics-stack">
                         <!-- 1. Contrast -->
-                        <div class="metric-item">
+                        <div class="metric-item" id="mRowContrast" title="Click to view design recommendation">
                             <div class="metric-top-bar">
                                 <span class="metric-title">⚡ Dynamic Contrast (Luminance Std Dev)</span>
                                 <span class="metric-tag" id="mContrastScore">--</span>
@@ -511,7 +507,7 @@
                         </div>
 
                         <!-- 2. Warmth / Saliency -->
-                        <div class="metric-item">
+                        <div class="metric-item" id="mRowWarmth" title="Click to view design recommendation">
                             <div class="metric-top-bar">
                                 <span class="metric-title">🎨 Steam UI Chromatic Saliency (Warm Accents)</span>
                                 <span class="metric-tag" id="mWarmthScore">--</span>
@@ -528,7 +524,7 @@
                         </div>
 
                         <!-- 3. Entropy -->
-                        <div class="metric-item">
+                        <div class="metric-item" id="mRowEntropy" title="Click to view design recommendation">
                             <div class="metric-top-bar">
                                 <span class="metric-title">🔍 Shannon Entropy (Tonal Depth)</span>
                                 <span class="metric-tag" id="mEntropyScore">--</span>
@@ -545,7 +541,7 @@
                         </div>
 
                         <!-- 4. Edge Density -->
-                        <div class="metric-item">
+                        <div class="metric-item" id="mRowEdge" title="Click to view design recommendation">
                             <div class="metric-top-bar">
                                 <span class="metric-title">📐 Edge Density & Structural Sharpness</span>
                                 <span class="metric-tag" id="mEdgeScore">--</span>
@@ -562,7 +558,7 @@
                         </div>
 
                         <!-- 5. Composition / Spotlight -->
-                        <div class="metric-item">
+                        <div class="metric-item" id="mRowFocus" title="Click to view design recommendation">
                             <div class="metric-top-bar">
                                 <span class="metric-title">💡 Central Hero Spotlighting</span>
                                 <span class="metric-tag" id="mFocusScore">--</span>
@@ -578,13 +574,13 @@
                             </div>
                         </div>
 
-                        <!-- 6. Typography & Logo Clarity -->
-                        <div class="metric-item">
+                        <!-- 6. Title Typography & Clarity -->
+                        <div class="metric-item" id="mRowText" title="Click to view design recommendation">
                             <div class="metric-top-bar">
-                                <span class="metric-title">🔤 Typography & Title Logo Contrast (WCAG Ratio)</span>
+                                <span class="metric-title">🔤 Title Typography Contrast (WCAG Ratio)</span>
                                 <span class="metric-tag" id="mTextScore">--</span>
                             </div>
-                            <p class="metric-help">Luminance separation between title text and background art. Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
+                            <p class="metric-help">Luminance separation between title typography and background art. Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mTextBar"></div>
                                 <div class="benchmark-pin" style="left: 55%;" title="Mega-Hit Avg (5.2:1)"></div>
@@ -790,7 +786,7 @@
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between text logos and background art, ensuring title recognition even on mobile or compressed Steam Discovery queues.</p>
+                            <p><strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between title text and background art, ensuring title recognition even on mobile or compressed Steam Discovery queues.</p>
                         </div>
                     </div>
 
@@ -799,11 +795,11 @@
                         <div class="chart-card-header">
                             <span class="chart-number-tag">05</span>
                             <div>
-                                <h4 class="chart-title">Title Logo Positioning Heatmap</h4>
+                                <h4 class="chart-title">Title Positioning Heatmap</h4>
                                 <span class="chart-metric-badge">Bottom-Center & Top-Center Standard</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png" data-chart-title="Title Logo 3×3 Grid Positioning Heatmap">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png" data-chart-title="Title 3×3 Grid Positioning Heatmap">
                             <img src="benchmark/5_title_positioning_heatmap.png" alt="Title Positioning Heatmap Chart" loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
@@ -811,7 +807,7 @@
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place logos at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster text over the hero's face or dead-center.</p>
+                            <p><strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place title typography at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster text over the hero's face or dead-center.</p>
                         </div>
                     </div>
 
