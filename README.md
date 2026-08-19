@@ -9,6 +9,10 @@
 
 **Capsulu** is an open-source Computer Vision engine and storefront competition simulator for evaluating Steam capsule artwork. It benchmarks any game's capsule art against an empirical dataset of **28,754 real Steam games across 5 commercial sales tiers**.
 
+<p align="center">
+  <img src="screenshot.jpg" alt="Capsulu – The Steam Capsule Rater Dashboard" width="100%">
+</p>
+
 ---
 
 ## 🌟 Key Features
