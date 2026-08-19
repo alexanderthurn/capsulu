@@ -328,21 +328,52 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                 }
 
                 if out_format in ("markdown", "md", "text"):
-                    md_text = f"""# Capsulu Rating: {game_name} ({cv_res['overall_score']}/100)
+                    c_std = cv_res['metrics']['contrast_std']
+                    w_pct = cv_res['metrics']['warm_palette_pct']
+                    is_cf = cv_res['metrics']['is_center_focused']
+                    
+                    contrast_fix = f"Maintain strong lighting contrast ({c_std} std dev)." if c_std >= 63.0 else f"Deepen cast shadows and push specular highlights on the main hero/subject to increase dynamic contrast std dev from {c_std} up to the Steam Mega-Hit benchmark of >= 63.0."
+                    warmth_fix = f"Color temperature is well balanced ({w_pct}% warm color share)." if w_pct >= 45.0 else f"Introduce warm accents (golden rim-lighting, torch flame, magical particle glow) to increase warm pixel share from {w_pct}% towards ~45% so the capsule pops against Steam dark navy #171a21 interface."
+                    focus_fix = "Good hero illumination. Keep secondary background elements subdued." if is_cf else "Apply a subtle 15% radial edge vignette (darkening borders) to funnel viewer gaze toward the center hero character."
 
-**Sales Grade**: {cv_res['tier']} ({cv_res['percentile']})
+                    md_text = f"""# 🏆 Capsule Score: {cv_res['overall_score']} / 100
+
+**Global Rating**: {cv_res['tier']} ({cv_res['percentile']})
+**Game**: {game_name}
 **Headline**: {cv_res['headline']}
 **Steam Store Link**: https://store.steampowered.com/app/{target_appid}/
 
 ## 📊 Computer Vision Metrics (vs. 28,754 Steam Games)
-- **Dynamic Contrast**: `{cv_res['metrics']['contrast_std']}` (Mega-Hit benchmark: `63.0` | Flop avg: `56.9`)
-- **Warm UI Saliency**: `{cv_res['metrics']['warm_palette_pct']}%` (Mega-Hit benchmark: `49.9%` | Flop avg: `39.0%`)
+- **Dynamic Contrast**: `{c_std}` (Mega-Hit benchmark: `63.0` | Flop avg: `56.9`)
+- **Warm UI Saliency**: `{w_pct}%` (Mega-Hit benchmark: `49.9%` | Flop avg: `39.0%`)
 - **Shannon Entropy (Tonal Depth)**: `{cv_res['metrics']['shannon_entropy']} bits` (Mega-Hit benchmark: `6.99 bits`)
 - **Edge Density (Sharpness)**: `{cv_res['metrics']['edge_density_pct']}%` (Mega-Hit benchmark: `14.2%`)
-- **Hero Spotlight Vignetting**: `{'Yes' if cv_res['metrics']['is_center_focused'] else 'No'}` (71.9% of Mega-Hits use center spotlights)
+- **Hero Spotlight Vignetting**: `{'Yes' if is_cf else 'No'}` (71.9% of Mega-Hits use center spotlights)
 
-## 🛠️ Recommendations
+## 🛠️ Key Recommendations
 {chr(10).join(f"- {r}" for r in cv_res['recommendations'])}
+
+## 🎨 Ready-to-Use AI Art Fix Prompt
+```
+Please optimize this attached steam capsule artwork:
+
+1. Dynamic Contrast & Lighting:
+• {contrast_fix}
+
+2. Color Temperature & Steam UI Pop:
+• {warmth_fix}
+
+3. Title Typography & Readability:
+• Title text needs >= 4.5:1 WCAG AA contrast against background (add subtle dark drop shadow or scrim if needed).
+
+4. Compositional Hierarchy:
+• {focus_fix}
+
+5. Thumbnail Downscaling (120px Discovery Queue):
+• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue). But do not add a thumbnail to the image.
+
+Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Do not add stuff, this needs to be the final capsule art that can be uploaded.
+```
 
 👉 **Interactive Simulator & Palette Breakdown**: [{web_link}]({web_link})
 """
