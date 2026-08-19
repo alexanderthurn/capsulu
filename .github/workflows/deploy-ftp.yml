@@ -16,6 +16,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Determine Server Directory
+        id: set-dir
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "dir=/2025/capsulu/" >> $GITHUB_OUTPUT
+          else
+            echo "dir=/2025/capsulu-${{ github.ref_name }}/" >> $GITHUB_OUTPUT
+          fi
+
       - name: FTP Deploy Web App
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -23,7 +32,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: "./web/"
-          server-dir: "/${{ github.ref_name }}/"
+          server-dir: ${{ steps.set-dir.outputs.dir }}
           exclude: |
             export/**
             downloads/**
