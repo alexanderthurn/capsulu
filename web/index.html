@@ -800,28 +800,34 @@
 
             <!-- Empirical Research Charts Gallery -->
             <div class="benchmark-charts-section">
-                <div class="section-header-row" style="margin-bottom: 20px;">
+                <div class="section-header-row chart-mode-header-row" style="margin-bottom: 20px;">
                     <div>
                         <h3 class="benchmark-section-title">📊 Empirical Research Charts & Distributions</h3>
-                        <p class="benchmark-section-sub">Comprehensive visual evidence plotted from OpenCV batch
-                            processing across 28,754 Steam games.</p>
+                        <p class="benchmark-section-sub" id="benchmarkChartsSub">Comprehensive visual evidence plotted from OpenCV batch processing across 28,754 Steam games.</p>
                     </div>
-                    <span class="panel-badge">7 High-Res Statistical Visualizations</span>
+                    <div class="benchmark-charts-toggle-group">
+                        <button type="button" class="btn-chart-toggle active" id="btnChartsAll" data-mode="all">
+                            <span>🌐 All Steam Games</span>
+                        </button>
+                        <button type="button" class="btn-chart-toggle" id="btnChartsIndie" data-mode="indie">
+                            <span>🎯 Indie Zero-to-100 Funnel</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="benchmark-charts-grid">
                     <!-- Chart 1: Brightness & Contrast -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard1">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">01</span>
                             <div>
-                                <h4 class="chart-title">Dynamic Contrast & Luminance</h4>
-                                <span class="chart-metric-badge">+6.2 pts higher contrast in Mega-Hits</span>
+                                <h4 class="chart-title" id="chart1Title">Dynamic Contrast & Luminance</h4>
+                                <span class="chart-metric-badge" id="chart1Badge">+6.2 pts higher contrast in Mega-Hits</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/1_brightness_contrast.png"
+                        <div class="chart-img-wrapper" id="chart1Wrapper" data-chart-src="benchmark/1_brightness_contrast.png"
                             data-chart-title="Dynamic Contrast & Luminance Across 5 Sales Tiers">
-                            <img src="benchmark/1_brightness_contrast.png"
+                            <img id="chart1Img" src="benchmark/1_brightness_contrast.png"
                                 alt="Dynamic Contrast & Luminance Distribution Chart" loading="lazy"
                                 class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
@@ -829,7 +835,7 @@
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart1Footer">
                             <p><strong>The Contrast Cliff:</strong> Mega-hits score 63.0 contrast vs. 56.9 for flops.
                                 Successful games establish bright focal highlights against deep shadow vignetting,
                                 avoiding muddled midtone clustering.</p>
@@ -837,24 +843,24 @@
                     </div>
 
                     <!-- Chart 2: Palette & Saturation -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard2">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">02</span>
                             <div>
-                                <h4 class="chart-title">Color Palette Dynamics & Saliency</h4>
-                                <span class="chart-metric-badge">+10.9% more warm accents in Top Tier</span>
+                                <h4 class="chart-title" id="chart2Title">Color Palette Dynamics & Saliency</h4>
+                                <span class="chart-metric-badge" id="chart2Badge">+10.9% more warm accents in Top Tier</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/2_palette_and_saturation.png"
+                        <div class="chart-img-wrapper" id="chart2Wrapper" data-chart-src="benchmark/2_palette_and_saturation.png"
                             data-chart-title="Color Palette Distribution & Saliency on Steam UI">
-                            <img src="benchmark/2_palette_and_saturation.png" alt="Color Palette & Saturation Chart"
+                            <img id="chart2Img" src="benchmark/2_palette_and_saturation.png" alt="Color Palette & Saturation Chart"
                                 loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart2Footer">
                             <p><strong>Steam Dark Navy Contrast:</strong> 49.9% of mega-hits leverage warm palettes
                                 (gold, amber, crimson) that naturally pop against Steam's navy client theme (#1b2838).
                                 51.8% of flops blend in with drab neutral tones.</p>
@@ -862,24 +868,24 @@
                     </div>
 
                     <!-- Chart 3: Detail & Entropy -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard3">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">03</span>
                             <div>
-                                <h4 class="chart-title">Visual Detail & Shannon Entropy</h4>
-                                <span class="chart-metric-badge">+26.8% sharper line art & silhouettes</span>
+                                <h4 class="chart-title" id="chart3Title">Visual Detail & Shannon Entropy</h4>
+                                <span class="chart-metric-badge" id="chart3Badge">+26.8% sharper line art & silhouettes</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/3_detail_complexity.png"
+                        <div class="chart-img-wrapper" id="chart3Wrapper" data-chart-src="benchmark/3_detail_complexity.png"
                             data-chart-title="Visual Detail, Edge Density & Shannon Entropy">
-                            <img src="benchmark/3_detail_complexity.png" alt="Detail Complexity & Shannon Entropy Chart"
+                            <img id="chart3Img" src="benchmark/3_detail_complexity.png" alt="Detail Complexity & Shannon Entropy Chart"
                                 loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart3Footer">
                             <p><strong>Tonal Depth vs. Screenshot Noise:</strong> Mega-hits exhibit 6.99 bits of entropy
                                 and 14.2% edge density. Flop games suffer from muddy raw screenshots or unlit 3D models
                                 that blur into noise at 120px scale.</p>
@@ -887,24 +893,24 @@
                     </div>
 
                     <!-- Chart 4: Typography Readability -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard4">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">04</span>
                             <div>
-                                <h4 class="chart-title">Title Typography & Contrast</h4>
-                                <span class="chart-metric-badge">3.5:1 Average Text Contrast Ratio</span>
+                                <h4 class="chart-title" id="chart4Title">Title Typography & Contrast</h4>
+                                <span class="chart-metric-badge" id="chart4Badge">3.5:1 Average Text Contrast Ratio</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/4_text_readability.png"
+                        <div class="chart-img-wrapper" id="chart4Wrapper" data-chart-src="benchmark/4_text_readability.png"
                             data-chart-title="Title Typography Readability & Contrast Analysis">
-                            <img src="benchmark/4_text_readability.png" alt="Typography Readability Chart"
+                            <img id="chart4Img" src="benchmark/4_text_readability.png" alt="Typography Readability Chart"
                                 loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart4Footer">
                             <p><strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between
                                 title text and background art, ensuring title recognition even on mobile or compressed
                                 Steam Discovery queues.</p>
@@ -912,24 +918,24 @@
                     </div>
 
                     <!-- Chart 5: Title Positioning Heatmap -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard5">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">05</span>
                             <div>
-                                <h4 class="chart-title">Title Positioning Heatmap</h4>
-                                <span class="chart-metric-badge">Bottom-Center & Top-Center Standard</span>
+                                <h4 class="chart-title" id="chart5Title">Title Positioning Heatmap</h4>
+                                <span class="chart-metric-badge" id="chart5Badge">Bottom-Center & Top-Center Standard</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png"
+                        <div class="chart-img-wrapper" id="chart5Wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png"
                             data-chart-title="Title 3×3 Grid Positioning Heatmap">
-                            <img src="benchmark/5_title_positioning_heatmap.png" alt="Title Positioning Heatmap Chart"
+                            <img id="chart5Img" src="benchmark/5_title_positioning_heatmap.png" alt="Title Positioning Heatmap Chart"
                                 loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart5Footer">
                             <p><strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place title
                                 typography at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster
                                 text over the hero's face or dead-center.</p>
@@ -937,24 +943,24 @@
                     </div>
 
                     <!-- Chart 6: Composition & Lighting Focus -->
-                    <div class="benchmark-chart-card steam-panel">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard6">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">06</span>
                             <div>
-                                <h4 class="chart-title">Lighting Focus & Spotlight Vignette</h4>
-                                <span class="chart-metric-badge">71.9% Central Spotlight Focus in Hits</span>
+                                <h4 class="chart-title" id="chart6Title">Lighting Focus & Spotlight Vignette</h4>
+                                <span class="chart-metric-badge" id="chart6Badge">71.9% Central Spotlight Focus in Hits</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/6_composition_lighting.png"
+                        <div class="chart-img-wrapper" id="chart6Wrapper" data-chart-src="benchmark/6_composition_lighting.png"
                             data-chart-title="Composition & Central Spotlight Vignetting">
-                            <img src="benchmark/6_composition_lighting.png" alt="Composition & Lighting Chart"
+                            <img id="chart6Img" src="benchmark/6_composition_lighting.png" alt="Composition & Lighting Chart"
                                 loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart6Footer">
                             <p><strong>Anchoring Buyer Attention:</strong> 71.9% of top games concentrate lighting in
                                 the center/hero zone while applying subtle perimeter darkening to lock gaze during the
                                 critical 1-second browse glance.</p>
@@ -962,17 +968,17 @@
                     </div>
 
                     <!-- Chart 7: Genre Visual Profiles -->
-                    <div class="benchmark-chart-card steam-panel" style="grid-column: 1 / -1;">
+                    <div class="benchmark-chart-card steam-panel" id="chartCard7" style="grid-column: 1 / -1;">
                         <div class="chart-card-header">
                             <span class="chart-number-tag">07</span>
                             <div>
-                                <h4 class="chart-title">Genre-Specific Visual Signatures (23,641 Games)</h4>
-                                <span class="chart-metric-badge">Action vs. RPG vs. Strategy vs. Simulation</span>
+                                <h4 class="chart-title" id="chart7Title">Genre-Specific Visual Signatures (23,641 Games)</h4>
+                                <span class="chart-metric-badge" id="chart7Badge">Action vs. RPG vs. Strategy vs. Simulation</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/7_genre_visual_profiles.png"
+                        <div class="chart-img-wrapper" id="chart7Wrapper" data-chart-src="benchmark/7_genre_visual_profiles.png"
                             data-chart-title="Genre-Specific Visual Signatures & Profiles">
-                            <img src="benchmark/7_genre_visual_profiles.png" alt="Genre Visual Profiles Chart"
+                            <img id="chart7Img" src="benchmark/7_genre_visual_profiles.png" alt="Genre Visual Profiles Chart"
                                 loading="lazy" class="benchmark-chart-img"
                                 style="max-height: 420px; object-fit: contain;">
                             <div class="chart-zoom-overlay">
@@ -980,10 +986,10 @@
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
-                        <div class="chart-card-footer">
+                        <div class="chart-card-footer" id="chart7Footer">
                             <p><strong>Tailoring Art to Genre Conventions:</strong> RPG and Strategy games feature
                                 higher detail complexity and textural density, whereas Action and Arcade games
-                                prioritize high warm-accent punch and dramatic high-contrast lighting.</p>
+                                prioritize high-contrast warm silhouettes for instant impulse clicks.</p>
                         </div>
                     </div>
                 </div>

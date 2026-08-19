@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * Check and restore active tab from URL query param or hash on initial load
+ * Check and restore active tab & chart mode from URL query param or hash on initial load
  */
 function checkInitialTab() {
     const params = new URLSearchParams(window.location.search);
@@ -175,6 +175,12 @@ function checkInitialTab() {
     if (tabFromUrl && (tabFromUrl === 'benchmark' || tabFromUrl === 'ai')) {
         if (typeof window.setActiveTab === 'function') {
             window.setActiveTab(tabFromUrl, false);
+        }
+    }
+    const chartMode = params.get('chart_mode') || params.get('charts');
+    if (chartMode && (chartMode === 'all' || chartMode === 'indie')) {
+        if (typeof switchChartMode === 'function') {
+            switchChartMode(chartMode, false);
         }
     }
 }
@@ -342,6 +348,12 @@ function setupEventListeners() {
             if (src) openLightbox(src, title);
         });
     });
+
+    // Empirical Research Charts Gallery Toggle (All vs Indie Funnel)
+    const btnChartsAll = document.getElementById('btnChartsAll');
+    const btnChartsIndie = document.getElementById('btnChartsIndie');
+    if (btnChartsAll) btnChartsAll.addEventListener('click', () => switchChartMode('all', true));
+    if (btnChartsIndie) btnChartsIndie.addEventListener('click', () => switchChartMode('indie', true));
 
     // Genre Comparison Lens Switcher Listeners
     document.querySelectorAll('.genre-pill-btn').forEach(btn => {
@@ -1942,6 +1954,199 @@ function openSimulatorGame(appid, imageUrl, name, isUser) {
         if (heroBanner) heroBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
+
+const CHARTS_CONFIG = {
+    all: {
+        sub: "Comprehensive visual evidence plotted from OpenCV batch processing across 28,754 Steam games.",
+        charts: [
+            {
+                id: 1,
+                src: "benchmark/1_brightness_contrast.png",
+                title: "Dynamic Contrast & Luminance",
+                badge: "+6.2 pts higher contrast in Mega-Hits",
+                alt: "Dynamic Contrast & Luminance Distribution Chart",
+                modalTitle: "Dynamic Contrast & Luminance Across 5 Sales Tiers",
+                footer: "<strong>The Contrast Cliff:</strong> Mega-hits score 63.0 contrast vs. 56.9 for flops. Successful games establish bright focal highlights against deep shadow vignetting, avoiding muddled midtone clustering."
+            },
+            {
+                id: 2,
+                src: "benchmark/2_palette_and_saturation.png",
+                title: "Color Palette Dynamics & Saliency",
+                badge: "+10.9% more warm accents in Top Tier",
+                alt: "Color Palette & Saturation Chart",
+                modalTitle: "Color Palette Distribution & Saliency on Steam UI",
+                footer: "<strong>Steam Dark Navy Contrast:</strong> 49.9% of mega-hits leverage warm palettes (gold, amber, crimson) that naturally pop against Steam's navy client theme (#1b2838). 51.8% of flops blend in with drab neutral tones."
+            },
+            {
+                id: 3,
+                src: "benchmark/3_detail_complexity.png",
+                title: "Visual Detail & Shannon Entropy",
+                badge: "+26.8% sharper line art & silhouettes",
+                alt: "Detail Complexity & Shannon Entropy Chart",
+                modalTitle: "Visual Detail, Edge Density & Shannon Entropy",
+                footer: "<strong>Tonal Depth vs. Screenshot Noise:</strong> Mega-hits exhibit 6.99 bits of entropy and 14.2% edge density. Flop games suffer from muddy raw screenshots or unlit 3D models that blur into noise at 120px scale."
+            },
+            {
+                id: 4,
+                src: "benchmark/4_text_readability.png",
+                title: "Title Typography & Contrast",
+                badge: "3.5:1 Average Text Contrast Ratio",
+                alt: "Typography Readability Chart",
+                modalTitle: "Title Typography Readability & Contrast Analysis",
+                footer: "<strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between title text and background art, ensuring title recognition even on mobile or compressed Steam Discovery queues."
+            },
+            {
+                id: 5,
+                src: "benchmark/5_title_positioning_heatmap.png",
+                title: "Title Positioning Heatmap",
+                badge: "Bottom-Center & Top-Center Standard",
+                alt: "Title Positioning Heatmap Chart",
+                modalTitle: "Title 3×3 Grid Positioning Heatmap",
+                footer: "<strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place title typography at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster text over the hero's face or dead-center."
+            },
+            {
+                id: 6,
+                src: "benchmark/6_composition_lighting.png",
+                title: "Lighting Focus & Spotlight Vignette",
+                badge: "71.9% Central Spotlight Focus in Hits",
+                alt: "Composition & Lighting Chart",
+                modalTitle: "Composition & Central Spotlight Vignetting",
+                footer: "<strong>Anchoring Buyer Attention:</strong> 71.9% of top games concentrate lighting in the center/hero zone while applying subtle perimeter darkening to lock gaze during the critical 1-second browse glance."
+            },
+            {
+                id: 7,
+                src: "benchmark/7_genre_visual_profiles.png",
+                title: "Genre-Specific Visual Signatures (23,641 Games)",
+                badge: "Action vs. RPG vs. Strategy vs. Simulation",
+                alt: "Genre Visual Profiles Chart",
+                modalTitle: "Genre-Specific Visual Signatures & Profiles",
+                footer: "<strong>Tailoring Art to Genre Conventions:</strong> RPG and Strategy games feature higher detail complexity and textural density, whereas Action and Arcade games prioritize high-contrast warm silhouettes for instant impulse clicks."
+            }
+        ]
+    },
+    indie: {
+        sub: "Empirical comparison of 0-5 friend reviews vs. 6-10 milestone vs. 11-100 ignition vs. 100+ breakout indies.",
+        charts: [
+            {
+                id: 1,
+                src: "benchmark/indie_1_brightness_contrast.png",
+                title: "Dynamic Contrast in the Indie Funnel",
+                badge: "57.0 (Friend Zone) → 61.5+ (Breakouts)",
+                alt: "Indie Dynamic Contrast & Luminance Chart",
+                modalTitle: "Indie Funnel: Dynamic Contrast & Luminance Across 0 to 100+ Reviews",
+                footer: "<strong>The Zero-Review Trap:</strong> Games stuck with 0–5 friend reviews average only 57.0 dynamic contrast and 90.4 brightness (muddled midtones). Crossing into 11–100 reviews requires pushing specular highlights above 60.0."
+            },
+            {
+                id: 2,
+                src: "benchmark/indie_2_palette_and_saturation.png",
+                title: "Color Temperature in Indie Tiers",
+                badge: "61% of 0-5 Rev Games Camouflaged",
+                alt: "Indie Color Palette & Saturation Chart",
+                modalTitle: "Indie Funnel: Color Temperature & Saliency on Steam UI",
+                footer: "<strong>Escaping the Steam UI Camouflage:</strong> 61% of 0–5 review indie capsules use cool/neutral tones that blend into Steam's dark navy background. Breakout indies (100+) use 50% warm accent lighting to pop off the store page."
+            },
+            {
+                id: 3,
+                src: "benchmark/indie_3_detail_complexity.png",
+                title: "Edge Density & Silhouette Definition",
+                badge: "11.2% (Ghost) → 14.1% (100+ Reviews)",
+                alt: "Indie Detail Complexity & Edge Density Chart",
+                modalTitle: "Indie Funnel: Edge Density & Shannon Entropy",
+                footer: "<strong>120px Discovery Queue Silhouette:</strong> 0–5 review games have muddy, low-definition edges (11.2%) that turn into blurry mush when downscaled. Breakout games achieve 14.1% crisp edge definition."
+            },
+            {
+                id: 4,
+                src: "benchmark/indie_4_text_readability.png",
+                title: "Title Readability & WCAG AA Contrast",
+                badge: "38% of 0-5 Rev Games Fail WCAG",
+                alt: "Indie Typography & Readability Chart",
+                modalTitle: "Indie Funnel: Title Typography & Contrast Analysis",
+                footer: "<strong>Readability at a Glance:</strong> 38% of zero-review capsules fail WCAG 3:1 contrast, making titles unreadable against complex background art. Adding a subtle drop shadow or backdrop scrim instantly lifts CTR."
+            },
+            {
+                id: 5,
+                src: "benchmark/indie_5_title_positioning_heatmap.png",
+                title: "Title Positioning Heatmap (0-5 vs 11-100 vs 100+)",
+                badge: "Clean Top/Bottom Anchoring in Breakouts",
+                alt: "Indie Title Positioning Heatmap Chart",
+                modalTitle: "Indie Funnel: Title Positioning Heatmap Across Review Tiers",
+                footer: "<strong>Protecting the Hero Silhouette:</strong> Flop indies (1–5 reviews) often crowd titles in the center where character art lives. Breakout indies anchor logos at Bottom-Center or Top-Center, leaving hero silhouettes unobstructed."
+            },
+            {
+                id: 6,
+                src: "benchmark/indie_6_composition_lighting.png",
+                title: "Focal Lighting & Specular Ratio",
+                badge: "+10% Specular Highlight Area in Breakouts",
+                alt: "Indie Composition & Lighting Chart",
+                modalTitle: "Indie Funnel: Composition & Central Spotlight Vignetting",
+                footer: "<strong>Radial Spotlight Mastery:</strong> Games reaching 11–100+ reviews have 10% more bright highlight accents (>180) and apply 15% radial perimeter darkening to direct buyer eye-tracking directly to the focal point."
+            },
+            {
+                id: 7,
+                src: "benchmark/indie_7_genre_visual_profiles.png",
+                title: "Zero-to-100 Quality Metric Progression",
+                badge: "Relative Index: 0 → 100+ Review Milestones",
+                alt: "Indie Quality Metric Progression Chart",
+                modalTitle: "Indie Funnel: Zero-to-100 Quality Progression & Genre Distribution",
+                footer: "<strong>The Breakthrough Milestone Index:</strong> Every visual metric (Dynamic Contrast, Entropy, Edge Density, Luminance) shows a steady, correlated climb from 0 reviews to 100+ breakout indies across all major genres."
+            }
+        ]
+    }
+};
+
+let currentChartMode = 'all';
+
+/**
+ * Switch between All Steam Games (Macro) and Indie Zero-to-100 Funnel charts
+ */
+function switchChartMode(mode, updateUrl = false) {
+    if (!CHARTS_CONFIG[mode]) return;
+    currentChartMode = mode;
+
+    const config = CHARTS_CONFIG[mode];
+
+    const subElem = document.getElementById('benchmarkChartsSub');
+    if (subElem) subElem.textContent = config.sub;
+
+    const btnAll = document.getElementById('btnChartsAll');
+    const btnIndie = document.getElementById('btnChartsIndie');
+    if (btnAll) btnAll.classList.toggle('active', mode === 'all');
+    if (btnIndie) btnIndie.classList.toggle('active', mode === 'indie');
+
+    config.charts.forEach(c => {
+        const titleElem = document.getElementById(`chart${c.id}Title`);
+        const badgeElem = document.getElementById(`chart${c.id}Badge`);
+        const wrapperElem = document.getElementById(`chart${c.id}Wrapper`);
+        const imgElem = document.getElementById(`chart${c.id}Img`);
+        const footerElem = document.getElementById(`chart${c.id}Footer`);
+
+        if (titleElem) titleElem.textContent = c.title;
+        if (badgeElem) badgeElem.textContent = c.badge;
+        if (wrapperElem) {
+            wrapperElem.setAttribute('data-chart-src', c.src);
+            wrapperElem.setAttribute('data-chart-title', c.modalTitle);
+        }
+        if (imgElem) {
+            imgElem.src = c.src;
+            imgElem.alt = c.alt;
+        }
+        if (footerElem) footerElem.innerHTML = `<p>${c.footer}</p>`;
+    });
+
+    if (updateUrl) {
+        const url = new URL(window.location);
+        if (mode === 'all') {
+            url.searchParams.delete('chart_mode');
+            url.searchParams.delete('charts');
+        } else {
+            url.searchParams.set('chart_mode', mode);
+        }
+        window.history.replaceState({}, '', url.toString());
+    }
+}
+
+// Expose switchChartMode globally
+window.switchChartMode = switchChartMode;
 
 /**
  * Render 5x5 Top 25 Highest Rated and Lowest 25 Flop Capsules
