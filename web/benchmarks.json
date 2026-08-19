@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T10:07:52.852342",
+  "generated_at": "2026-08-19T11:59:12.488260",
   "overall": {
     "total_games_analyzed": 28754,
     "contrast_p90": 78.4,
@@ -171,8 +171,235 @@
       "light_ratio": 17.3
     }
   },
+  "genres": {
+    "Action": {
+      "name": "Action / Shooter / Hack & Slash",
+      "count": 10448,
+      "tip": "High dynamic lighting and warm rim-lighting are critical to pop against fast-paced Steam browse feeds.",
+      "contrast": {
+        "mean": 60.85,
+        "median": 61.3,
+        "top_tier_mean": 63.24
+      },
+      "brightness": {
+        "mean": 91.87,
+        "median": 86.9
+      },
+      "saturation": {
+        "mean": 114.54,
+        "median": 114.35
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.11,
+        "top_tier_mean": 6.98
+      },
+      "edge_density": {
+        "mean": 12.97,
+        "median": 12.72,
+        "top_tier_mean": 14.16
+      },
+      "warm_palette_pct": 42.9,
+      "neutral_palette_pct": 50.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 72.8
+    },
+    "Adventure": {
+      "name": "Adventure / Narrative / Exploration",
+      "count": 10291,
+      "tip": "Atmospheric lighting with high tonal entropy and clear environmental depth performs best.",
+      "contrast": {
+        "mean": 59.92,
+        "median": 60.2,
+        "top_tier_mean": 61.95
+      },
+      "brightness": {
+        "mean": 94.99,
+        "median": 88.8
+      },
+      "saturation": {
+        "mean": 110.08,
+        "median": 109.8
+      },
+      "entropy": {
+        "mean": 6.71,
+        "median": 7.11,
+        "top_tier_mean": 6.94
+      },
+      "edge_density": {
+        "mean": 13.08,
+        "median": 12.75,
+        "top_tier_mean": 13.92
+      },
+      "warm_palette_pct": 44.4,
+      "neutral_palette_pct": 48.4,
+      "cool_palette_pct": 7.3,
+      "center_focus_pct": 73.3
+    },
+    "RPG": {
+      "name": "RPG / CRPG / Roguelike RPG",
+      "count": 5590,
+      "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding.",
+      "contrast": {
+        "mean": 60.7,
+        "median": 60.7,
+        "top_tier_mean": 62.4
+      },
+      "brightness": {
+        "mean": 99.87,
+        "median": 94.6
+      },
+      "saturation": {
+        "mean": 108.13,
+        "median": 106.8
+      },
+      "entropy": {
+        "mean": 6.91,
+        "median": 7.26,
+        "top_tier_mean": 7.08
+      },
+      "edge_density": {
+        "mean": 14.56,
+        "median": 14.44,
+        "top_tier_mean": 15.38
+      },
+      "warm_palette_pct": 48.9,
+      "neutral_palette_pct": 45.4,
+      "cool_palette_pct": 5.7,
+      "center_focus_pct": 70.8
+    },
+    "Strategy": {
+      "name": "Strategy / Tactics / Deckbuilder",
+      "count": 5529,
+      "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.4,
+        "top_tier_mean": 61.91
+      },
+      "brightness": {
+        "mean": 99.88,
+        "median": 95.6
+      },
+      "saturation": {
+        "mean": 111.4,
+        "median": 110.2
+      },
+      "entropy": {
+        "mean": 6.88,
+        "median": 7.26,
+        "top_tier_mean": 7.12
+      },
+      "edge_density": {
+        "mean": 14.22,
+        "median": 13.94,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 42.2,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 70.7
+    },
+    "Simulation": {
+      "name": "Simulation / Management / Sandbox",
+      "count": 4921,
+      "tip": "Balanced, inviting color temperatures with crisp line art and clear theme cues.",
+      "contrast": {
+        "mean": 61.51,
+        "median": 61.7,
+        "top_tier_mean": 62.91
+      },
+      "brightness": {
+        "mean": 104.62,
+        "median": 102.1
+      },
+      "saturation": {
+        "mean": 107.97,
+        "median": 105.7
+      },
+      "entropy": {
+        "mean": 6.91,
+        "median": 7.28,
+        "top_tier_mean": 7.09
+      },
+      "edge_density": {
+        "mean": 13.95,
+        "median": 13.68,
+        "top_tier_mean": 14.62
+      },
+      "warm_palette_pct": 52.0,
+      "neutral_palette_pct": 40.6,
+      "cool_palette_pct": 7.4,
+      "center_focus_pct": 69.8
+    },
+    "Casual": {
+      "name": "Casual / Puzzle / Cozy",
+      "count": 7431,
+      "tip": "Vibrant, cheerful color palettes with higher average brightness and clean geometric shapes.",
+      "contrast": {
+        "mean": 59.71,
+        "median": 59.9,
+        "top_tier_mean": 61.45
+      },
+      "brightness": {
+        "mean": 109.15,
+        "median": 106.7
+      },
+      "saturation": {
+        "mean": 112.7,
+        "median": 113.1
+      },
+      "entropy": {
+        "mean": 6.64,
+        "median": 7.13,
+        "top_tier_mean": 6.88
+      },
+      "edge_density": {
+        "mean": 12.9,
+        "median": 12.54,
+        "top_tier_mean": 13.68
+      },
+      "warm_palette_pct": 51.1,
+      "neutral_palette_pct": 39.0,
+      "cool_palette_pct": 9.9,
+      "center_focus_pct": 68.7
+    },
+    "Indie": {
+      "name": "Indie Highlights",
+      "count": 15658,
+      "tip": "Distinct stylized visual identity with strong hero focus to stand out from AAA realism.",
+      "contrast": {
+        "mean": 59.72,
+        "median": 60.1,
+        "top_tier_mean": 61.65
+      },
+      "brightness": {
+        "mean": 96.23,
+        "median": 90.1
+      },
+      "saturation": {
+        "mean": 112.15,
+        "median": 112.0
+      },
+      "entropy": {
+        "mean": 6.58,
+        "median": 7.03,
+        "top_tier_mean": 6.84
+      },
+      "edge_density": {
+        "mean": 12.54,
+        "median": 12.11,
+        "top_tier_mean": 13.49
+      },
+      "warm_palette_pct": 44.2,
+      "neutral_palette_pct": 47.8,
+      "cool_palette_pct": 8.0,
+      "center_focus_pct": 72.4
+    }
+  },
   "presets": [
     {
+      "id": "diception",
       "name": "DICEPTION",
       "appid": 4429000,
       "tier": "custom",
@@ -185,12 +412,13 @@
       ]
     },
     {
+      "id": "melodan",
       "name": "Melodan",
       "appid": 4987230,
       "tier": "custom",
       "tier_label": "\u2694\ufe0f Melodan",
       "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
-      "price": "Free",
+      "price": "Coming Soon",
       "tags": [
         "Action",
         "Indie",
@@ -227,6 +455,20 @@
       ]
     },
     {
+      "id": "balatro",
+      "name": "Balatro",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>80k reviews)",
+      "appid": 2379780,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+      "price": "$14.99",
+      "tags": [
+        "Roguelike Deckbuilder",
+        "Strategy",
+        "Indie"
+      ]
+    },
+    {
       "id": "stardew",
       "name": "Stardew Valley",
       "tier": "mega_hit",
@@ -236,9 +478,9 @@
       "price": "$14.99",
       "tags": [
         "Farming Sim",
+        "Simulation",
         "Pixel Graphics",
-        "Co-op",
-        "Relaxing"
+        "Co-op"
       ]
     },
     {
@@ -257,6 +499,21 @@
       ]
     },
     {
+      "id": "hollow_knight",
+      "name": "Hollow Knight",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>350k reviews)",
+      "appid": 367520,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+      "price": "$14.99",
+      "tags": [
+        "Metroidvania",
+        "Adventure",
+        "Souls-like",
+        "2D"
+      ]
+    },
+    {
       "id": "sample_modest",
       "name": "Ironcast",
       "tier": "moderate",
@@ -267,7 +524,7 @@
       "tags": [
         "Match 3",
         "Steampunk",
-        "Turn-Based Strategy"
+        "Strategy"
       ]
     },
     {
@@ -284,5 +541,301 @@
         "Indie"
       ]
     }
-  ]
+  ],
+  "genre_competitors": {
+    "Action": [
+      {
+        "name": "Hades",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+        "appid": 1145360
+      },
+      {
+        "name": "Dead Cells",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg",
+        "appid": 588650
+      },
+      {
+        "name": "ULTRAKILL",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1229490/header.jpg",
+        "appid": 1229490
+      },
+      {
+        "name": "DOOM Eternal",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/782330/header.jpg",
+        "appid": 782330
+      },
+      {
+        "name": "Monster Hunter: World",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/582010/header.jpg",
+        "appid": 582010
+      },
+      {
+        "name": "Risk of Rain 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/632360/header.jpg",
+        "appid": 632360
+      },
+      {
+        "name": "Vampire Survivors",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1794680/header.jpg",
+        "appid": 1794680
+      },
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      }
+    ],
+    "RPG": [
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "Baldur's Gate 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
+        "appid": 1086940
+      },
+      {
+        "name": "The Witcher 3: Wild Hunt",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg",
+        "appid": 292030
+      },
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      },
+      {
+        "name": "Persona 5 Royal",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1687950/header.jpg",
+        "appid": 1687950
+      },
+      {
+        "name": "Divinity: Original Sin 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/435150/header.jpg",
+        "appid": 435150
+      },
+      {
+        "name": "Dark Souls III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg",
+        "appid": 374320
+      },
+      {
+        "name": "Skyrim Special Edition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg",
+        "appid": 489830
+      }
+    ],
+    "Strategy": [
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Slay the Spire",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/646570/header.jpg",
+        "appid": 646570
+      },
+      {
+        "name": "Sid Meier's Civilization VI",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/289070/header.jpg",
+        "appid": 289070
+      },
+      {
+        "name": "Stellaris",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/281990/header.jpg",
+        "appid": 281990
+      },
+      {
+        "name": "Manor Lords",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1363080/header.jpg",
+        "appid": 1363080
+      },
+      {
+        "name": "Against the Storm",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1336490/header.jpg",
+        "appid": 1336490
+      },
+      {
+        "name": "Hearts of Iron IV",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/394360/header.jpg",
+        "appid": 394360
+      },
+      {
+        "name": "DICEPTION",
+        "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
+        "appid": 4429000
+      }
+    ],
+    "Adventure": [
+      {
+        "name": "Hollow Knight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+        "appid": 367520
+      },
+      {
+        "name": "Outer Wilds",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/753640/header.jpg",
+        "appid": 753640
+      },
+      {
+        "name": "Stray",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1332010/header.jpg",
+        "appid": 1332010
+      },
+      {
+        "name": "Subnautica",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/264710/header.jpg",
+        "appid": 264710
+      },
+      {
+        "name": "TUNIC",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/553420/header.jpg",
+        "appid": 553420
+      },
+      {
+        "name": "Ori and the Will of the Wisps",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1057090/header.jpg",
+        "appid": 1057090
+      },
+      {
+        "name": "Terraria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
+        "appid": 105600
+      },
+      {
+        "name": "Sea of Thieves",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1172620/header.jpg",
+        "appid": 1172620
+      }
+    ],
+    "Simulation": [
+      {
+        "name": "Stardew Valley",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+        "appid": 413150
+      },
+      {
+        "name": "RimWorld",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/294100/header.jpg",
+        "appid": 294100
+      },
+      {
+        "name": "Cities: Skylines",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/255710/header.jpg",
+        "appid": 255710
+      },
+      {
+        "name": "Euro Truck Simulator 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/227300/header.jpg",
+        "appid": 227300
+      },
+      {
+        "name": "Slime Rancher",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/433340/header.jpg",
+        "appid": 433340
+      },
+      {
+        "name": "Planet Coaster",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/493340/header.jpg",
+        "appid": 493340
+      },
+      {
+        "name": "Factorio",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/427520/header.jpg",
+        "appid": 427520
+      },
+      {
+        "name": "House Flipper",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/613100/header.jpg",
+        "appid": 613100
+      }
+    ],
+    "Casual": [
+      {
+        "name": "Dorfromantik",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1455840/header.jpg",
+        "appid": 1455840
+      },
+      {
+        "name": "Unpacking",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1058650/header.jpg",
+        "appid": 1058650
+      },
+      {
+        "name": "A Short Hike",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1055540/header.jpg",
+        "appid": 1055540
+      },
+      {
+        "name": "Peglin",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1296610/header.jpg",
+        "appid": 1296610
+      },
+      {
+        "name": "Townscaper",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1291340/header.jpg",
+        "appid": 1291340
+      },
+      {
+        "name": "Donut County",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/702670/header.jpg",
+        "appid": 702670
+      },
+      {
+        "name": "Untitled Goose Game",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/837470/header.jpg",
+        "appid": 837470
+      },
+      {
+        "name": "Sticky Business",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2303350/header.jpg",
+        "appid": 2303350
+      }
+    ],
+    "Indie": [
+      {
+        "name": "Hollow Knight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+        "appid": 367520
+      },
+      {
+        "name": "Hades",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+        "appid": 1145360
+      },
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Celeste",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/504230/header.jpg",
+        "appid": 504230
+      },
+      {
+        "name": "Undertale",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/391540/header.jpg",
+        "appid": 391540
+      },
+      {
+        "name": "Dead Cells",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg",
+        "appid": 588650
+      },
+      {
+        "name": "Vampire Survivors",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1794680/header.jpg",
+        "appid": 1794680
+      },
+      {
+        "name": "Terraria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
+        "appid": 105600
+      }
+    ]
+  }
 }

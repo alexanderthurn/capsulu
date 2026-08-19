@@ -267,7 +267,19 @@
                                     <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')" type="button">Large</button>
                                 </div>
                             </div>
-                            <span class="panel-badge">Storefront Simulator</span>
+                            <div class="panel-header-right-controls">
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Change competitor lineup genre">
+                                    <option value="auto">🎯 Competitors (Auto)</option>
+                                    <option value="all">🌐 All Steam Games</option>
+                                    <option value="Action">⚔️ Action / Shooter</option>
+                                    <option value="RPG">🛡️ RPG / Dark Fantasy</option>
+                                    <option value="Strategy">♟️ Strategy / Tactics</option>
+                                    <option value="Adventure">🗺️ Adventure / Platformer</option>
+                                    <option value="Simulation">🚜 Simulation / Sandbox</option>
+                                    <option value="Casual">☕ Casual / Cozy</option>
+                                    <option value="Indie">✨ Indie Hits</option>
+                                </select>
+                            </div>
                         </div>
 
                         <p class="sim-explainer">See how your artwork compares against competitors in crowded Steam discovery queues.</p>
@@ -291,7 +303,19 @@
                     <section class="steam-panel recs-panel" id="recsPanel">
                         <div class="panel-header">
                             <h3>🛠️ Design Recommendations</h3>
-                            <span class="panel-badge">Action Items</span>
+                            <div class="panel-header-right-controls">
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Change recommendations target genre">
+                                    <option value="auto">🎯 Target Genre (Auto)</option>
+                                    <option value="all">🌐 All Steam Games</option>
+                                    <option value="Action">⚔️ Action</option>
+                                    <option value="RPG">🛡️ RPG</option>
+                                    <option value="Strategy">♟️ Strategy</option>
+                                    <option value="Adventure">🗺️ Adventure</option>
+                                    <option value="Simulation">🚜 Simulation</option>
+                                    <option value="Casual">☕ Casual</option>
+                                    <option value="Indie">✨ Indie</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="checklist-grid" id="checklistContainer">
                             <!-- Injected via JS -->
@@ -300,11 +324,78 @@
 
                 </div>
 
+                <!-- 4. DEDICATED UNIFIED GENRE BENCHMARK & LENS PANEL (Directly After Design Recommendations) -->
+                <section class="steam-panel genre-benchmark-card" id="genreBenchmarkCard" style="margin-top: 20px; display: block;">
+                    <div class="panel-header">
+                        <div class="genre-card-header-left">
+                            <span class="genre-card-icon" id="genreCardIcon">🎯</span>
+                            <div>
+                                <h3 id="genreCardTitle">Genre Market Benchmark</h3>
+                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing your capsule directly against competitors in its specific genre.</p>
+                            </div>
+                        </div>
+                        <div class="panel-header-right-controls">
+                            <select id="genreSelectDropdown" class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select target genre benchmark">
+                                <option value="auto">🎯 Target Genre (Auto)</option>
+                                <option value="all">🌐 All Steam Games</option>
+                                <option value="Action">⚔️ Action</option>
+                                <option value="RPG">🛡️ RPG</option>
+                                <option value="Strategy">♟️ Strategy</option>
+                                <option value="Adventure">🗺️ Adventure</option>
+                                <option value="Simulation">🚜 Simulation</option>
+                                <option value="Casual">☕ Casual</option>
+                                <option value="Indie">✨ Indie</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 4-Stat Metric Grid -->
+                    <div class="genre-metrics-grid">
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Genre Contrast Median</span>
+                            <span class="genre-stat-val" id="genreMedContrast">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaContrast">vs Your: --</span>
+                        </div>
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Warm Saliency Share</span>
+                            <span class="genre-stat-val" id="genreWarmShare">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaWarm">vs Your: --</span>
+                        </div>
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Genre Tonal Entropy</span>
+                            <span class="genre-stat-val" id="genreEntropy">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaEntropy">vs Your: --</span>
+                        </div>
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Edge Line Density</span>
+                            <span class="genre-stat-val" id="genreEdgeDensity">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaEdge">vs Your: --</span>
+                        </div>
+                    </div>
+
+                    <div class="genre-recommendation-box" id="genreRecommendationBox">
+                        <span class="rec-icon">💡</span>
+                        <p id="genreRecommendationText">Select a genre lens above or analyze a Steam game to see tailored market recommendations.</p>
+                    </div>
+                </section>
+
                 <!-- 4. FULL-WIDTH STATISTICAL METRIC BREAKDOWN VS 28,754 GAMES -->
                 <section class="steam-panel metrics-full-panel" style="margin-top: 20px;">
                     <div class="panel-header">
                         <h3>📊 Metric Breakdown vs. 28,754 Games</h3>
-                        <span class="panel-badge">Statistical Benchmark</span>
+                        <div class="panel-header-right-controls">
+                            <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select benchmark metric lens">
+                                <option value="auto">🎯 Target Genre (Auto)</option>
+                                <option value="all">🌐 All Steam Games (28,754)</option>
+                                <option value="Action">⚔️ Action (10,425)</option>
+                                <option value="RPG">🛡️ RPG (633)</option>
+                                <option value="Strategy">♟️ Strategy (531)</option>
+                                <option value="Adventure">🗺️ Adventure (5,479)</option>
+                                <option value="Simulation">🚜 Simulation (684)</option>
+                                <option value="Casual">☕ Casual (2,870)</option>
+                                <option value="Indie">✨ Indie (2,261)</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="metrics-stack">

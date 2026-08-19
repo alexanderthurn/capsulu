@@ -255,6 +255,47 @@ body {
     transform: translateY(-1px);
 }
 
+.select-steam-genre {
+    background: #1e3345;
+    border: 1px solid rgba(102, 192, 244, 0.4);
+    color: #c7d5e0;
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    transition: var(--transition);
+}
+
+.select-steam-genre:hover, .select-steam-genre:focus {
+    border-color: var(--steam-cyan);
+    color: #ffffff;
+    background: #254057;
+}
+
+.select-steam-genre option {
+    background: #171a21;
+    color: #ffffff;
+}
+
+.select-genre-compact {
+    padding: 3px 8px;
+    font-size: 0.76rem;
+    height: 26px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(103, 193, 245, 0.3);
+    color: #c7d5e0;
+}
+
+.select-genre-compact:hover, .select-genre-compact:focus {
+    border-color: var(--steam-cyan);
+    background: #254057;
+    color: #ffffff;
+}
+
 /* Row 1: Comma Separated Sample Games */
 .sample-links-row {
     display: flex;
@@ -580,6 +621,12 @@ body {
     padding: 2px 8px;
     border-radius: 2px;
     font-weight: 600;
+}
+
+.panel-header-right-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .sim-section {
@@ -1518,6 +1565,177 @@ body {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Genre Comparison Lens Switcher & Dedicated Genre Card
+   ========================================================================== */
+
+.genre-lens-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0 16px 0;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(103, 193, 245, 0.15);
+    border-radius: 4px;
+    flex-wrap: wrap;
+}
+
+.genre-lens-left-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.genre-lens-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #8f98a0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+}
+
+.genre-lens-pills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.genre-pill-btn {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(103, 193, 245, 0.2);
+    color: #9cb1c2;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.genre-pill-btn:hover {
+    background: rgba(103, 193, 245, 0.15);
+    border-color: rgba(103, 193, 245, 0.4);
+    color: #ffffff;
+}
+
+.genre-pill-btn.active {
+    background: linear-gradient(90deg, #1b5380 0%, #153856 100%);
+    border-color: var(--steam-cyan);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(103, 193, 245, 0.3);
+}
+
+/* Dedicated Genre Benchmark Card */
+.genre-benchmark-card {
+    background: linear-gradient(135deg, rgba(27, 40, 56, 0.85) 0%, rgba(18, 28, 40, 0.95) 100%);
+    border: 1px solid rgba(103, 193, 245, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.genre-card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.genre-card-icon {
+    font-size: 1.5rem;
+}
+
+.genre-card-subtitle {
+    font-size: 0.8rem;
+    color: #8f98a0;
+    margin-top: 2px;
+}
+
+.badge-genre-accent {
+    background: rgba(103, 193, 245, 0.15);
+    color: var(--steam-cyan);
+    border: 1px solid rgba(103, 193, 245, 0.3);
+}
+
+.genre-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.genre-stat-box {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.genre-stat-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8f98a0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+}
+
+.genre-stat-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: var(--font-heading);
+}
+
+.genre-stat-delta {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.delta-pos {
+    color: #a4d007;
+}
+
+.delta-neg {
+    color: #e74c3c;
+}
+
+.delta-neutral {
+    color: #67c1f5;
+}
+
+.genre-recommendation-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(103, 193, 245, 0.08);
+    border-left: 3px solid var(--steam-cyan);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    color: #c7d5e0;
+    line-height: 1.45;
+}
+
+.genre-recommendation-box .rec-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+@media (max-width: 800px) {
+    .genre-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {

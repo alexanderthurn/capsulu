@@ -114,12 +114,22 @@ const CANVAS_WIDTH = 460;
 const CANVAS_HEIGHT = 215;
 const RECENT_STORAGE_KEY = 'steam_capsulu_recents_v4';
 
+// Active analysis evaluation state
+let currentGenreLens = 'all';
+let currentCvResult = null;
+let currentScores = null;
+let currentLoadedImgSrc = null;
+let currentLoadedGameName = null;
+let currentLoadedAppId = null;
+let currentLoadedTags = [];
+
 // DOM Elements
 const dropZoneArea = document.getElementById('dropZoneArea');
 const fileInput = document.getElementById('fileInput');
 const browseBtn = document.getElementById('browseBtn');
 const steamUrlInput = document.getElementById('steamUrlInput');
 const fetchUrlBtn = document.getElementById('fetchUrlBtn');
+const genreSelectDropdown = document.getElementById('genreSelectDropdown');
 const recentListContainer = document.getElementById('recentListContainer');
 const loadingBar = document.getElementById('loadingBar');
 const resultsDashboard = document.getElementById('resultsDashboard');
@@ -286,6 +296,27 @@ function setupEventListeners() {
             const src = wrapper.getAttribute('data-chart-src');
             const title = wrapper.getAttribute('data-chart-title');
             if (src) openLightbox(src, title);
+        });
+    });
+
+    // Genre Comparison Lens Switcher Listeners
+    document.querySelectorAll('.genre-pill-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const selectedGenre = btn.getAttribute('data-genre') || 'all';
+            switchGenreLens(selectedGenre);
+        });
+    });
+
+    // Synchronized Genre Dropdowns Listeners across all panels
+    document.querySelectorAll('.genre-sync-dropdown').forEach(dropdown => {
+        dropdown.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === 'auto') {
+                const autoGenre = detectGenreFromTags(currentLoadedTags) || 'all';
+                switchGenreLens(autoGenre);
+            } else {
+                switchGenreLens(val);
+            }
         });
     });
 
@@ -1022,30 +1053,195 @@ function evaluateScores(cv) {
 }
 
 /**
- * Render In-Situ Competition Simulator (Symmetrical 3x3 Layout with User in Exact Center Position 5)
+ * Genre Detection Helper
  */
-function renderSimulatorLineups(userImgSrc, userGameName, appid) {
+function detectGenreFromTags(tags) {
+    if (!tags || tags.length === 0) return null;
+    const tagStr = tags.join(" ").toLowerCase();
+
+    if (tagStr.includes("action") || tagStr.includes("shooter") || tagStr.includes("hack and slash") || tagStr.includes("fps") || tagStr.includes("fighting")) {
+        return "Action";
+    }
+    if (tagStr.includes("rpg") || tagStr.includes("role-playing") || tagStr.includes("souls-like") || tagStr.includes("dark fantasy")) {
+        return "RPG";
+    }
+    if (tagStr.includes("strategy") || tagStr.includes("tactics") || tagStr.includes("deckbuilder") || tagStr.includes("rts") || tagStr.includes("turn-based")) {
+        return "Strategy";
+    }
+    if (tagStr.includes("adventure") || tagStr.includes("metroidvania") || tagStr.includes("exploration") || tagStr.includes("platformer")) {
+        return "Adventure";
+    }
+    if (tagStr.includes("simulation") || tagStr.includes("management") || tagStr.includes("sandbox") || tagStr.includes("building") || tagStr.includes("farming")) {
+        return "Simulation";
+    }
+    if (tagStr.includes("casual") || tagStr.includes("puzzle") || tagStr.includes("cozy") || tagStr.includes("party")) {
+        return "Casual";
+    }
+    if (tagStr.includes("indie")) {
+        return "Indie";
+    }
+    return null;
+}
+
+/**
+ * Switch Active Benchmark Comparison Lens (All Steam Games vs Genre Specific)
+ */
+function switchGenreLens(genreKey) {
+    currentGenreLens = genreKey || 'all';
+
+    // Update pill buttons active state
+    document.querySelectorAll('.genre-pill-btn').forEach(btn => {
+        const g = btn.getAttribute('data-genre') || 'all';
+        if (g.toLowerCase() === currentGenreLens.toLowerCase()) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+
+    // Update all dropdowns across panels
+    document.querySelectorAll('.genre-sync-dropdown').forEach(dropdown => {
+        dropdown.value = currentGenreLens === 'all' ? 'all' : currentGenreLens;
+    });
+
+    if (typeof currentCvResult !== 'undefined' && currentCvResult) {
+        updateGenreBenchmarkDisplay(currentCvResult, currentGenreLens);
+        renderSimulatorLineups(currentLoadedImgSrc, currentLoadedGameName, currentLoadedAppId, currentGenreLens);
+        generateChecklist(currentCvResult, currentScores, currentGenreLens);
+    }
+}
+
+/**
+ * Update Dedicated Genre Benchmark Intelligence Card
+ */
+function updateGenreBenchmarkDisplay(cv, genreKey) {
+    const card = document.getElementById('genreBenchmarkCard');
+    if (!card) return;
+
+    let targetGenre = genreKey;
+    if (!targetGenre || targetGenre === 'all') {
+        targetGenre = detectGenreFromTags(currentLoadedTags) || 'Action';
+    }
+
+    if (typeof benchmarksData === 'undefined' || !benchmarksData.genres || !benchmarksData.genres[targetGenre]) {
+        card.style.display = 'none';
+        return;
+    }
+
+    const gData = benchmarksData.genres[targetGenre];
+    const genreIcons = {
+        "Action": "⚔️",
+        "RPG": "🛡️",
+        "Strategy": "♟️",
+        "Adventure": "🗺️",
+        "Simulation": "🚜",
+        "Casual": "☕",
+        "Indie": "✨"
+    };
+
+    const icon = genreIcons[targetGenre] || "🎯";
+
+    const iconElem = document.getElementById('genreCardIcon');
+    if (iconElem) iconElem.textContent = icon;
+
+    const titleElem = document.getElementById('genreCardTitle');
+    if (titleElem) titleElem.textContent = `${icon} ${targetGenre} Genre Market Benchmark`;
+
+    const subtitleElem = document.getElementById('genreCardSubtitle');
+    if (subtitleElem) subtitleElem.textContent = `Empirical baseline derived from ${gData.count.toLocaleString()} verified ${targetGenre} games on Steam`;
+
+    const matchBadge = document.getElementById('genreMatchBadge');
+    if (matchBadge) matchBadge.textContent = `${targetGenre} Lens Active`;
+
+    // 1. Contrast
+    const genreContrast = gData.contrast.median;
+    const diffContrast = round(cv.brightnessStd - genreContrast, 1);
+    const medContrastElem = document.getElementById('genreMedContrast');
+    if (medContrastElem) medContrastElem.textContent = `${genreContrast} std dev`;
+    const deltaContrastElem = document.getElementById('genreDeltaContrast');
+    if (deltaContrastElem) {
+        deltaContrastElem.textContent = `Your: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
+        deltaContrastElem.className = `genre-stat-delta ${diffContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
+    }
+
+    // 2. Warmth
+    const genreWarm = gData.warm_palette_pct;
+    const diffWarm = round(cv.warmPct - genreWarm, 1);
+    const warmShareElem = document.getElementById('genreWarmShare');
+    if (warmShareElem) warmShareElem.textContent = `${genreWarm}% Warm`;
+    const deltaWarmElem = document.getElementById('genreDeltaWarm');
+    if (deltaWarmElem) {
+        deltaWarmElem.textContent = `Your: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs genre)`;
+        deltaWarmElem.className = `genre-stat-delta ${diffWarm >= 0 ? 'delta-pos' : 'delta-neutral'}`;
+    }
+
+    // 3. Entropy
+    const genreEntropy = gData.entropy.median;
+    const diffEntropy = round(cv.entropy - genreEntropy, 2);
+    const entropyElem = document.getElementById('genreEntropy');
+    if (entropyElem) entropyElem.textContent = `${genreEntropy} bits`;
+    const deltaEntropyElem = document.getElementById('genreDeltaEntropy');
+    if (deltaEntropyElem) {
+        deltaEntropyElem.textContent = `Your: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
+        deltaEntropyElem.className = `genre-stat-delta ${diffEntropy >= 0 ? 'delta-pos' : 'delta-neg'}`;
+    }
+
+    // 4. Edge Density
+    const genreEdge = gData.edge_density.median;
+    const diffEdge = round(cv.edgeDensity - genreEdge, 1);
+    const edgeElem = document.getElementById('genreEdgeDensity');
+    if (edgeElem) edgeElem.textContent = `${genreEdge}% Edge`;
+    const deltaEdgeElem = document.getElementById('genreDeltaEdge');
+    if (deltaEdgeElem) {
+        deltaEdgeElem.textContent = `Your: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
+        deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
+    }
+
+    // Tailored Recommendation Tip
+    const recElem = document.getElementById('genreRecommendationText');
+    if (recElem) recElem.innerHTML = `<strong>Tailored ${targetGenre} Advice:</strong> ${gData.tip}`;
+
+    card.style.display = 'block';
+}
+
+/**
+ * Render In-Situ Competition Simulator (Contextual Genre Lineup with User in Center Position)
+ */
+function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all') {
+    let catalog = typeof STORE_CATALOG !== 'undefined' ? STORE_CATALOG : [];
+
+    // Pick contextual genre competitors if available
+    let targetGenre = genreKey;
+    if (targetGenre === 'all') {
+        targetGenre = detectGenreFromTags(currentLoadedTags) || 'all';
+    }
+
+    if (typeof benchmarksData !== 'undefined' && benchmarksData.genre_competitors && benchmarksData.genre_competitors[targetGenre]) {
+        catalog = benchmarksData.genre_competitors[targetGenre];
+    }
+
     // Filter out user's current game from the catalog
-    const others = STORE_CATALOG.filter(g => String(g.appid) !== String(appid) && g.name.toLowerCase() !== userGameName.toLowerCase());
+    const others = catalog.filter(g => String(g.appid) !== String(appid) && (g.name || "").toLowerCase() !== (userGameName || "").toLowerCase());
     
     // Exactly 9 items: 4 surrounding games, USER CAPSULE (at index 4 / center), 4 surrounding games
+    const fallbackGame = { name: "Steam Game", imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg" };
     const items9 = [
-        others[0],
-        others[1],
-        others[2],
-        others[3],
-        { name: userGameName, imageUrl: userImgSrc, isUser: true }, // Exact center (Row 2, Col 2)
-        others[4],
-        others[5],
-        others[6],
-        others[7]
+        others[0] || fallbackGame,
+        others[1] || fallbackGame,
+        others[2] || fallbackGame,
+        others[3] || fallbackGame,
+        { name: userGameName || "Your Game", imageUrl: userImgSrc, isUser: true }, // Center (Row 2, Col 2)
+        others[4] || fallbackGame,
+        others[5] || fallbackGame,
+        others[6] || fallbackGame,
+        others[7] || fallbackGame
     ];
 
     // 1. Large Browse 3x3 Grid (9 Entries)
     const largeGrid = document.getElementById('largeSimRow');
     if (largeGrid) {
         largeGrid.innerHTML = items9.map(g => `
-            <div class="sim-capsule-item" title="${g.name}">
+            <div class="sim-capsule-item ${g.isUser ? 'user-capsule-item' : ''}" title="${g.name}">
                 <div class="sim-capsule-thumb">
                     <img src="${g.imageUrl}" alt="${g.name}" loading="lazy">
                 </div>
@@ -1057,7 +1253,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid) {
     const microMatrix = document.getElementById('microSimQueue');
     if (microMatrix) {
         microMatrix.innerHTML = items9.map(g => `
-            <div class="micro-matrix-item" title="${g.name}">
+            <div class="micro-matrix-item ${g.isUser ? 'user-micro-item' : ''}" title="${g.name}">
                 <img src="${g.imageUrl}" alt="${g.name}" loading="lazy">
             </div>
         `).join('');
@@ -1070,6 +1266,24 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid) {
 function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) {
     const cv = runComputerVision(img);
     const scores = evaluateScores(cv);
+
+    // Save global state
+    currentCvResult = cv;
+    currentScores = scores;
+    currentLoadedImgSrc = imgSrc;
+    currentLoadedGameName = gameName || "Steam Game";
+    currentLoadedAppId = appid;
+    currentLoadedTags = tags || [];
+
+    // Detect target genre or respect user manual dropdown selection
+    let initialGenre = 'all';
+    if (typeof genreSelectDropdown !== 'undefined' && genreSelectDropdown && genreSelectDropdown.value !== 'auto') {
+        initialGenre = genreSelectDropdown.value;
+    } else {
+        const detected = detectGenreFromTags(tags);
+        if (detected) initialGenre = detected;
+    }
+    currentGenreLens = initialGenre;
 
     // 1. Update TOP HERO CARD with Big Game Title, Direct Steam Link, and Image
     document.getElementById('resultHeroCapsuleImg').src = imgSrc;
@@ -1128,10 +1342,27 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) 
         }
     }
 
-    // 2. Render In-Situ Competition Simulator Lineups (Clean art directly next to other games)
-    renderSimulatorLineups(imgSrc, gameName || "Your Game", appid);
+    // 2. Update Genre Lens Pills & Synchronized Dropdowns
+    document.querySelectorAll('.genre-pill-btn').forEach(btn => {
+        const g = btn.getAttribute('data-genre') || 'all';
+        if (g.toLowerCase() === currentGenreLens.toLowerCase()) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 
-    // 3. Update Top Score Banner
+    document.querySelectorAll('.genre-sync-dropdown').forEach(dropdown => {
+        dropdown.value = currentGenreLens === 'all' ? 'all' : currentGenreLens;
+    });
+
+    // 3. Update Dedicated Genre Benchmark Intelligence Card
+    updateGenreBenchmarkDisplay(cv, currentGenreLens);
+
+    // 4. Render Contextual Simulator Lineups
+    renderSimulatorLineups(imgSrc, gameName || "Your Game", appid, currentGenreLens);
+
+    // 5. Update Top Score Banner
     document.getElementById('overallScoreNum').textContent = scores.overallScore;
     
     const gaugeFill = document.getElementById('gaugeFill');
@@ -1152,15 +1383,12 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) 
     document.getElementById('qsEntropy').textContent = `${cv.entropy} bits`;
     document.getElementById('qsFocus').textContent = cv.isCenterFocused ? 'Center Hero' : 'Edge-Heavy';
 
-        // Show Dashboard
-    resultsDashboard.style.display = 'block';
-
-    // 4. Update Palette Swatches & D3 Cake Diagram
+    // 6. Update Palette Swatches & D3 Cake Diagram
     renderPalettePieChart(cv.dominantColors);
 
     const swatchesContainer = document.getElementById('paletteSwatches');
     swatchesContainer.innerHTML = '';
-    cv.dominantColors.forEach(c => {
+    cv.dominantColors.forEach((c, index) => {
         const swatch = document.createElement('div');
         swatch.className = 'swatch-item';
         swatch.innerHTML = `
@@ -1168,7 +1396,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) 
             <div class="swatch-hex">${c.hex}</div>
             <div class="swatch-pct">${c.pct}%</div>
         `;
-                swatch.addEventListener("mouseenter", () => {
+        swatch.addEventListener("mouseenter", () => {
             const slices = d3.selectAll("#palettePieChart path");
             slices.filter((d, idx) => idx === index).transition().duration(150).attr("d", d3.arc().innerRadius(36).outerRadius(64).padAngle(0.03));
             const centerLabel = document.getElementById("pieCenterPct");
@@ -1183,17 +1411,17 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) 
         swatchesContainer.appendChild(swatch);
     });
 
-    // 5. Update 5 Metric Rows
+    // 7. Update 5 Metric Rows
     updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `Your: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
     updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `Your: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
     updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `Your: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
     updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `Your: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
     updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
 
-    // 6. Generate Tailored Checklist
-    generateChecklist(cv, scores);
+    // 8. Generate Tailored Checklist
+    generateChecklist(cv, scores, currentGenreLens);
 
-    // Show Dashboard & Smooth Scroll with generous top breathing room
+    // Show Dashboard & Smooth Scroll
     resultsDashboard.style.display = 'block';
     
     setTimeout(() => {
@@ -1223,13 +1451,28 @@ function updateMetricRow(badgeId, barId, valId, score, valText, barWidthPct) {
 }
 
 /**
- * Generate Tailored Checklist Recommendations
+ * Generate Tailored Checklist Recommendations (with Genre-Specific Intelligence)
  */
-function generateChecklist(cv, scores) {
+function generateChecklist(cv, scores, genreKey = 'all') {
     const container = document.getElementById('checklistContainer');
     container.innerHTML = '';
 
     const items = [];
+
+    // Genre-specific tailored card at the top
+    let targetGenre = genreKey;
+    if (!targetGenre || targetGenre === 'all') {
+        targetGenre = detectGenreFromTags(currentLoadedTags) || 'Action';
+    }
+
+    if (typeof benchmarksData !== 'undefined' && benchmarksData.genres && benchmarksData.genres[targetGenre]) {
+        const gMeta = benchmarksData.genres[targetGenre];
+        items.push({
+            status: 'pass',
+            title: `🎯 ${targetGenre} Genre Market Advice`,
+            desc: gMeta.tip
+        });
+    }
 
     // Contrast item
     if (cv.brightnessStd >= 62) {
