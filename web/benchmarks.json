@@ -1,0 +1,288 @@
+{
+  "generated_at": "2026-08-19T10:07:52.852342",
+  "overall": {
+    "total_games_analyzed": 28754,
+    "contrast_p90": 78.4,
+    "contrast_p10": 41.4,
+    "entropy_p90": 7.72,
+    "entropy_p10": 4.97,
+    "edge_density_p90": 20.99,
+    "edge_density_p10": 5.36
+  },
+  "tiers": {
+    "mega_hit": {
+      "name": "Mega-Hit (>10k reviews)",
+      "count": 1748,
+      "contrast": {
+        "mean": 63.08,
+        "median": 63.05,
+        "p25": 53.9,
+        "p75": 72.1
+      },
+      "brightness": {
+        "mean": 100.34,
+        "median": 95.35
+      },
+      "saturation": {
+        "mean": 107.38,
+        "median": 104.35
+      },
+      "entropy": {
+        "mean": 6.99,
+        "median": 7.3
+      },
+      "edge_density": {
+        "mean": 14.22,
+        "median": 14.13
+      },
+      "warm_palette_pct": 49.9,
+      "neutral_palette_pct": 43.3,
+      "cool_palette_pct": 6.8,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 49.7,
+      "light_ratio": 20.5
+    },
+    "successful": {
+      "name": "Successful (1k-10k reviews)",
+      "count": 5676,
+      "contrast": {
+        "mean": 62.19,
+        "median": 62.5,
+        "p25": 53.4,
+        "p75": 70.8
+      },
+      "brightness": {
+        "mean": 102.89,
+        "median": 98.15
+      },
+      "saturation": {
+        "mean": 109.35,
+        "median": 108.4
+      },
+      "entropy": {
+        "mean": 6.9,
+        "median": 7.25
+      },
+      "edge_density": {
+        "mean": 14.03,
+        "median": 13.87
+      },
+      "warm_palette_pct": 50.0,
+      "neutral_palette_pct": 42.2,
+      "cool_palette_pct": 7.8,
+      "center_focus_pct": 70.4,
+      "dark_ratio": 47.9,
+      "light_ratio": 21.5
+    },
+    "moderate": {
+      "name": "Moderate (100-1k reviews)",
+      "count": 10888,
+      "contrast": {
+        "mean": 60.49,
+        "median": 60.9,
+        "p25": 51.5,
+        "p75": 69.6
+      },
+      "brightness": {
+        "mean": 100.47,
+        "median": 94.7
+      },
+      "saturation": {
+        "mean": 110.29,
+        "median": 109.0
+      },
+      "entropy": {
+        "mean": 6.77,
+        "median": 7.18
+      },
+      "edge_density": {
+        "mean": 13.4,
+        "median": 13.15
+      },
+      "warm_palette_pct": 48.4,
+      "neutral_palette_pct": 44.2,
+      "cool_palette_pct": 7.4,
+      "center_focus_pct": 71.1,
+      "dark_ratio": 48.9,
+      "light_ratio": 20.4
+    },
+    "struggling": {
+      "name": "Struggling (10-100 reviews)",
+      "count": 6794,
+      "contrast": {
+        "mean": 58.84,
+        "median": 58.9,
+        "p25": 49.2,
+        "p75": 68.4
+      },
+      "brightness": {
+        "mean": 93.28,
+        "median": 86.7
+      },
+      "saturation": {
+        "mean": 112.57,
+        "median": 113.4
+      },
+      "entropy": {
+        "mean": 6.46,
+        "median": 6.93
+      },
+      "edge_density": {
+        "mean": 12.2,
+        "median": 11.64
+      },
+      "warm_palette_pct": 42.8,
+      "neutral_palette_pct": 49.4,
+      "cool_palette_pct": 7.8,
+      "center_focus_pct": 72.6,
+      "dark_ratio": 52.8,
+      "light_ratio": 18.0
+    },
+    "near_zero": {
+      "name": "Near-Zero (<10 reviews)",
+      "count": 3648,
+      "contrast": {
+        "mean": 56.9,
+        "median": 57.25,
+        "p25": 46.2,
+        "p75": 67.3
+      },
+      "brightness": {
+        "mean": 90.19,
+        "median": 83.6
+      },
+      "saturation": {
+        "mean": 111.42,
+        "median": 110.4
+      },
+      "entropy": {
+        "mean": 6.18,
+        "median": 6.71
+      },
+      "edge_density": {
+        "mean": 11.21,
+        "median": 10.36
+      },
+      "warm_palette_pct": 39.0,
+      "neutral_palette_pct": 51.8,
+      "cool_palette_pct": 9.2,
+      "center_focus_pct": 71.4,
+      "dark_ratio": 54.1,
+      "light_ratio": 17.3
+    }
+  },
+  "presets": [
+    {
+      "name": "DICEPTION",
+      "appid": 4429000,
+      "tier": "custom",
+      "tier_label": "\ud83c\udfb2 DICEPTION",
+      "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
+      "price": "4,99\u20ac",
+      "tags": [
+        "Indie",
+        "Strategy"
+      ]
+    },
+    {
+      "name": "Melodan",
+      "appid": 4987230,
+      "tier": "custom",
+      "tier_label": "\u2694\ufe0f Melodan",
+      "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
+      "price": "Free",
+      "tags": [
+        "Action",
+        "Indie",
+        "Strategy"
+      ]
+    },
+    {
+      "id": "elden_ring",
+      "name": "ELDEN RING",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>800k reviews)",
+      "appid": 1245620,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+      "price": "$59.99",
+      "tags": [
+        "Souls-like",
+        "RPG",
+        "Dark Fantasy",
+        "Open World"
+      ]
+    },
+    {
+      "id": "hades",
+      "name": "Hades",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>230k reviews)",
+      "appid": 1145360,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+      "price": "$24.99",
+      "tags": [
+        "Action Roguelike",
+        "Hack and Slash",
+        "Indie"
+      ]
+    },
+    {
+      "id": "stardew",
+      "name": "Stardew Valley",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>600k reviews)",
+      "appid": 413150,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+      "price": "$14.99",
+      "tags": [
+        "Farming Sim",
+        "Pixel Graphics",
+        "Co-op",
+        "Relaxing"
+      ]
+    },
+    {
+      "id": "cyberpunk",
+      "name": "Cyberpunk 2077",
+      "tier": "mega_hit",
+      "tier_label": "\ud83c\udfc6 Mega-Hit (>700k reviews)",
+      "appid": 1091500,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+      "price": "$59.99",
+      "tags": [
+        "Cyberpunk",
+        "Open World",
+        "RPG",
+        "Sci-fi"
+      ]
+    },
+    {
+      "id": "sample_modest",
+      "name": "Ironcast",
+      "tier": "moderate",
+      "tier_label": "\ud83d\udcca Moderate (~500 reviews)",
+      "appid": 327670,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/327670/header.jpg",
+      "price": "$14.99",
+      "tags": [
+        "Match 3",
+        "Steampunk",
+        "Turn-Based Strategy"
+      ]
+    },
+    {
+      "id": "sample_flop",
+      "name": "Putridum Horror",
+      "tier": "near_zero",
+      "tier_label": "\ud83d\udd73\ufe0f Near-Zero (3 reviews)",
+      "appid": 2294100,
+      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/2294100/header.jpg",
+      "price": "$1.99",
+      "tags": [
+        "Horror",
+        "Action",
+        "Indie"
+      ]
+    }
+  ]
+}

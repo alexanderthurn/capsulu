@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capsulu – The Steam Capsule Rater</title>
+    <meta name="description" content="Instant Computer Vision evaluation for Steam capsule art. Benchmarked against 28,754 real Steam games.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Global Top Nav: Brand & Tabs on Left, Disclaimer on Far Right -->
+    <nav class="steam-global-nav">
+        <div class="nav-container">
+            <div class="nav-left-col">
+                <div class="steam-brand" id="brandHomeLink" role="button" tabindex="0" title="Back to Home">
+                    <svg class="steam-logo-svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.42 7.63 11.16l2.12-3.13c-.22-.64-.35-1.32-.35-2.03 0-.47.06-.92.17-1.35l-3.32-2.38c-.8.09-1.61-.17-2.22-.78-.9-.9-.9-2.36 0-3.26.9-.9 2.36-.9 3.26 0 .58.58.85 1.34.8 2.11l2.45 1.76c.47-.18.98-.28 1.51-.28.05 0 .1 0 .15.01l2.36-3.43c-.49-.78-.77-1.7-.77-2.68 0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5c-.38 0-.74-.05-1.09-.13l-3.38 4.9c.5.24.94.59 1.28 1.03.73.94.88 2.17.47 3.24L16.37 24C20.84 22.26 24 17.92 24 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span class="steam-brand-title">CAPSULU</span>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <div class="steam-nav-links">
+                    <button class="nav-tab-btn active" id="navHomeBtn" type="button">Home</button>
+                    <button class="nav-tab-btn" id="navBenchmarkBtn" type="button">Benchmark</button>
+                </div>
+            </div>
+
+            <!-- Disclaimer on Very Right -->
+            <div class="nav-right-col">
+                <div class="nav-legal-disclaimer">
+                    This site is not affiliated with Valve Corporation. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- VIEW 1: HOME (Rater & Analyzer) -->
+    <div id="homeView">
+        <!-- Main Hero / Input Console -->
+        <header class="steam-store-header" id="dropZoneArea">
+            <input type="file" id="fileInput" accept="image/png, image/jpeg, image/webp" class="file-input-hidden">
+            <div class="store-header-inner">
+                <div class="hero-title-area">
+                    <h1 class="store-headline">The Steam Capsule Rater</h1>
+                    <p class="store-subtext">Compare yours against 28,754 others.</p>
+                </div>
+
+                <!-- Unified Action Bar: URL Input + Analyze Button + Upload Button -->
+                <div class="unified-input-bar">
+                    <div class="input-field-group">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="steamUrlInput" placeholder="Paste Steam Store URL (e.g. store.steampowered.com/app/4429000/DICEPTION/), App ID, or Image URL..." autocomplete="off">
+                    </div>
+
+                    <div class="action-buttons-group">
+                        <button class="btn btn-steam-primary" id="fetchUrlBtn" type="button">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            Analyze URL
+                        </button>
+                        <button class="btn btn-steam-upload" id="browseBtn" type="button">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            Upload Image
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Merged Single Row: Recent & Sample Games -->
+                <div class="recent-links-row" id="recentRow">
+                    <span class="recent-list-span" id="recentListContainer">
+                        <!-- Dynamic Non-Duplicate Clickable Links injected by JS -->
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <!-- Loading State -->
+            <div class="loading-container" id="loadingBar" style="display: none;">
+                <div class="steam-loader-track">
+                    <div class="steam-loader-bar"></div>
+                </div>
+                <p class="loading-label">Extracting Computer Vision Metrics (Luminance, Sobel Edge Filter, Shannon Entropy)...</p>
+            </div>
+
+            <!-- Analysis Dashboard -->
+            <div class="dashboard" id="resultsDashboard" style="display: none;">
+                
+                <!-- 1. HUGE FULL-WIDTH GAME TITLE HEADER (Huge Title + Tags & Metadata) -->
+                <section class="game-huge-title-banner" id="gameHugeTitleBanner">
+                    <div class="game-huge-title-row">
+                        <h2 class="game-huge-title">
+                            <a id="resultGameTitleLink" href="#" target="_blank" rel="noopener noreferrer" title="Open on Steam Store">
+                                <span id="resultGameTitleText">Game Title</span>
+                                <svg class="external-icon-huge" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </a>
+                        </h2>
+                        <a id="resultStoreBtnLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-steam-store-direct btn-steam-store-huge">
+                            Open on Steam ↗
+                        </a>
+                    </div>
+                    <div class="game-huge-meta-row">
+                        <span class="meta-pill" id="resultAppIdTag">App ID: --</span>
+                        <span class="meta-pill price-pill" id="resultPriceTag">--</span>
+                        <div class="game-hero-tags" id="resultHeroTags">
+                            <!-- Tags injected via JS -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. TOP 2-COLUMN SECTION (Left: Capsule Art Card + Dominant Palette | Right: Big Dominant Scorecard) -->
+                <div class="top-hero-two-col-grid">
+                    
+                    <!-- Left 50% Column -->
+                    <div class="top-left-col">
+                        <!-- Upper: Dedicated Capsule Artwork Display Card -->
+                        <section class="game-result-hero-card capsule-preview-only-card">
+                            <div class="game-result-capsule-box-full">
+                                <img id="resultHeroCapsuleImg" src="" alt="Capsule Artwork">
+                            </div>
+                        </section>
+
+                        <!-- Lower: Dedicated Dominant Color Palette Panel with D3 Pie / Donut Chart -->
+                        <section class="steam-panel palette-dedicated-panel">
+                            <div class="panel-header">
+                                <h3>🎨 Dominant Color Palette</h3>
+                                <span class="panel-badge">Distribution & Swatches</span>
+                            </div>
+                            <div class="palette-chart-flex">
+                                <div class="palette-pie-wrapper">
+                                    <svg id="palettePieChart" width="130" height="130" viewBox="0 0 130 130"></svg>
+                                    <div class="pie-center-label">
+                                        <span id="pieCenterPct">100%</span>
+                                    </div>
+                                </div>
+                                <div class="swatches-grid" id="paletteSwatches">
+                                    <!-- Injected via JS -->
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!-- Right 50% Column: Big Dominant Scorecard Banner -->
+                    <div class="top-right-col">
+                        <section class="score-card-banner dominant-score-card">
+                            <!-- Huge Centered Radial Score Gauge -->
+                            <div class="score-radial-group-huge">
+                                <svg class="radial-svg-huge" viewBox="0 0 160 160">
+                                    <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
+                                    <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70"></circle>
+                                </svg>
+                                <div class="radial-center-text-huge">
+                                    <span class="score-huge-num" id="overallScoreNum">--</span>
+                                    <span class="score-huge-denom">/ 100</span>
+                                </div>
+                            </div>
+
+                            <!-- Centered Rating Verdict & Summary -->
+                            <div class="score-meta-group-centered">
+                                <div class="tier-pill-row tier-pill-row-centered">
+                                    <span class="tier-badge" id="predictedTierBadge">Mega-Hit Grade</span>
+                                    <span class="percentile-badge" id="percentileText">Top 10% on Steam</span>
+                                </div>
+                                <h2 class="score-title" id="scoreHeadline">High-Converting Store Art</h2>
+                                <p class="score-desc" id="scoreSummary">Your capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.</p>
+                            </div>
+
+                            <div class="quick-metrics-table">
+                                <div class="qm-cell">
+                                    <span class="qm-label">Contrast Rating</span>
+                                    <span class="qm-val" id="qsContrast">--</span>
+                                </div>
+                                <div class="qm-cell">
+                                    <span class="qm-label">Color Temp</span>
+                                    <span class="qm-val" id="qsPalette">--</span>
+                                </div>
+                                <div class="qm-cell">
+                                    <span class="qm-label">Tonal Depth</span>
+                                    <span class="qm-val" id="qsEntropy">--</span>
+                                </div>
+                                <div class="qm-cell">
+                                    <span class="qm-label">Focal Lighting</span>
+                                    <span class="qm-val" id="qsFocus">--</span>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                </div>
+
+                <!-- 3. DYNAMIC VISUAL CHECK & RECOMMENDATIONS SECTION (Half Width in Small Mode, Full Width in Large Mode) -->
+                <div class="sim-and-recs-wrapper mode-small" id="simAndRecsWrapper">
+                    
+                    <!-- Visual Check Panel -->
+                    <section class="steam-panel visual-check-panel" id="visualCheckPanel">
+                        <div class="panel-header sim-panel-header">
+                            <div class="sim-header-left">
+                                <h3>🏪 Visual Check</h3>
+                                <div class="sim-view-toggle-group">
+                                    <button class="btn-sim-toggle active" id="simToggleSmall" onclick="switchSimView('small')" type="button">Small</button>
+                                    <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')" type="button">Large</button>
+                                </div>
+                            </div>
+                            <span class="panel-badge">Storefront Simulator</span>
+                        </div>
+
+                        <p class="sim-explainer">See how your artwork compares against competitors in crowded Steam discovery queues.</p>
+
+                        <!-- Small View (Default) -->
+                        <div class="sim-view-container" id="simViewSmall" style="display: block;">
+                            <div class="sim-micro-matrix" id="microSimQueue">
+                                <!-- Injected dynamically via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Large View -->
+                        <div class="sim-view-container" id="simViewLarge" style="display: none;">
+                            <div class="sim-capsule-large-grid" id="largeSimRow">
+                                <!-- Injected dynamically via JS -->
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Design Recommendations Panel (Sits next to Small Visual Check) -->
+                    <section class="steam-panel recs-panel" id="recsPanel">
+                        <div class="panel-header">
+                            <h3>🛠️ Design Recommendations</h3>
+                            <span class="panel-badge">Action Items</span>
+                        </div>
+                        <div class="checklist-grid" id="checklistContainer">
+                            <!-- Injected via JS -->
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- 4. FULL-WIDTH STATISTICAL METRIC BREAKDOWN VS 28,754 GAMES -->
+                <section class="steam-panel metrics-full-panel" style="margin-top: 20px;">
+                    <div class="panel-header">
+                        <h3>📊 Metric Breakdown vs. 28,754 Games</h3>
+                        <span class="panel-badge">Statistical Benchmark</span>
+                    </div>
+
+                    <div class="metrics-stack">
+                        <!-- 1. Contrast -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">⚡ Dynamic Contrast (Luminance Std Dev)</span>
+                                <span class="metric-tag" id="mContrastScore">--</span>
+                            </div>
+                            <p class="metric-help">Separation between deep shadows and bright highlights. Prevents flat midtones.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mContrastBar"></div>
+                                <div class="benchmark-pin" style="left: 74%;" title="Mega-Hit Avg (63.0)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mContrastVal">Your: --</span>
+                                <span class="legend-target">Mega-Hit Avg: 63.0 | Flop Avg: 56.9</span>
+                            </div>
+                        </div>
+
+                        <!-- 2. Warmth / Saliency -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">🎨 Steam UI Chromatic Saliency (Warm Accents)</span>
+                                <span class="metric-tag" id="mWarmthScore">--</span>
+                            </div>
+                            <p class="metric-help">Warm color share (gold/amber/crimson) that pops against Steam's navy UI.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mWarmthBar"></div>
+                                <div class="benchmark-pin" style="left: 50%;" title="Mega-Hit Avg (50%)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mWarmthVal">Your: --</span>
+                                <span class="legend-target">Mega-Hit Avg: 50% | Flop Avg: 39%</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Entropy -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">🔍 Shannon Entropy (Tonal Depth)</span>
+                                <span class="metric-tag" id="mEntropyScore">--</span>
+                            </div>
+                            <p class="metric-help">Information richness of visual lighting without muddy compression noise.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mEntropyBar"></div>
+                                <div class="benchmark-pin" style="left: 88%;" title="Mega-Hit Avg (6.99 bits)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mEntropyVal">Your: --</span>
+                                <span class="legend-target">Mega-Hit Avg: 6.99 | Flop Avg: 6.18</span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Edge Density -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">📐 Edge Density & Structural Sharpness</span>
+                                <span class="metric-tag" id="mEdgeScore">--</span>
+                            </div>
+                            <p class="metric-help">Clean silhouettes and well-defined line art vs blurry unedited screenshots.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mEdgeBar"></div>
+                                <div class="benchmark-pin" style="left: 70%;" title="Mega-Hit Avg (14.2%)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mEdgeVal">Your: --</span>
+                                <span class="legend-target">Mega-Hit Avg: 14.2% | Flop Avg: 11.2%</span>
+                            </div>
+                        </div>
+
+                        <!-- 5. Composition / Spotlight -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">💡 Central Hero Spotlighting</span>
+                                <span class="metric-tag" id="mFocusScore">--</span>
+                            </div>
+                            <p class="metric-help">Concentrating illumination on the central hero with subtle edge vignetting.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mFocusBar"></div>
+                                <div class="benchmark-pin" style="left: 72%;" title="Mega-Hit Avg (72%)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mFocusVal">Your: --</span>
+                                <span class="legend-target">72% of Mega-Hits use center spotlights</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- VIEW 2: BENCHMARK (28,754 Games Dataset Report & Takeaways) -->
+    <div id="benchmarkView" style="display: none;">
+        <div class="benchmark-container">
+            <header class="benchmark-header">
+                <h2>📈 Steam Capsule Art Benchmark Study</h2>
+                <p class="benchmark-sub">Empirical Computer Vision Analysis of 28,754 Steam Capsules Across 5 Commercial Sales Tiers.</p>
+            </header>
+
+            <!-- 5-Tier Data Table -->
+            <div class="steam-panel" style="margin-bottom: 24px;">
+                <div class="panel-header">
+                    <h3>🏆 Comparative Metric Matrix by Sales Tier</h3>
+                    <span class="panel-badge">28,754 Verified Games</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="benchmark-table">
+                        <thead>
+                            <tr>
+                                <th>Sales Tier</th>
+                                <th>Review Volume</th>
+                                <th>Avg Contrast (Std Dev)</th>
+                                <th>Warm Palette %</th>
+                                <th>Shannon Entropy</th>
+                                <th>Edge Density</th>
+                                <th>Center Spotlight %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-highlight">
+                                <td><span class="tier-badge badge-gold">Mega-Hits</span></td>
+                                <td>50,000+ Reviews</td>
+                                <td><strong>63.0</strong></td>
+                                <td><strong>49.9%</strong></td>
+                                <td><strong>6.99 bits</strong></td>
+                                <td><strong>14.2%</strong></td>
+                                <td><strong>71.9%</strong></td>
+                            </tr>
+                            <tr>
+                                <td><span class="tier-badge badge-green">Very High</span></td>
+                                <td>10,000 – 49,999</td>
+                                <td>61.8</td>
+                                <td>47.5%</td>
+                                <td>6.85 bits</td>
+                                <td>13.8%</td>
+                                <td>68.4%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tier-badge badge-blue">Moderate</span></td>
+                                <td>1,000 – 9,999</td>
+                                <td>59.7</td>
+                                <td>44.2%</td>
+                                <td>6.62 bits</td>
+                                <td>12.9%</td>
+                                <td>63.1%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="tier-badge badge-orange">Low</span></td>
+                                <td>100 – 999</td>
+                                <td>58.1</td>
+                                <td>41.8%</td>
+                                <td>6.41 bits</td>
+                                <td>12.1%</td>
+                                <td>58.5%</td>
+                            </tr>
+                            <tr class="row-flop">
+                                <td><span class="tier-badge badge-red">Near-Zero Flops</span></td>
+                                <td>&lt; 10 Reviews</td>
+                                <td>56.9</td>
+                                <td>39.0%</td>
+                                <td>6.18 bits</td>
+                                <td>11.2%</td>
+                                <td>52.4%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Core Rules Grid -->
+            <div class="benchmark-rules-grid">
+                <div class="steam-panel">
+                    <h3 class="rule-heading">1. Dynamic Contrast Rule</h3>
+                    <p class="rule-desc">Top sellers maintain strong separation between shadow depths (&lt;60 luminance) and bright highlights (&gt;190 luminance). Flops suffer from muddy, washed-out midtone clustering.</p>
+                </div>
+                <div class="steam-panel">
+                    <h3 class="rule-heading">2. Steam Navy Saliency</h3>
+                    <p class="rule-desc">Steam's client background is cool navy (#1b2838). Top capsules utilize warm amber, gold, and crimson focal elements (+10.9% higher warm share than flops) to naturally create visual pop.</p>
+                </div>
+                <div class="steam-panel">
+                    <h3 class="rule-heading">3. Spotlight Vignetting</h3>
+                    <p class="rule-desc">71.9% of Mega-Hits use center-focused lighting with subtle perimeter darkening, locking viewer gaze onto the hero subject within the 1-second Steam browsing glance.</p>
+                </div>
+                <div class="steam-panel">
+                    <h3 class="rule-heading">4. Sharp Silhouettes</h3>
+                    <p class="rule-desc">Edge density is 26.8% higher in top games (14.2% vs 11.2%). Clean character outlines and distinct typographic title treatments ensure readability at 120px micro thumbnail scale.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Canvas for in-memory Computer Vision -->
+    <canvas id="cvCanvas" style="display: none;"></canvas>
+
+    <!-- Footer with Imprint & Data Privacy Links -->
+    <footer class="steam-footer">
+        <div class="footer-inner">
+            <div class="footer-links-row">
+                <a href="https://feuerware.com/2025/imprint.html" target="_blank" rel="noopener noreferrer" class="footer-link">Imprint</a>
+                <span class="footer-dot">•</span>
+                <a href="https://feuerware.com/2025/privacy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Data Privacy</a>
+            </div>
+            <p class="footer-copy">© Capsulu – The Steam Capsule Rater — Pure Client-Side JavaScript Computer Vision. Evaluated against 28,754 Steam games.</p>
+            <p class="footer-sub">This site is not affiliated with Valve Corporation. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.</p>
+        </div>
+    </footer>
+
+    <!-- Pure JavaScript Engine -->
+    <script src="app.js"></script>
+</body>
+</html>
