@@ -1,33 +1,25 @@
 #!/usr/bin/env python3
 """
-Bundle Complete Open-Source Dataset
+Bundle Complete Open-Source Research Dataset
 Generates:
-1. steam_capsules_full_dataset.json (Unified enriched JSON with store & CV metrics for 28,762 games)
-2. steam_capsules_images.zip (ZIP archive containing all 28,762 capsule images)
-Outputs to data/export/ and links to web/export/ for web downloads.
+- data/export/steam_capsules_full_dataset.json (Enriched store metadata & CV metrics for 28,762 games)
 """
 
 import os
 import sys
 import json
-import zipfile
-import shutil
 import glob
 from datetime import datetime
 import pandas as pd
 from tqdm import tqdm
 
 DATA_DIR = "data"
-IMAGES_DIR = os.path.join(DATA_DIR, "images")
 RAW_STORE_DIR = os.path.join(DATA_DIR, "raw_store")
 RAW_ANALYSIS_DIR = os.path.join(DATA_DIR, "raw_analysis")
 AGGREGATED_CSV = os.path.join(DATA_DIR, "aggregated_dataset.csv")
-
 EXPORT_DIR = os.path.join(DATA_DIR, "export")
-WEB_EXPORT_DIR = os.path.join("web", "export")
 
 os.makedirs(EXPORT_DIR, exist_ok=True)
-os.makedirs(WEB_EXPORT_DIR, exist_ok=True)
 
 def generate_full_json():
     print("\n📦 Generating steam_capsules_full_dataset.json...")
@@ -98,8 +90,7 @@ def generate_full_json():
                 "edge_density_pct": round(float(csv_row.get("edge_density", analysis_data.get("detail", {}).get("edge_density", 0))), 2),
                 "center_spotlight_ratio": round(float(csv_row.get("center_vs_edge_brightness", analysis_data.get("composition", {}).get("center_vs_edge_brightness", 0))), 2),
                 "dominant_palette": analysis_data.get("color", {}).get("dominant_colors", [])
-            },
-            "image_filename": f"{appid}.jpg"
+            }
         }
 
         games_list.append(game_entry)
@@ -110,7 +101,7 @@ def generate_full_json():
             "version": "1.0.0",
             "total_games": len(games_list),
             "generated_at": datetime.utcnow().isoformat() + "Z",
-            "description": "Comprehensive empirical dataset of 28,762 Steam game capsules with Computer Vision metrics and Steam store metadata across 5 commercial sales tiers.",
+            "description": "Empirical dataset of 28,762 Steam game capsules with Computer Vision metrics and Steam store metadata across 5 commercial sales tiers.",
             "license": "MIT License",
             "attribution": "Capsulu (https://github.com/alexanderthurn/steam-capsulu)"
         },
@@ -121,39 +112,10 @@ def generate_full_json():
     with open(out_json_path, 'w', encoding='utf-8') as f:
         json.dump(dataset_bundle, f, indent=2)
 
-    # Copy to web/export
-    web_json_path = os.path.join(WEB_EXPORT_DIR, "steam_capsules_full_dataset.json")
-    shutil.copyfile(out_json_path, web_json_path)
-
     json_size_mb = os.path.getsize(out_json_path) / (1024 * 1024)
     print(f"✅ Generated {out_json_path} ({json_size_mb:.2f} MB, {len(games_list)} games)")
-    print(f"✅ Copied to {web_json_path}")
     return out_json_path
-
-
-def generate_images_zip():
-    print("\n🖼️ Packaging steam_capsules_images.zip...")
-    image_files = glob.glob(os.path.join(IMAGES_DIR, "*.jpg")) + glob.glob(os.path.join(IMAGES_DIR, "*.png"))
-    print(f"Found {len(image_files)} capsule images in {IMAGES_DIR}.")
-
-    out_zip_path = os.path.join(EXPORT_DIR, "steam_capsules_images.zip")
-
-    with zipfile.ZipFile(out_zip_path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as zipf:
-        for img_path in tqdm(image_files, desc="Compressing Capsule Images"):
-            arcname = os.path.basename(img_path)
-            zipf.write(img_path, arcname=arcname)
-
-    # Copy to web/export
-    web_zip_path = os.path.join(WEB_EXPORT_DIR, "steam_capsules_images.zip")
-    shutil.copyfile(out_zip_path, web_zip_path)
-
-    zip_size_mb = os.path.getsize(out_zip_path) / (1024 * 1024)
-    print(f"✅ Generated {out_zip_path} ({zip_size_mb:.2f} MB, {len(image_files)} images)")
-    print(f"✅ Copied to {web_zip_path}")
-    return out_zip_path
-
 
 if __name__ == "__main__":
     json_path = generate_full_json()
-    zip_path = generate_images_zip()
     print("\n🎉 Dataset Bundling Complete!")
