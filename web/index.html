@@ -135,7 +135,7 @@
                                 stroke-width="2">
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
-                            Analyze URL
+                            Analyze URL (or App ID)
                         </button>
                         <button class="btn btn-steam-upload" id="browseBtn" type="button">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -159,13 +159,19 @@
         </header>
 
         <main class="app-main">
-            <!-- Loading State -->
-            <div class="loading-container" id="loadingBar" style="display: none;">
-                <div class="steam-loader-track">
-                    <div class="steam-loader-bar"></div>
+            <!-- Loading State in Content Area -->
+            <div class="steam-panel loading-panel" id="loadingBar" style="display: none;">
+                <div class="loading-inner">
+                    <div class="loading-spinner-wrapper">
+                        <div class="loading-spin-ring"></div>
+                        <div class="loading-capsule-icon">🎨</div>
+                    </div>
+                    <h3 class="loading-heading">Analyzing Steam Capsule Artwork</h3>
+                    <div class="steam-loader-track">
+                        <div class="steam-loader-bar"></div>
+                    </div>
+                    <p class="loading-label" id="loadingDynamicText">Evaluating...</p>
                 </div>
-                <p class="loading-label">Extracting Computer Vision Metrics (Luminance, Sobel Edge Filter, Shannon
-                    Entropy)...</p>
             </div>
 
             <!-- Analysis Dashboard -->

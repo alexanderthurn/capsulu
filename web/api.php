@@ -211,13 +211,33 @@ function analyze_image_php($img_url) {
     $is_center_focused = $spotlight_ratio > 0;
     $warmth_pct = ($warm_count / max(1, $total_pixels)) * 100;
 
-    $contrast_score = $contrast_std >= 63.0 ? min(100, 95 + ($contrast_std - 63) * 1) : max(30, 100 - (63 - $contrast_std) * 6);
-    $warmth_score = $warmth_pct >= 45.0 ? 96 : max(35, 100 - (45 - $warmth_pct) * 2.5);
+    // 1. Dynamic Contrast (Benchmark: 63.0, Floor: 10.0)
+    $contrast_score = $contrast_std >= 63.0 
+        ? min(100, 95 + ($contrast_std - 63.0) * 0.8) 
+        : max(0, (($contrast_std - 10.0) / (63.0 - 10.0)) * 95.0);
+
+    // 2. Warmth / Saliency (Benchmark: 45%, Floor: 3%)
+    $warmth_score = $warmth_pct >= 45.0 
+        ? min(100, 95 + ($warmth_pct - 45.0) * 0.2) 
+        : max(0, (($warmth_pct - 3.0) / (45.0 - 3.0)) * 95.0);
+
+    // 3. Shannon Entropy & Edges
     $entropy_score = 98;
     $edge_score = 95;
-    $focus_score = $spotlight_ratio > 10 ? 98 : ($is_center_focused ? 92 : 60);
 
-    $overall_score = round(
+    // 4. Hero Spotlight / Composition
+    if ($spotlight_ratio > 10.0) {
+        $focus_score = 98;
+    } elseif ($is_center_focused && $spotlight_ratio > 0) {
+        $focus_score = min(95, 80 + $spotlight_ratio * 1.5);
+    } elseif ($is_center_focused) {
+        $focus_score = 70;
+    } else {
+        $focus_score = max(10, 45 + $spotlight_ratio * 2.5);
+    }
+
+    $sub_scores = [$contrast_score, $warmth_score, $entropy_score, $edge_score, $focus_score];
+    $base_score = (
         $contrast_score * 0.30 +
         $warmth_score * 0.20 +
         $entropy_score * 0.20 +
@@ -225,19 +245,29 @@ function analyze_image_php($img_url) {
         $focus_score * 0.15
     );
 
-    if ($overall_score >= 90) {
+    // Critical Deficit / Bottleneck Rule:
+    // If any single metric is critically low (< 35), apply a steep penalty.
+    $min_sub = min($sub_scores);
+    $bottleneck_penalty = 0;
+    if ($min_sub < 35) {
+        $bottleneck_penalty = pow((35 - $min_sub) / 35.0, 1.2) * 35.0;
+    }
+
+    $overall_score = max(0, min(100, round($base_score - $bottleneck_penalty)));
+
+    if ($overall_score >= 88) {
         $tier = "🏆 Mega-Hit Grade";
         $percentile = "Top 10% on Steam";
         $headline = "Exceptional";
-    } elseif ($overall_score >= 75) {
+    } elseif ($overall_score >= 72) {
         $tier = "🌟 Solid Indie Grade";
         $percentile = "Top 35% on Steam";
         $headline = "Strong";
-    } elseif ($overall_score >= 60) {
+    } elseif ($overall_score >= 50) {
         $tier = "📊 Moderate Visibility";
         $percentile = "Median 50% on Steam";
         $headline = "Average";
-    } elseif ($overall_score >= 48) {
+    } elseif ($overall_score >= 30) {
         $tier = "📉 Struggling Grade";
         $percentile = "Bottom 30% on Steam";
         $headline = "Low";

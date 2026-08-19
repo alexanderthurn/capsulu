@@ -47,15 +47,15 @@ function renderPalettePieChart(dominantColors) {
             .attr('fill', d => d.data.hex)
             .attr('stroke', '#0e141b')
             .attr('stroke-width', '1.5px')
-            .on('mouseenter', function(event, d) {
+            .on('mouseenter', function (event, d) {
                 d3.select(this).transition().duration(150).attr('d', arcHover);
                 if (centerLabel) centerLabel.textContent = d.data.pct + "%";
-                
+
                 // Highlight matching swatch
                 const swatches = document.querySelectorAll('.palette-dedicated-panel .swatch-item');
                 if (swatches[d.index]) swatches[d.index].classList.add('highlighted');
             })
-            .on('mouseleave', function(event, d) {
+            .on('mouseleave', function (event, d) {
                 d3.select(this).transition().duration(150).attr('d', arc);
                 if (centerLabel) centerLabel.textContent = '100%';
 
@@ -76,7 +76,7 @@ function renderPalettePieChart(dominantColors) {
 /**
  * Visual Check View Switcher (Small / Large)
  */
-window.switchSimView = function(mode) {
+window.switchSimView = function (mode) {
     const simToggleSmall = document.getElementById('simToggleSmall');
     const simToggleLarge = document.getElementById('simToggleLarge');
     const simViewSmall = document.getElementById('simViewSmall');
@@ -122,6 +122,7 @@ let currentLoadedImgSrc = null;
 let currentLoadedGameName = null;
 let currentLoadedAppId = null;
 let currentLoadedTags = [];
+let currentLoadedGenres = [];
 
 // DOM Elements
 const dropZoneArea = document.getElementById('dropZoneArea');
@@ -508,83 +509,83 @@ function setupEventListeners() {
  */
 function getDefaultSamples() {
     return [
-        { 
-            name: "DICEPTION", 
-            appid: 4429000, 
-            url: "https://store.steampowered.com/app/4429000/DICEPTION/", 
-            imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104", 
+        {
+            name: "DICEPTION",
+            appid: 4429000,
+            url: "https://store.steampowered.com/app/4429000/DICEPTION/",
+            imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
             price: "4,99€",
             tags: ["Indie", "Strategy"]
         },
-        { 
-            name: "Melodan", 
-            appid: 4987230, 
-            url: "https://store.steampowered.com/app/4987230/Melodan/", 
-            imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037", 
+        {
+            name: "Melodan",
+            appid: 4987230,
+            url: "https://store.steampowered.com/app/4987230/Melodan/",
+            imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
             price: "Coming Soon (Q1 2027)",
             tags: ["Action", "Indie", "Strategy"]
         },
-        { 
-            name: "ELDEN RING", 
-            appid: 1245620, 
-            url: "https://store.steampowered.com/app/1245620/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg", 
+        {
+            name: "ELDEN RING",
+            appid: 1245620,
+            url: "https://store.steampowered.com/app/1245620/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
             price: "$59.99",
             tags: ["Souls-like", "RPG", "Dark Fantasy"]
         },
-        { 
-            name: "Hades", 
-            appid: 1145360, 
-            url: "https://store.steampowered.com/app/1145360/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg", 
+        {
+            name: "Hades",
+            appid: 1145360,
+            url: "https://store.steampowered.com/app/1145360/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
             price: "$24.99",
             tags: ["Action Roguelike", "Indie", "Mythology"]
         },
-        { 
-            name: "Balatro", 
-            appid: 2379780, 
-            url: "https://store.steampowered.com/app/2379780/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg", 
+        {
+            name: "Balatro",
+            appid: 2379780,
+            url: "https://store.steampowered.com/app/2379780/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
             price: "$14.99",
             tags: ["Roguelike Deckbuilder", "Indie"]
         },
-        { 
-            name: "Cyberpunk 2077", 
-            appid: 1091500, 
-            url: "https://store.steampowered.com/app/1091500/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg", 
+        {
+            name: "Cyberpunk 2077",
+            appid: 1091500,
+            url: "https://store.steampowered.com/app/1091500/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
             price: "$59.99",
             tags: ["Cyberpunk", "Open World", "RPG"]
         },
-        { 
-            name: "Stardew Valley", 
-            appid: 413150, 
-            url: "https://store.steampowered.com/app/413150/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg", 
+        {
+            name: "Stardew Valley",
+            appid: 413150,
+            url: "https://store.steampowered.com/app/413150/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
             price: "$14.99",
             tags: ["Farming Sim", "Pixel Graphics", "Co-op"]
         },
-        { 
-            name: "Hollow Knight", 
-            appid: 367520, 
-            url: "https://store.steampowered.com/app/367520/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg", 
+        {
+            name: "Hollow Knight",
+            appid: 367520,
+            url: "https://store.steampowered.com/app/367520/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
             price: "$14.99",
             tags: ["Metroidvania", "Souls-like", "2D"]
         },
-        { 
-            name: "Baldur's Gate 3", 
-            appid: 1086940, 
-            url: "https://store.steampowered.com/app/1086940/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg", 
+        {
+            name: "Baldur's Gate 3",
+            appid: 1086940,
+            url: "https://store.steampowered.com/app/1086940/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
             price: "$59.99",
             tags: ["CRPG", "Choices Matter", "Fantasy"]
         },
-        { 
-            name: "Terraria", 
-            appid: 105600, 
-            url: "https://store.steampowered.com/app/105600/", 
-            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg", 
+        {
+            name: "Terraria",
+            appid: 105600,
+            url: "https://store.steampowered.com/app/105600/",
+            imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
             price: "$9.99",
             tags: ["Sandbox", "Survival", "2D"]
         }
@@ -685,8 +686,8 @@ async function handleUrlInput(updateUrlBar = true) {
 
     // 1. Direct Image URL
     if (
-        rawInput.includes('.jpg') || 
-        rawInput.includes('.png') || 
+        rawInput.includes('.jpg') ||
+        rawInput.includes('.png') ||
         rawInput.includes('.webp') ||
         rawInput.includes('store_item_assets')
     ) {
@@ -904,7 +905,7 @@ function handleFile(file, customName) {
     reader.readAsDataURL(file);
 }
 
-function showLoading(show) {
+function showLoading(show, message = null) {
     loadingBar.style.display = show ? 'block' : 'none';
     if (show) resultsDashboard.style.display = 'none';
 }
@@ -920,7 +921,7 @@ function runComputerVision(img) {
 
     const lumArray = new Float32Array(totalPixels);
     const lumHist = new Uint32Array(256);
-    
+
     let sumLum = 0;
     let sumLumSq = 0;
     let sumSat = 0;
@@ -983,14 +984,14 @@ function runComputerVision(img) {
 
     for (let y = 1; y < h - 1; y += 2) {
         for (let x = 1; x < w - 1; x += 2) {
-            const gx = 
+            const gx =
                 -1 * lumArray[(y - 1) * w + (x - 1)] + 1 * lumArray[(y - 1) * w + (x + 1)] +
-                -2 * lumArray[y * w + (x - 1)]       + 2 * lumArray[y * w + (x + 1)] +
+                -2 * lumArray[y * w + (x - 1)] + 2 * lumArray[y * w + (x + 1)] +
                 -1 * lumArray[(y + 1) * w + (x - 1)] + 1 * lumArray[(y + 1) * w + (x + 1)];
 
-            const gy = 
+            const gy =
                 -1 * lumArray[(y - 1) * w + (x - 1)] + -2 * lumArray[(y - 1) * w + x] + -1 * lumArray[(y - 1) * w + (x + 1)] +
-                 1 * lumArray[(y + 1) * w + (x - 1)] +  2 * lumArray[(y + 1) * w + x] +  1 * lumArray[(y + 1) * w + (x + 1)];
+                1 * lumArray[(y + 1) * w + (x - 1)] + 2 * lumArray[(y + 1) * w + x] + 1 * lumArray[(y + 1) * w + (x + 1)];
 
             const magnitude = Math.sqrt(gx * gx + gy * gy);
             if (magnitude > 45) edgeCount++;
@@ -1325,10 +1326,13 @@ function analyzeTitleText(rgbaData, lumArray, w, h) {
 }
 
 function extractDominantColors(samples) {
-    if (!samples.length) return [];
-    
+    if (!samples || !samples.length) return [];
+
     const buckets = {};
-    samples.forEach(([r, g, b]) => {
+    samples.forEach(s => {
+        const r = Array.isArray(s) ? s[0] : (s.r || 0);
+        const g = Array.isArray(s) ? s[1] : (s.g || 0);
+        const b = Array.isArray(s) ? s[2] : (s.b || 0);
         const qr = Math.floor(r / 32) * 32;
         const qg = Math.floor(g / 32) * 32;
         const qb = Math.floor(b / 32) * 32;
@@ -1356,6 +1360,141 @@ function extractDominantColors(samples) {
 
 function rgbToHex(r, g, b) {
     return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+/**
+ * Score Evaluation Engine (Full 0-100 Dynamic Range with Bottleneck Flaw Penalty)
+ */
+function evaluateScores(cv) {
+    // 1. Dynamic Contrast (Benchmark: 63.0, Floor: 10.0)
+    let contrastScore = 100;
+    if (cv.brightnessStd >= 63.0) {
+        contrastScore = Math.min(100, 95 + (cv.brightnessStd - 63.0) * 0.8);
+    } else {
+        contrastScore = Math.max(0, ((cv.brightnessStd - 10.0) / (63.0 - 10.0)) * 95.0);
+    }
+
+    // 2. Warmth / Saliency (Benchmark: 45%, Floor: 3%)
+    let warmthScore = 100;
+    if (cv.warmPct >= 45.0) {
+        warmthScore = Math.min(100, 95 + (cv.warmPct - 45.0) * 0.2);
+    } else {
+        warmthScore = Math.max(0, ((cv.warmPct - 3.0) / (45.0 - 3.0)) * 95.0);
+    }
+
+    // 3. Shannon Entropy (Benchmark: 6.90 bits, Floor: 2.5)
+    let entropyScore = 100;
+    if (cv.entropy >= 6.90) {
+        entropyScore = 98;
+    } else {
+        entropyScore = Math.max(0, ((cv.entropy - 2.5) / (6.90 - 2.5)) * 98.0);
+    }
+
+    // 4. Edge Density (Benchmark: 13.5%, Floor: 2.0%)
+    let edgeScore = 100;
+    if (cv.edgeDensity >= 13.5) {
+        edgeScore = 95;
+    } else {
+        edgeScore = Math.max(0, ((cv.edgeDensity - 2.0) / (13.5 - 2.0)) * 95.0);
+    }
+
+    // 5. Hero Spotlight / Composition
+    let focusScore = 75;
+    if (cv.spotlightRatio > 10.0) {
+        focusScore = 98;
+    } else if (cv.isCenterFocused && cv.spotlightRatio > 0) {
+        focusScore = Math.min(95, 80 + cv.spotlightRatio * 1.5);
+    } else if (cv.isCenterFocused) {
+        focusScore = 70;
+    } else {
+        focusScore = Math.max(10, 45 + cv.spotlightRatio * 2.5);
+    }
+
+    // 6. Title Typography Contrast (Benchmark: 4.5:1, Floor: 1.2:1)
+    let textScore = 90;
+    if (cv.titleContrast >= 4.5) {
+        textScore = Math.min(100, Math.round(92 + (cv.titleContrast - 4.5) * 2.0));
+    } else if (cv.titleContrast >= 3.0) {
+        textScore = Math.round(65 + ((cv.titleContrast - 3.0) / 1.5) * 27.0);
+    } else {
+        textScore = Math.max(0, Math.round(((cv.titleContrast - 1.2) / (3.0 - 1.2)) * 65.0));
+    }
+
+    const subScores = [contrastScore, warmthScore, entropyScore, edgeScore, focusScore, textScore];
+    const baseScore = (
+        contrastScore * 0.25 +
+        warmthScore * 0.15 +
+        entropyScore * 0.15 +
+        edgeScore * 0.15 +
+        focusScore * 0.15 +
+        textScore * 0.15
+    );
+
+    // Critical Deficit / Bottleneck Rule:
+    // If any single metric is critically low (< 35), apply a steep penalty.
+    // If a metric is medium (50-70), penalty is 0.
+    const minSub = Math.min(...subScores);
+    let bottleneckPenalty = 0;
+    if (minSub < 35) {
+        bottleneckPenalty = Math.pow((35 - minSub) / 35.0, 1.2) * 35.0;
+    }
+
+    const overallScore = Math.max(0, Math.min(100, Math.round(baseScore - bottleneckPenalty)));
+
+    let tierName = "🏆 Mega-Hit Grade";
+    let tierBadgeClass = "badge-gold";
+    let percentile = "Top 10% of Steam Capsules";
+    let headline = "Exceptional";
+    let summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
+
+    if (overallScore >= 88) {
+        tierName = "🏆 Mega-Hit Grade";
+        tierBadgeClass = "badge-gold";
+        percentile = "Top 10% of Steam Capsules";
+        headline = "Exceptional";
+        summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
+    } else if (overallScore >= 72) {
+        tierName = "🌟 Solid Indie Grade";
+        tierBadgeClass = "badge-green";
+        percentile = "Top 35% of Steam Capsules";
+        headline = "Strong";
+        summary = "Well-balanced capsule with solid contrast and focal hierarchy. Minor tweaks to highlight contrast can push it to top-tier.";
+    } else if (overallScore >= 50) {
+        tierName = "📊 Moderate Visibility";
+        tierBadgeClass = "badge-blue";
+        percentile = "Median 50% Distribution";
+        headline = "Average";
+        summary = "Readable, but risks blending into the browse queue due to neutral color temperatures or softer midtone contrast.";
+    } else if (overallScore >= 30) {
+        tierName = "📉 Struggling Grade";
+        tierBadgeClass = "badge-orange";
+        percentile = "Bottom 30% of Steam Capsules";
+        headline = "Low";
+        summary = "Artwork is too flat or dark. When scaled down to small browse cards, character details and title text will blur together.";
+    } else {
+        tierName = "🕳️ Near-Zero Flop Risk";
+        tierBadgeClass = "badge-red";
+        percentile = "Bottom 15% of Steam Capsules";
+        headline = "Critical";
+        summary = "Your capsule lacks dynamic highlights, deep shadows, or color punch. Highly recommended to re-render with higher contrast lighting.";
+    }
+
+    return {
+        overallScore,
+        baseScore: Math.round(baseScore),
+        bottleneckPenalty: Math.round(bottleneckPenalty),
+        contrastScore: Math.round(contrastScore),
+        warmthScore: Math.round(warmthScore),
+        entropyScore: Math.round(entropyScore),
+        edgeScore: Math.round(edgeScore),
+        focusScore: Math.round(focusScore),
+        textScore: Math.round(textScore),
+        tierName,
+        tierBadgeClass,
+        percentile,
+        headline,
+        summary
+    };
 }
 
 function round(val, dec) {
@@ -1883,7 +2022,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
 
     // Filter out user's current game from the catalog
     let others = catalog.filter(g => String(g.appid) !== String(appid) && (g.name || "").toLowerCase() !== (userGameName || "").toLowerCase());
-    
+
     // Backfill from global catalog if fewer than 8 competitors available for this niche tag
     if (others.length < 8) {
         const globalComps = (typeof benchmarksData !== 'undefined' && benchmarksData && benchmarksData.genre_competitors && benchmarksData.genre_competitors['all']) || STORE_CATALOG;
@@ -2058,7 +2197,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
 
     // 5. Update Top Score Banner
     document.getElementById('overallScoreNum').textContent = scores.overallScore;
-    
+
     const gaugeFill = document.getElementById('gaugeFill');
     const offset = 440 - (440 * scores.overallScore / 100);
     gaugeFill.style.strokeDashoffset = offset;
@@ -2221,7 +2360,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
 
     // Show Dashboard & Smooth Scroll
     resultsDashboard.style.display = 'block';
-    
+
     setTimeout(() => {
         const target = document.getElementById('gameHugeTitleBanner') || document.querySelector('.top-hero-two-col-grid') || resultsDashboard;
         if (target) {
