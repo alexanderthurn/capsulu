@@ -202,39 +202,42 @@ async function loadBenchmarks() {
 function setupEventListeners() {
     const navHomeBtn = document.getElementById('navHomeBtn');
     const navBenchmarkBtn = document.getElementById('navBenchmarkBtn');
+    const navAiBtn = document.getElementById('navAiBtn');
     const homeView = document.getElementById('homeView');
     const benchmarkView = document.getElementById('benchmarkView');
+    const aiView = document.getElementById('aiView');
     const brandHomeLink = document.getElementById('brandHomeLink');
+
+    function setActiveTab(tab) {
+        if (navHomeBtn) navHomeBtn.classList.toggle('active', tab === 'home');
+        if (navBenchmarkBtn) navBenchmarkBtn.classList.toggle('active', tab === 'benchmark');
+        if (navAiBtn) navAiBtn.classList.toggle('active', tab === 'ai');
+
+        if (homeView) homeView.style.display = tab === 'home' ? 'block' : 'none';
+        if (benchmarkView) benchmarkView.style.display = tab === 'benchmark' ? 'block' : 'none';
+        if (aiView) aiView.style.display = tab === 'ai' ? 'block' : 'none';
+
+        if (tab === 'ai') {
+            const origin = window.location.origin;
+            const sysElem = document.getElementById('aiSystemPromptText');
+            if (sysElem) sysElem.textContent = sysElem.textContent.replace(/http:\/\/localhost:8000/g, origin);
+            const curlElem = document.getElementById('aiCurlSnippet');
+            if (curlElem) curlElem.textContent = curlElem.textContent.replace(/http:\/\/localhost:8000/g, origin);
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     if (brandHomeLink) {
         brandHomeLink.addEventListener('click', (e) => {
             e.preventDefault();
-            if (navHomeBtn && navBenchmarkBtn) {
-                navHomeBtn.classList.add('active');
-                navBenchmarkBtn.classList.remove('active');
-                homeView.style.display = 'block';
-                benchmarkView.style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            setActiveTab('home');
         });
     }
 
-    if (navHomeBtn && navBenchmarkBtn) {
-        navHomeBtn.addEventListener('click', () => {
-            navHomeBtn.classList.add('active');
-            navBenchmarkBtn.classList.remove('active');
-            homeView.style.display = 'block';
-            benchmarkView.style.display = 'none';
-        });
-
-        navBenchmarkBtn.addEventListener('click', () => {
-            navBenchmarkBtn.classList.add('active');
-            navHomeBtn.classList.remove('active');
-            homeView.style.display = 'none';
-            benchmarkView.style.display = 'block';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    }
+    if (navHomeBtn) navHomeBtn.addEventListener('click', () => setActiveTab('home'));
+    if (navBenchmarkBtn) navBenchmarkBtn.addEventListener('click', () => setActiveTab('benchmark'));
+    if (navAiBtn) navAiBtn.addEventListener('click', () => setActiveTab('ai'));
 
     window.addEventListener('popstate', () => {
         checkDeepLink();
@@ -328,19 +331,71 @@ function setupEventListeners() {
         }
     });
 
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            const item = e.target.closest('.clickable-sim-item');
-            if (item && document.activeElement === item) {
-                e.preventDefault();
-                const appid = item.getAttribute('data-appid');
-                const imageUrl = item.getAttribute('data-image-url');
-                const name = item.getAttribute('data-name');
-                const isUser = item.getAttribute('data-is-user') === 'true';
-                openSimulatorGame(appid, imageUrl, name, isUser);
-            }
-        }
-    });
+    // AI Tab & Hub Copy Listeners
+    const btnCopySystemPrompt = document.getElementById('btnCopySystemPrompt');
+    const btnCopyGenPrompt = document.getElementById('btnCopyGenPrompt');
+    const btnCopyCurlSnippet = document.getElementById('btnCopyCurlSnippet');
+    const btnCopyAiPrompt = document.getElementById('btnCopyAiPrompt');
+
+    if (btnCopySystemPrompt) {
+        btnCopySystemPrompt.addEventListener('click', () => {
+            const text = document.getElementById('aiSystemPromptText')?.textContent || '';
+            navigator.clipboard.writeText(text).then(() => {
+                btnCopySystemPrompt.textContent = '✓ Copied!';
+                btnCopySystemPrompt.classList.add('copied');
+                setTimeout(() => {
+                    btnCopySystemPrompt.textContent = '📋 Copy Agent Prompt';
+                    btnCopySystemPrompt.classList.remove('copied');
+                }, 2000);
+            });
+        });
+    }
+
+    if (btnCopyGenPrompt) {
+        btnCopyGenPrompt.addEventListener('click', () => {
+            const text = document.getElementById('aiGenArtPromptExample')?.textContent || '';
+            navigator.clipboard.writeText(text).then(() => {
+                btnCopyGenPrompt.textContent = '✓ Copied!';
+                btnCopyGenPrompt.classList.add('copied');
+                setTimeout(() => {
+                    btnCopyGenPrompt.textContent = '📋 Copy Template';
+                    btnCopyGenPrompt.classList.remove('copied');
+                }, 2000);
+            });
+        });
+    }
+
+    if (btnCopyCurlSnippet) {
+        btnCopyCurlSnippet.addEventListener('click', () => {
+            const text = document.getElementById('aiCurlSnippet')?.textContent || '';
+            navigator.clipboard.writeText(text).then(() => {
+                btnCopyCurlSnippet.textContent = '✓ Copied!';
+                btnCopyCurlSnippet.classList.add('copied');
+                setTimeout(() => {
+                    btnCopyCurlSnippet.textContent = '📋 Copy cURL';
+                    btnCopyCurlSnippet.classList.remove('copied');
+                }, 2000);
+            });
+        });
+    }
+
+    if (btnCopyAiPrompt) {
+        btnCopyAiPrompt.addEventListener('click', () => {
+            const text = document.getElementById('aiPromptTextarea')?.textContent || '';
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = document.getElementById('copyPromptIcon');
+                const label = document.getElementById('copyPromptText');
+                if (icon) icon.textContent = '✓';
+                if (label) label.textContent = 'Copied to Clipboard!';
+                btnCopyAiPrompt.classList.add('copied');
+                setTimeout(() => {
+                    if (icon) icon.textContent = '📋';
+                    if (label) label.textContent = 'Copy AI Prompt';
+                    btnCopyAiPrompt.classList.remove('copied');
+                }, 2500);
+            });
+        });
+    }
 
 
     browseBtn.addEventListener('click', (e) => {
@@ -1540,6 +1595,7 @@ function switchGenreLens(genreKey) {
         updateGenreBenchmarkDisplay(currentCvResult, currentGenreLens);
         renderSimulatorLineups(currentLoadedImgSrc, currentLoadedGameName, currentLoadedAppId, currentGenreLens);
         generateChecklist(currentCvResult, currentScores, currentGenreLens);
+        updateAiPromptCard(currentCvResult, currentScores, currentLoadedGameName, currentLoadedAppId, currentLoadedImgSrc, currentGenreLens);
     }
 }
 
@@ -2110,8 +2166,9 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     let textScore = Math.min(100, Math.round(cv.titleContrast >= 4.5 ? 90 + (cv.titleContrast - 4.5) * 2 : cv.titleContrast * 20));
     updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', textScore, `Your: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
 
-    // 8. Generate Tailored Checklist
+    // 8. Generate Tailored Checklist & AI Art Fix Prompt
     generateChecklist(cv, scores, currentGenreLens);
+    updateAiPromptCard(cv, scores, gameName, appid, imgSrc, currentGenreLens);
 
     // 8.5 Bind Click-to-Scroll on Quick Metric Cells
     bindQuickMetricsScroll();
@@ -2403,4 +2460,94 @@ function generateChecklist(cv, scores, genreKey = 'all') {
         `;
         container.appendChild(card);
     });
+}
+
+/**
+ * Generate Customized AI Art Optimization Prompt
+ */
+function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all') {
+    const nameStr = gameName || "My Steam Game";
+    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8000';
+    const apiLink = appid 
+        ? `${origin}/api/rate?appid=${appid}&format=markdown` 
+        : `${origin}/api/rate?image_url=${encodeURIComponent(imgSrc || '')}&format=markdown`;
+    
+    // Contrast assessment
+    let contrastGuidance = "";
+    if (cv.brightnessStd < 55) {
+        contrastGuidance = `• Deepen cast shadows and push specular highlights on the main hero/subject to increase dynamic contrast std dev from ${cv.brightnessStd} up to the Steam Mega-Hit benchmark of >= 63.0.`;
+    } else if (cv.brightnessStd < 63) {
+        contrastGuidance = `• Slightly amplify the key light and darken background elements to push dynamic contrast from ${cv.brightnessStd} to >= 63.0.`;
+    } else {
+        contrastGuidance = `• Maintain the strong lighting contrast (${cv.brightnessStd} std dev), which already exceeds commercial benchmarks.`;
+    }
+
+    // Warmth / Saliency assessment
+    let warmGuidance = "";
+    if (cv.warmPct < 30) {
+        warmGuidance = `• Introduce warm accents (e.g. golden/amber rim-lighting, torch flame, magical particle glow) to increase warm pixel share from ${cv.warmPct}% towards ~45% so the capsule pops against Steam's dark navy #171a21 interface.`;
+    } else {
+        warmGuidance = `• Color temperature is well balanced (${cv.warmPct}% warm color share). Ensure focal elements retain primary chromatic emphasis.`;
+    }
+
+    // Title Typography assessment
+    let titleGuidance = "";
+    if (cv.titleContrast < 4.5) {
+        titleGuidance = `• Title text at ${cv.titleZone} currently has low photometric contrast (${cv.titleContrast}:1). Add a subtle dark drop shadow, outer stroke, or backdrop gradient scrim to achieve at least 4.5:1 WCAG AA readability.`;
+    } else {
+        titleGuidance = `• Title text at ${cv.titleZone} has high readability (${cv.titleContrast}:1 WCAG). Keep font lettering sharp and unhindered by clutter.`;
+    }
+
+    // Focal hierarchy / Vignette
+    let vignetteGuidance = cv.isCenterFocused
+        ? `• Good hero illumination. Keep secondary background elements subdued.`
+        : `• Apply a subtle 15% radial edge vignette (darkening borders) to funnel the viewer's gaze toward the center hero character.`;
+
+    // 120px scale readability
+    let scaleGuidance = `• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue).`;
+
+    const prompt = `I am revising the Steam Store header capsule art (460x215) for "${nameStr}".
+
+Artwork Image: ${imgSrc || '(Uploaded image)'}
+Live Benchmark Report: ${apiLink}
+Current Capsule Score: ${scores.overallScore}/100 (${scores.tierName})
+
+Please optimize and refine this capsule artwork with the following empirical Steam benchmark adjustments:
+
+1. Dynamic Contrast & Lighting:
+${contrastGuidance}
+
+2. Color Temperature & Steam UI Pop:
+${warmGuidance}
+
+3. Title Typography & Readability:
+${titleGuidance}
+
+4. Compositional Hierarchy:
+${vignetteGuidance}
+
+5. Thumbnail Downscaling (120px Discovery Queue):
+${scaleGuidance}
+
+Compliance: Adhere strictly to Steam asset rules (no review quotes, no discount banners, no non-title text). Generate the revised capsule concept [or step-by-step digital painting instructions].`;
+
+    return prompt;
+}
+
+/**
+ * Update the AI Art Fix Prompt Card
+ */
+function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
+    const card = document.getElementById('aiPromptCard');
+    const textarea = document.getElementById('aiPromptTextarea');
+    const downloadBtn = document.getElementById('btnDownloadCapsule');
+    if (!card || !textarea) return;
+
+    const promptText = generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey);
+    textarea.textContent = promptText;
+
+    if (downloadBtn) {
+        downloadBtn.href = imgSrc || '#';
+        downloadBtn.download = `${(gameName || 'steam_capsule').toLowerCase().replace(/[^a-z0-9]/g, '_')}_capsule.jpg`;
+    }
 }

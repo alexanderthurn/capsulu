@@ -82,6 +82,7 @@
                 <div class="steam-nav-links">
                     <button class="nav-tab-btn active" id="navHomeBtn" type="button">Home</button>
                     <button class="nav-tab-btn" id="navBenchmarkBtn" type="button">Benchmark</button>
+                    <button class="nav-tab-btn" id="navAiBtn" type="button">AI</button>
                 </div>
             </div>
 
@@ -373,6 +374,27 @@
                         </div>
                         <div class="checklist-grid" id="checklistContainer">
                             <!-- Injected via JS -->
+                        </div>
+
+                        <!-- AI Art Fix Prompt Card (1-Click Copy for ChatGPT, Claude, Midjourney, Photoshop) -->
+                        <div class="ai-prompt-card" id="aiPromptCard">
+                            <div class="ai-prompt-header">
+                                <div class="ai-prompt-title-group">
+                                    <span class="ai-prompt-badge">✨ AI Art Fix Prompt</span>
+                                    <span class="ai-prompt-subtext">Copy and paste into ChatGPT, Claude, Midjourney, or Photoshop Generative Fill to optimize this capsule</span>
+                                </div>
+                                <div class="ai-prompt-actions">
+                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt" title="Copy ready-to-use prompt to clipboard">
+                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI Prompt</span>
+                                    </button>
+                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg" title="Download capsule image to upload into AI chat">
+                                        <span>⬇️</span> Download Art
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ai-prompt-box">
+                                <pre id="aiPromptTextarea" class="ai-prompt-content"></pre>
+                            </div>
                         </div>
                     </section>
 
@@ -851,6 +873,111 @@
                         <div class="chart-card-footer">
                             <p><strong>Tailoring Art to Genre Conventions:</strong> RPG and Strategy games feature higher detail complexity and textural density, whereas Action and Arcade games prioritize high warm-accent punch and dramatic high-contrast lighting.</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW 3: AI (Capsulu AI Integrations & API Hub) -->
+    <div id="aiView" style="display: none;">
+        <div class="ai-view-container">
+            <header class="ai-view-header">
+                <div class="ai-view-title-row">
+                    <span class="ai-header-sparkle">✨</span>
+                    <div>
+                        <h2>Capsulu for AI &amp; LLMs</h2>
+                        <p class="ai-view-sub">Supercharge your game art workflow. Connect Capsulu's empirical computer vision engine directly with ChatGPT, Claude, Midjourney, Photoshop Generative Fill, Cursor, or your custom agents.</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Cards Grid: Custom GPT Setup, Prompting Guide, and REST API -->
+            <div class="ai-grid-layout">
+                <!-- Card 1: Custom GPT & Claude Project System Prompt -->
+                <div class="steam-panel ai-panel-card">
+                    <div class="panel-header">
+                        <div class="ai-card-title-group">
+                            <span class="ai-step-badge">1</span>
+                            <h3>Custom GPT &amp; Claude Project Agent</h3>
+                        </div>
+                        <span class="panel-badge">ChatGPT / Claude</span>
+                    </div>
+                    <p class="ai-card-explainer">Paste this system instruction into your Custom GPT, Claude Project, or system prompt so your AI can automatically evaluate any Steam capsule on command:</p>
+                    
+                    <div class="ai-code-wrapper">
+                        <pre class="ai-code-block" id="aiSystemPromptText">You are an expert Steam Store Capsule Art Director powered by Capsulu Computer Vision.
+
+Workflow:
+1. Greet the user and ask them to share their game:
+   - A Steam Store page URL (e.g. https://store.steampowered.com/app/1145360/Hades/)
+   - A Steam AppID (e.g. 1145360)
+   - A direct capsule image URL
+   - Or upload a capsule image file directly into the chat
+
+2. Retrieve the empirical Computer Vision benchmark:
+   - For Steam links or AppIDs, fetch:
+     GET http://localhost:8000/api/rate?appid=&lt;APPID&gt;&amp;format=markdown
+     (or GET http://localhost:8000/api/rate?url=&lt;STEAM_URL&gt;&amp;format=markdown)
+   - For public image URLs, fetch:
+     GET http://localhost:8000/api/rate?image_url=&lt;IMAGE_URL&gt;&amp;format=markdown
+   - For uploaded images in chat: inspect the artwork visually and compare against Capsulu's 28,754-game benchmarks (Dynamic Contrast std dev &gt;= 63.0, Warmth ~45%, Title WCAG &gt;= 4.5:1, Center Spotlight).
+
+3. Provide structured, actionable feedback:
+   - Sales Grade &amp; Score (/100) vs 28,754 Steam games
+   - Detailed critique of Lighting Contrast, Palette Saliency, Title Typography, and Composition
+   - A ready-to-use Generative Art prompt (for Midjourney, DALL-E, or Photoshop Generative Fill) to iterate on the capsule artwork</pre>
+                        <button type="button" class="btn-copy-code" id="btnCopySystemPrompt">📋 Copy Agent Prompt</button>
+                    </div>
+                </div>
+
+                <!-- Card 2: AI Art Fix Prompting Guide (Midjourney, Photoshop, DALL-E) -->
+                <div class="steam-panel ai-panel-card">
+                    <div class="panel-header">
+                        <div class="ai-card-title-group">
+                            <span class="ai-step-badge">2</span>
+                            <h3>Generative Art Iteration (Midjourney &amp; Photoshop)</h3>
+                        </div>
+                        <span class="panel-badge">Prompt Template</span>
+                    </div>
+                    <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically generates a custom prompt tailored to that capsule's exact CV deficits. Here is the general structure:</p>
+                    
+                    <div class="ai-code-wrapper">
+                        <pre class="ai-code-block" id="aiGenArtPromptExample">I am revising the Steam Store header capsule art (460x215) for "[Game Title]".
+
+Key Art Adjustments needed based on 28,754 Steam games empirical study:
+1. Contrast: Push specular highlights and deepen cast shadows (std dev >= 63.0).
+2. Saliency: Add warm amber/golden rim-lighting to pop against Steam dark #171a21 UI.
+3. Typography: Title text at Top Left needs >= 4.5:1 WCAG AA contrast (add drop shadow or scrim).
+4. Focal Vignette: Apply 15% radial perimeter darkening to guide eye to center hero.
+5. 120px Discovery Queue: Keep primary character silhouette crisp and readable at tiny scale.
+
+Adhere strictly to Steam rules: clean title typography only, no review scores, no discount stickers.</pre>
+                        <button type="button" class="btn-copy-code" id="btnCopyGenPrompt">📋 Copy Template</button>
+                    </div>
+                </div>
+
+                <!-- Card 3: Live REST API & cURL Reference -->
+                <div class="steam-panel ai-panel-card ai-card-full">
+                    <div class="panel-header">
+                        <div class="ai-card-title-group">
+                            <span class="ai-step-badge">3</span>
+                            <h3>High-Speed REST API &amp; CLI Integration</h3>
+                        </div>
+                        <span class="panel-badge">REST API</span>
+                    </div>
+                    <p class="ai-card-explainer">Query our local or deployed server directly from your terminal, Python scripts, Node.js bots, or CI/CD pipelines:</p>
+
+                    <div class="ai-code-wrapper">
+                        <pre class="ai-code-block" id="aiCurlSnippet"># 1. Markdown Report (Formatted specifically for LLMs and AI chats)
+curl "http://localhost:8000/api/rate?appid=1145360&amp;format=markdown"
+
+# 2. Raw JSON Payload (Includes full scores, percentiles, CV metrics, and tips)
+curl "http://localhost:8000/api/rate?appid=1145360&amp;format=json"
+
+# 3. Analyze any custom image URL directly (no AppID needed)
+curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&amp;format=markdown"</pre>
+                        <button type="button" class="btn-copy-code" id="btnCopyCurlSnippet">📋 Copy cURL</button>
                     </div>
                 </div>
             </div>
