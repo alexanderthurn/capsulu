@@ -15,6 +15,7 @@ Output:
 
 import json
 import os
+import shutil
 import sys
 import time
 from collections import Counter
@@ -34,6 +35,7 @@ RAW_STORE_DIR = os.path.join(DATA_DIR, "raw_store")
 APPS_FILE = os.path.join(DATA_DIR, "apps_all.json")
 OUTPUT_DIR = os.path.join(PROJECT_DIR, "output")
 CHARTS_DIR = os.path.join(OUTPUT_DIR, "charts")
+WEB_BENCHMARK_DIR = os.path.join(PROJECT_DIR, "web", "benchmark")
 
 # Setup aesthetic style for charts
 sns.set_theme(style="whitegrid", palette="muted")
@@ -217,12 +219,27 @@ def load_data():
     df = pd.DataFrame(records)
     print(f"✅ Compiled dataset with {len(df):,} analyzed entries.")
     
+    # Parse release year and filter to mature games (<=2024 or legacy missing date)
+    years = df["release_date"].astype(str).str.extract(r"(\b20\d\d\b|\b19\d\d\b)")[0]
+    df["release_year"] = pd.to_numeric(years, errors="coerce")
+
     # Save aggregated CSV
     csv_path = os.path.join(DATA_DIR, "aggregated_dataset.csv")
     df.to_csv(csv_path, index=False)
     print(f"  💾 Saved CSV master dataset to {csv_path}")
 
-    return df
+    # Filter to mature games for benchmarks & report
+    df_mature = df[
+        df['brightness_std'].notna() & 
+        df['entropy'].notna() & 
+        df['edge_density'].notna() & 
+        (df['brightness_std'] > 5.0) &
+        df['name'].notna() &
+        ((df["release_year"].isna()) | (df["release_year"] <= 2024))
+    ].copy()
+    print(f"  📊 Filtered to {len(df_mature):,} mature games (<=2024) for report & charts.")
+
+    return df_mature
 
 def generate_chart_1_brightness_contrast(df):
     print("📈 Generating Chart 1: Brightness & Contrast across 5 Sales Tiers...")
@@ -797,6 +814,15 @@ def main():
     # 4. Generate report
     report_file = write_markdown_report(df, stats, chart_paths)
     
+    # 5. Copy generated charts to web/benchmark
+    os.makedirs(WEB_BENCHMARK_DIR, exist_ok=True)
+    for cp in chart_paths:
+        if cp and os.path.exists(cp):
+            fname = os.path.basename(cp)
+            dest = os.path.join(WEB_BENCHMARK_DIR, fname)
+            shutil.copyfile(cp, dest)
+            print(f"  ✓ Copied {fname} to web/benchmark")
+
     elapsed = time.time() - start_time
     print(f"\n🎉 All done in {elapsed:.1f}s! Check out {report_file}")
 

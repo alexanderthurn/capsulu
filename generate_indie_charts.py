@@ -45,14 +45,15 @@ plt.rcParams.update({
     "savefig.bbox": "tight"
 })
 
-INDIE_TIER_ORDER = ["0_reviews", "1_5_reviews", "6_10_reviews", "11_100_reviews", "100_plus"]
+INDIE_TIER_ORDER = ["0_reviews", "1_5_reviews", "6_10_reviews", "11_100_reviews", "100_500_reviews", "500_plus"]
 
 INDIE_TIER_LABELS = {
     "0_reviews": "0 Reviews (Ghost Zone)",
     "1_5_reviews": "1-5 Reviews (Friend Zone)",
     "6_10_reviews": "6-10 Reviews (Threshold)",
     "11_100_reviews": "11-100 Reviews (Ignition)",
-    "100_plus": "100+ Reviews (Breakout)"
+    "100_500_reviews": "100-500 Reviews (Validated)",
+    "500_plus": "500+ Reviews (Hit)"
 }
 
 INDIE_SHORT_LABELS = {
@@ -60,15 +61,17 @@ INDIE_SHORT_LABELS = {
     "1_5_reviews": "1-5 Revs\n(Friend)",
     "6_10_reviews": "6-10 Revs\n(Threshold)",
     "11_100_reviews": "11-100 Revs\n(Ignition)",
-    "100_plus": "100+ Revs\n(Breakout)"
+    "100_500_reviews": "100-500 Revs\n(Validated)",
+    "500_plus": "500+ Revs\n(Hit)"
 }
 
 INDIE_COLORS = {
-    "0_reviews": "#c0392b",    # Dark Crimson
-    "1_5_reviews": "#e74c3c",  # Red
-    "6_10_reviews": "#f39c12", # Gold/Orange
-    "11_100_reviews": "#3498db", # Cyan/Blue
-    "100_plus": "#2ecc71"      # Emerald Green
+    "0_reviews": "#c0392b",        # Dark Crimson
+    "1_5_reviews": "#e74c3c",      # Red
+    "6_10_reviews": "#f39c12",     # Gold/Orange
+    "11_100_reviews": "#3498db",   # Cyan/Blue
+    "100_500_reviews": "#2ecc71",  # Emerald Green
+    "500_plus": "#9b59b6"          # Purple / Hit
 }
 
 def classify_indie_tier(reviews):
@@ -80,20 +83,26 @@ def classify_indie_tier(reviews):
         return "6_10_reviews"
     elif 11 <= reviews <= 100:
         return "11_100_reviews"
+    elif 101 <= reviews <= 500:
+        return "100_500_reviews"
     else:
-        return "100_plus"
+        return "500_plus"
 
 def load_clean_data():
     if not os.path.exists(CSV_PATH):
         raise FileNotFoundError(f"Missing {CSV_PATH}")
     df = pd.read_csv(CSV_PATH)
+    years = df["release_date"].astype(str).str.extract(r"(\b20\d\d\b|\b19\d\d\b)")[0]
+    df["release_year"] = pd.to_numeric(years, errors="coerce")
+
     clean_df = df[
         (df["brightness_std"] > 1.0) &
         (df["avg_brightness"] > 5.0) &
-        (df["avg_brightness"] < 250.0)
+        (df["avg_brightness"] < 250.0) &
+        ((df["release_year"].isna()) | (df["release_year"] <= 2024))
     ].copy()
     clean_df["indie_tier"] = clean_df["total_reviews"].apply(classify_indie_tier)
-    print(f"📊 Loaded {len(clean_df):,} cleaned games.")
+    print(f"📊 Loaded {len(clean_df):,} cleaned mature games (<=2024).")
     print(clean_df["indie_tier"].value_counts())
     return clean_df
 
@@ -173,9 +182,9 @@ def generate_indie_chart_2_palette_and_saturation(df):
 
     # Saturation KDE
     sns.kdeplot(
-        data=df[df["indie_tier"] == "100_plus"]["avg_saturation"],
-        label="100+ Revs (Breakout)",
-        color=INDIE_COLORS["100_plus"],
+        data=df[df["indie_tier"] == "100_500_reviews"]["avg_saturation"],
+        label="100-500 Revs (Validated)",
+        color=INDIE_COLORS["100_500_reviews"],
         linewidth=2.8,
         fill=True,
         alpha=0.2,
@@ -323,7 +332,7 @@ def generate_indie_chart_5_title_positioning_heatmap(df):
     ]
 
     df_text = df[df["has_text"] == True]
-    compare_tiers = ["1_5_reviews", "11_100_reviews", "100_plus"]
+    compare_tiers = ["1_5_reviews", "11_100_reviews", "100_500_reviews"]
 
     for idx, tier in enumerate(compare_tiers):
         sub_df = df_text[df_text["indie_tier"] == tier]

@@ -21,17 +21,24 @@ os.makedirs(WEB_DIR, exist_ok=True)
 print(f"📊 Reading {CSV_PATH}...")
 df = pd.read_csv(CSV_PATH)
 
+# Parse release year
+years = df["release_date"].astype(str).str.extract(r"(\b20\d\d\b|\b19\d\d\b)")[0]
+df["release_year"] = pd.to_numeric(years, errors="coerce")
+
 # Clean filter: Remove any rows with missing or zero contrast/entropy/edge values
+# AND filter to mature games (released in 2024 or earlier, or legacy missing date)
+# so review counts reflect true long-term market performance rather than fresh launch noise.
 clean_df = df[
     df['brightness_std'].notna() & 
     df['entropy'].notna() & 
     df['edge_density'].notna() & 
     (df['brightness_std'] > 5.0) &
-    df['name'].notna()
+    df['name'].notna() &
+    ((df["release_year"].isna()) | (df["release_year"] <= 2024))
 ].copy()
 
 total_valid = len(clean_df)
-print(f"  Total valid, verified games: {total_valid:,}")
+print(f"  Total valid, mature verified games (<=2024): {total_valid:,}")
 
 # 1. Sales Tier Benchmarks
 tiers = ["mega_hit", "successful", "moderate", "struggling", "near_zero"]
@@ -1478,7 +1485,8 @@ zero_reviews_games = [format_game_card(r) for _, r in clean_df[clean_df["total_r
 reviews_1_5_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 1) & (clean_df["total_reviews"] <= 5)].sort_values(by=["score", "total_reviews"], ascending=[True, True]).head(25).iterrows()]
 reviews_6_10_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 6) & (clean_df["total_reviews"] <= 10)].sort_values(by=["total_reviews", "score"], ascending=[True, True]).head(25).iterrows()]
 reviews_11_100_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 11) & (clean_df["total_reviews"] <= 100)].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
-reviews_100_plus_games = [format_game_card(r) for _, r in clean_df[clean_df["total_reviews"] > 100].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
+reviews_100_500_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 100) & (clean_df["total_reviews"] <= 500)].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
+reviews_500_plus_games = [format_game_card(r) for _, r in clean_df[clean_df["total_reviews"] > 500].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
 
 output_payload = {
     "generated_at": pd.Timestamp.now().isoformat(),
@@ -1495,7 +1503,9 @@ output_payload = {
         "reviews_1_5": reviews_1_5_games,
         "reviews_6_10": reviews_6_10_games,
         "reviews_11_100": reviews_11_100_games,
-        "reviews_100_plus": reviews_100_plus_games
+        "reviews_100_500": reviews_100_500_games,
+        "reviews_500_plus": reviews_500_plus_games,
+        "reviews_100_plus": reviews_100_500_games
     },
     "top_rated": top_rated_games,
     "lowest_rated": lowest_rated_games

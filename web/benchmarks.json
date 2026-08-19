@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-08-19T21:09:57.889900",
+  "generated_at": "2026-08-19T21:19:28.106636",
   "overall": {
-    "total_games_analyzed": 28754,
+    "total_games_analyzed": 27664,
     "contrast_p90": 78.4,
     "contrast_p10": 41.4,
     "entropy_p90": 7.72,
-    "entropy_p10": 4.97,
-    "edge_density_p90": 20.99,
-    "edge_density_p10": 5.36,
-    "title_contrast_median": 3.49,
+    "entropy_p10": 4.95,
+    "edge_density_p90": 21.0,
+    "edge_density_p10": 5.34,
+    "title_contrast_median": 3.48,
     "title_contrast_mean": 5.21,
     "title_contrast_p75": 6.61,
     "title_good_readability_pct": 32.5
@@ -16,182 +16,182 @@
   "tiers": {
     "mega_hit": {
       "name": "Mega-Hit (>10k reviews)",
-      "count": 1748,
+      "count": 1688,
       "contrast": {
-        "mean": 63.08,
-        "median": 63.05,
+        "mean": 63.09,
+        "median": 63.0,
         "p25": 53.9,
-        "p75": 72.1
+        "p75": 72.12
       },
       "brightness": {
-        "mean": 100.34,
-        "median": 95.35
+        "mean": 100.42,
+        "median": 95.6
       },
       "saturation": {
-        "mean": 107.38,
-        "median": 104.35
+        "mean": 107.5,
+        "median": 104.4
       },
       "entropy": {
         "mean": 6.99,
         "median": 7.3
       },
       "edge_density": {
-        "mean": 14.22,
-        "median": 14.13
+        "mean": 14.2,
+        "median": 14.07
       },
-      "warm_palette_pct": 49.9,
-      "neutral_palette_pct": 43.3,
-      "cool_palette_pct": 6.8,
+      "warm_palette_pct": 49.8,
+      "neutral_palette_pct": 43.2,
+      "cool_palette_pct": 7.0,
       "center_focus_pct": 72.0,
       "dark_ratio": 49.7,
       "light_ratio": 20.5
     },
     "successful": {
       "name": "Successful (1k-10k reviews)",
-      "count": 5676,
+      "count": 5418,
       "contrast": {
-        "mean": 62.19,
+        "mean": 62.18,
         "median": 62.5,
-        "p25": 53.4,
+        "p25": 53.23,
         "p75": 70.8
       },
       "brightness": {
-        "mean": 102.89,
-        "median": 98.15
+        "mean": 102.83,
+        "median": 97.8
       },
       "saturation": {
-        "mean": 109.35,
-        "median": 108.4
+        "mean": 109.22,
+        "median": 108.2
       },
       "entropy": {
         "mean": 6.9,
         "median": 7.25
       },
       "edge_density": {
-        "mean": 14.03,
-        "median": 13.87
+        "mean": 14.0,
+        "median": 13.81
       },
-      "warm_palette_pct": 50.0,
-      "neutral_palette_pct": 42.2,
+      "warm_palette_pct": 49.8,
+      "neutral_palette_pct": 42.4,
       "cool_palette_pct": 7.8,
       "center_focus_pct": 70.4,
-      "dark_ratio": 47.9,
+      "dark_ratio": 48.0,
       "light_ratio": 21.5
     },
     "moderate": {
       "name": "Moderate (100-1k reviews)",
-      "count": 10888,
+      "count": 10504,
       "contrast": {
-        "mean": 60.49,
+        "mean": 60.51,
         "median": 60.9,
-        "p25": 51.5,
-        "p75": 69.6
+        "p25": 51.4,
+        "p75": 69.7
       },
       "brightness": {
-        "mean": 100.47,
-        "median": 94.7
+        "mean": 100.55,
+        "median": 94.8
       },
       "saturation": {
-        "mean": 110.29,
-        "median": 109.0
+        "mean": 110.21,
+        "median": 108.9
       },
       "entropy": {
         "mean": 6.77,
         "median": 7.18
       },
       "edge_density": {
-        "mean": 13.4,
-        "median": 13.15
+        "mean": 13.37,
+        "median": 13.11
       },
-      "warm_palette_pct": 48.4,
-      "neutral_palette_pct": 44.2,
+      "warm_palette_pct": 48.5,
+      "neutral_palette_pct": 44.1,
       "cool_palette_pct": 7.4,
-      "center_focus_pct": 71.1,
-      "dark_ratio": 48.9,
-      "light_ratio": 20.4
+      "center_focus_pct": 70.9,
+      "dark_ratio": 48.8,
+      "light_ratio": 20.5
     },
     "struggling": {
       "name": "Struggling (10-100 reviews)",
-      "count": 6794,
+      "count": 6609,
       "contrast": {
-        "mean": 58.84,
+        "mean": 58.86,
         "median": 58.9,
         "p25": 49.2,
         "p75": 68.4
       },
       "brightness": {
-        "mean": 93.28,
-        "median": 86.7
+        "mean": 93.4,
+        "median": 86.8
       },
       "saturation": {
-        "mean": 112.57,
+        "mean": 112.42,
         "median": 113.4
       },
       "entropy": {
-        "mean": 6.46,
+        "mean": 6.45,
         "median": 6.93
       },
       "edge_density": {
-        "mean": 12.2,
-        "median": 11.64
+        "mean": 12.18,
+        "median": 11.59
       },
-      "warm_palette_pct": 42.8,
+      "warm_palette_pct": 42.7,
       "neutral_palette_pct": 49.4,
       "cool_palette_pct": 7.8,
-      "center_focus_pct": 72.6,
-      "dark_ratio": 52.8,
+      "center_focus_pct": 72.7,
+      "dark_ratio": 52.7,
       "light_ratio": 18.0
     },
     "near_zero": {
       "name": "Near-Zero (<10 reviews)",
-      "count": 3648,
+      "count": 3445,
       "contrast": {
         "mean": 56.9,
-        "median": 57.25,
-        "p25": 46.2,
+        "median": 57.2,
+        "p25": 46.0,
         "p75": 67.3
       },
       "brightness": {
-        "mean": 90.19,
-        "median": 83.6
+        "mean": 90.68,
+        "median": 84.1
       },
       "saturation": {
-        "mean": 111.42,
-        "median": 110.4
+        "mean": 111.11,
+        "median": 109.9
       },
       "entropy": {
-        "mean": 6.18,
+        "mean": 6.17,
         "median": 6.71
       },
       "edge_density": {
-        "mean": 11.21,
-        "median": 10.36
+        "mean": 11.18,
+        "median": 10.33
       },
-      "warm_palette_pct": 39.0,
-      "neutral_palette_pct": 51.8,
+      "warm_palette_pct": 39.4,
+      "neutral_palette_pct": 51.5,
       "cool_palette_pct": 9.2,
-      "center_focus_pct": 71.4,
-      "dark_ratio": 54.1,
-      "light_ratio": 17.3
+      "center_focus_pct": 71.3,
+      "dark_ratio": 53.8,
+      "light_ratio": 17.5
     }
   },
   "genres": {
     "Action": {
       "name": "Action",
-      "count": 10448,
+      "count": 9931,
       "tip": "High dynamic lighting and warm rim-lighting are critical to pop against fast-paced Steam browse feeds.",
       "contrast": {
-        "mean": 60.85,
+        "mean": 60.86,
         "median": 61.3,
-        "top_tier_mean": 63.24
+        "top_tier_mean": 63.25
       },
       "brightness": {
-        "mean": 91.87,
-        "median": 86.9
+        "mean": 91.98,
+        "median": 87.1
       },
       "saturation": {
-        "mean": 114.54,
-        "median": 114.35
+        "mean": 114.44,
+        "median": 114.1
       },
       "entropy": {
         "mean": 6.7,
@@ -199,110 +199,110 @@
         "top_tier_mean": 6.98
       },
       "edge_density": {
-        "mean": 12.97,
-        "median": 12.72,
-        "top_tier_mean": 14.16
+        "mean": 12.95,
+        "median": 12.68,
+        "top_tier_mean": 14.15
       },
-      "warm_palette_pct": 42.9,
+      "warm_palette_pct": 42.8,
       "neutral_palette_pct": 50.0,
-      "cool_palette_pct": 7.1,
-      "center_focus_pct": 72.8,
-      "dark_ratio": 53.7,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 72.9,
+      "dark_ratio": 53.6,
       "light_ratio": 17.4,
       "text": {
         "has_text_pct": 83.9,
         "contrast": {
-          "median": 3.58,
+          "median": 3.57,
           "mean": 5.3,
-          "p75": 6.8
+          "p75": 6.77
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.1
+        "good_readability_pct": 33.0
       }
     },
     "Adventure": {
       "name": "Adventure",
-      "count": 10291,
+      "count": 9797,
       "tip": "Atmospheric lighting with high tonal entropy and clear environmental depth performs best.",
       "contrast": {
-        "mean": 59.92,
+        "mean": 59.94,
         "median": 60.2,
-        "top_tier_mean": 61.95
+        "top_tier_mean": 61.91
       },
       "brightness": {
-        "mean": 94.99,
-        "median": 88.8
+        "mean": 95.25,
+        "median": 88.9
       },
       "saturation": {
-        "mean": 110.08,
-        "median": 109.8
+        "mean": 109.96,
+        "median": 109.6
       },
       "entropy": {
-        "mean": 6.71,
+        "mean": 6.7,
         "median": 7.11,
         "top_tier_mean": 6.94
       },
       "edge_density": {
-        "mean": 13.08,
-        "median": 12.75,
-        "top_tier_mean": 13.92
+        "mean": 13.05,
+        "median": 12.7,
+        "top_tier_mean": 13.86
       },
       "warm_palette_pct": 44.4,
-      "neutral_palette_pct": 48.4,
-      "cool_palette_pct": 7.3,
+      "neutral_palette_pct": 48.2,
+      "cool_palette_pct": 7.4,
       "center_focus_pct": 73.3,
-      "dark_ratio": 52.1,
-      "light_ratio": 18.8,
+      "dark_ratio": 52.0,
+      "light_ratio": 18.9,
       "text": {
         "has_text_pct": 84.7,
         "contrast": {
           "median": 3.58,
-          "mean": 5.41,
-          "p75": 7.04
+          "mean": 5.4,
+          "p75": 7.03
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 34.3
+        "good_readability_pct": 34.2
       }
     },
     "RPG": {
       "name": "RPG",
-      "count": 5590,
+      "count": 5215,
       "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding.",
       "contrast": {
-        "mean": 60.7,
-        "median": 60.7,
-        "top_tier_mean": 62.4
+        "mean": 60.78,
+        "median": 60.8,
+        "top_tier_mean": 62.45
       },
       "brightness": {
-        "mean": 99.87,
-        "median": 94.6
+        "mean": 100.2,
+        "median": 94.9
       },
       "saturation": {
-        "mean": 108.13,
-        "median": 106.8
+        "mean": 107.91,
+        "median": 106.5
       },
       "entropy": {
         "mean": 6.91,
-        "median": 7.26,
+        "median": 7.25,
         "top_tier_mean": 7.08
       },
       "edge_density": {
         "mean": 14.56,
-        "median": 14.44,
-        "top_tier_mean": 15.38
+        "median": 14.43,
+        "top_tier_mean": 15.39
       },
-      "warm_palette_pct": 48.9,
-      "neutral_palette_pct": 45.4,
+      "warm_palette_pct": 49.2,
+      "neutral_palette_pct": 45.1,
       "cool_palette_pct": 5.7,
-      "center_focus_pct": 70.8,
-      "dark_ratio": 49.1,
-      "light_ratio": 19.9,
+      "center_focus_pct": 70.6,
+      "dark_ratio": 48.9,
+      "light_ratio": 20.1,
       "text": {
-        "has_text_pct": 86.9,
+        "has_text_pct": 87.0,
         "contrast": {
-          "median": 3.49,
-          "mean": 5.0,
-          "p75": 6.14
+          "median": 3.48,
+          "mean": 4.99,
+          "p75": 6.13
         },
         "top_zone": "mid_center",
         "good_readability_pct": 32.7
@@ -310,175 +310,175 @@
     },
     "Strategy": {
       "name": "Strategy",
-      "count": 5529,
+      "count": 5190,
       "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes.",
       "contrast": {
-        "mean": 60.27,
+        "mean": 60.31,
         "median": 60.4,
-        "top_tier_mean": 61.91
+        "top_tier_mean": 62.01
       },
       "brightness": {
-        "mean": 99.88,
-        "median": 95.6
+        "mean": 100.16,
+        "median": 96.0
       },
       "saturation": {
-        "mean": 111.4,
-        "median": 110.2
+        "mean": 111.25,
+        "median": 110.0
       },
       "entropy": {
-        "mean": 6.88,
-        "median": 7.26,
+        "mean": 6.87,
+        "median": 7.25,
         "top_tier_mean": 7.12
       },
       "edge_density": {
-        "mean": 14.22,
-        "median": 13.94,
+        "mean": 14.2,
+        "median": 13.91,
         "top_tier_mean": 15.13
       },
-      "warm_palette_pct": 50.7,
-      "neutral_palette_pct": 42.2,
-      "cool_palette_pct": 7.2,
-      "center_focus_pct": 70.7,
-      "dark_ratio": 48.4,
-      "light_ratio": 19.1,
+      "warm_palette_pct": 51.0,
+      "neutral_palette_pct": 42.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 70.5,
+      "dark_ratio": 48.3,
+      "light_ratio": 19.2,
       "text": {
         "has_text_pct": 86.6,
         "contrast": {
           "median": 3.34,
           "mean": 4.86,
-          "p75": 5.94
+          "p75": 5.91
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 31.3
+        "good_readability_pct": 31.2
       }
     },
     "Simulation": {
       "name": "Simulation",
-      "count": 4921,
+      "count": 4546,
       "tip": "Balanced, inviting color temperatures with crisp line art and clear theme cues.",
       "contrast": {
-        "mean": 61.51,
+        "mean": 61.55,
         "median": 61.7,
-        "top_tier_mean": 62.91
+        "top_tier_mean": 62.93
       },
       "brightness": {
-        "mean": 104.62,
-        "median": 102.1
+        "mean": 104.6,
+        "median": 102.2
       },
       "saturation": {
-        "mean": 107.97,
-        "median": 105.7
+        "mean": 107.76,
+        "median": 105.1
       },
       "entropy": {
-        "mean": 6.91,
-        "median": 7.28,
-        "top_tier_mean": 7.09
+        "mean": 6.9,
+        "median": 7.27,
+        "top_tier_mean": 7.08
       },
       "edge_density": {
-        "mean": 13.95,
-        "median": 13.68,
-        "top_tier_mean": 14.62
+        "mean": 13.9,
+        "median": 13.61,
+        "top_tier_mean": 14.6
       },
-      "warm_palette_pct": 52.0,
-      "neutral_palette_pct": 40.6,
-      "cool_palette_pct": 7.4,
-      "center_focus_pct": 69.8,
+      "warm_palette_pct": 51.6,
+      "neutral_palette_pct": 40.8,
+      "cool_palette_pct": 7.6,
+      "center_focus_pct": 69.5,
       "dark_ratio": 45.8,
-      "light_ratio": 21.1,
+      "light_ratio": 21.2,
       "text": {
-        "has_text_pct": 85.8,
+        "has_text_pct": 85.5,
         "contrast": {
           "median": 3.28,
           "mean": 4.93,
-          "p75": 6.12
+          "p75": 6.1
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 30.7
+        "good_readability_pct": 30.5
       }
     },
     "Casual": {
       "name": "Casual",
-      "count": 7431,
+      "count": 7111,
       "tip": "Vibrant, cheerful color palettes with higher average brightness and clean geometric shapes.",
       "contrast": {
         "mean": 59.71,
         "median": 59.9,
-        "top_tier_mean": 61.45
+        "top_tier_mean": 61.53
       },
       "brightness": {
-        "mean": 109.15,
+        "mean": 109.18,
         "median": 106.7
       },
       "saturation": {
-        "mean": 112.7,
+        "mean": 112.73,
         "median": 113.1
       },
       "entropy": {
-        "mean": 6.64,
-        "median": 7.13,
-        "top_tier_mean": 6.88
+        "mean": 6.63,
+        "median": 7.12,
+        "top_tier_mean": 6.87
       },
       "edge_density": {
-        "mean": 12.9,
-        "median": 12.54,
-        "top_tier_mean": 13.68
+        "mean": 12.88,
+        "median": 12.49,
+        "top_tier_mean": 13.63
       },
-      "warm_palette_pct": 51.1,
+      "warm_palette_pct": 51.0,
       "neutral_palette_pct": 39.0,
-      "cool_palette_pct": 9.9,
+      "cool_palette_pct": 10.0,
       "center_focus_pct": 68.7,
       "dark_ratio": 43.6,
       "light_ratio": 23.5,
       "text": {
-        "has_text_pct": 82.8,
+        "has_text_pct": 82.9,
         "contrast": {
-          "median": 3.24,
-          "mean": 4.88,
-          "p75": 5.98
+          "median": 3.25,
+          "mean": 4.9,
+          "p75": 5.99
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 29.2
+        "good_readability_pct": 29.3
       }
     },
     "Indie": {
       "name": "Indie",
-      "count": 15658,
+      "count": 14877,
       "tip": "Distinct stylized visual identity with strong hero focus to stand out from AAA realism.",
       "contrast": {
-        "mean": 59.72,
-        "median": 60.1,
-        "top_tier_mean": 61.65
+        "mean": 59.71,
+        "median": 60.0,
+        "top_tier_mean": 61.57
       },
       "brightness": {
-        "mean": 96.23,
-        "median": 90.1
+        "mean": 96.36,
+        "median": 90.2
       },
       "saturation": {
-        "mean": 112.15,
-        "median": 112.0
+        "mean": 112.01,
+        "median": 111.9
       },
       "entropy": {
-        "mean": 6.58,
+        "mean": 6.57,
         "median": 7.03,
-        "top_tier_mean": 6.84
+        "top_tier_mean": 6.83
       },
       "edge_density": {
-        "mean": 12.54,
-        "median": 12.11,
-        "top_tier_mean": 13.49
+        "mean": 12.49,
+        "median": 12.05,
+        "top_tier_mean": 13.41
       },
-      "warm_palette_pct": 44.2,
+      "warm_palette_pct": 44.1,
       "neutral_palette_pct": 47.8,
-      "cool_palette_pct": 8.0,
+      "cool_palette_pct": 8.1,
       "center_focus_pct": 72.4,
       "dark_ratio": 51.3,
-      "light_ratio": 19.1,
+      "light_ratio": 19.2,
       "text": {
-        "has_text_pct": 83.5,
+        "has_text_pct": 83.4,
         "contrast": {
           "median": 3.54,
-          "mean": 5.35,
-          "p75": 6.92
+          "mean": 5.36,
+          "p75": 6.93
         },
         "top_zone": "mid_center",
         "good_readability_pct": 33.0
@@ -486,259 +486,259 @@
     },
     "Racing": {
       "name": "Racing",
-      "count": 802,
+      "count": 765,
       "tip": "High-velocity motion diagonals and hyper-reflective specular highlights on vehicular hero assets.",
       "contrast": {
-        "mean": 63.68,
+        "mean": 63.74,
         "median": 64.4,
-        "top_tier_mean": 65.59
+        "top_tier_mean": 65.22
       },
       "brightness": {
-        "mean": 105.52,
-        "median": 103.85
+        "mean": 105.94,
+        "median": 105.1
       },
       "saturation": {
-        "mean": 108.83,
-        "median": 106.5
+        "mean": 108.39,
+        "median": 105.1
       },
       "entropy": {
         "mean": 6.96,
         "median": 7.32,
-        "top_tier_mean": 7.1
+        "top_tier_mean": 7.11
       },
       "edge_density": {
-        "mean": 13.44,
-        "median": 13.26,
-        "top_tier_mean": 14.12
+        "mean": 13.46,
+        "median": 13.38,
+        "top_tier_mean": 14.14
       },
-      "warm_palette_pct": 47.5,
-      "neutral_palette_pct": 44.5,
-      "cool_palette_pct": 8.0,
-      "center_focus_pct": 70.0,
-      "dark_ratio": 45.4,
-      "light_ratio": 21.3,
+      "warm_palette_pct": 47.6,
+      "neutral_palette_pct": 44.1,
+      "cool_palette_pct": 8.4,
+      "center_focus_pct": 69.7,
+      "dark_ratio": 45.2,
+      "light_ratio": 21.4,
       "text": {
-        "has_text_pct": 85.4,
+        "has_text_pct": 85.8,
         "contrast": {
           "median": 3.15,
           "mean": 4.78,
-          "p75": 5.8
+          "p75": 5.76
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 28.6
+        "good_readability_pct": 28.8
       }
     },
     "Sports": {
       "name": "Sports",
-      "count": 919,
+      "count": 883,
       "tip": "Dynamic athlete action poses with saturated stadium stadium-lit contrast and clean typographic badges.",
       "contrast": {
-        "mean": 63.57,
-        "median": 63.2,
-        "top_tier_mean": 65.89
+        "mean": 63.6,
+        "median": 63.5,
+        "top_tier_mean": 65.83
       },
       "brightness": {
-        "mean": 107.36,
-        "median": 107.8
+        "mean": 107.86,
+        "median": 108.0
       },
       "saturation": {
-        "mean": 115.19,
-        "median": 113.6
+        "mean": 114.89,
+        "median": 113.3
       },
       "entropy": {
-        "mean": 6.9,
-        "median": 7.27,
-        "top_tier_mean": 7.03
+        "mean": 6.91,
+        "median": 7.28,
+        "top_tier_mean": 7.06
       },
       "edge_density": {
-        "mean": 13.4,
-        "median": 13.04,
-        "top_tier_mean": 13.92
+        "mean": 13.45,
+        "median": 13.07,
+        "top_tier_mean": 14.09
       },
-      "warm_palette_pct": 49.1,
-      "neutral_palette_pct": 40.7,
-      "cool_palette_pct": 10.2,
+      "warm_palette_pct": 49.4,
+      "neutral_palette_pct": 40.2,
+      "cool_palette_pct": 10.4,
       "center_focus_pct": 69.4,
-      "dark_ratio": 44.0,
-      "light_ratio": 21.9,
+      "dark_ratio": 43.8,
+      "light_ratio": 22.0,
       "text": {
-        "has_text_pct": 83.8,
+        "has_text_pct": 84.0,
         "contrast": {
-          "median": 3.3,
-          "mean": 4.93,
-          "p75": 6.05
+          "median": 3.29,
+          "mean": 4.89,
+          "p75": 6.0
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 30.5
+        "good_readability_pct": 30.2
       }
     },
     "Massively Multiplayer": {
       "name": "Massively Multiplayer",
-      "count": 728,
+      "count": 694,
       "tip": "Epic scale panoramic backdrops featuring grouped heroes or massive faction armadas.",
       "contrast": {
-        "mean": 60.57,
+        "mean": 60.47,
         "median": 60.95,
-        "top_tier_mean": 62.49
+        "top_tier_mean": 62.44
       },
       "brightness": {
-        "mean": 96.73,
-        "median": 94.25
+        "mean": 96.85,
+        "median": 94.4
       },
       "saturation": {
-        "mean": 107.0,
-        "median": 104.2
+        "mean": 106.21,
+        "median": 103.75
       },
       "entropy": {
-        "mean": 6.99,
+        "mean": 6.98,
         "median": 7.34,
         "top_tier_mean": 7.24
       },
       "edge_density": {
-        "mean": 14.0,
-        "median": 13.87,
-        "top_tier_mean": 14.74
+        "mean": 14.06,
+        "median": 13.88,
+        "top_tier_mean": 14.8
       },
-      "warm_palette_pct": 47.1,
-      "neutral_palette_pct": 47.0,
-      "cool_palette_pct": 5.9,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 51.0,
+      "warm_palette_pct": 47.0,
+      "neutral_palette_pct": 47.7,
+      "cool_palette_pct": 5.3,
+      "center_focus_pct": 71.3,
+      "dark_ratio": 50.9,
       "light_ratio": 18.2,
       "text": {
-        "has_text_pct": 86.4,
+        "has_text_pct": 86.6,
         "contrast": {
-          "median": 3.67,
-          "mean": 4.96,
-          "p75": 6.1
+          "median": 3.63,
+          "mean": 4.93,
+          "p75": 5.99
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 34.1
+        "good_readability_pct": 33.6
       }
     },
     "Free To Play": {
       "name": "Free To Play",
-      "count": 2716,
+      "count": 2670,
       "tip": "Instant visual accessibility with high saturation and bold, easily readable hero characters.",
       "contrast": {
-        "mean": 58.97,
+        "mean": 58.99,
         "median": 59.1,
         "top_tier_mean": 61.36
       },
       "brightness": {
-        "mean": 96.48,
-        "median": 89.35
+        "mean": 96.64,
+        "median": 89.55
       },
       "saturation": {
-        "mean": 108.88,
-        "median": 109.85
+        "mean": 108.56,
+        "median": 109.7
       },
       "entropy": {
         "mean": 6.43,
-        "median": 6.99,
+        "median": 6.98,
         "top_tier_mean": 6.76
       },
       "edge_density": {
-        "mean": 11.91,
-        "median": 11.29,
-        "top_tier_mean": 13.07
+        "mean": 11.92,
+        "median": 11.27,
+        "top_tier_mean": 13.08
       },
-      "warm_palette_pct": 43.3,
-      "neutral_palette_pct": 48.7,
-      "cool_palette_pct": 8.1,
-      "center_focus_pct": 70.9,
+      "warm_palette_pct": 43.1,
+      "neutral_palette_pct": 48.8,
+      "cool_palette_pct": 8.0,
+      "center_focus_pct": 70.8,
       "dark_ratio": 51.5,
-      "light_ratio": 19.6,
+      "light_ratio": 19.7,
       "text": {
-        "has_text_pct": 84.4,
+        "has_text_pct": 84.5,
         "contrast": {
-          "median": 3.78,
-          "mean": 5.68,
-          "p75": 7.54
+          "median": 3.77,
+          "mean": 5.67,
+          "p75": 7.55
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 35.3
+        "good_readability_pct": 35.5
       }
     },
     "Early Access": {
       "name": "Early Access",
-      "count": 1554,
+      "count": 1446,
       "tip": "Polished key visual polish that instills immediate confidence and production value.",
       "contrast": {
         "mean": 59.41,
-        "median": 59.5,
-        "top_tier_mean": 61.58
+        "median": 59.35,
+        "top_tier_mean": 61.56
       },
       "brightness": {
-        "mean": 91.43,
-        "median": 86.7
+        "mean": 91.07,
+        "median": 85.4
       },
       "saturation": {
-        "mean": 111.99,
-        "median": 110.05
+        "mean": 111.56,
+        "median": 109.4
       },
       "entropy": {
-        "mean": 6.7,
-        "median": 7.13,
-        "top_tier_mean": 6.99
+        "mean": 6.67,
+        "median": 7.12,
+        "top_tier_mean": 6.97
       },
       "edge_density": {
-        "mean": 12.73,
-        "median": 12.43,
-        "top_tier_mean": 13.8
+        "mean": 12.59,
+        "median": 12.22,
+        "top_tier_mean": 13.73
       },
-      "warm_palette_pct": 40.5,
-      "neutral_palette_pct": 51.0,
-      "cool_palette_pct": 8.5,
-      "center_focus_pct": 75.8,
-      "dark_ratio": 53.4,
+      "warm_palette_pct": 40.2,
+      "neutral_palette_pct": 51.6,
+      "cool_palette_pct": 8.2,
+      "center_focus_pct": 75.9,
+      "dark_ratio": 53.7,
       "light_ratio": 16.6,
       "text": {
-        "has_text_pct": 84.7,
+        "has_text_pct": 84.6,
         "contrast": {
-          "median": 3.67,
-          "mean": 5.28,
-          "p75": 6.78
+          "median": 3.75,
+          "mean": 5.33,
+          "p75": 6.81
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.7
+        "good_readability_pct": 34.1
       }
     }
   },
   "tags": {
     "Auto Battler": {
       "name": "Auto Battler",
-      "count": 12976,
+      "count": 12299,
       "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale.",
       "contrast": {
         "mean": 60.24,
-        "median": 60.5,
-        "top_tier_mean": 62.17
+        "median": 60.4,
+        "top_tier_mean": 62.2
       },
       "brightness": {
-        "mean": 103.88,
-        "median": 99.8
+        "mean": 104.08,
+        "median": 100.0
       },
       "saturation": {
-        "mean": 110.9,
-        "median": 110.3
+        "mean": 110.78,
+        "median": 110.0
       },
       "entropy": {
-        "mean": 6.76,
+        "mean": 6.75,
         "median": 7.19,
         "top_tier_mean": 7.0
       },
       "edge_density": {
-        "mean": 13.44,
-        "median": 13.16,
-        "top_tier_mean": 14.38
+        "mean": 13.4,
+        "median": 13.11,
+        "top_tier_mean": 14.34
       },
       "warm_palette_pct": 50.0,
-      "neutral_palette_pct": 41.5,
-      "cool_palette_pct": 8.5,
-      "center_focus_pct": 70.0,
-      "dark_ratio": 46.5,
-      "light_ratio": 21.2,
+      "neutral_palette_pct": 41.4,
+      "cool_palette_pct": 8.6,
+      "center_focus_pct": 69.9,
+      "dark_ratio": 46.4,
+      "light_ratio": 21.3,
       "text": {
         "has_text_pct": 84.4,
         "contrast": {
@@ -752,130 +752,130 @@
     },
     "Roguelike Deckbuilder": {
       "name": "Roguelike Deckbuilder",
-      "count": 17540,
+      "count": 16678,
       "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence.",
       "contrast": {
-        "mean": 59.85,
+        "mean": 59.86,
         "median": 60.2,
-        "top_tier_mean": 61.76
+        "top_tier_mean": 61.73
       },
       "brightness": {
-        "mean": 96.77,
-        "median": 91.0
+        "mean": 96.92,
+        "median": 91.15
       },
       "saturation": {
-        "mean": 111.75,
-        "median": 111.35
+        "mean": 111.61,
+        "median": 111.2
       },
       "entropy": {
-        "mean": 6.63,
+        "mean": 6.62,
         "median": 7.08,
-        "top_tier_mean": 6.9
+        "top_tier_mean": 6.89
       },
       "edge_density": {
-        "mean": 12.84,
-        "median": 12.43,
-        "top_tier_mean": 13.82
+        "mean": 12.8,
+        "median": 12.37,
+        "top_tier_mean": 13.77
       },
-      "warm_palette_pct": 45.4,
-      "neutral_palette_pct": 46.9,
+      "warm_palette_pct": 45.3,
+      "neutral_palette_pct": 46.8,
       "cool_palette_pct": 7.8,
-      "center_focus_pct": 72.1,
-      "dark_ratio": 50.9,
-      "light_ratio": 19.1,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 50.8,
+      "light_ratio": 19.2,
       "text": {
         "has_text_pct": 84.0,
         "contrast": {
           "median": 3.52,
-          "mean": 5.27,
+          "mean": 5.28,
           "p75": 6.74
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 32.8
+        "good_readability_pct": 32.7
       }
     },
     "Action Roguelike": {
       "name": "Action Roguelike",
-      "count": 18849,
+      "count": 17923,
       "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist.",
       "contrast": {
-        "mean": 60.21,
+        "mean": 60.23,
         "median": 60.6,
-        "top_tier_mean": 62.48
+        "top_tier_mean": 62.46
       },
       "brightness": {
-        "mean": 96.14,
-        "median": 90.4
+        "mean": 96.28,
+        "median": 90.6
       },
       "saturation": {
-        "mean": 111.64,
-        "median": 111.1
+        "mean": 111.5,
+        "median": 110.9
       },
       "entropy": {
-        "mean": 6.63,
+        "mean": 6.62,
         "median": 7.07,
-        "top_tier_mean": 6.9
+        "top_tier_mean": 6.89
       },
       "edge_density": {
-        "mean": 12.82,
-        "median": 12.47,
-        "top_tier_mean": 13.88
+        "mean": 12.78,
+        "median": 12.41,
+        "top_tier_mean": 13.83
       },
       "warm_palette_pct": 44.7,
       "neutral_palette_pct": 47.6,
-      "cool_palette_pct": 7.6,
-      "center_focus_pct": 72.3,
-      "dark_ratio": 51.4,
-      "light_ratio": 19.1,
+      "cool_palette_pct": 7.7,
+      "center_focus_pct": 72.2,
+      "dark_ratio": 51.3,
+      "light_ratio": 19.2,
       "text": {
-        "has_text_pct": 83.9,
+        "has_text_pct": 83.8,
         "contrast": {
           "median": 3.54,
-          "mean": 5.3,
-          "p75": 6.82
+          "mean": 5.31,
+          "p75": 6.83
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.0
+        "good_readability_pct": 32.9
       }
     },
     "Metroidvania": {
       "name": "Metroidvania",
-      "count": 20353,
+      "count": 19383,
       "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth.",
       "contrast": {
-        "mean": 60.27,
+        "mean": 60.29,
         "median": 60.6,
-        "top_tier_mean": 62.51
+        "top_tier_mean": 62.49
       },
       "brightness": {
-        "mean": 96.72,
-        "median": 90.8
+        "mean": 96.88,
+        "median": 90.9
       },
       "saturation": {
-        "mean": 111.35,
-        "median": 110.9
+        "mean": 111.21,
+        "median": 110.7
       },
       "entropy": {
-        "mean": 6.66,
-        "median": 7.1,
-        "top_tier_mean": 6.91
+        "mean": 6.65,
+        "median": 7.09,
+        "top_tier_mean": 6.9
       },
       "edge_density": {
-        "mean": 12.98,
-        "median": 12.64,
-        "top_tier_mean": 13.96
+        "mean": 12.95,
+        "median": 12.6,
+        "top_tier_mean": 13.92
       },
       "warm_palette_pct": 45.2,
       "neutral_palette_pct": 47.1,
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
-      "dark_ratio": 51.1,
-      "light_ratio": 19.3,
+      "dark_ratio": 51.0,
+      "light_ratio": 19.4,
       "text": {
         "has_text_pct": 84.2,
         "contrast": {
           "median": 3.52,
-          "mean": 5.28,
+          "mean": 5.29,
           "p75": 6.78
         },
         "top_zone": "mid_center",
@@ -884,43 +884,43 @@
     },
     "Souls-like": {
       "name": "Souls-like",
-      "count": 13753,
+      "count": 13034,
       "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale.",
       "contrast": {
-        "mean": 60.8,
+        "mean": 60.82,
         "median": 61.2,
-        "top_tier_mean": 63.0
+        "top_tier_mean": 62.99
       },
       "brightness": {
-        "mean": 94.78,
-        "median": 89.6
+        "mean": 94.88,
+        "median": 89.7
       },
       "saturation": {
-        "mean": 112.34,
-        "median": 111.4
+        "mean": 112.26,
+        "median": 111.3
       },
       "entropy": {
         "mean": 6.74,
-        "median": 7.16,
+        "median": 7.15,
         "top_tier_mean": 6.99
       },
       "edge_density": {
-        "mean": 13.38,
-        "median": 13.14,
-        "top_tier_mean": 14.42
+        "mean": 13.36,
+        "median": 13.11,
+        "top_tier_mean": 14.41
       },
       "warm_palette_pct": 44.9,
-      "neutral_palette_pct": 48.3,
-      "cool_palette_pct": 6.8,
+      "neutral_palette_pct": 48.2,
+      "cool_palette_pct": 6.9,
       "center_focus_pct": 72.0,
-      "dark_ratio": 52.0,
-      "light_ratio": 18.4,
+      "dark_ratio": 51.9,
+      "light_ratio": 18.5,
       "text": {
-        "has_text_pct": 84.7,
+        "has_text_pct": 84.6,
         "contrast": {
-          "median": 3.53,
+          "median": 3.52,
           "mean": 5.21,
-          "p75": 6.62
+          "p75": 6.61
         },
         "top_zone": "mid_center",
         "good_readability_pct": 32.7
@@ -928,30 +928,30 @@
     },
     "Survival Horror": {
       "name": "Survival Horror",
-      "count": 13292,
+      "count": 12654,
       "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject.",
       "contrast": {
-        "mean": 61.22,
-        "median": 61.7,
-        "top_tier_mean": 63.58
+        "mean": 61.28,
+        "median": 61.8,
+        "top_tier_mean": 63.59
       },
       "brightness": {
-        "mean": 80.64,
+        "mean": 80.72,
         "median": 78.6
       },
       "saturation": {
-        "mean": 116.26,
-        "median": 116.4
+        "mean": 116.18,
+        "median": 116.3
       },
       "entropy": {
         "mean": 6.7,
         "median": 7.1,
-        "top_tier_mean": 6.97
+        "top_tier_mean": 6.96
       },
       "edge_density": {
-        "mean": 13.02,
-        "median": 12.7,
-        "top_tier_mean": 14.03
+        "mean": 13.0,
+        "median": 12.67,
+        "top_tier_mean": 14.0
       },
       "warm_palette_pct": 37.5,
       "neutral_palette_pct": 55.5,
@@ -972,43 +972,43 @@
     },
     "Cozy Sim": {
       "name": "Cozy Sim",
-      "count": 10497,
+      "count": 9941,
       "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design.",
       "contrast": {
-        "mean": 60.32,
+        "mean": 60.3,
         "median": 60.6,
         "top_tier_mean": 62.24
       },
       "brightness": {
-        "mean": 106.41,
-        "median": 103.2
+        "mean": 106.56,
+        "median": 103.5
       },
       "saturation": {
-        "mean": 110.9,
-        "median": 110.6
+        "mean": 110.86,
+        "median": 110.4
       },
       "entropy": {
-        "mean": 6.73,
-        "median": 7.18,
-        "top_tier_mean": 6.98
+        "mean": 6.71,
+        "median": 7.17,
+        "top_tier_mean": 6.97
       },
       "edge_density": {
-        "mean": 13.22,
-        "median": 12.91,
-        "top_tier_mean": 14.12
+        "mean": 13.19,
+        "median": 12.85,
+        "top_tier_mean": 14.09
       },
-      "warm_palette_pct": 50.7,
+      "warm_palette_pct": 50.5,
       "neutral_palette_pct": 40.3,
-      "cool_palette_pct": 9.1,
-      "center_focus_pct": 69.4,
-      "dark_ratio": 45.1,
-      "light_ratio": 22.2,
+      "cool_palette_pct": 9.2,
+      "center_focus_pct": 69.3,
+      "dark_ratio": 45.0,
+      "light_ratio": 22.3,
       "text": {
-        "has_text_pct": 83.7,
+        "has_text_pct": 83.6,
         "contrast": {
-          "median": 3.3,
+          "median": 3.29,
           "mean": 4.97,
-          "p75": 6.14
+          "p75": 6.13
         },
         "top_zone": "mid_center",
         "good_readability_pct": 30.2
@@ -1016,152 +1016,152 @@
     },
     "Turn-Based Tactics": {
       "name": "Turn-Based Tactics",
-      "count": 5529,
+      "count": 5190,
       "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry.",
       "contrast": {
-        "mean": 60.27,
+        "mean": 60.31,
         "median": 60.4,
-        "top_tier_mean": 61.91
+        "top_tier_mean": 62.01
       },
       "brightness": {
-        "mean": 99.88,
-        "median": 95.6
+        "mean": 100.16,
+        "median": 96.0
       },
       "saturation": {
-        "mean": 111.4,
-        "median": 110.2
-      },
-      "entropy": {
-        "mean": 6.88,
-        "median": 7.26,
-        "top_tier_mean": 7.12
-      },
-      "edge_density": {
-        "mean": 14.22,
-        "median": 13.94,
-        "top_tier_mean": 15.13
-      },
-      "warm_palette_pct": 50.7,
-      "neutral_palette_pct": 42.2,
-      "cool_palette_pct": 7.2,
-      "center_focus_pct": 70.7,
-      "dark_ratio": 48.4,
-      "light_ratio": 19.1,
-      "text": {
-        "has_text_pct": 86.6,
-        "contrast": {
-          "median": 3.34,
-          "mean": 4.86,
-          "p75": 5.94
-        },
-        "top_zone": "mid_center",
-        "good_readability_pct": 31.3
-      }
-    },
-    "Turn-Based Strategy": {
-      "name": "Turn-Based Strategy",
-      "count": 5529,
-      "tip": "Rich strategic map depth with prominent empire crests and crisp territorial contrast.",
-      "contrast": {
-        "mean": 60.27,
-        "median": 60.4,
-        "top_tier_mean": 61.91
-      },
-      "brightness": {
-        "mean": 99.88,
-        "median": 95.6
-      },
-      "saturation": {
-        "mean": 111.4,
-        "median": 110.2
-      },
-      "entropy": {
-        "mean": 6.88,
-        "median": 7.26,
-        "top_tier_mean": 7.12
-      },
-      "edge_density": {
-        "mean": 14.22,
-        "median": 13.94,
-        "top_tier_mean": 15.13
-      },
-      "warm_palette_pct": 50.7,
-      "neutral_palette_pct": 42.2,
-      "cool_palette_pct": 7.2,
-      "center_focus_pct": 70.7,
-      "dark_ratio": 48.4,
-      "light_ratio": 19.1,
-      "text": {
-        "has_text_pct": 86.6,
-        "contrast": {
-          "median": 3.34,
-          "mean": 4.86,
-          "p75": 5.94
-        },
-        "top_zone": "mid_center",
-        "good_readability_pct": 31.3
-      }
-    },
-    "City Builder": {
-      "name": "City Builder",
-      "count": 8483,
-      "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting.",
-      "contrast": {
-        "mean": 60.82,
-        "median": 61.1,
-        "top_tier_mean": 62.44
-      },
-      "brightness": {
-        "mean": 101.6,
-        "median": 97.8
-      },
-      "saturation": {
-        "mean": 109.69,
-        "median": 107.9
+        "mean": 111.25,
+        "median": 110.0
       },
       "entropy": {
         "mean": 6.87,
         "median": 7.25,
-        "top_tier_mean": 7.08
+        "top_tier_mean": 7.12
       },
       "edge_density": {
-        "mean": 13.94,
-        "median": 13.66,
-        "top_tier_mean": 14.71
+        "mean": 14.2,
+        "median": 13.91,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 51.0,
+      "neutral_palette_pct": 42.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 70.5,
+      "dark_ratio": 48.3,
+      "light_ratio": 19.2,
+      "text": {
+        "has_text_pct": 86.6,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.86,
+          "p75": 5.91
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.2
+      }
+    },
+    "Turn-Based Strategy": {
+      "name": "Turn-Based Strategy",
+      "count": 5190,
+      "tip": "Rich strategic map depth with prominent empire crests and crisp territorial contrast.",
+      "contrast": {
+        "mean": 60.31,
+        "median": 60.4,
+        "top_tier_mean": 62.01
+      },
+      "brightness": {
+        "mean": 100.16,
+        "median": 96.0
+      },
+      "saturation": {
+        "mean": 111.25,
+        "median": 110.0
+      },
+      "entropy": {
+        "mean": 6.87,
+        "median": 7.25,
+        "top_tier_mean": 7.12
+      },
+      "edge_density": {
+        "mean": 14.2,
+        "median": 13.91,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 51.0,
+      "neutral_palette_pct": 42.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 70.5,
+      "dark_ratio": 48.3,
+      "light_ratio": 19.2,
+      "text": {
+        "has_text_pct": 86.6,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.86,
+          "p75": 5.91
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.2
+      }
+    },
+    "City Builder": {
+      "name": "City Builder",
+      "count": 7934,
+      "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting.",
+      "contrast": {
+        "mean": 60.83,
+        "median": 61.0,
+        "top_tier_mean": 62.48
+      },
+      "brightness": {
+        "mean": 101.74,
+        "median": 97.9
+      },
+      "saturation": {
+        "mean": 109.52,
+        "median": 107.7
+      },
+      "entropy": {
+        "mean": 6.86,
+        "median": 7.24,
+        "top_tier_mean": 7.07
+      },
+      "edge_density": {
+        "mean": 13.9,
+        "median": 13.61,
+        "top_tier_mean": 14.68
       },
       "warm_palette_pct": 50.6,
       "neutral_palette_pct": 42.1,
       "cool_palette_pct": 7.3,
-      "center_focus_pct": 70.4,
-      "dark_ratio": 47.6,
-      "light_ratio": 20.0,
+      "center_focus_pct": 70.2,
+      "dark_ratio": 47.5,
+      "light_ratio": 20.1,
       "text": {
         "has_text_pct": 85.9,
         "contrast": {
           "median": 3.33,
-          "mean": 4.92,
-          "p75": 6.03
+          "mean": 4.91,
+          "p75": 6.0
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 31.0
+        "good_readability_pct": 30.9
       }
     },
     "Retro FPS": {
       "name": "Retro FPS",
-      "count": 10448,
+      "count": 9931,
       "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus.",
       "contrast": {
-        "mean": 60.85,
+        "mean": 60.86,
         "median": 61.3,
-        "top_tier_mean": 63.24
+        "top_tier_mean": 63.25
       },
       "brightness": {
-        "mean": 91.87,
-        "median": 86.9
+        "mean": 91.98,
+        "median": 87.1
       },
       "saturation": {
-        "mean": 114.54,
-        "median": 114.35
+        "mean": 114.44,
+        "median": 114.1
       },
       "entropy": {
         "mean": 6.7,
@@ -1169,43 +1169,43 @@
         "top_tier_mean": 6.98
       },
       "edge_density": {
-        "mean": 12.97,
-        "median": 12.72,
-        "top_tier_mean": 14.16
+        "mean": 12.95,
+        "median": 12.68,
+        "top_tier_mean": 14.15
       },
-      "warm_palette_pct": 42.9,
+      "warm_palette_pct": 42.8,
       "neutral_palette_pct": 50.0,
-      "cool_palette_pct": 7.1,
-      "center_focus_pct": 72.8,
-      "dark_ratio": 53.7,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 72.9,
+      "dark_ratio": 53.6,
       "light_ratio": 17.4,
       "text": {
         "has_text_pct": 83.9,
         "contrast": {
-          "median": 3.58,
+          "median": 3.57,
           "mean": 5.3,
-          "p75": 6.8
+          "p75": 6.77
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.1
+        "good_readability_pct": 33.0
       }
     },
     "Dragons": {
       "name": "Dragons",
-      "count": 16516,
+      "count": 15643,
       "tip": "Epic creature scale with warm fiery or arcane lighting accents cutting through dark atmospheric skies.",
       "contrast": {
-        "mean": 60.62,
+        "mean": 60.65,
         "median": 60.9,
-        "top_tier_mean": 62.61
+        "top_tier_mean": 62.63
       },
       "brightness": {
-        "mean": 96.29,
-        "median": 91.5
+        "mean": 96.41,
+        "median": 91.6
       },
       "saturation": {
-        "mean": 112.42,
-        "median": 111.4
+        "mean": 112.32,
+        "median": 111.3
       },
       "entropy": {
         "mean": 6.76,
@@ -1213,87 +1213,87 @@
         "top_tier_mean": 7.01
       },
       "edge_density": {
-        "mean": 13.52,
-        "median": 13.26,
-        "top_tier_mean": 14.53
+        "mean": 13.49,
+        "median": 13.22,
+        "top_tier_mean": 14.52
       },
-      "warm_palette_pct": 46.3,
-      "neutral_palette_pct": 46.5,
+      "warm_palette_pct": 46.4,
+      "neutral_palette_pct": 46.4,
       "cool_palette_pct": 7.2,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 51.0,
+      "center_focus_pct": 71.6,
+      "dark_ratio": 50.9,
       "light_ratio": 18.7,
       "text": {
-        "has_text_pct": 85.0,
+        "has_text_pct": 84.9,
+        "contrast": {
+          "median": 3.47,
+          "mean": 5.13,
+          "p75": 6.42
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.2
+      }
+    },
+    "PvP": {
+      "name": "PvP",
+      "count": 13655,
+      "tip": "Opposing color clashes (red vs blue, gold vs shadow) indicating intense multiplayer competition.",
+      "contrast": {
+        "mean": 60.62,
+        "median": 60.9,
+        "top_tier_mean": 62.76
+      },
+      "brightness": {
+        "mean": 95.0,
+        "median": 90.2
+      },
+      "saturation": {
+        "mean": 113.56,
+        "median": 112.7
+      },
+      "entropy": {
+        "mean": 6.75,
+        "median": 7.16,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.36,
+        "median": 13.08,
+        "top_tier_mean": 14.43
+      },
+      "warm_palette_pct": 45.7,
+      "neutral_palette_pct": 46.9,
+      "cool_palette_pct": 7.4,
+      "center_focus_pct": 71.9,
+      "dark_ratio": 51.6,
+      "light_ratio": 18.1,
+      "text": {
+        "has_text_pct": 84.7,
         "contrast": {
           "median": 3.48,
-          "mean": 5.13,
-          "p75": 6.43
+          "mean": 5.14,
+          "p75": 6.47
         },
         "top_zone": "mid_center",
         "good_readability_pct": 32.3
       }
     },
-    "PvP": {
-      "name": "PvP",
-      "count": 14424,
-      "tip": "Opposing color clashes (red vs blue, gold vs shadow) indicating intense multiplayer competition.",
-      "contrast": {
-        "mean": 60.6,
-        "median": 60.9,
-        "top_tier_mean": 62.73
-      },
-      "brightness": {
-        "mean": 94.9,
-        "median": 90.0
-      },
-      "saturation": {
-        "mean": 113.66,
-        "median": 112.8
-      },
-      "entropy": {
-        "mean": 6.76,
-        "median": 7.16,
-        "top_tier_mean": 7.02
-      },
-      "edge_density": {
-        "mean": 13.39,
-        "median": 13.12,
-        "top_tier_mean": 14.45
-      },
-      "warm_palette_pct": 45.6,
-      "neutral_palette_pct": 47.0,
-      "cool_palette_pct": 7.4,
-      "center_focus_pct": 72.0,
-      "dark_ratio": 51.7,
-      "light_ratio": 18.1,
-      "text": {
-        "has_text_pct": 84.7,
-        "contrast": {
-          "median": 3.49,
-          "mean": 5.15,
-          "p75": 6.49
-        },
-        "top_zone": "mid_center",
-        "good_readability_pct": 32.4
-      }
-    },
     "PvE": {
       "name": "PvE",
-      "count": 17601,
+      "count": 16769,
       "tip": "Heroic squad lineup facing formidable boss silhouettes in evocative fantasy or sci-fi environments.",
       "contrast": {
-        "mean": 60.49,
+        "mean": 60.53,
         "median": 60.8,
         "top_tier_mean": 62.66
       },
       "brightness": {
-        "mean": 95.41,
-        "median": 89.4
+        "mean": 95.59,
+        "median": 89.6
       },
       "saturation": {
-        "mean": 111.31,
-        "median": 110.7
+        "mean": 111.2,
+        "median": 110.5
       },
       "entropy": {
         "mean": 6.72,
@@ -1301,66 +1301,66 @@
         "top_tier_mean": 6.95
       },
       "edge_density": {
-        "mean": 13.22,
-        "median": 12.94,
-        "top_tier_mean": 14.13
+        "mean": 13.2,
+        "median": 12.9,
+        "top_tier_mean": 14.11
       },
-      "warm_palette_pct": 44.9,
-      "neutral_palette_pct": 47.9,
+      "warm_palette_pct": 45.0,
+      "neutral_palette_pct": 47.8,
       "cool_palette_pct": 7.2,
-      "center_focus_pct": 72.4,
-      "dark_ratio": 51.8,
-      "light_ratio": 18.8,
+      "center_focus_pct": 72.3,
+      "dark_ratio": 51.7,
+      "light_ratio": 18.9,
       "text": {
         "has_text_pct": 84.6,
         "contrast": {
           "median": 3.54,
           "mean": 5.28,
-          "p75": 6.77
+          "p75": 6.76
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.3
+        "good_readability_pct": 33.2
       }
     },
     "Fantasy": {
       "name": "Fantasy",
-      "count": 15788,
+      "count": 14969,
       "tip": "Luminous magical particle effects and rich mystical textures with clear character silhouettes.",
       "contrast": {
-        "mean": 60.15,
-        "median": 60.3,
-        "top_tier_mean": 61.95
+        "mean": 60.2,
+        "median": 60.4,
+        "top_tier_mean": 62.0
       },
       "brightness": {
-        "mean": 97.32,
-        "median": 91.85
+        "mean": 97.55,
+        "median": 92.1
       },
       "saturation": {
-        "mean": 109.93,
-        "median": 108.7
+        "mean": 109.77,
+        "median": 108.5
       },
       "entropy": {
-        "mean": 6.77,
+        "mean": 6.76,
         "median": 7.16,
         "top_tier_mean": 6.99
       },
       "edge_density": {
-        "mean": 13.53,
-        "median": 13.23,
-        "top_tier_mean": 14.39
+        "mean": 13.5,
+        "median": 13.2,
+        "top_tier_mean": 14.36
       },
-      "warm_palette_pct": 46.8,
-      "neutral_palette_pct": 46.1,
-      "cool_palette_pct": 7.1,
-      "center_focus_pct": 72.3,
-      "dark_ratio": 50.6,
-      "light_ratio": 19.2,
+      "warm_palette_pct": 46.9,
+      "neutral_palette_pct": 45.9,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 72.2,
+      "dark_ratio": 50.4,
+      "light_ratio": 19.3,
       "text": {
         "has_text_pct": 85.5,
         "contrast": {
           "median": 3.5,
           "mean": 5.21,
-          "p75": 6.61
+          "p75": 6.6
         },
         "top_zone": "mid_center",
         "good_readability_pct": 33.1
@@ -1368,20 +1368,20 @@
     },
     "Magic": {
       "name": "Magic",
-      "count": 16516,
+      "count": 15643,
       "tip": "Radiant spell glow effects with high luminous contrast against shadowed mystical backdrops.",
       "contrast": {
-        "mean": 60.62,
+        "mean": 60.65,
         "median": 60.9,
-        "top_tier_mean": 62.61
+        "top_tier_mean": 62.63
       },
       "brightness": {
-        "mean": 96.29,
-        "median": 91.5
+        "mean": 96.41,
+        "median": 91.6
       },
       "saturation": {
-        "mean": 112.42,
-        "median": 111.4
+        "mean": 112.32,
+        "median": 111.3
       },
       "entropy": {
         "mean": 6.76,
@@ -1389,198 +1389,198 @@
         "top_tier_mean": 7.01
       },
       "edge_density": {
-        "mean": 13.52,
-        "median": 13.26,
-        "top_tier_mean": 14.53
+        "mean": 13.49,
+        "median": 13.22,
+        "top_tier_mean": 14.52
       },
-      "warm_palette_pct": 46.3,
-      "neutral_palette_pct": 46.5,
+      "warm_palette_pct": 46.4,
+      "neutral_palette_pct": 46.4,
       "cool_palette_pct": 7.2,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 51.0,
+      "center_focus_pct": 71.6,
+      "dark_ratio": 50.9,
       "light_ratio": 18.7,
       "text": {
-        "has_text_pct": 85.0,
+        "has_text_pct": 84.9,
         "contrast": {
-          "median": 3.48,
+          "median": 3.47,
           "mean": 5.13,
-          "p75": 6.43
-        },
-        "top_zone": "mid_center",
-        "good_readability_pct": 32.3
-      }
-    },
-    "Medieval": {
-      "name": "Medieval",
-      "count": 16516,
-      "tip": "Grit, burnished armor sheen, and torchlit atmosphere with distinct heraldic color banners.",
-      "contrast": {
-        "mean": 60.62,
-        "median": 60.9,
-        "top_tier_mean": 62.61
-      },
-      "brightness": {
-        "mean": 96.29,
-        "median": 91.5
-      },
-      "saturation": {
-        "mean": 112.42,
-        "median": 111.4
-      },
-      "entropy": {
-        "mean": 6.76,
-        "median": 7.17,
-        "top_tier_mean": 7.01
-      },
-      "edge_density": {
-        "mean": 13.52,
-        "median": 13.26,
-        "top_tier_mean": 14.53
-      },
-      "warm_palette_pct": 46.3,
-      "neutral_palette_pct": 46.5,
-      "cool_palette_pct": 7.2,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 51.0,
-      "light_ratio": 18.7,
-      "text": {
-        "has_text_pct": 85.0,
-        "contrast": {
-          "median": 3.48,
-          "mean": 5.13,
-          "p75": 6.43
-        },
-        "top_zone": "mid_center",
-        "good_readability_pct": 32.3
-      }
-    },
-    "Military": {
-      "name": "Military",
-      "count": 16382,
-      "tip": "Camouflage textures balanced by sharp tactical orange/amber HUD elements and distinct hardware silhouettes.",
-      "contrast": {
-        "mean": 60.79,
-        "median": 61.1,
-        "top_tier_mean": 62.83
-      },
-      "brightness": {
-        "mean": 96.52,
-        "median": 92.2
-      },
-      "saturation": {
-        "mean": 112.61,
-        "median": 111.6
-      },
-      "entropy": {
-        "mean": 6.77,
-        "median": 7.17,
-        "top_tier_mean": 7.02
-      },
-      "edge_density": {
-        "mean": 13.41,
-        "median": 13.13,
-        "top_tier_mean": 14.43
-      },
-      "warm_palette_pct": 46.3,
-      "neutral_palette_pct": 46.2,
-      "cool_palette_pct": 7.5,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 50.8,
-      "light_ratio": 18.7,
-      "text": {
-        "has_text_pct": 84.8,
-        "contrast": {
-          "median": 3.46,
-          "mean": 5.12,
-          "p75": 6.43
+          "p75": 6.42
         },
         "top_zone": "mid_center",
         "good_readability_pct": 32.2
       }
     },
-    "Wargame": {
-      "name": "Wargame",
-      "count": 8483,
-      "tip": "Detailed tactical battle maps and unit counters with disciplined typographic contrast.",
+    "Medieval": {
+      "name": "Medieval",
+      "count": 15643,
+      "tip": "Grit, burnished armor sheen, and torchlit atmosphere with distinct heraldic color banners.",
+      "contrast": {
+        "mean": 60.65,
+        "median": 60.9,
+        "top_tier_mean": 62.63
+      },
+      "brightness": {
+        "mean": 96.41,
+        "median": 91.6
+      },
+      "saturation": {
+        "mean": 112.32,
+        "median": 111.3
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.17,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.49,
+        "median": 13.22,
+        "top_tier_mean": 14.52
+      },
+      "warm_palette_pct": 46.4,
+      "neutral_palette_pct": 46.4,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 71.6,
+      "dark_ratio": 50.9,
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 84.9,
+        "contrast": {
+          "median": 3.47,
+          "mean": 5.13,
+          "p75": 6.42
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.2
+      }
+    },
+    "Military": {
+      "name": "Military",
+      "count": 15476,
+      "tip": "Camouflage textures balanced by sharp tactical orange/amber HUD elements and distinct hardware silhouettes.",
       "contrast": {
         "mean": 60.82,
         "median": 61.1,
-        "top_tier_mean": 62.44
+        "top_tier_mean": 62.85
       },
       "brightness": {
-        "mean": 101.6,
-        "median": 97.8
+        "mean": 96.58,
+        "median": 92.2
       },
       "saturation": {
-        "mean": 109.69,
-        "median": 107.9
+        "mean": 112.48,
+        "median": 111.4
       },
       "entropy": {
-        "mean": 6.87,
-        "median": 7.25,
-        "top_tier_mean": 7.08
+        "mean": 6.76,
+        "median": 7.17,
+        "top_tier_mean": 7.01
       },
       "edge_density": {
-        "mean": 13.94,
-        "median": 13.66,
-        "top_tier_mean": 14.71
+        "mean": 13.38,
+        "median": 13.09,
+        "top_tier_mean": 14.41
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.2,
+      "cool_palette_pct": 7.6,
+      "center_focus_pct": 71.6,
+      "dark_ratio": 50.7,
+      "light_ratio": 18.8,
+      "text": {
+        "has_text_pct": 84.8,
+        "contrast": {
+          "median": 3.45,
+          "mean": 5.12,
+          "p75": 6.41
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.1
+      }
+    },
+    "Wargame": {
+      "name": "Wargame",
+      "count": 7934,
+      "tip": "Detailed tactical battle maps and unit counters with disciplined typographic contrast.",
+      "contrast": {
+        "mean": 60.83,
+        "median": 61.0,
+        "top_tier_mean": 62.48
+      },
+      "brightness": {
+        "mean": 101.74,
+        "median": 97.9
+      },
+      "saturation": {
+        "mean": 109.52,
+        "median": 107.7
+      },
+      "entropy": {
+        "mean": 6.86,
+        "median": 7.24,
+        "top_tier_mean": 7.07
+      },
+      "edge_density": {
+        "mean": 13.9,
+        "median": 13.61,
+        "top_tier_mean": 14.68
       },
       "warm_palette_pct": 50.6,
       "neutral_palette_pct": 42.1,
       "cool_palette_pct": 7.3,
-      "center_focus_pct": 70.4,
-      "dark_ratio": 47.6,
-      "light_ratio": 20.0,
+      "center_focus_pct": 70.2,
+      "dark_ratio": 47.5,
+      "light_ratio": 20.1,
       "text": {
         "has_text_pct": 85.9,
         "contrast": {
           "median": 3.33,
-          "mean": 4.92,
-          "p75": 6.03
+          "mean": 4.91,
+          "p75": 6.0
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 31.0
+        "good_readability_pct": 30.9
       }
     },
     "Card Game": {
       "name": "Card Game",
-      "count": 11186,
+      "count": 10638,
       "tip": "Embossed card borders with saturated gem/mana accents and readable card art at browse scales.",
       "contrast": {
-        "mean": 59.92,
-        "median": 60.1,
-        "top_tier_mean": 61.76
+        "mean": 59.94,
+        "median": 60.15,
+        "top_tier_mean": 61.85
       },
       "brightness": {
-        "mean": 104.7,
-        "median": 100.5
+        "mean": 104.9,
+        "median": 100.8
       },
       "saturation": {
-        "mean": 111.89,
+        "mean": 111.82,
         "median": 111.6
       },
       "entropy": {
         "mean": 6.74,
-        "median": 7.19,
-        "top_tier_mean": 7.01
+        "median": 7.18,
+        "top_tier_mean": 7.0
       },
       "edge_density": {
-        "mean": 13.46,
-        "median": 13.19,
-        "top_tier_mean": 14.51
+        "mean": 13.43,
+        "median": 13.13,
+        "top_tier_mean": 14.46
       },
-      "warm_palette_pct": 50.6,
-      "neutral_palette_pct": 40.6,
-      "cool_palette_pct": 8.7,
-      "center_focus_pct": 69.8,
-      "dark_ratio": 46.0,
-      "light_ratio": 21.4,
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 40.5,
+      "cool_palette_pct": 8.8,
+      "center_focus_pct": 69.7,
+      "dark_ratio": 45.9,
+      "light_ratio": 21.5,
       "text": {
-        "has_text_pct": 84.4,
+        "has_text_pct": 84.5,
         "contrast": {
           "median": 3.31,
           "mean": 4.91,
-          "p75": 6.02
+          "p75": 6.01
         },
         "top_zone": "mid_center",
         "good_readability_pct": 30.4
@@ -1588,42 +1588,42 @@
     },
     "Pixel Graphics": {
       "name": "Pixel Graphics",
-      "count": 20353,
+      "count": 19383,
       "tip": "Crisp pixel cluster readability with bold color separation avoiding visual noise at small thumbnail sizes.",
       "contrast": {
-        "mean": 60.27,
+        "mean": 60.29,
         "median": 60.6,
-        "top_tier_mean": 62.51
+        "top_tier_mean": 62.49
       },
       "brightness": {
-        "mean": 96.72,
-        "median": 90.8
+        "mean": 96.88,
+        "median": 90.9
       },
       "saturation": {
-        "mean": 111.35,
-        "median": 110.9
+        "mean": 111.21,
+        "median": 110.7
       },
       "entropy": {
-        "mean": 6.66,
-        "median": 7.1,
-        "top_tier_mean": 6.91
+        "mean": 6.65,
+        "median": 7.09,
+        "top_tier_mean": 6.9
       },
       "edge_density": {
-        "mean": 12.98,
-        "median": 12.64,
-        "top_tier_mean": 13.96
+        "mean": 12.95,
+        "median": 12.6,
+        "top_tier_mean": 13.92
       },
       "warm_palette_pct": 45.2,
       "neutral_palette_pct": 47.1,
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
-      "dark_ratio": 51.1,
-      "light_ratio": 19.3,
+      "dark_ratio": 51.0,
+      "light_ratio": 19.4,
       "text": {
         "has_text_pct": 84.2,
         "contrast": {
           "median": 3.52,
-          "mean": 5.28,
+          "mean": 5.29,
           "p75": 6.78
         },
         "top_zone": "mid_center",
@@ -1632,43 +1632,43 @@
     },
     "Cyberpunk": {
       "name": "Cyberpunk",
-      "count": 13753,
+      "count": 13034,
       "tip": "Vibrant cyan/magenta neon contrast cutting through rain-slicked dark industrial geometry.",
       "contrast": {
-        "mean": 60.8,
+        "mean": 60.82,
         "median": 61.2,
-        "top_tier_mean": 63.0
+        "top_tier_mean": 62.99
       },
       "brightness": {
-        "mean": 94.78,
-        "median": 89.6
+        "mean": 94.88,
+        "median": 89.7
       },
       "saturation": {
-        "mean": 112.34,
-        "median": 111.4
+        "mean": 112.26,
+        "median": 111.3
       },
       "entropy": {
         "mean": 6.74,
-        "median": 7.16,
+        "median": 7.15,
         "top_tier_mean": 6.99
       },
       "edge_density": {
-        "mean": 13.38,
-        "median": 13.14,
-        "top_tier_mean": 14.42
+        "mean": 13.36,
+        "median": 13.11,
+        "top_tier_mean": 14.41
       },
       "warm_palette_pct": 44.9,
-      "neutral_palette_pct": 48.3,
-      "cool_palette_pct": 6.8,
+      "neutral_palette_pct": 48.2,
+      "cool_palette_pct": 6.9,
       "center_focus_pct": 72.0,
-      "dark_ratio": 52.0,
-      "light_ratio": 18.4,
+      "dark_ratio": 51.9,
+      "light_ratio": 18.5,
       "text": {
-        "has_text_pct": 84.7,
+        "has_text_pct": 84.6,
         "contrast": {
-          "median": 3.53,
+          "median": 3.52,
           "mean": 5.21,
-          "p75": 6.62
+          "p75": 6.61
         },
         "top_zone": "mid_center",
         "good_readability_pct": 32.7
@@ -1676,20 +1676,20 @@
     },
     "Open World": {
       "name": "Open World",
-      "count": 17601,
+      "count": 16769,
       "tip": "Dramatic vanishing point horizon with atmospheric haze separating foreground protagonist from expansive world.",
       "contrast": {
-        "mean": 60.49,
+        "mean": 60.53,
         "median": 60.8,
         "top_tier_mean": 62.66
       },
       "brightness": {
-        "mean": 95.41,
-        "median": 89.4
+        "mean": 95.59,
+        "median": 89.6
       },
       "saturation": {
-        "mean": 111.31,
-        "median": 110.7
+        "mean": 111.2,
+        "median": 110.5
       },
       "entropy": {
         "mean": 6.72,
@@ -1697,109 +1697,109 @@
         "top_tier_mean": 6.95
       },
       "edge_density": {
-        "mean": 13.22,
-        "median": 12.94,
-        "top_tier_mean": 14.13
+        "mean": 13.2,
+        "median": 12.9,
+        "top_tier_mean": 14.11
       },
-      "warm_palette_pct": 44.9,
-      "neutral_palette_pct": 47.9,
+      "warm_palette_pct": 45.0,
+      "neutral_palette_pct": 47.8,
       "cool_palette_pct": 7.2,
-      "center_focus_pct": 72.4,
-      "dark_ratio": 51.8,
-      "light_ratio": 18.8,
+      "center_focus_pct": 72.3,
+      "dark_ratio": 51.7,
+      "light_ratio": 18.9,
       "text": {
         "has_text_pct": 84.6,
         "contrast": {
           "median": 3.54,
           "mean": 5.28,
-          "p75": 6.77
+          "p75": 6.76
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 33.3
+        "good_readability_pct": 33.2
       }
     },
     "Sci-fi": {
       "name": "Sci-fi",
-      "count": 16382,
+      "count": 15476,
       "tip": "Sleek geometric paneling with electric laser blue or solar orange emissive lighting lines.",
       "contrast": {
-        "mean": 60.79,
+        "mean": 60.82,
         "median": 61.1,
-        "top_tier_mean": 62.83
+        "top_tier_mean": 62.85
       },
       "brightness": {
-        "mean": 96.52,
+        "mean": 96.58,
         "median": 92.2
       },
       "saturation": {
-        "mean": 112.61,
-        "median": 111.6
+        "mean": 112.48,
+        "median": 111.4
       },
       "entropy": {
-        "mean": 6.77,
+        "mean": 6.76,
         "median": 7.17,
-        "top_tier_mean": 7.02
+        "top_tier_mean": 7.01
       },
       "edge_density": {
-        "mean": 13.41,
-        "median": 13.13,
-        "top_tier_mean": 14.43
+        "mean": 13.38,
+        "median": 13.09,
+        "top_tier_mean": 14.41
       },
       "warm_palette_pct": 46.3,
       "neutral_palette_pct": 46.2,
-      "cool_palette_pct": 7.5,
-      "center_focus_pct": 71.7,
-      "dark_ratio": 50.8,
-      "light_ratio": 18.7,
+      "cool_palette_pct": 7.6,
+      "center_focus_pct": 71.6,
+      "dark_ratio": 50.7,
+      "light_ratio": 18.8,
       "text": {
         "has_text_pct": 84.8,
         "contrast": {
-          "median": 3.46,
+          "median": 3.45,
           "mean": 5.12,
-          "p75": 6.43
+          "p75": 6.41
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 32.2
+        "good_readability_pct": 32.1
       }
     },
     "Co-op": {
       "name": "Co-op",
-      "count": 20353,
+      "count": 19383,
       "tip": "Multiple complementary character silhouettes showing distinct classes or comedic camaraderie.",
       "contrast": {
-        "mean": 60.27,
+        "mean": 60.29,
         "median": 60.6,
-        "top_tier_mean": 62.51
+        "top_tier_mean": 62.49
       },
       "brightness": {
-        "mean": 96.72,
-        "median": 90.8
+        "mean": 96.88,
+        "median": 90.9
       },
       "saturation": {
-        "mean": 111.35,
-        "median": 110.9
+        "mean": 111.21,
+        "median": 110.7
       },
       "entropy": {
-        "mean": 6.66,
-        "median": 7.1,
-        "top_tier_mean": 6.91
+        "mean": 6.65,
+        "median": 7.09,
+        "top_tier_mean": 6.9
       },
       "edge_density": {
-        "mean": 12.98,
-        "median": 12.64,
-        "top_tier_mean": 13.96
+        "mean": 12.95,
+        "median": 12.6,
+        "top_tier_mean": 13.92
       },
       "warm_palette_pct": 45.2,
       "neutral_palette_pct": 47.1,
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
-      "dark_ratio": 51.1,
-      "light_ratio": 19.3,
+      "dark_ratio": 51.0,
+      "light_ratio": 19.4,
       "text": {
         "has_text_pct": 84.2,
         "contrast": {
           "median": 3.52,
-          "mean": 5.28,
+          "mean": 5.29,
           "p75": 6.78
         },
         "top_zone": "mid_center",
@@ -1808,46 +1808,46 @@
     },
     "Multiplayer": {
       "name": "Multiplayer",
-      "count": 14424,
+      "count": 13655,
       "tip": "Kinetic confrontation energy with clear opposing faction visuals and high-saliency action focal points.",
       "contrast": {
-        "mean": 60.6,
+        "mean": 60.62,
         "median": 60.9,
-        "top_tier_mean": 62.73
+        "top_tier_mean": 62.76
       },
       "brightness": {
-        "mean": 94.9,
-        "median": 90.0
+        "mean": 95.0,
+        "median": 90.2
       },
       "saturation": {
-        "mean": 113.66,
-        "median": 112.8
+        "mean": 113.56,
+        "median": 112.7
       },
       "entropy": {
-        "mean": 6.76,
+        "mean": 6.75,
         "median": 7.16,
-        "top_tier_mean": 7.02
+        "top_tier_mean": 7.01
       },
       "edge_density": {
-        "mean": 13.39,
-        "median": 13.12,
-        "top_tier_mean": 14.45
+        "mean": 13.36,
+        "median": 13.08,
+        "top_tier_mean": 14.43
       },
-      "warm_palette_pct": 45.6,
-      "neutral_palette_pct": 47.0,
+      "warm_palette_pct": 45.7,
+      "neutral_palette_pct": 46.9,
       "cool_palette_pct": 7.4,
-      "center_focus_pct": 72.0,
-      "dark_ratio": 51.7,
+      "center_focus_pct": 71.9,
+      "dark_ratio": 51.6,
       "light_ratio": 18.1,
       "text": {
         "has_text_pct": 84.7,
         "contrast": {
-          "median": 3.49,
-          "mean": 5.15,
-          "p75": 6.49
+          "median": 3.48,
+          "mean": 5.14,
+          "p75": 6.47
         },
         "top_zone": "mid_center",
-        "good_readability_pct": 32.4
+        "good_readability_pct": 32.3
       }
     }
   },
@@ -6283,19 +6283,6 @@
         "storeUrl": "https://store.steampowered.com/app/2649470/"
       },
       {
-        "appid": 2822080,
-        "name": "The Silent Forests",
-        "score": 0,
-        "tier": "near_zero",
-        "tier_label": "Near-Zero (<10 reviews)",
-        "reviews": 0,
-        "contrast_std": 81.0,
-        "palette_type": "neutral",
-        "genre": "Action|Adventure|Indie",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2822080/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/2822080/"
-      },
-      {
         "appid": 3234360,
         "name": "Bullet Voyage",
         "score": 0,
@@ -6491,19 +6478,6 @@
         "storeUrl": "https://store.steampowered.com/app/2869500/"
       },
       {
-        "appid": 3481760,
-        "name": "Eternal Flame:Romance Dawn",
-        "score": 0,
-        "tier": "near_zero",
-        "tier_label": "Near-Zero (<10 reviews)",
-        "reviews": 1,
-        "contrast_std": 24.7,
-        "palette_type": "neutral",
-        "genre": "Action|Adventure|Casual|Indie|RPG",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3481760/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/3481760/"
-      },
-      {
         "appid": 2187190,
         "name": "Poly Shoot",
         "score": 0,
@@ -6554,6 +6528,32 @@
         "genre": "Action|Adventure|Casual|Indie",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1857040/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/1857040/"
+      },
+      {
+        "appid": 780720,
+        "name": "Undarkened: Revival",
+        "score": 0,
+        "tier": "near_zero",
+        "tier_label": "Near-Zero (<10 reviews)",
+        "reviews": 1,
+        "contrast_std": 22.9,
+        "palette_type": "neutral",
+        "genre": "Adventure|Indie|RPG|Early Access",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/780720/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/780720/"
+      },
+      {
+        "appid": 1567680,
+        "name": "Cosmic Tank",
+        "score": 0,
+        "tier": "near_zero",
+        "tier_label": "Near-Zero (<10 reviews)",
+        "reviews": 1,
+        "contrast_std": 67.2,
+        "palette_type": "neutral",
+        "genre": "Action|Indie|Early Access",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1567680/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1567680/"
       }
     ],
     "zero_reviews": [
@@ -6636,19 +6636,6 @@
         "storeUrl": "https://store.steampowered.com/app/2663530/"
       },
       {
-        "appid": 2822080,
-        "name": "The Silent Forests",
-        "score": 0,
-        "tier": "near_zero",
-        "tier_label": "Near-Zero (<10 reviews)",
-        "reviews": 0,
-        "contrast_std": 81.0,
-        "palette_type": "neutral",
-        "genre": "Action|Adventure|Indie",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2822080/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/2822080/"
-      },
-      {
         "appid": 2197600,
         "name": "Chess Royale",
         "score": 3,
@@ -6725,19 +6712,6 @@
         "genre": "Action",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2419430/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/2419430/"
-      },
-      {
-        "appid": 2988300,
-        "name": "Bugtopia",
-        "score": 34,
-        "tier": "near_zero",
-        "tier_label": "Near-Zero (<10 reviews)",
-        "reviews": 0,
-        "contrast_std": 56.7,
-        "palette_type": "neutral",
-        "genre": "Casual|Indie|Simulation",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2988300/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/2988300/"
       },
       {
         "appid": 2236300,
@@ -6881,6 +6855,32 @@
         "genre": "Casual|Indie|Massively Multiplayer|Simulation",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2749770/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/2749770/"
+      },
+      {
+        "appid": 12370,
+        "name": "Jagged Alliance 2 Gold",
+        "score": 75,
+        "tier": "near_zero",
+        "tier_label": "Near-Zero (<10 reviews)",
+        "reviews": 0,
+        "contrast_std": 62.2,
+        "palette_type": "neutral",
+        "genre": "Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/12370/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/12370/"
+      },
+      {
+        "appid": 1601280,
+        "name": "Potato Flowers in Full Bloom",
+        "score": 75,
+        "tier": "near_zero",
+        "tier_label": "Near-Zero (<10 reviews)",
+        "reviews": 0,
+        "contrast_std": 61.3,
+        "palette_type": "warm",
+        "genre": "Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1601280/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1601280/"
       }
     ],
     "reviews_1_5": [
@@ -7054,19 +7054,6 @@
         "storeUrl": "https://store.steampowered.com/app/2869500/"
       },
       {
-        "appid": 3481760,
-        "name": "Eternal Flame:Romance Dawn",
-        "score": 0,
-        "tier": "near_zero",
-        "tier_label": "Near-Zero (<10 reviews)",
-        "reviews": 1,
-        "contrast_std": 24.7,
-        "palette_type": "neutral",
-        "genre": "Action|Adventure|Casual|Indie|RPG",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3481760/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/3481760/"
-      },
-      {
         "appid": 2187190,
         "name": "Poly Shoot",
         "score": 0,
@@ -7208,6 +7195,19 @@
         "genre": "Action",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2088720/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/2088720/"
+      },
+      {
+        "appid": 3015850,
+        "name": "Joe Biden Vs. Jeo Boden - Escape From MAGA Chapter 2",
+        "score": 0,
+        "tier": "near_zero",
+        "tier_label": "Near-Zero (<10 reviews)",
+        "reviews": 1,
+        "contrast_std": 48.2,
+        "palette_type": "cool",
+        "genre": "Adventure|Casual|Indie|Simulation|Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3015850/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/3015850/"
       }
     ],
     "reviews_6_10": [
@@ -7617,19 +7617,6 @@
         "storeUrl": "https://store.steampowered.com/app/328900/"
       },
       {
-        "appid": 3513920,
-        "name": "Elysium",
-        "score": 98,
-        "tier": "struggling",
-        "tier_label": "Struggling (10-100 reviews)",
-        "reviews": 78,
-        "contrast_std": 88.7,
-        "palette_type": "warm",
-        "genre": "Adventure|Casual|Indie",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3513920/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/3513920/"
-      },
-      {
         "appid": 2238750,
         "name": "LOST EGG 3: The Final",
         "score": 98,
@@ -7862,9 +7849,349 @@
         "genre": "Action|Adventure|Indie|RPG",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1785320/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/1785320/"
+      },
+      {
+        "appid": 2093020,
+        "name": "Lonely White",
+        "score": 98,
+        "tier": "struggling",
+        "tier_label": "Struggling (10-100 reviews)",
+        "reviews": 22,
+        "contrast_std": 94.1,
+        "palette_type": "warm",
+        "genre": "Action|Adventure|Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2093020/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2093020/"
       }
     ],
-    "reviews_100_plus": [
+    "reviews_100_500": [
+      {
+        "appid": 689070,
+        "name": "Asyula \u65b9\u821f\u4e4b\u94fe",
+        "score": 99,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 246,
+        "contrast_std": 84.0,
+        "palette_type": "warm",
+        "genre": "Adventure|Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/689070/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/689070/"
+      },
+      {
+        "appid": 1162560,
+        "name": "Ciconia When They Cry - Phase 1: For You, the Replaceable Ones",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 486,
+        "contrast_std": 70.7,
+        "palette_type": "warm",
+        "genre": "Adventure",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1162560/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1162560/"
+      },
+      {
+        "appid": 2981590,
+        "name": "Factory Outlet Simulator",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 484,
+        "contrast_std": 71.9,
+        "palette_type": "warm",
+        "genre": "Indie|Simulation",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2981590/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2981590/"
+      },
+      {
+        "appid": 289340,
+        "name": "Freight Tycoon Inc.",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 474,
+        "contrast_std": 75.2,
+        "palette_type": "warm",
+        "genre": "Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/289340/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/289340/"
+      },
+      {
+        "appid": 2311990,
+        "name": "Rack and Slay",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 472,
+        "contrast_std": 71.3,
+        "palette_type": "warm",
+        "genre": "Indie|RPG|Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2311990/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2311990/"
+      },
+      {
+        "appid": 40330,
+        "name": "Secret Files: Tunguska",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 457,
+        "contrast_std": 80.2,
+        "palette_type": "warm",
+        "genre": "Adventure",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/40330/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/40330/"
+      },
+      {
+        "appid": 337490,
+        "name": "Four Sided Fantasy",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 432,
+        "contrast_std": 73.5,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/337490/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/337490/"
+      },
+      {
+        "appid": 474220,
+        "name": "Soldat 2",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 413,
+        "contrast_std": 71.5,
+        "palette_type": "warm",
+        "genre": "Action|Indie|Early Access",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/474220/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/474220/"
+      },
+      {
+        "appid": 1077230,
+        "name": "Dissolving",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 82.1,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1077230/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1077230/"
+      },
+      {
+        "appid": 2313130,
+        "name": "Lord of the Other World",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 68.3,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2313130/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2313130/"
+      },
+      {
+        "appid": 389700,
+        "name": "My Bones",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 68.1,
+        "palette_type": "warm",
+        "genre": "Adventure|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/389700/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/389700/"
+      },
+      {
+        "appid": 959750,
+        "name": "A Book of Beasts and Buddies",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 395,
+        "contrast_std": 67.2,
+        "palette_type": "warm",
+        "genre": "Adventure|Casual|Indie|RPG|Simulation|Free To Play",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/959750/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/959750/"
+      },
+      {
+        "appid": 963280,
+        "name": "Talk to Strangers",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 391,
+        "contrast_std": 88.9,
+        "palette_type": "warm",
+        "genre": "Casual|Indie|Simulation",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/963280/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/963280/"
+      },
+      {
+        "appid": 1413960,
+        "name": "Chevalier Historie",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 389,
+        "contrast_std": 78.0,
+        "palette_type": "warm",
+        "genre": "Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1413960/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1413960/"
+      },
+      {
+        "appid": 42850,
+        "name": "Arsenal of Democracy: A Hearts of Iron Game",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 375,
+        "contrast_std": 85.5,
+        "palette_type": "warm",
+        "genre": "Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/42850/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/42850/"
+      },
+      {
+        "appid": 1978330,
+        "name": "Life Gallery",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 368,
+        "contrast_std": 62.8,
+        "palette_type": "warm",
+        "genre": "Casual|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1978330/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1978330/"
+      },
+      {
+        "appid": 915230,
+        "name": "Zombie Rollerz: Pinball Heroes",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 366,
+        "contrast_std": 74.1,
+        "palette_type": "warm",
+        "genre": "Action|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/915230/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/915230/"
+      },
+      {
+        "appid": 2513240,
+        "name": "Hero Tale",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 360,
+        "contrast_std": 72.5,
+        "palette_type": "warm",
+        "genre": "Casual|Indie|RPG|Free To Play",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2513240/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2513240/"
+      },
+      {
+        "appid": 895150,
+        "name": "Endless Battle",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 351,
+        "contrast_std": 68.0,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/895150/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/895150/"
+      },
+      {
+        "appid": 21030,
+        "name": "Watchmen: The End is Nigh Part 2",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 337,
+        "contrast_std": 67.2,
+        "palette_type": "warm",
+        "genre": "Action",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/21030/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/21030/"
+      },
+      {
+        "appid": 505060,
+        "name": "Warcube",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 336,
+        "contrast_std": 73.2,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/505060/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/505060/"
+      },
+      {
+        "appid": 12690,
+        "name": "Hunting Unlimited 2010",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 332,
+        "contrast_std": 69.9,
+        "palette_type": "warm",
+        "genre": "Simulation|Sports",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/12690/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/12690/"
+      },
+      {
+        "appid": 857350,
+        "name": "CopperCube 6 Game Engine",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 331,
+        "contrast_std": 69.7,
+        "palette_type": "warm",
+        "genre": "Animation & Modeling|Design & Illustration",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/857350/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/857350/"
+      },
+      {
+        "appid": 412460,
+        "name": "Villagers",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 331,
+        "contrast_std": 62.9,
+        "palette_type": "warm",
+        "genre": "Indie|Simulation|Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/412460/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/412460/"
+      },
+      {
+        "appid": 318310,
+        "name": "Choice of the Deathless",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 327,
+        "contrast_std": 78.8,
+        "palette_type": "warm",
+        "genre": "Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/318310/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/318310/"
+      }
+    ],
+    "reviews_500_plus": [
       {
         "appid": 39150,
         "name": "FINAL FANTASY VIII",
@@ -7942,19 +8269,6 @@
         "genre": "Strategy",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/57620/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/57620/"
-      },
-      {
-        "appid": 689070,
-        "name": "Asyula \u65b9\u821f\u4e4b\u94fe",
-        "score": 99,
-        "tier": "moderate",
-        "tier_label": "Moderate (100-1k reviews)",
-        "reviews": 246,
-        "contrast_std": 84.0,
-        "palette_type": "warm",
-        "genre": "Adventure|Indie|RPG",
-        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/689070/header.jpg",
-        "storeUrl": "https://store.steampowered.com/app/689070/"
       },
       {
         "appid": 322330,
@@ -8189,6 +8503,346 @@
         "genre": "Action|Early Access",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1548850/header.jpg",
         "storeUrl": "https://store.steampowered.com/app/1548850/"
+      },
+      {
+        "appid": 872790,
+        "name": "Football Manager 2019",
+        "score": 98,
+        "tier": "mega_hit",
+        "tier_label": "Mega-Hit (>10k reviews)",
+        "reviews": 12480,
+        "contrast_std": 84.0,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/872790/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/872790/"
+      }
+    ],
+    "reviews_100_plus": [
+      {
+        "appid": 689070,
+        "name": "Asyula \u65b9\u821f\u4e4b\u94fe",
+        "score": 99,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 246,
+        "contrast_std": 84.0,
+        "palette_type": "warm",
+        "genre": "Adventure|Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/689070/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/689070/"
+      },
+      {
+        "appid": 1162560,
+        "name": "Ciconia When They Cry - Phase 1: For You, the Replaceable Ones",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 486,
+        "contrast_std": 70.7,
+        "palette_type": "warm",
+        "genre": "Adventure",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1162560/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1162560/"
+      },
+      {
+        "appid": 2981590,
+        "name": "Factory Outlet Simulator",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 484,
+        "contrast_std": 71.9,
+        "palette_type": "warm",
+        "genre": "Indie|Simulation",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2981590/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2981590/"
+      },
+      {
+        "appid": 289340,
+        "name": "Freight Tycoon Inc.",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 474,
+        "contrast_std": 75.2,
+        "palette_type": "warm",
+        "genre": "Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/289340/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/289340/"
+      },
+      {
+        "appid": 2311990,
+        "name": "Rack and Slay",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 472,
+        "contrast_std": 71.3,
+        "palette_type": "warm",
+        "genre": "Indie|RPG|Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2311990/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2311990/"
+      },
+      {
+        "appid": 40330,
+        "name": "Secret Files: Tunguska",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 457,
+        "contrast_std": 80.2,
+        "palette_type": "warm",
+        "genre": "Adventure",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/40330/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/40330/"
+      },
+      {
+        "appid": 337490,
+        "name": "Four Sided Fantasy",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 432,
+        "contrast_std": 73.5,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/337490/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/337490/"
+      },
+      {
+        "appid": 474220,
+        "name": "Soldat 2",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 413,
+        "contrast_std": 71.5,
+        "palette_type": "warm",
+        "genre": "Action|Indie|Early Access",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/474220/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/474220/"
+      },
+      {
+        "appid": 1077230,
+        "name": "Dissolving",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 82.1,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1077230/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1077230/"
+      },
+      {
+        "appid": 2313130,
+        "name": "Lord of the Other World",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 68.3,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2313130/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2313130/"
+      },
+      {
+        "appid": 389700,
+        "name": "My Bones",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 398,
+        "contrast_std": 68.1,
+        "palette_type": "warm",
+        "genre": "Adventure|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/389700/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/389700/"
+      },
+      {
+        "appid": 959750,
+        "name": "A Book of Beasts and Buddies",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 395,
+        "contrast_std": 67.2,
+        "palette_type": "warm",
+        "genre": "Adventure|Casual|Indie|RPG|Simulation|Free To Play",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/959750/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/959750/"
+      },
+      {
+        "appid": 963280,
+        "name": "Talk to Strangers",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 391,
+        "contrast_std": 88.9,
+        "palette_type": "warm",
+        "genre": "Casual|Indie|Simulation",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/963280/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/963280/"
+      },
+      {
+        "appid": 1413960,
+        "name": "Chevalier Historie",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 389,
+        "contrast_std": 78.0,
+        "palette_type": "warm",
+        "genre": "Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1413960/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1413960/"
+      },
+      {
+        "appid": 42850,
+        "name": "Arsenal of Democracy: A Hearts of Iron Game",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 375,
+        "contrast_std": 85.5,
+        "palette_type": "warm",
+        "genre": "Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/42850/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/42850/"
+      },
+      {
+        "appid": 1978330,
+        "name": "Life Gallery",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 368,
+        "contrast_std": 62.8,
+        "palette_type": "warm",
+        "genre": "Casual|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1978330/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/1978330/"
+      },
+      {
+        "appid": 915230,
+        "name": "Zombie Rollerz: Pinball Heroes",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 366,
+        "contrast_std": 74.1,
+        "palette_type": "warm",
+        "genre": "Action|Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/915230/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/915230/"
+      },
+      {
+        "appid": 2513240,
+        "name": "Hero Tale",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 360,
+        "contrast_std": 72.5,
+        "palette_type": "warm",
+        "genre": "Casual|Indie|RPG|Free To Play",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2513240/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/2513240/"
+      },
+      {
+        "appid": 895150,
+        "name": "Endless Battle",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 351,
+        "contrast_std": 68.0,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/895150/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/895150/"
+      },
+      {
+        "appid": 21030,
+        "name": "Watchmen: The End is Nigh Part 2",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 337,
+        "contrast_std": 67.2,
+        "palette_type": "warm",
+        "genre": "Action",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/21030/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/21030/"
+      },
+      {
+        "appid": 505060,
+        "name": "Warcube",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 336,
+        "contrast_std": 73.2,
+        "palette_type": "warm",
+        "genre": "Indie",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/505060/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/505060/"
+      },
+      {
+        "appid": 12690,
+        "name": "Hunting Unlimited 2010",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 332,
+        "contrast_std": 69.9,
+        "palette_type": "warm",
+        "genre": "Simulation|Sports",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/12690/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/12690/"
+      },
+      {
+        "appid": 857350,
+        "name": "CopperCube 6 Game Engine",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 331,
+        "contrast_std": 69.7,
+        "palette_type": "warm",
+        "genre": "Animation & Modeling|Design & Illustration",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/857350/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/857350/"
+      },
+      {
+        "appid": 412460,
+        "name": "Villagers",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 331,
+        "contrast_std": 62.9,
+        "palette_type": "warm",
+        "genre": "Indie|Simulation|Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/412460/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/412460/"
+      },
+      {
+        "appid": 318310,
+        "name": "Choice of the Deathless",
+        "score": 98,
+        "tier": "moderate",
+        "tier_label": "Moderate (100-1k reviews)",
+        "reviews": 327,
+        "contrast_std": 78.8,
+        "palette_type": "warm",
+        "genre": "Indie|RPG",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/318310/header.jpg",
+        "storeUrl": "https://store.steampowered.com/app/318310/"
       }
     ]
   },
@@ -8573,19 +9227,6 @@
       "storeUrl": "https://store.steampowered.com/app/2649470/"
     },
     {
-      "appid": 2822080,
-      "name": "The Silent Forests",
-      "score": 0,
-      "tier": "near_zero",
-      "tier_label": "Near-Zero (<10 reviews)",
-      "reviews": 0,
-      "contrast_std": 81.0,
-      "palette_type": "neutral",
-      "genre": "Action|Adventure|Indie",
-      "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2822080/header.jpg",
-      "storeUrl": "https://store.steampowered.com/app/2822080/"
-    },
-    {
       "appid": 3234360,
       "name": "Bullet Voyage",
       "score": 0,
@@ -8781,19 +9422,6 @@
       "storeUrl": "https://store.steampowered.com/app/2869500/"
     },
     {
-      "appid": 3481760,
-      "name": "Eternal Flame:Romance Dawn",
-      "score": 0,
-      "tier": "near_zero",
-      "tier_label": "Near-Zero (<10 reviews)",
-      "reviews": 1,
-      "contrast_std": 24.7,
-      "palette_type": "neutral",
-      "genre": "Action|Adventure|Casual|Indie|RPG",
-      "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/3481760/header.jpg",
-      "storeUrl": "https://store.steampowered.com/app/3481760/"
-    },
-    {
       "appid": 2187190,
       "name": "Poly Shoot",
       "score": 0,
@@ -8844,6 +9472,32 @@
       "genre": "Action|Adventure|Casual|Indie",
       "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1857040/header.jpg",
       "storeUrl": "https://store.steampowered.com/app/1857040/"
+    },
+    {
+      "appid": 780720,
+      "name": "Undarkened: Revival",
+      "score": 0,
+      "tier": "near_zero",
+      "tier_label": "Near-Zero (<10 reviews)",
+      "reviews": 1,
+      "contrast_std": 22.9,
+      "palette_type": "neutral",
+      "genre": "Adventure|Indie|RPG|Early Access",
+      "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/780720/header.jpg",
+      "storeUrl": "https://store.steampowered.com/app/780720/"
+    },
+    {
+      "appid": 1567680,
+      "name": "Cosmic Tank",
+      "score": 0,
+      "tier": "near_zero",
+      "tier_label": "Near-Zero (<10 reviews)",
+      "reviews": 1,
+      "contrast_std": 67.2,
+      "palette_type": "neutral",
+      "genre": "Action|Indie|Early Access",
+      "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1567680/header.jpg",
+      "storeUrl": "https://store.steampowered.com/app/1567680/"
     }
   ]
 }

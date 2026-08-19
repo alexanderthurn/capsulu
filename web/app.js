@@ -2197,10 +2197,22 @@ const SHOWCASE_TABS_CONFIG = {
         sub: "Indies breaking into organic Steam Discovery Queue testing. Notice the sharper silhouettes and specular highlights.",
         type: "top"
     },
+    reviews_100_500: {
+        icon: "🌟",
+        title: "100–500 Reviews (Sustainable Indie Breakouts)",
+        sub: "Commercially validated indies with proven product-market fit, strong store conversion, punchy contrast (>60.0), and 50%+ warm accent lighting.",
+        type: "top"
+    },
+    reviews_500_plus: {
+        icon: "🔥",
+        title: "500+ Reviews (Hit Indies & Mega-Hits)",
+        sub: "Major indie breakout hits that unlocked the full Steam Discovery Queue algorithm flywheel.",
+        type: "top"
+    },
     reviews_100_plus: {
         icon: "🌟",
-        title: "100+ Reviews (Validated Breakout Indies)",
-        sub: "Commercially validated indies with strong store conversion, punchy contrast (>60.0), and 50%+ warm accent lighting.",
+        title: "100–500 Reviews (Sustainable Indie Breakouts)",
+        sub: "Commercially validated indies with proven product-market fit, strong store conversion, punchy contrast (>60.0), and 50%+ warm accent lighting.",
         type: "top"
     }
 };
