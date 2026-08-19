@@ -332,10 +332,56 @@ function setupEventListeners() {
     });
 
     // AI Tab & Hub Copy Listeners
+    const btnQuickCopyAgentPrompt = document.getElementById('btnQuickCopyAgentPrompt');
+    const btnToggleAiAdvanced = document.getElementById('btnToggleAiAdvanced');
+    const aiAdvancedBody = document.getElementById('aiAdvancedBody');
+    const advancedToggleArrow = document.getElementById('advancedToggleArrow');
     const btnCopySystemPrompt = document.getElementById('btnCopySystemPrompt');
     const btnCopyGenPrompt = document.getElementById('btnCopyGenPrompt');
     const btnCopyCurlSnippet = document.getElementById('btnCopyCurlSnippet');
     const btnCopyAiPrompt = document.getElementById('btnCopyAiPrompt');
+
+    if (btnQuickCopyAgentPrompt) {
+        btnQuickCopyAgentPrompt.addEventListener('click', () => {
+            const text = document.getElementById('aiSystemPromptText')?.textContent || '';
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = document.getElementById('quickCopyIcon');
+                const label = document.getElementById('quickCopyText');
+                const step2Box = document.getElementById('aiStep2Box');
+                const step2Tag = document.getElementById('aiStep2Tag');
+
+                if (icon) icon.textContent = '✓';
+                if (label) label.textContent = 'Copied to Clipboard!';
+                btnQuickCopyAgentPrompt.classList.add('copied');
+
+                // Unlock Step 2 with animation
+                if (step2Box) {
+                    step2Box.classList.remove('ai-step-locked');
+                    step2Box.classList.add('ai-step-unlocked');
+                }
+                if (step2Tag) {
+                    step2Tag.textContent = 'Step 2: Ready to Paste!';
+                }
+
+                setTimeout(() => {
+                    if (icon) icon.textContent = '📋';
+                    if (label) label.textContent = 'Copy Agent Prompt';
+                    btnQuickCopyAgentPrompt.classList.remove('copied');
+                }, 2500);
+            });
+        });
+    }
+
+    if (btnToggleAiAdvanced && aiAdvancedBody) {
+        btnToggleAiAdvanced.addEventListener('click', () => {
+            const isHidden = aiAdvancedBody.style.display === 'none' || aiAdvancedBody.style.display === '';
+            aiAdvancedBody.style.display = isHidden ? 'block' : 'none';
+            btnToggleAiAdvanced.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+            if (advancedToggleArrow) {
+                advancedToggleArrow.textContent = isHidden ? '▲' : '▼';
+            }
+        });
+    }
 
     if (btnCopySystemPrompt) {
         btnCopySystemPrompt.addEventListener('click', () => {

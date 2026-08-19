@@ -19,7 +19,7 @@ Capsulu measures 5 core visual metrics critical to Steam store click-through rat
 ### 1. Rate Game Capsule by Steam App ID / Store URL
 - **Endpoint**: `GET https://capsulu.feuerware.com/api/rate`
 - **Parameters**:
-  - `appid` (int, optional): Steam Store App ID (e.g. `4429000` for DICEPTION, `1145360` for Hades).
+  - `appid` (int, optional): Steam Store App ID (e.g. `4429000` for DICEPTION, `4987230` for Melodan).
   - `url` (string, optional): Full Steam Store URL (e.g. `https://store.steampowered.com/app/4429000/DICEPTION/`).
   - `image_url` (string, optional): Direct URL to a 460x215 capsule image.
   - `format` (string, optional): `markdown` (default for LLMs) or `json`.

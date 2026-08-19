@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Capsulu – The Steam Capsule Rater | Benchmark Against 28,754 Games</title>
-    <meta name="description" content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Instantly benchmark contrast, saliency, lighting, and 120px discovery queue visibility against 28,754 real Steam games.">
-    <meta name="keywords" content="Steam capsule, Steam capsule rater, Steam key art, Steam capsule size, Steam CTR, Steam store simulator, indie game marketing, steam capsule benchmark, video game marketing, game developer tools">
+    <meta name="description"
+        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Instantly benchmark contrast, saliency, lighting, and 120px discovery queue visibility against 28,754 real Steam games.">
+    <meta name="keywords"
+        content="Steam capsule, Steam capsule rater, Steam key art, Steam capsule size, Steam CTR, Steam store simulator, indie game marketing, steam capsule benchmark, video game marketing, game developer tools">
     <meta name="author" content="Capsulu">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#171a21">
@@ -17,7 +20,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://capsulu.feuerware.com/">
     <meta property="og:title" content="Capsulu – The Steam Capsule Rater">
-    <meta property="og:description" content="Compare your Steam capsule against 28,754 real games. Instant in-browser computer vision analysis of contrast, saliency, lighting, and 120px discovery queue performance.">
+    <meta property="og:description"
+        content="Compare your Steam capsule against 28,754 real games. Instant in-browser computer vision analysis of contrast, saliency, lighting, and 120px discovery queue performance.">
     <meta property="og:image" content="/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -26,7 +30,8 @@
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Capsulu – The Steam Capsule Rater">
-    <meta name="twitter:description" content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 Steam games.">
+    <meta name="twitter:description"
+        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 Steam games.">
     <meta name="twitter:image" content="/og-image.png">
 
     <!-- AI & LLM Discovery Standard -->
@@ -61,10 +66,13 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <!-- Global Top Nav: Brand & Tabs on Left, Disclaimer on Far Right -->
@@ -73,7 +81,8 @@
             <div class="nav-left-col">
                 <div class="steam-brand" id="brandHomeLink" role="button" tabindex="0" title="Back to Home">
                     <svg class="steam-logo-svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.42 7.63 11.16l2.12-3.13c-.22-.64-.35-1.32-.35-2.03 0-.47.06-.92.17-1.35l-3.32-2.38c-.8.09-1.61-.17-2.22-.78-.9-.9-.9-2.36 0-3.26.9-.9 2.36-.9 3.26 0 .58.58.85 1.34.8 2.11l2.45 1.76c.47-.18.98-.28 1.51-.28.05 0 .1 0 .15.01l2.36-3.43c-.49-.78-.77-1.7-.77-2.68 0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5c-.38 0-.74-.05-1.09-.13l-3.38 4.9c.5.24.94.59 1.28 1.03.73.94.88 2.17.47 3.24L16.37 24C20.84 22.26 24 17.92 24 12c0-6.63-5.37-12-12-12z"/>
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.08 3.16 9.42 7.63 11.16l2.12-3.13c-.22-.64-.35-1.32-.35-2.03 0-.47.06-.92.17-1.35l-3.32-2.38c-.8.09-1.61-.17-2.22-.78-.9-.9-.9-2.36 0-3.26.9-.9 2.36-.9 3.26 0 .58.58.85 1.34.8 2.11l2.45 1.76c.47-.18.98-.28 1.51-.28.05 0 .1 0 .15.01l2.36-3.43c-.49-.78-.77-1.7-.77-2.68 0-2.76 2.24-5 5-5s5 2.24 5 5-2.24 5-5 5c-.38 0-.74-.05-1.09-.13l-3.38 4.9c.5.24.94.59 1.28 1.03.73.94.88 2.17.47 3.24L16.37 24C20.84 22.26 24 17.92 24 12c0-6.63-5.37-12-12-12z" />
                     </svg>
                     <span class="steam-brand-title">CAPSULU</span>
                 </div>
@@ -89,7 +98,8 @@
             <!-- Disclaimer on Very Right -->
             <div class="nav-right-col">
                 <div class="nav-legal-disclaimer">
-                    This site is not affiliated with Valve Corporation. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.
+                    This site is not affiliated with Valve Corporation. Steam and the Steam logo are trademarks or
+                    registered trademarks of Valve Corporation in the U.S. and/or other countries.
                 </div>
             </div>
         </div>
@@ -109,20 +119,31 @@
                 <!-- Unified Action Bar: URL Input + Analyze Button + Upload Button -->
                 <div class="unified-input-bar">
                     <div class="input-field-group">
-                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" id="steamUrlInput" placeholder="Paste Steam Store URL (e.g. store.steampowered.com/app/4429000/DICEPTION/), App ID, or Image URL..." autocomplete="off">
+                        <input type="text" id="steamUrlInput"
+                            placeholder="Paste Steam Store URL (e.g. store.steampowered.com/app/4429000/DICEPTION/), App ID, or Image URL..."
+                            autocomplete="off">
                     </div>
 
                     <div class="action-buttons-group">
                         <button class="btn btn-steam-primary" id="fetchUrlBtn" type="button">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
                             Analyze URL
                         </button>
                         <button class="btn btn-steam-upload" id="browseBtn" type="button">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
                             Upload Image
                         </button>
                     </div>
@@ -143,22 +164,30 @@
                 <div class="steam-loader-track">
                     <div class="steam-loader-bar"></div>
                 </div>
-                <p class="loading-label">Extracting Computer Vision Metrics (Luminance, Sobel Edge Filter, Shannon Entropy)...</p>
+                <p class="loading-label">Extracting Computer Vision Metrics (Luminance, Sobel Edge Filter, Shannon
+                    Entropy)...</p>
             </div>
 
             <!-- Analysis Dashboard -->
             <div class="dashboard" id="resultsDashboard" style="display: none;">
-                
+
                 <!-- 1. HUGE FULL-WIDTH GAME TITLE HEADER (Huge Title + Tags & Metadata) -->
                 <section class="game-huge-title-banner" id="gameHugeTitleBanner">
                     <div class="game-huge-title-row">
                         <h2 class="game-huge-title">
-                            <a id="resultGameTitleLink" href="#" target="_blank" rel="noopener noreferrer" title="Open on Steam Store">
+                            <a id="resultGameTitleLink" href="#" target="_blank" rel="noopener noreferrer"
+                                title="Open on Steam Store">
                                 <span id="resultGameTitleText">Game Title</span>
-                                <svg class="external-icon-huge" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                <svg class="external-icon-huge" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                    <polyline points="15 3 21 3 21 9"></polyline>
+                                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
                             </a>
                         </h2>
-                        <a id="resultStoreBtnLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-steam-store-direct btn-steam-store-huge">
+                        <a id="resultStoreBtnLink" href="#" target="_blank" rel="noopener noreferrer"
+                            class="btn btn-steam-store-direct btn-steam-store-huge">
                             Open on Steam ↗
                         </a>
                     </div>
@@ -178,7 +207,7 @@
 
                 <!-- 2. TOP 2-COLUMN SECTION (Left: Capsule Art Card + Dominant Palette | Right: Big Dominant Scorecard) -->
                 <div class="top-hero-two-col-grid">
-                    
+
                     <!-- Left 50% Column -->
                     <div class="top-left-col">
                         <!-- Upper: Dedicated Capsule Artwork Display Card -->
@@ -225,7 +254,9 @@
                             <!-- Centered Rating Verdict & Summary -->
                             <div class="score-meta-group-centered">
                                 <h2 class="score-title" id="scoreHeadline">Exceptional</h2>
-                                <p class="score-desc" id="scoreSummary">Your capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.</p>
+                                <p class="score-desc" id="scoreSummary">Your capsule has strong visual saliency with
+                                    punchy contrast and intentional lighting that will stand out on Steam's dark store
+                                    theme.</p>
                             </div>
 
                             <div class="quick-metrics-table">
@@ -285,19 +316,22 @@
 
                 <!-- 3. DYNAMIC VISUAL CHECK & RECOMMENDATIONS SECTION (Half Width in Small Mode, Full Width in Large Mode) -->
                 <div class="sim-and-recs-wrapper mode-small" id="simAndRecsWrapper">
-                    
+
                     <!-- Visual Check Panel -->
                     <section class="steam-panel visual-check-panel" id="visualCheckPanel">
                         <div class="panel-header sim-panel-header">
                             <div class="sim-header-left">
                                 <h3>🏪 Visual Check</h3>
                                 <div class="sim-view-toggle-group">
-                                    <button class="btn-sim-toggle active" id="simToggleSmall" onclick="switchSimView('small')" type="button">Small</button>
-                                    <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')" type="button">Large</button>
+                                    <button class="btn-sim-toggle active" id="simToggleSmall"
+                                        onclick="switchSimView('small')" type="button">Small</button>
+                                    <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')"
+                                        type="button">Large</button>
                                 </div>
                             </div>
                             <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                    title="Select comparison lens">
                                     <option value="all">All Steam Games</option>
                                     <optgroup label="Genre">
                                         <option value="Action">Action</option>
@@ -324,7 +358,8 @@
                             </div>
                         </div>
 
-                        <p class="sim-explainer">See how your artwork compares against competitors in crowded Steam discovery queues.</p>
+                        <p class="sim-explainer">See how your artwork compares against competitors in crowded Steam
+                            discovery queues.</p>
 
                         <!-- Small View (Default) -->
                         <div class="sim-view-container" id="simViewSmall" style="display: block;">
@@ -346,7 +381,8 @@
                         <div class="panel-header">
                             <h3>🛠️ Design Recommendations</h3>
                             <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                    title="Select comparison lens">
                                     <option value="all">All Steam Games</option>
                                     <optgroup label="Genre">
                                         <option value="Action">Action</option>
@@ -381,14 +417,18 @@
                             <div class="ai-prompt-header">
                                 <div class="ai-prompt-title-group">
                                     <span class="ai-prompt-badge">✨ AI Art Fix Prompt (Attach Image + Paste)</span>
-                                    <span class="ai-prompt-subtext">1. Download your capsule ➔ 2. Attach it to Gemini, ChatGPT, or Claude ➔ 3. Paste this prompt</span>
+                                    <span class="ai-prompt-subtext">1. Download your capsule ➔ 2. Attach it to Gemini,
+                                        ChatGPT, or Claude ➔ 3. Paste this prompt</span>
                                 </div>
                                 <div class="ai-prompt-actions">
-                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg" title="Download capsule image to attach into your AI chat">
+                                    <a id="btnDownloadCapsule" class="btn-download-capsule" download="steam_capsule.jpg"
+                                        title="Download capsule image to attach into your AI chat">
                                         <span>⬇️</span> Download Art
                                     </a>
-                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt" title="Copy prompt to clipboard">
-                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI Prompt</span>
+                                    <button type="button" class="btn-copy-prompt" id="btnCopyAiPrompt"
+                                        title="Copy prompt to clipboard">
+                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">Copy AI
+                                            Prompt</span>
                                     </button>
                                 </div>
                             </div>
@@ -401,17 +441,21 @@
                 </div>
 
                 <!-- 4. DEDICATED UNIFIED TAG & GENRE BENCHMARK PANEL (Directly After Design Recommendations) -->
-                <section class="steam-panel genre-benchmark-card" id="genreBenchmarkCard" style="margin-top: 20px; display: block;">
+                <section class="steam-panel genre-benchmark-card" id="genreBenchmarkCard"
+                    style="margin-top: 20px; display: block;">
                     <div class="panel-header">
                         <div class="genre-card-header-left">
                             <span class="genre-card-icon" id="genreCardIcon">🏷️</span>
                             <div>
                                 <h3 id="genreCardTitle">Steam Tag & Genre Benchmark</h3>
-                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing your capsule directly against competitors with matching Steam tags & genres.</p>
+                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing your
+                                    capsule directly against competitors with matching Steam tags & genres.</p>
                             </div>
                         </div>
                         <div class="panel-header-right-controls">
-                            <select id="genreSelectDropdown" class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                            <select id="genreSelectDropdown"
+                                class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                title="Select comparison lens">
                                 <option value="all">All Steam Games</option>
                                 <optgroup label="Genre">
                                     <option value="Action">Action</option>
@@ -474,7 +518,8 @@
 
                     <div class="genre-recommendation-box" id="genreRecommendationBox">
                         <span class="rec-icon">💡</span>
-                        <p id="genreRecommendationText">Select a Steam tag or genre above or analyze a Steam game to see tailored market recommendations.</p>
+                        <p id="genreRecommendationText">Select a Steam tag or genre above or analyze a Steam game to see
+                            tailored market recommendations.</p>
                     </div>
                 </section>
 
@@ -483,7 +528,8 @@
                     <div class="panel-header">
                         <h3>📊 Metric Breakdown vs. 28,754 Games</h3>
                         <div class="panel-header-right-controls">
-                            <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                            <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                title="Select comparison lens">
                                 <option value="all">All Steam Games</option>
                                 <optgroup label="Genre">
                                     <option value="Action">Action</option>
@@ -517,7 +563,8 @@
                                 <span class="metric-title">⚡ Dynamic Contrast (Luminance Std Dev)</span>
                                 <span class="metric-tag" id="mContrastScore">--</span>
                             </div>
-                            <p class="metric-help">Separation between deep shadows and bright highlights. Prevents flat midtones.</p>
+                            <p class="metric-help">Separation between deep shadows and bright highlights. Prevents flat
+                                midtones.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mContrastBar"></div>
                                 <div class="benchmark-pin" style="left: 74%;" title="Mega-Hit Avg (63.0)"></div>
@@ -534,7 +581,8 @@
                                 <span class="metric-title">🎨 Steam UI Chromatic Saliency (Warm Accents)</span>
                                 <span class="metric-tag" id="mWarmthScore">--</span>
                             </div>
-                            <p class="metric-help">Warm color share (gold/amber/crimson) that pops against Steam's navy UI.</p>
+                            <p class="metric-help">Warm color share (gold/amber/crimson) that pops against Steam's navy
+                                UI.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mWarmthBar"></div>
                                 <div class="benchmark-pin" style="left: 50%;" title="Mega-Hit Avg (50%)"></div>
@@ -551,7 +599,8 @@
                                 <span class="metric-title">🔍 Shannon Entropy (Tonal Depth)</span>
                                 <span class="metric-tag" id="mEntropyScore">--</span>
                             </div>
-                            <p class="metric-help">Information richness of visual lighting without muddy compression noise.</p>
+                            <p class="metric-help">Information richness of visual lighting without muddy compression
+                                noise.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mEntropyBar"></div>
                                 <div class="benchmark-pin" style="left: 88%;" title="Mega-Hit Avg (6.99 bits)"></div>
@@ -568,7 +617,8 @@
                                 <span class="metric-title">📐 Edge Density & Structural Sharpness</span>
                                 <span class="metric-tag" id="mEdgeScore">--</span>
                             </div>
-                            <p class="metric-help">Clean silhouettes and well-defined line art vs blurry unedited screenshots.</p>
+                            <p class="metric-help">Clean silhouettes and well-defined line art vs blurry unedited
+                                screenshots.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mEdgeBar"></div>
                                 <div class="benchmark-pin" style="left: 70%;" title="Mega-Hit Avg (14.2%)"></div>
@@ -585,7 +635,8 @@
                                 <span class="metric-title">💡 Central Hero Spotlighting</span>
                                 <span class="metric-tag" id="mFocusScore">--</span>
                             </div>
-                            <p class="metric-help">Concentrating illumination on the central hero with subtle edge vignetting.</p>
+                            <p class="metric-help">Concentrating illumination on the central hero with subtle edge
+                                vignetting.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mFocusBar"></div>
                                 <div class="benchmark-pin" style="left: 72%;" title="Mega-Hit Avg (72%)"></div>
@@ -602,7 +653,8 @@
                                 <span class="metric-title">🔤 Title Typography Contrast (WCAG Ratio)</span>
                                 <span class="metric-tag" id="mTextScore">--</span>
                             </div>
-                            <p class="metric-help">Luminance separation between title typography and background art. Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
+                            <p class="metric-help">Luminance separation between title typography and background art.
+                                Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
                             <div class="metric-progress-track">
                                 <div class="metric-progress-fill" id="mTextBar"></div>
                                 <div class="benchmark-pin" style="left: 55%;" title="Mega-Hit Avg (5.2:1)"></div>
@@ -624,7 +676,8 @@
         <div class="benchmark-container">
             <header class="benchmark-header">
                 <h2>📈 Steam Capsule Art Benchmark Study</h2>
-                <p class="benchmark-sub">Empirical Computer Vision Analysis of 28,754 Steam Capsules Across 5 Commercial Sales Tiers.</p>
+                <p class="benchmark-sub">Empirical Computer Vision Analysis of 28,754 Steam Capsules Across 5 Commercial
+                    Sales Tiers.</p>
             </header>
 
             <!-- 5-Tier Data Table -->
@@ -701,19 +754,26 @@
             <div class="benchmark-rules-grid" style="margin-bottom: 32px;">
                 <div class="steam-panel">
                     <h3 class="rule-heading">1. Dynamic Contrast Rule</h3>
-                    <p class="rule-desc">Top sellers maintain strong separation between shadow depths (&lt;60 luminance) and bright highlights (&gt;190 luminance). Flops suffer from muddy, washed-out midtone clustering.</p>
+                    <p class="rule-desc">Top sellers maintain strong separation between shadow depths (&lt;60 luminance)
+                        and bright highlights (&gt;190 luminance). Flops suffer from muddy, washed-out midtone
+                        clustering.</p>
                 </div>
                 <div class="steam-panel">
                     <h3 class="rule-heading">2. Steam Navy Saliency</h3>
-                    <p class="rule-desc">Steam's client background is cool navy (#1b2838). Top capsules utilize warm amber, gold, and crimson focal elements (+10.9% higher warm share than flops) to naturally create visual pop.</p>
+                    <p class="rule-desc">Steam's client background is cool navy (#1b2838). Top capsules utilize warm
+                        amber, gold, and crimson focal elements (+10.9% higher warm share than flops) to naturally
+                        create visual pop.</p>
                 </div>
                 <div class="steam-panel">
                     <h3 class="rule-heading">3. Spotlight Vignetting</h3>
-                    <p class="rule-desc">71.9% of Mega-Hits use center-focused lighting with subtle perimeter darkening, locking viewer gaze onto the hero subject within the 1-second Steam browsing glance.</p>
+                    <p class="rule-desc">71.9% of Mega-Hits use center-focused lighting with subtle perimeter darkening,
+                        locking viewer gaze onto the hero subject within the 1-second Steam browsing glance.</p>
                 </div>
                 <div class="steam-panel">
                     <h3 class="rule-heading">4. Sharp Silhouettes</h3>
-                    <p class="rule-desc">Edge density is 26.8% higher in top games (14.2% vs 11.2%). Clean character outlines and distinct typographic title treatments ensure readability at 120px micro thumbnail scale.</p>
+                    <p class="rule-desc">Edge density is 26.8% higher in top games (14.2% vs 11.2%). Clean character
+                        outlines and distinct typographic title treatments ensure readability at 120px micro thumbnail
+                        scale.</p>
                 </div>
             </div>
 
@@ -722,7 +782,8 @@
                 <div class="section-header-row" style="margin-bottom: 20px;">
                     <div>
                         <h3 class="benchmark-section-title">📊 Empirical Research Charts & Distributions</h3>
-                        <p class="benchmark-section-sub">Comprehensive visual evidence plotted from OpenCV batch processing across 28,754 Steam games.</p>
+                        <p class="benchmark-section-sub">Comprehensive visual evidence plotted from OpenCV batch
+                            processing across 28,754 Steam games.</p>
                     </div>
                     <span class="panel-badge">7 High-Res Statistical Visualizations</span>
                 </div>
@@ -737,15 +798,20 @@
                                 <span class="chart-metric-badge">+6.2 pts higher contrast in Mega-Hits</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/1_brightness_contrast.png" data-chart-title="Dynamic Contrast & Luminance Across 5 Sales Tiers">
-                            <img src="benchmark/1_brightness_contrast.png" alt="Dynamic Contrast & Luminance Distribution Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/1_brightness_contrast.png"
+                            data-chart-title="Dynamic Contrast & Luminance Across 5 Sales Tiers">
+                            <img src="benchmark/1_brightness_contrast.png"
+                                alt="Dynamic Contrast & Luminance Distribution Chart" loading="lazy"
+                                class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>The Contrast Cliff:</strong> Mega-hits score 63.0 contrast vs. 56.9 for flops. Successful games establish bright focal highlights against deep shadow vignetting, avoiding muddled midtone clustering.</p>
+                            <p><strong>The Contrast Cliff:</strong> Mega-hits score 63.0 contrast vs. 56.9 for flops.
+                                Successful games establish bright focal highlights against deep shadow vignetting,
+                                avoiding muddled midtone clustering.</p>
                         </div>
                     </div>
 
@@ -758,15 +824,19 @@
                                 <span class="chart-metric-badge">+10.9% more warm accents in Top Tier</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/2_palette_and_saturation.png" data-chart-title="Color Palette Distribution & Saliency on Steam UI">
-                            <img src="benchmark/2_palette_and_saturation.png" alt="Color Palette & Saturation Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/2_palette_and_saturation.png"
+                            data-chart-title="Color Palette Distribution & Saliency on Steam UI">
+                            <img src="benchmark/2_palette_and_saturation.png" alt="Color Palette & Saturation Chart"
+                                loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Steam Dark Navy Contrast:</strong> 49.9% of mega-hits leverage warm palettes (gold, amber, crimson) that naturally pop against Steam's navy client theme (#1b2838). 51.8% of flops blend in with drab neutral tones.</p>
+                            <p><strong>Steam Dark Navy Contrast:</strong> 49.9% of mega-hits leverage warm palettes
+                                (gold, amber, crimson) that naturally pop against Steam's navy client theme (#1b2838).
+                                51.8% of flops blend in with drab neutral tones.</p>
                         </div>
                     </div>
 
@@ -779,15 +849,19 @@
                                 <span class="chart-metric-badge">+26.8% sharper line art & silhouettes</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/3_detail_complexity.png" data-chart-title="Visual Detail, Edge Density & Shannon Entropy">
-                            <img src="benchmark/3_detail_complexity.png" alt="Detail Complexity & Shannon Entropy Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/3_detail_complexity.png"
+                            data-chart-title="Visual Detail, Edge Density & Shannon Entropy">
+                            <img src="benchmark/3_detail_complexity.png" alt="Detail Complexity & Shannon Entropy Chart"
+                                loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Tonal Depth vs. Screenshot Noise:</strong> Mega-hits exhibit 6.99 bits of entropy and 14.2% edge density. Flop games suffer from muddy raw screenshots or unlit 3D models that blur into noise at 120px scale.</p>
+                            <p><strong>Tonal Depth vs. Screenshot Noise:</strong> Mega-hits exhibit 6.99 bits of entropy
+                                and 14.2% edge density. Flop games suffer from muddy raw screenshots or unlit 3D models
+                                that blur into noise at 120px scale.</p>
                         </div>
                     </div>
 
@@ -800,15 +874,19 @@
                                 <span class="chart-metric-badge">3.5:1 Average Text Contrast Ratio</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/4_text_readability.png" data-chart-title="Title Typography Readability & Contrast Analysis">
-                            <img src="benchmark/4_text_readability.png" alt="Typography Readability Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/4_text_readability.png"
+                            data-chart-title="Title Typography Readability & Contrast Analysis">
+                            <img src="benchmark/4_text_readability.png" alt="Typography Readability Chart"
+                                loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between title text and background art, ensuring title recognition even on mobile or compressed Steam Discovery queues.</p>
+                            <p><strong>Thumbnail Glance Legibility:</strong> Top games maintain high contrast between
+                                title text and background art, ensuring title recognition even on mobile or compressed
+                                Steam Discovery queues.</p>
                         </div>
                     </div>
 
@@ -821,15 +899,19 @@
                                 <span class="chart-metric-badge">Bottom-Center & Top-Center Standard</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png" data-chart-title="Title 3×3 Grid Positioning Heatmap">
-                            <img src="benchmark/5_title_positioning_heatmap.png" alt="Title Positioning Heatmap Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/5_title_positioning_heatmap.png"
+                            data-chart-title="Title 3×3 Grid Positioning Heatmap">
+                            <img src="benchmark/5_title_positioning_heatmap.png" alt="Title Positioning Heatmap Chart"
+                                loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place title typography at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster text over the hero's face or dead-center.</p>
+                            <p><strong>Unobstructed Character Silhouettes:</strong> Mega-hits strategically place title
+                                typography at Bottom-Center (13.3%) or Top-Center (10.7%), whereas flops often plaster
+                                text over the hero's face or dead-center.</p>
                         </div>
                     </div>
 
@@ -842,15 +924,19 @@
                                 <span class="chart-metric-badge">71.9% Central Spotlight Focus in Hits</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/6_composition_lighting.png" data-chart-title="Composition & Central Spotlight Vignetting">
-                            <img src="benchmark/6_composition_lighting.png" alt="Composition & Lighting Chart" loading="lazy" class="benchmark-chart-img">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/6_composition_lighting.png"
+                            data-chart-title="Composition & Central Spotlight Vignetting">
+                            <img src="benchmark/6_composition_lighting.png" alt="Composition & Lighting Chart"
+                                loading="lazy" class="benchmark-chart-img">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Anchoring Buyer Attention:</strong> 71.9% of top games concentrate lighting in the center/hero zone while applying subtle perimeter darkening to lock gaze during the critical 1-second browse glance.</p>
+                            <p><strong>Anchoring Buyer Attention:</strong> 71.9% of top games concentrate lighting in
+                                the center/hero zone while applying subtle perimeter darkening to lock gaze during the
+                                critical 1-second browse glance.</p>
                         </div>
                     </div>
 
@@ -863,15 +949,20 @@
                                 <span class="chart-metric-badge">Action vs. RPG vs. Strategy vs. Simulation</span>
                             </div>
                         </div>
-                        <div class="chart-img-wrapper" data-chart-src="benchmark/7_genre_visual_profiles.png" data-chart-title="Genre-Specific Visual Signatures & Profiles">
-                            <img src="benchmark/7_genre_visual_profiles.png" alt="Genre Visual Profiles Chart" loading="lazy" class="benchmark-chart-img" style="max-height: 420px; object-fit: contain;">
+                        <div class="chart-img-wrapper" data-chart-src="benchmark/7_genre_visual_profiles.png"
+                            data-chart-title="Genre-Specific Visual Signatures & Profiles">
+                            <img src="benchmark/7_genre_visual_profiles.png" alt="Genre Visual Profiles Chart"
+                                loading="lazy" class="benchmark-chart-img"
+                                style="max-height: 420px; object-fit: contain;">
                             <div class="chart-zoom-overlay">
                                 <span class="zoom-icon">🔍</span>
                                 <span>Click to Enlarge</span>
                             </div>
                         </div>
                         <div class="chart-card-footer">
-                            <p><strong>Tailoring Art to Genre Conventions:</strong> RPG and Strategy games feature higher detail complexity and textural density, whereas Action and Arcade games prioritize high warm-accent punch and dramatic high-contrast lighting.</p>
+                            <p><strong>Tailoring Art to Genre Conventions:</strong> RPG and Strategy games feature
+                                higher detail complexity and textural density, whereas Action and Arcade games
+                                prioritize high warm-accent punch and dramatic high-contrast lighting.</p>
                         </div>
                     </div>
                 </div>
@@ -879,38 +970,90 @@
         </div>
     </div>
 
-    <!-- VIEW 3: AI (Capsulu AI Integrations & API Hub) -->
+    <!-- VIEW 3: AI (Capsulu in your Favorite AI Chat & Developer Hub) -->
     <div id="aiView" style="display: none;">
         <div class="ai-view-container">
             <header class="ai-view-header">
                 <div class="ai-view-title-row">
                     <span class="ai-header-sparkle">✨</span>
                     <div>
-                        <h2>Capsulu for AI &amp; LLMs</h2>
-                        <p class="ai-view-sub">Supercharge your game art workflow. Connect Capsulu's empirical computer vision engine directly with ChatGPT, Claude, Midjourney, Photoshop Generative Fill, Cursor, or your custom agents.</p>
+                        <h2>Use your AI</h2>
+                        <p class="ai-view-sub">Instead of using this website, you can do it from your chat</p>
                     </div>
                 </div>
             </header>
 
-            <!-- Cards Grid: Custom GPT Setup, Prompting Guide, and REST API -->
-            <div class="ai-grid-layout">
-                <!-- Card 1: Custom GPT & Claude Project System Prompt -->
-                <div class="steam-panel ai-panel-card">
-                    <div class="panel-header">
-                        <div class="ai-card-title-group">
-                            <span class="ai-step-badge">1</span>
-                            <h3>Custom GPT &amp; Claude Project Agent</h3>
+            <!-- 2-Step Simple Quickstart Panel (Shown by Default) -->
+            <div class="steam-panel ai-quickstart-card">
+                <div class="ai-quickstart-grid">
+                    <!-- Step 1 -->
+                    <div class="ai-quickstart-step" id="aiStep1Box">
+                        <div class="ai-step-indicator">
+                            <span class="ai-step-circle">1</span>
+                            <span class="ai-step-tag">Step 1</span>
                         </div>
-                        <span class="panel-badge">ChatGPT / Claude</span>
+                        <h3 class="ai-step-title">Copy Prompt</h3>
+                        <p class="ai-step-desc"></p>
+                        <button type="button" class="btn-primary-quickstart" id="btnQuickCopyAgentPrompt">
+                            <span id="quickCopyIcon">📋</span> <span id="quickCopyText">Copy Agent Prompt</span>
+                        </button>
                     </div>
-                    <p class="ai-card-explainer">Paste this system instruction into your Custom GPT, Claude Project, or system prompt so your AI can automatically evaluate any Steam capsule on command:</p>
-                    
-                    <div class="ai-code-wrapper">
-                        <pre class="ai-code-block" id="aiSystemPromptText">You are an expert Steam Store Capsule Art Director powered by Capsulu Computer Vision.
+
+                    <!-- Step 2 (Greyed out until Step 1 is copied) -->
+                    <div class="ai-quickstart-step ai-step-locked" id="aiStep2Box">
+                        <div class="ai-step-indicator">
+                            <span class="ai-step-circle">2</span>
+                            <span class="ai-step-tag" id="aiStep2Tag">Step 2 (Waiting for Step 1)</span>
+                        </div>
+                        <h3 class="ai-step-title">Paste in your AI chat</h3>
+                        <p class="ai-step-desc"></p>
+                        <div class="ai-chat-targets">
+                            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+                                class="ai-target-badge ai-target-link" title="Open ChatGPT in a new tab">ChatGPT ↗</a>
+                            <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
+                                class="ai-target-badge ai-target-link" title="Open Claude in a new tab">Claude ↗</a>
+                            <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
+                                class="ai-target-badge ai-target-link" title="Open Google Gemini in a new tab">Gemini
+                                ↗</a>
+                            <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer"
+                                class="ai-target-badge ai-target-link" title="Open Cursor in a new tab">Cursor ↗</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expandable Advanced Developer Section (Collapsed by Default) -->
+            <div class="ai-advanced-accordion">
+                <button type="button" class="btn-toggle-advanced" id="btnToggleAiAdvanced" aria-expanded="false">
+                    <div class="toggle-left">
+                        <span class="toggle-icon">⚙️</span>
+                        <span class="toggle-title">Advanced Options &amp; Developer Hub</span>
+                        <span class="toggle-sub">(View Full System Prompt, Generative Fill Templates, &amp; REST
+                            API)</span>
+                    </div>
+                    <span class="toggle-arrow" id="advancedToggleArrow">▾</span>
+                </button>
+
+                <div class="ai-advanced-body" id="aiAdvancedBody" style="display: none;">
+                    <div class="ai-grid-layout">
+                        <!-- Card 1: Custom GPT & Claude Project System Prompt -->
+                        <div class="steam-panel ai-panel-card">
+                            <div class="panel-header">
+                                <div class="ai-card-title-group">
+                                    <span class="ai-step-badge">1</span>
+                                    <h3>Custom GPT &amp; Claude Project Agent</h3>
+                                </div>
+                                <span class="panel-badge">ChatGPT / Claude</span>
+                            </div>
+                            <p class="ai-card-explainer">View or copy the raw system prompt text:</p>
+
+                            <div class="ai-code-wrapper">
+                                <pre class="ai-code-block"
+                                    id="aiSystemPromptText">You are an expert Steam Store Capsule Art Director powered by Capsulu Computer Vision.
 
 Workflow:
 1. Greet the user and ask them to share their game:
-   - A Steam Store page URL (e.g. https://store.steampowered.com/app/1145360/Hades/)
+   - A Steam Store page URL (e.g. https://store.steampowered.com/app/4429000/DICEPTION/)
    - A Steam AppID (e.g. 1145360)
    - A direct capsule image URL
    - Or upload a capsule image file directly into the chat
@@ -931,23 +1074,27 @@ Workflow:
    - If the user agrees:
      - Use the AI Art Fix Prompt internally.
      - If you don't already have the image file attached in chat, ask the user to upload/attach the capsule image so you can apply the exact visual improvements to the final art.</pre>
-                        <button type="button" class="btn-copy-code" id="btnCopySystemPrompt">📋 Copy Agent Prompt</button>
-                    </div>
-                </div>
-
-                <!-- Card 2: AI Art Fix Prompting Guide (Midjourney, Photoshop, DALL-E) -->
-                <div class="steam-panel ai-panel-card">
-                    <div class="panel-header">
-                        <div class="ai-card-title-group">
-                            <span class="ai-step-badge">2</span>
-                            <h3>Generative Art Iteration (Midjourney &amp; Photoshop)</h3>
+                                <button type="button" class="btn-copy-code" id="btnCopySystemPrompt">📋 Copy Agent
+                                    Prompt</button>
+                            </div>
                         </div>
-                        <span class="panel-badge">Prompt Template</span>
-                    </div>
-                    <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically generates a custom prompt tailored to that capsule's exact CV deficits. Here is the general structure:</p>
-                    
-                    <div class="ai-code-wrapper">
-                        <pre class="ai-code-block" id="aiGenArtPromptExample">Please optimize this attached steam capsule artwork:
+
+                        <!-- Card 2: AI Art Fix Prompting Guide (Midjourney, Photoshop, DALL-E) -->
+                        <div class="steam-panel ai-panel-card">
+                            <div class="panel-header">
+                                <div class="ai-card-title-group">
+                                    <span class="ai-step-badge">2</span>
+                                    <h3>Generative Art Iteration (Midjourney &amp; Photoshop)</h3>
+                                </div>
+                                <span class="panel-badge">Prompt Template</span>
+                            </div>
+                            <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically
+                                generates a custom prompt tailored to that capsule's exact CV deficits. Here is the
+                                general structure:</p>
+
+                            <div class="ai-code-wrapper">
+                                <pre class="ai-code-block"
+                                    id="aiGenArtPromptExample">Please optimize this attached steam capsule artwork:
 
 1. Dynamic Contrast &amp; Lighting:
 • Push specular highlights and deepen shadows (std dev &gt;= 63.0).
@@ -965,23 +1112,25 @@ Workflow:
 • Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue). But do not add a thumbnail to the image.
 
 Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Do not add stuff, this needs to be the final capsule art that can be uploaded.</pre>
-                        <button type="button" class="btn-copy-code" id="btnCopyGenPrompt">📋 Copy Template</button>
-                    </div>
-                </div>
-
-                <!-- Card 3: Live REST API & cURL Reference -->
-                <div class="steam-panel ai-panel-card ai-card-full">
-                    <div class="panel-header">
-                        <div class="ai-card-title-group">
-                            <span class="ai-step-badge">3</span>
-                            <h3>High-Speed REST API &amp; CLI Integration</h3>
+                                <button type="button" class="btn-copy-code" id="btnCopyGenPrompt">📋 Copy
+                                    Template</button>
+                            </div>
                         </div>
-                        <span class="panel-badge">REST API</span>
-                    </div>
-                    <p class="ai-card-explainer">Query our local or deployed server directly from your terminal, Python scripts, Node.js bots, or CI/CD pipelines:</p>
 
-                    <div class="ai-code-wrapper">
-                        <pre class="ai-code-block" id="aiCurlSnippet"># 1. Markdown Report (Formatted specifically for LLMs and AI chats)
+                        <!-- Card 3: Live REST API & cURL Reference -->
+                        <div class="steam-panel ai-panel-card ai-card-full">
+                            <div class="panel-header">
+                                <div class="ai-card-title-group">
+                                    <span class="ai-step-badge">3</span>
+                                    <h3>High-Speed REST API &amp; CLI Integration</h3>
+                                </div>
+                                <span class="panel-badge">REST API</span>
+                            </div>
+                            <p class="ai-card-explainer">Query our local or deployed server directly from your terminal,
+                                Python scripts, Node.js bots, or CI/CD pipelines:</p>
+
+                            <div class="ai-code-wrapper">
+                                <pre class="ai-code-block" id="aiCurlSnippet"># 1. Markdown Report (Formatted specifically for LLMs and AI chats)
 curl "http://localhost:8000/api/rate?appid=1145360&amp;format=markdown"
 
 # 2. Raw JSON Payload (Includes full scores, percentiles, CV metrics, and tips)
@@ -989,7 +1138,10 @@ curl "http://localhost:8000/api/rate?appid=1145360&amp;format=json"
 
 # 3. Analyze any custom image URL directly (no AppID needed)
 curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&amp;format=markdown"</pre>
-                        <button type="button" class="btn-copy-code" id="btnCopyCurlSnippet">📋 Copy cURL</button>
+                                <button type="button" class="btn-copy-code" id="btnCopyCurlSnippet">📋 Copy
+                                    cURL</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1002,7 +1154,8 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
         <div class="lightbox-dialog">
             <div class="lightbox-header">
                 <h3 id="lightboxTitle">Benchmark Chart</h3>
-                <button type="button" class="lightbox-close-btn" id="lightboxCloseBtn" aria-label="Close Lightbox">✕</button>
+                <button type="button" class="lightbox-close-btn" id="lightboxCloseBtn"
+                    aria-label="Close Lightbox">✕</button>
             </div>
             <div class="lightbox-body">
                 <img id="lightboxImg" src="" alt="Full-resolution Benchmark Visualization">
@@ -1017,21 +1170,30 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
     <footer class="steam-footer">
         <div class="footer-inner">
             <div class="footer-links-row">
-                <a href="https://github.com/alexanderthurn/capsulu" target="_blank" rel="noopener noreferrer" class="footer-link footer-github-link" title="Open Source on GitHub">
-                    <svg class="github-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                <a href="https://github.com/alexanderthurn/capsulu" target="_blank" rel="noopener noreferrer"
+                    class="footer-link footer-github-link" title="Open Source on GitHub">
+                    <svg class="github-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
                     GitHub ↗
                 </a>
                 <span class="footer-dot">•</span>
-                <a href="https://feuerware.com/2025/imprint.html" target="_blank" rel="noopener noreferrer" class="footer-link">Imprint</a>
+                <a href="https://feuerware.com/2025/imprint.html" target="_blank" rel="noopener noreferrer"
+                    class="footer-link">Imprint</a>
                 <span class="footer-dot">•</span>
-                <a href="https://feuerware.com/2025/privacy.html" target="_blank" rel="noopener noreferrer" class="footer-link">Data Privacy</a>
+                <a href="https://feuerware.com/2025/privacy.html" target="_blank" rel="noopener noreferrer"
+                    class="footer-link">Data Privacy</a>
             </div>
-            <p class="footer-copy">© Capsulu – The Steam Capsule Rater — Pure Client-Side JavaScript Computer Vision. Evaluated against 28,754 Steam games.</p>
-            <p class="footer-sub">This site is not affiliated with Valve Corporation. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.</p>
+            <p class="footer-copy">© Capsulu – The Steam Capsule Rater — Pure Client-Side JavaScript Computer Vision.
+                Evaluated against 28,754 Steam games.</p>
+            <p class="footer-sub">This site is not affiliated with Valve Corporation. Steam and the Steam logo are
+                trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.</p>
         </div>
     </footer>
 
     <!-- Pure JavaScript Engine -->
     <script src="app.js"></script>
 </body>
+
 </html>

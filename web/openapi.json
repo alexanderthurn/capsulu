@@ -21,7 +21,7 @@
             "name": "appid",
             "in": "query",
             "required": false,
-            "description": "Steam App ID (e.g. 1145360 for Hades)",
+            "description": "Steam App ID (e.g. 4987230 for Melodan)",
             "schema": {
               "type": "integer"
             }
