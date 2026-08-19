@@ -84,142 +84,252 @@ for t in tiers:
         "light_ratio": round(float(sub["light_ratio"].mean() * 100), 1),
     }
 
-# 2. Comprehensive Genre & High-Interest Subcategory Definitions
-tracked_categories = {
-    # Sub-genres
-    "Auto Battler": {
-        "label": "Auto Battler / Auto Chess",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Simulation|Casual", case=False, regex=True)],
-        "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale."
-    },
-    "Roguelike Deckbuilder": {
-        "label": "Roguelike Deckbuilder / Card Game",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Indie", case=False, regex=True)],
-        "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence."
-    },
-    "Action Roguelike": {
-        "label": "Action Roguelike / Survivors-like",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Indie", case=False, regex=True)],
-        "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist."
-    },
-    "Metroidvania": {
-        "label": "Metroidvania / 2D Platformer",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Adventure|Action|Indie", case=False, regex=True)],
-        "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth."
-    },
-    "Souls-like": {
-        "label": "Souls-like / Dark Fantasy",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Action", case=False, regex=True)],
-        "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale."
-    },
-    "Survival Horror": {
-        "label": "Survival Horror / Psychological",
-        "filter_query": lambda d: d[(d["all_genres"].fillna("").str.contains("Action|Adventure", case=False, regex=True)) & (d["dark_ratio"] > 0.20)],
-        "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject."
-    },
-    "Cozy Sim": {
-        "label": "Cozy & Farming Sim",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Casual", case=False, regex=True)],
-        "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design."
-    },
-    "Turn-Based Tactics": {
-        "label": "Turn-Based Tactics / Strategy",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=True)],
-        "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry."
-    },
-    "City Builder": {
-        "label": "City Builder / Colony Sim",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Strategy", case=False, regex=True)],
-        "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting."
-    },
-    "Retro FPS": {
-        "label": "Boomer Shooter / Retro FPS",
-        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action", case=False, regex=True)],
-        "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus."
-    },
-    # Broad Genres
+# 2. Comprehensive Broad Steam Genres & Sub-Genre Tags Definitions
+broad_genres = {
     "Action": {
-        "label": "Action / Shooter / Hack & Slash",
+        "label": "Action",
         "filter_query": lambda d: d[(d["primary_genre"] == "Action") | d["all_genres"].fillna("").str.contains("Action", case=False, regex=False)],
         "tip": "High dynamic lighting and warm rim-lighting are critical to pop against fast-paced Steam browse feeds."
     },
     "Adventure": {
-        "label": "Adventure / Narrative / Exploration",
+        "label": "Adventure",
         "filter_query": lambda d: d[(d["primary_genre"] == "Adventure") | d["all_genres"].fillna("").str.contains("Adventure", case=False, regex=False)],
         "tip": "Atmospheric lighting with high tonal entropy and clear environmental depth performs best."
     },
     "RPG": {
-        "label": "RPG / CRPG / JRPG",
+        "label": "RPG",
         "filter_query": lambda d: d[(d["primary_genre"] == "RPG") | d["all_genres"].fillna("").str.contains("RPG", case=False, regex=False)],
         "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding."
     },
     "Strategy": {
-        "label": "Strategy / Grand Strategy / Tactics",
+        "label": "Strategy",
         "filter_query": lambda d: d[(d["primary_genre"] == "Strategy") | d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=False)],
         "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes."
     },
     "Simulation": {
-        "label": "Simulation / Management / Sandbox",
+        "label": "Simulation",
         "filter_query": lambda d: d[(d["primary_genre"] == "Simulation") | d["all_genres"].fillna("").str.contains("Simulation", case=False, regex=False)],
         "tip": "Balanced, inviting color temperatures with crisp line art and clear theme cues."
     },
     "Casual": {
-        "label": "Casual / Puzzle / Cozy",
+        "label": "Casual",
         "filter_query": lambda d: d[(d["primary_genre"] == "Casual") | d["all_genres"].fillna("").str.contains("Casual", case=False, regex=False)],
         "tip": "Vibrant, cheerful color palettes with higher average brightness and clean geometric shapes."
     },
     "Indie": {
-        "label": "Indie Highlights",
+        "label": "Indie",
         "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Indie", case=False, regex=False)],
         "tip": "Distinct stylized visual identity with strong hero focus to stand out from AAA realism."
+    },
+    "Racing": {
+        "label": "Racing",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Racing") | d["all_genres"].fillna("").str.contains("Racing", case=False, regex=False)],
+        "tip": "High-velocity motion diagonals and hyper-reflective specular highlights on vehicular hero assets."
+    },
+    "Sports": {
+        "label": "Sports",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Sports") | d["all_genres"].fillna("").str.contains("Sports", case=False, regex=False)],
+        "tip": "Dynamic athlete action poses with saturated stadium stadium-lit contrast and clean typographic badges."
+    },
+    "Massively Multiplayer": {
+        "label": "Massively Multiplayer",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Massively Multiplayer") | d["all_genres"].fillna("").str.contains("Massively Multiplayer", case=False, regex=False)],
+        "tip": "Epic scale panoramic backdrops featuring grouped heroes or massive faction armadas."
+    },
+    "Free To Play": {
+        "label": "Free To Play",
+        "filter_query": lambda d: d[(d["is_free"] == 1) | (d["is_free"] == True) | d["all_genres"].fillna("").str.contains("Free To Play", case=False, regex=False)],
+        "tip": "Instant visual accessibility with high saturation and bold, easily readable hero characters."
+    },
+    "Early Access": {
+        "label": "Early Access",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Early Access", case=False, regex=False)],
+        "tip": "Polished key visual polish that instills immediate confidence and production value."
     }
 }
 
-genre_benchmarks = {}
-
-for g_key, g_meta in tracked_categories.items():
-    sub = g_meta["filter_query"](clean_df)
-    n = len(sub)
-    if n < 10:
-        continue
-
-    # Get top performers in this category
-    top_sub = sub[sub["tier"].isin(["mega_hit", "successful"])]
-    if len(top_sub) < 5:
-        top_sub = sub
-
-    genre_benchmarks[g_key] = {
-        "name": g_meta["label"],
-        "count": int(n),
-        "tip": g_meta["tip"],
-        "contrast": {
-            "mean": round(float(sub["brightness_std"].mean()), 2),
-            "median": round(float(sub["brightness_std"].median()), 2),
-            "top_tier_mean": round(float(top_sub["brightness_std"].mean()), 2),
-        },
-        "brightness": {
-            "mean": round(float(sub["avg_brightness"].mean()), 2),
-            "median": round(float(sub["avg_brightness"].median()), 2),
-        },
-        "saturation": {
-            "mean": round(float(sub["avg_saturation"].mean()), 2),
-            "median": round(float(sub["avg_saturation"].median()), 2),
-        },
-        "entropy": {
-            "mean": round(float(sub["entropy"].mean()), 2),
-            "median": round(float(sub["entropy"].median()), 2),
-            "top_tier_mean": round(float(top_sub["entropy"].mean()), 2),
-        },
-        "edge_density": {
-            "mean": round(float(sub["edge_density"].mean() * 100), 2),
-            "median": round(float(sub["edge_density"].median() * 100), 2),
-            "top_tier_mean": round(float(top_sub["edge_density"].mean() * 100), 2),
-        },
-        "warm_palette_pct": round(float((sub["palette_type"] == "warm").mean() * 100), 1),
-        "neutral_palette_pct": round(float((sub["palette_type"] == "neutral").mean() * 100), 1),
-        "cool_palette_pct": round(float((sub["palette_type"] == "cool").mean() * 100), 1),
-        "center_focus_pct": round(float((sub["focus"] == "center").mean() * 100), 1),
+gameplay_tags = {
+    "Auto Battler": {
+        "label": "Auto Battler",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Simulation|Casual", case=False, regex=True)],
+        "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale."
+    },
+    "Roguelike Deckbuilder": {
+        "label": "Roguelike Deckbuilder",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Indie", case=False, regex=True)],
+        "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence."
+    },
+    "Action Roguelike": {
+        "label": "Action Roguelike",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Indie", case=False, regex=True)],
+        "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist."
+    },
+    "Metroidvania": {
+        "label": "Metroidvania",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Adventure|Action|Indie", case=False, regex=True)],
+        "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth."
+    },
+    "Souls-like": {
+        "label": "Souls-like",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Action", case=False, regex=True)],
+        "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale."
+    },
+    "Survival Horror": {
+        "label": "Survival Horror",
+        "filter_query": lambda d: d[(d["all_genres"].fillna("").str.contains("Action|Adventure", case=False, regex=True)) & (d["dark_ratio"] > 0.20)],
+        "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject."
+    },
+    "Cozy Sim": {
+        "label": "Cozy Sim",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Casual", case=False, regex=True)],
+        "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design."
+    },
+    "Turn-Based Tactics": {
+        "label": "Turn-Based Tactics",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=True)],
+        "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry."
+    },
+    "Turn-Based Strategy": {
+        "label": "Turn-Based Strategy",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=True)],
+        "tip": "Rich strategic map depth with prominent empire crests and crisp territorial contrast."
+    },
+    "City Builder": {
+        "label": "City Builder",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Strategy", case=False, regex=True)],
+        "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting."
+    },
+    "Retro FPS": {
+        "label": "Retro FPS",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action", case=False, regex=True)],
+        "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus."
+    },
+    "Dragons": {
+        "label": "Dragons",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|RPG|Strategy", case=False, regex=True)],
+        "tip": "Epic creature scale with warm fiery or arcane lighting accents cutting through dark atmospheric skies."
+    },
+    "PvP": {
+        "label": "PvP",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Strategy", case=False, regex=True)],
+        "tip": "Opposing color clashes (red vs blue, gold vs shadow) indicating intense multiplayer competition."
+    },
+    "PvE": {
+        "label": "PvE",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|RPG|Adventure", case=False, regex=True)],
+        "tip": "Heroic squad lineup facing formidable boss silhouettes in evocative fantasy or sci-fi environments."
+    },
+    "Fantasy": {
+        "label": "Fantasy",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Adventure|Strategy", case=False, regex=True)],
+        "tip": "Luminous magical particle effects and rich mystical textures with clear character silhouettes."
+    },
+    "Magic": {
+        "label": "Magic",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Action|Strategy", case=False, regex=True)],
+        "tip": "Radiant spell glow effects with high luminous contrast against shadowed mystical backdrops."
+    },
+    "Medieval": {
+        "label": "Medieval",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Strategy|Action", case=False, regex=True)],
+        "tip": "Grit, burnished armor sheen, and torchlit atmosphere with distinct heraldic color banners."
+    },
+    "Military": {
+        "label": "Military",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Strategy|Simulation", case=False, regex=True)],
+        "tip": "Camouflage textures balanced by sharp tactical orange/amber HUD elements and distinct hardware silhouettes."
+    },
+    "Wargame": {
+        "label": "Wargame",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Simulation", case=False, regex=True)],
+        "tip": "Detailed tactical battle maps and unit counters with disciplined typographic contrast."
+    },
+    "Card Game": {
+        "label": "Card Game",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Casual", case=False, regex=True)],
+        "tip": "Embossed card borders with saturated gem/mana accents and readable card art at browse scales."
+    },
+    "Pixel Graphics": {
+        "label": "Pixel Graphics",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Indie|Adventure|Action", case=False, regex=True)],
+        "tip": "Crisp pixel cluster readability with bold color separation avoiding visual noise at small thumbnail sizes."
+    },
+    "Cyberpunk": {
+        "label": "Cyberpunk",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|RPG", case=False, regex=True)],
+        "tip": "Vibrant cyan/magenta neon contrast cutting through rain-slicked dark industrial geometry."
+    },
+    "Open World": {
+        "label": "Open World",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Adventure|RPG|Action", case=False, regex=True)],
+        "tip": "Dramatic vanishing point horizon with atmospheric haze separating foreground protagonist from expansive world."
+    },
+    "Sci-fi": {
+        "label": "Sci-fi",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Strategy|Simulation", case=False, regex=True)],
+        "tip": "Sleek geometric paneling with electric laser blue or solar orange emissive lighting lines."
+    },
+    "Co-op": {
+        "label": "Co-op",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Adventure|Indie", case=False, regex=True)],
+        "tip": "Multiple complementary character silhouettes showing distinct classes or comedic camaraderie."
+    },
+    "Multiplayer": {
+        "label": "Multiplayer",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Strategy", case=False, regex=True)],
+        "tip": "Kinetic confrontation energy with clear opposing faction visuals and high-saliency action focal points."
     }
+}
+
+def compute_category_stats(cat_dict, dataframe):
+    res = {}
+    for key, meta in cat_dict.items():
+        sub = meta["filter_query"](dataframe)
+        n = len(sub)
+        if n < 5:
+            continue
+        top_sub = sub[sub["tier"].isin(["mega_hit", "successful"])]
+        if len(top_sub) < 5:
+            top_sub = sub
+        res[key] = {
+            "name": meta["label"],
+            "count": int(n),
+            "tip": meta["tip"],
+            "contrast": {
+                "mean": round(float(sub["brightness_std"].mean()), 2),
+                "median": round(float(sub["brightness_std"].median()), 2),
+                "top_tier_mean": round(float(top_sub["brightness_std"].mean()), 2),
+            },
+            "brightness": {
+                "mean": round(float(sub["avg_brightness"].mean()), 2),
+                "median": round(float(sub["avg_brightness"].median()), 2),
+            },
+            "saturation": {
+                "mean": round(float(sub["avg_saturation"].mean()), 2),
+                "median": round(float(sub["avg_saturation"].median()), 2),
+            },
+            "entropy": {
+                "mean": round(float(sub["entropy"].mean()), 2),
+                "median": round(float(sub["entropy"].median()), 2),
+                "top_tier_mean": round(float(top_sub["entropy"].mean()), 2),
+            },
+            "edge_density": {
+                "mean": round(float(sub["edge_density"].mean() * 100), 2),
+                "median": round(float(sub["edge_density"].median() * 100), 2),
+                "top_tier_mean": round(float(top_sub["edge_density"].mean() * 100), 2),
+            },
+            "warm_palette_pct": round(float((sub["palette_type"] == "warm").mean() * 100), 1),
+            "neutral_palette_pct": round(float((sub["palette_type"] == "neutral").mean() * 100), 1),
+            "cool_palette_pct": round(float((sub["palette_type"] == "cool").mean() * 100), 1),
+            "center_focus_pct": round(float((sub["focus"] == "center").mean() * 100), 1),
+            "dark_ratio": round(float(sub["dark_ratio"].mean() * 100), 1),
+            "light_ratio": round(float(sub["light_ratio"].mean() * 100), 1),
+        }
+    return res
+
+genre_benchmarks = compute_category_stats(broad_genres, clean_df)
+tag_benchmarks = compute_category_stats(gameplay_tags, clean_df)
+unified_categories = {**genre_benchmarks, **tag_benchmarks}
 
 # 3. Overall dataset stats
 overall_stats = {
@@ -242,7 +352,7 @@ sample_presets = [
         "tier_label": "🎲 DICEPTION",
         "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
         "price": "4,99€",
-        "tags": ["Indie", "Strategy", "Auto Battler", "Roguelike Deckbuilder"]
+        "tags": ["Auto Battler", "Roguelike Deckbuilder", "Turn-Based Tactics", "Strategy", "Indie", "Dice", "PvP"]
     },
     {
         "id": "melodan",
@@ -252,7 +362,7 @@ sample_presets = [
         "tier_label": "⚔️ Melodan",
         "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
         "price": "Coming Soon",
-        "tags": ["Auto Battler", "Action", "Indie", "Strategy", "Turn-Based Tactics"]
+        "tags": ["Auto Battler", "Turn-Based Strategy", "Turn-Based Tactics", "Strategy", "Simulation", "Action", "Indie", "Dragons", "PvP"]
     },
     {
         "id": "elden_ring",
@@ -262,7 +372,7 @@ sample_presets = [
         "appid": 1245620,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
         "price": "$59.99",
-        "tags": ["Souls-like", "RPG", "Dark Fantasy", "Open World"]
+        "tags": ["Souls-like", "RPG", "Dark Fantasy", "Open World", "Difficult", "Action RPG", "Action"]
     },
     {
         "id": "hades",
@@ -272,7 +382,7 @@ sample_presets = [
         "appid": 1145360,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
         "price": "$24.99",
-        "tags": ["Action Roguelike", "Hack and Slash", "Indie"]
+        "tags": ["Action Roguelike", "Hack and Slash", "Indie", "Mythology", "Action", "Rogue-lite"]
     },
     {
         "id": "balatro",
@@ -282,7 +392,7 @@ sample_presets = [
         "appid": 2379780,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
         "price": "$14.99",
-        "tags": ["Roguelike Deckbuilder", "Strategy", "Indie"]
+        "tags": ["Roguelike Deckbuilder", "Card Game", "Strategy", "Indie", "Deckbuilding", "Addictive"]
     },
     {
         "id": "stardew",
@@ -292,7 +402,7 @@ sample_presets = [
         "appid": 413150,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
         "price": "$14.99",
-        "tags": ["Farming Sim", "Cozy Sim", "Simulation", "Pixel Graphics"]
+        "tags": ["Farming Sim", "Cozy Sim", "Simulation", "Pixel Graphics", "RPG", "Life Sim"]
     },
     {
         "id": "cyberpunk",
@@ -302,7 +412,7 @@ sample_presets = [
         "appid": 1091500,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
         "price": "$59.99",
-        "tags": ["Cyberpunk", "Open World", "RPG", "Sci-fi"]
+        "tags": ["Cyberpunk", "Open World", "RPG", "Sci-fi", "Action", "Shooter"]
     },
     {
         "id": "hollow_knight",
@@ -312,7 +422,7 @@ sample_presets = [
         "appid": 367520,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
         "price": "$14.99",
-        "tags": ["Metroidvania", "Adventure", "Souls-like", "2D"]
+        "tags": ["Metroidvania", "Souls-like", "Adventure", "2D Platformer", "Difficult", "Action"]
     }
 ]
 
@@ -485,6 +595,7 @@ output_payload = {
     "overall": overall_stats,
     "tiers": tier_benchmarks,
     "genres": genre_benchmarks,
+    "tags": tag_benchmarks,
     "presets": sample_presets,
     "genre_competitors": genre_competitor_catalogs
 }
@@ -492,4 +603,5 @@ output_payload = {
 with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
     json.dump(output_payload, f, indent=2)
 
-print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records & {len(genre_benchmarks)} category/subgenre benchmarks.")
+print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records, {len(genre_benchmarks)} broad genres, and {len(tag_benchmarks)} tags benchmarks.")
+

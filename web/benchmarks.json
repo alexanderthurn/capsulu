@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T12:40:18.526979",
+  "generated_at": "2026-08-19T12:56:37.989448",
   "overall": {
     "total_games_analyzed": 28754,
     "contrast_p90": 78.4,
@@ -172,328 +172,8 @@
     }
   },
   "genres": {
-    "Auto Battler": {
-      "name": "Auto Battler / Auto Chess",
-      "count": 12976,
-      "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale.",
-      "contrast": {
-        "mean": 60.24,
-        "median": 60.5,
-        "top_tier_mean": 62.17
-      },
-      "brightness": {
-        "mean": 103.88,
-        "median": 99.8
-      },
-      "saturation": {
-        "mean": 110.9,
-        "median": 110.3
-      },
-      "entropy": {
-        "mean": 6.76,
-        "median": 7.19,
-        "top_tier_mean": 7.0
-      },
-      "edge_density": {
-        "mean": 13.44,
-        "median": 13.16,
-        "top_tier_mean": 14.38
-      },
-      "warm_palette_pct": 50.0,
-      "neutral_palette_pct": 41.5,
-      "cool_palette_pct": 8.5,
-      "center_focus_pct": 70.0
-    },
-    "Roguelike Deckbuilder": {
-      "name": "Roguelike Deckbuilder / Card Game",
-      "count": 17540,
-      "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence.",
-      "contrast": {
-        "mean": 59.85,
-        "median": 60.2,
-        "top_tier_mean": 61.76
-      },
-      "brightness": {
-        "mean": 96.77,
-        "median": 91.0
-      },
-      "saturation": {
-        "mean": 111.75,
-        "median": 111.35
-      },
-      "entropy": {
-        "mean": 6.63,
-        "median": 7.08,
-        "top_tier_mean": 6.9
-      },
-      "edge_density": {
-        "mean": 12.84,
-        "median": 12.43,
-        "top_tier_mean": 13.82
-      },
-      "warm_palette_pct": 45.4,
-      "neutral_palette_pct": 46.9,
-      "cool_palette_pct": 7.8,
-      "center_focus_pct": 72.1
-    },
-    "Action Roguelike": {
-      "name": "Action Roguelike / Survivors-like",
-      "count": 18849,
-      "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist.",
-      "contrast": {
-        "mean": 60.21,
-        "median": 60.6,
-        "top_tier_mean": 62.48
-      },
-      "brightness": {
-        "mean": 96.14,
-        "median": 90.4
-      },
-      "saturation": {
-        "mean": 111.64,
-        "median": 111.1
-      },
-      "entropy": {
-        "mean": 6.63,
-        "median": 7.07,
-        "top_tier_mean": 6.9
-      },
-      "edge_density": {
-        "mean": 12.82,
-        "median": 12.47,
-        "top_tier_mean": 13.88
-      },
-      "warm_palette_pct": 44.7,
-      "neutral_palette_pct": 47.6,
-      "cool_palette_pct": 7.6,
-      "center_focus_pct": 72.3
-    },
-    "Metroidvania": {
-      "name": "Metroidvania / 2D Platformer",
-      "count": 20353,
-      "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth.",
-      "contrast": {
-        "mean": 60.27,
-        "median": 60.6,
-        "top_tier_mean": 62.51
-      },
-      "brightness": {
-        "mean": 96.72,
-        "median": 90.8
-      },
-      "saturation": {
-        "mean": 111.35,
-        "median": 110.9
-      },
-      "entropy": {
-        "mean": 6.66,
-        "median": 7.1,
-        "top_tier_mean": 6.91
-      },
-      "edge_density": {
-        "mean": 12.98,
-        "median": 12.64,
-        "top_tier_mean": 13.96
-      },
-      "warm_palette_pct": 45.2,
-      "neutral_palette_pct": 47.1,
-      "cool_palette_pct": 7.7,
-      "center_focus_pct": 72.1
-    },
-    "Souls-like": {
-      "name": "Souls-like / Dark Fantasy",
-      "count": 13753,
-      "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale.",
-      "contrast": {
-        "mean": 60.8,
-        "median": 61.2,
-        "top_tier_mean": 63.0
-      },
-      "brightness": {
-        "mean": 94.78,
-        "median": 89.6
-      },
-      "saturation": {
-        "mean": 112.34,
-        "median": 111.4
-      },
-      "entropy": {
-        "mean": 6.74,
-        "median": 7.16,
-        "top_tier_mean": 6.99
-      },
-      "edge_density": {
-        "mean": 13.38,
-        "median": 13.14,
-        "top_tier_mean": 14.42
-      },
-      "warm_palette_pct": 44.9,
-      "neutral_palette_pct": 48.3,
-      "cool_palette_pct": 6.8,
-      "center_focus_pct": 72.0
-    },
-    "Survival Horror": {
-      "name": "Survival Horror / Psychological",
-      "count": 13292,
-      "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject.",
-      "contrast": {
-        "mean": 61.22,
-        "median": 61.7,
-        "top_tier_mean": 63.58
-      },
-      "brightness": {
-        "mean": 80.64,
-        "median": 78.6
-      },
-      "saturation": {
-        "mean": 116.26,
-        "median": 116.4
-      },
-      "entropy": {
-        "mean": 6.7,
-        "median": 7.1,
-        "top_tier_mean": 6.97
-      },
-      "edge_density": {
-        "mean": 13.02,
-        "median": 12.7,
-        "top_tier_mean": 14.03
-      },
-      "warm_palette_pct": 37.5,
-      "neutral_palette_pct": 55.5,
-      "cool_palette_pct": 7.0,
-      "center_focus_pct": 77.7
-    },
-    "Cozy Sim": {
-      "name": "Cozy & Farming Sim",
-      "count": 10497,
-      "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design.",
-      "contrast": {
-        "mean": 60.32,
-        "median": 60.6,
-        "top_tier_mean": 62.24
-      },
-      "brightness": {
-        "mean": 106.41,
-        "median": 103.2
-      },
-      "saturation": {
-        "mean": 110.9,
-        "median": 110.6
-      },
-      "entropy": {
-        "mean": 6.73,
-        "median": 7.18,
-        "top_tier_mean": 6.98
-      },
-      "edge_density": {
-        "mean": 13.22,
-        "median": 12.91,
-        "top_tier_mean": 14.12
-      },
-      "warm_palette_pct": 50.7,
-      "neutral_palette_pct": 40.3,
-      "cool_palette_pct": 9.1,
-      "center_focus_pct": 69.4
-    },
-    "Turn-Based Tactics": {
-      "name": "Turn-Based Tactics / Strategy",
-      "count": 5529,
-      "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry.",
-      "contrast": {
-        "mean": 60.27,
-        "median": 60.4,
-        "top_tier_mean": 61.91
-      },
-      "brightness": {
-        "mean": 99.88,
-        "median": 95.6
-      },
-      "saturation": {
-        "mean": 111.4,
-        "median": 110.2
-      },
-      "entropy": {
-        "mean": 6.88,
-        "median": 7.26,
-        "top_tier_mean": 7.12
-      },
-      "edge_density": {
-        "mean": 14.22,
-        "median": 13.94,
-        "top_tier_mean": 15.13
-      },
-      "warm_palette_pct": 50.7,
-      "neutral_palette_pct": 42.2,
-      "cool_palette_pct": 7.2,
-      "center_focus_pct": 70.7
-    },
-    "City Builder": {
-      "name": "City Builder / Colony Sim",
-      "count": 8483,
-      "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting.",
-      "contrast": {
-        "mean": 60.82,
-        "median": 61.1,
-        "top_tier_mean": 62.44
-      },
-      "brightness": {
-        "mean": 101.6,
-        "median": 97.8
-      },
-      "saturation": {
-        "mean": 109.69,
-        "median": 107.9
-      },
-      "entropy": {
-        "mean": 6.87,
-        "median": 7.25,
-        "top_tier_mean": 7.08
-      },
-      "edge_density": {
-        "mean": 13.94,
-        "median": 13.66,
-        "top_tier_mean": 14.71
-      },
-      "warm_palette_pct": 50.6,
-      "neutral_palette_pct": 42.1,
-      "cool_palette_pct": 7.3,
-      "center_focus_pct": 70.4
-    },
-    "Retro FPS": {
-      "name": "Boomer Shooter / Retro FPS",
-      "count": 10448,
-      "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus.",
-      "contrast": {
-        "mean": 60.85,
-        "median": 61.3,
-        "top_tier_mean": 63.24
-      },
-      "brightness": {
-        "mean": 91.87,
-        "median": 86.9
-      },
-      "saturation": {
-        "mean": 114.54,
-        "median": 114.35
-      },
-      "entropy": {
-        "mean": 6.7,
-        "median": 7.11,
-        "top_tier_mean": 6.98
-      },
-      "edge_density": {
-        "mean": 12.97,
-        "median": 12.72,
-        "top_tier_mean": 14.16
-      },
-      "warm_palette_pct": 42.9,
-      "neutral_palette_pct": 50.0,
-      "cool_palette_pct": 7.1,
-      "center_focus_pct": 72.8
-    },
     "Action": {
-      "name": "Action / Shooter / Hack & Slash",
+      "name": "Action",
       "count": 10448,
       "tip": "High dynamic lighting and warm rim-lighting are critical to pop against fast-paced Steam browse feeds.",
       "contrast": {
@@ -522,10 +202,12 @@
       "warm_palette_pct": 42.9,
       "neutral_palette_pct": 50.0,
       "cool_palette_pct": 7.1,
-      "center_focus_pct": 72.8
+      "center_focus_pct": 72.8,
+      "dark_ratio": 53.7,
+      "light_ratio": 17.4
     },
     "Adventure": {
-      "name": "Adventure / Narrative / Exploration",
+      "name": "Adventure",
       "count": 10291,
       "tip": "Atmospheric lighting with high tonal entropy and clear environmental depth performs best.",
       "contrast": {
@@ -554,10 +236,12 @@
       "warm_palette_pct": 44.4,
       "neutral_palette_pct": 48.4,
       "cool_palette_pct": 7.3,
-      "center_focus_pct": 73.3
+      "center_focus_pct": 73.3,
+      "dark_ratio": 52.1,
+      "light_ratio": 18.8
     },
     "RPG": {
-      "name": "RPG / CRPG / JRPG",
+      "name": "RPG",
       "count": 5590,
       "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding.",
       "contrast": {
@@ -586,10 +270,12 @@
       "warm_palette_pct": 48.9,
       "neutral_palette_pct": 45.4,
       "cool_palette_pct": 5.7,
-      "center_focus_pct": 70.8
+      "center_focus_pct": 70.8,
+      "dark_ratio": 49.1,
+      "light_ratio": 19.9
     },
     "Strategy": {
-      "name": "Strategy / Grand Strategy / Tactics",
+      "name": "Strategy",
       "count": 5529,
       "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes.",
       "contrast": {
@@ -618,10 +304,12 @@
       "warm_palette_pct": 50.7,
       "neutral_palette_pct": 42.2,
       "cool_palette_pct": 7.2,
-      "center_focus_pct": 70.7
+      "center_focus_pct": 70.7,
+      "dark_ratio": 48.4,
+      "light_ratio": 19.1
     },
     "Simulation": {
-      "name": "Simulation / Management / Sandbox",
+      "name": "Simulation",
       "count": 4921,
       "tip": "Balanced, inviting color temperatures with crisp line art and clear theme cues.",
       "contrast": {
@@ -650,10 +338,12 @@
       "warm_palette_pct": 52.0,
       "neutral_palette_pct": 40.6,
       "cool_palette_pct": 7.4,
-      "center_focus_pct": 69.8
+      "center_focus_pct": 69.8,
+      "dark_ratio": 45.8,
+      "light_ratio": 21.1
     },
     "Casual": {
-      "name": "Casual / Puzzle / Cozy",
+      "name": "Casual",
       "count": 7431,
       "tip": "Vibrant, cheerful color palettes with higher average brightness and clean geometric shapes.",
       "contrast": {
@@ -682,10 +372,12 @@
       "warm_palette_pct": 51.1,
       "neutral_palette_pct": 39.0,
       "cool_palette_pct": 9.9,
-      "center_focus_pct": 68.7
+      "center_focus_pct": 68.7,
+      "dark_ratio": 43.6,
+      "light_ratio": 23.5
     },
     "Indie": {
-      "name": "Indie Highlights",
+      "name": "Indie",
       "count": 15658,
       "tip": "Distinct stylized visual identity with strong hero focus to stand out from AAA realism.",
       "contrast": {
@@ -714,7 +406,1065 @@
       "warm_palette_pct": 44.2,
       "neutral_palette_pct": 47.8,
       "cool_palette_pct": 8.0,
-      "center_focus_pct": 72.4
+      "center_focus_pct": 72.4,
+      "dark_ratio": 51.3,
+      "light_ratio": 19.1
+    },
+    "Racing": {
+      "name": "Racing",
+      "count": 802,
+      "tip": "High-velocity motion diagonals and hyper-reflective specular highlights on vehicular hero assets.",
+      "contrast": {
+        "mean": 63.68,
+        "median": 64.4,
+        "top_tier_mean": 65.59
+      },
+      "brightness": {
+        "mean": 105.52,
+        "median": 103.85
+      },
+      "saturation": {
+        "mean": 108.83,
+        "median": 106.5
+      },
+      "entropy": {
+        "mean": 6.96,
+        "median": 7.32,
+        "top_tier_mean": 7.1
+      },
+      "edge_density": {
+        "mean": 13.44,
+        "median": 13.26,
+        "top_tier_mean": 14.12
+      },
+      "warm_palette_pct": 47.5,
+      "neutral_palette_pct": 44.5,
+      "cool_palette_pct": 8.0,
+      "center_focus_pct": 70.0,
+      "dark_ratio": 45.4,
+      "light_ratio": 21.3
+    },
+    "Sports": {
+      "name": "Sports",
+      "count": 919,
+      "tip": "Dynamic athlete action poses with saturated stadium stadium-lit contrast and clean typographic badges.",
+      "contrast": {
+        "mean": 63.57,
+        "median": 63.2,
+        "top_tier_mean": 65.89
+      },
+      "brightness": {
+        "mean": 107.36,
+        "median": 107.8
+      },
+      "saturation": {
+        "mean": 115.19,
+        "median": 113.6
+      },
+      "entropy": {
+        "mean": 6.9,
+        "median": 7.27,
+        "top_tier_mean": 7.03
+      },
+      "edge_density": {
+        "mean": 13.4,
+        "median": 13.04,
+        "top_tier_mean": 13.92
+      },
+      "warm_palette_pct": 49.1,
+      "neutral_palette_pct": 40.7,
+      "cool_palette_pct": 10.2,
+      "center_focus_pct": 69.4,
+      "dark_ratio": 44.0,
+      "light_ratio": 21.9
+    },
+    "Massively Multiplayer": {
+      "name": "Massively Multiplayer",
+      "count": 728,
+      "tip": "Epic scale panoramic backdrops featuring grouped heroes or massive faction armadas.",
+      "contrast": {
+        "mean": 60.57,
+        "median": 60.95,
+        "top_tier_mean": 62.49
+      },
+      "brightness": {
+        "mean": 96.73,
+        "median": 94.25
+      },
+      "saturation": {
+        "mean": 107.0,
+        "median": 104.2
+      },
+      "entropy": {
+        "mean": 6.99,
+        "median": 7.34,
+        "top_tier_mean": 7.24
+      },
+      "edge_density": {
+        "mean": 14.0,
+        "median": 13.87,
+        "top_tier_mean": 14.74
+      },
+      "warm_palette_pct": 47.1,
+      "neutral_palette_pct": 47.0,
+      "cool_palette_pct": 5.9,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 51.0,
+      "light_ratio": 18.2
+    },
+    "Free To Play": {
+      "name": "Free To Play",
+      "count": 2716,
+      "tip": "Instant visual accessibility with high saturation and bold, easily readable hero characters.",
+      "contrast": {
+        "mean": 58.97,
+        "median": 59.1,
+        "top_tier_mean": 61.36
+      },
+      "brightness": {
+        "mean": 96.48,
+        "median": 89.35
+      },
+      "saturation": {
+        "mean": 108.88,
+        "median": 109.85
+      },
+      "entropy": {
+        "mean": 6.43,
+        "median": 6.99,
+        "top_tier_mean": 6.76
+      },
+      "edge_density": {
+        "mean": 11.91,
+        "median": 11.29,
+        "top_tier_mean": 13.07
+      },
+      "warm_palette_pct": 43.3,
+      "neutral_palette_pct": 48.7,
+      "cool_palette_pct": 8.1,
+      "center_focus_pct": 70.9,
+      "dark_ratio": 51.5,
+      "light_ratio": 19.6
+    },
+    "Early Access": {
+      "name": "Early Access",
+      "count": 1554,
+      "tip": "Polished key visual polish that instills immediate confidence and production value.",
+      "contrast": {
+        "mean": 59.41,
+        "median": 59.5,
+        "top_tier_mean": 61.58
+      },
+      "brightness": {
+        "mean": 91.43,
+        "median": 86.7
+      },
+      "saturation": {
+        "mean": 111.99,
+        "median": 110.05
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.13,
+        "top_tier_mean": 6.99
+      },
+      "edge_density": {
+        "mean": 12.73,
+        "median": 12.43,
+        "top_tier_mean": 13.8
+      },
+      "warm_palette_pct": 40.5,
+      "neutral_palette_pct": 51.0,
+      "cool_palette_pct": 8.5,
+      "center_focus_pct": 75.8,
+      "dark_ratio": 53.4,
+      "light_ratio": 16.6
+    }
+  },
+  "tags": {
+    "Auto Battler": {
+      "name": "Auto Battler",
+      "count": 12976,
+      "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale.",
+      "contrast": {
+        "mean": 60.24,
+        "median": 60.5,
+        "top_tier_mean": 62.17
+      },
+      "brightness": {
+        "mean": 103.88,
+        "median": 99.8
+      },
+      "saturation": {
+        "mean": 110.9,
+        "median": 110.3
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.19,
+        "top_tier_mean": 7.0
+      },
+      "edge_density": {
+        "mean": 13.44,
+        "median": 13.16,
+        "top_tier_mean": 14.38
+      },
+      "warm_palette_pct": 50.0,
+      "neutral_palette_pct": 41.5,
+      "cool_palette_pct": 8.5,
+      "center_focus_pct": 70.0,
+      "dark_ratio": 46.5,
+      "light_ratio": 21.2
+    },
+    "Roguelike Deckbuilder": {
+      "name": "Roguelike Deckbuilder",
+      "count": 17540,
+      "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence.",
+      "contrast": {
+        "mean": 59.85,
+        "median": 60.2,
+        "top_tier_mean": 61.76
+      },
+      "brightness": {
+        "mean": 96.77,
+        "median": 91.0
+      },
+      "saturation": {
+        "mean": 111.75,
+        "median": 111.35
+      },
+      "entropy": {
+        "mean": 6.63,
+        "median": 7.08,
+        "top_tier_mean": 6.9
+      },
+      "edge_density": {
+        "mean": 12.84,
+        "median": 12.43,
+        "top_tier_mean": 13.82
+      },
+      "warm_palette_pct": 45.4,
+      "neutral_palette_pct": 46.9,
+      "cool_palette_pct": 7.8,
+      "center_focus_pct": 72.1,
+      "dark_ratio": 50.9,
+      "light_ratio": 19.1
+    },
+    "Action Roguelike": {
+      "name": "Action Roguelike",
+      "count": 18849,
+      "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist.",
+      "contrast": {
+        "mean": 60.21,
+        "median": 60.6,
+        "top_tier_mean": 62.48
+      },
+      "brightness": {
+        "mean": 96.14,
+        "median": 90.4
+      },
+      "saturation": {
+        "mean": 111.64,
+        "median": 111.1
+      },
+      "entropy": {
+        "mean": 6.63,
+        "median": 7.07,
+        "top_tier_mean": 6.9
+      },
+      "edge_density": {
+        "mean": 12.82,
+        "median": 12.47,
+        "top_tier_mean": 13.88
+      },
+      "warm_palette_pct": 44.7,
+      "neutral_palette_pct": 47.6,
+      "cool_palette_pct": 7.6,
+      "center_focus_pct": 72.3,
+      "dark_ratio": 51.4,
+      "light_ratio": 19.1
+    },
+    "Metroidvania": {
+      "name": "Metroidvania",
+      "count": 20353,
+      "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.6,
+        "top_tier_mean": 62.51
+      },
+      "brightness": {
+        "mean": 96.72,
+        "median": 90.8
+      },
+      "saturation": {
+        "mean": 111.35,
+        "median": 110.9
+      },
+      "entropy": {
+        "mean": 6.66,
+        "median": 7.1,
+        "top_tier_mean": 6.91
+      },
+      "edge_density": {
+        "mean": 12.98,
+        "median": 12.64,
+        "top_tier_mean": 13.96
+      },
+      "warm_palette_pct": 45.2,
+      "neutral_palette_pct": 47.1,
+      "cool_palette_pct": 7.7,
+      "center_focus_pct": 72.1,
+      "dark_ratio": 51.1,
+      "light_ratio": 19.3
+    },
+    "Souls-like": {
+      "name": "Souls-like",
+      "count": 13753,
+      "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale.",
+      "contrast": {
+        "mean": 60.8,
+        "median": 61.2,
+        "top_tier_mean": 63.0
+      },
+      "brightness": {
+        "mean": 94.78,
+        "median": 89.6
+      },
+      "saturation": {
+        "mean": 112.34,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.74,
+        "median": 7.16,
+        "top_tier_mean": 6.99
+      },
+      "edge_density": {
+        "mean": 13.38,
+        "median": 13.14,
+        "top_tier_mean": 14.42
+      },
+      "warm_palette_pct": 44.9,
+      "neutral_palette_pct": 48.3,
+      "cool_palette_pct": 6.8,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 52.0,
+      "light_ratio": 18.4
+    },
+    "Survival Horror": {
+      "name": "Survival Horror",
+      "count": 13292,
+      "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject.",
+      "contrast": {
+        "mean": 61.22,
+        "median": 61.7,
+        "top_tier_mean": 63.58
+      },
+      "brightness": {
+        "mean": 80.64,
+        "median": 78.6
+      },
+      "saturation": {
+        "mean": 116.26,
+        "median": 116.4
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.1,
+        "top_tier_mean": 6.97
+      },
+      "edge_density": {
+        "mean": 13.02,
+        "median": 12.7,
+        "top_tier_mean": 14.03
+      },
+      "warm_palette_pct": 37.5,
+      "neutral_palette_pct": 55.5,
+      "cool_palette_pct": 7.0,
+      "center_focus_pct": 77.7,
+      "dark_ratio": 60.6,
+      "light_ratio": 13.3
+    },
+    "Cozy Sim": {
+      "name": "Cozy Sim",
+      "count": 10497,
+      "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design.",
+      "contrast": {
+        "mean": 60.32,
+        "median": 60.6,
+        "top_tier_mean": 62.24
+      },
+      "brightness": {
+        "mean": 106.41,
+        "median": 103.2
+      },
+      "saturation": {
+        "mean": 110.9,
+        "median": 110.6
+      },
+      "entropy": {
+        "mean": 6.73,
+        "median": 7.18,
+        "top_tier_mean": 6.98
+      },
+      "edge_density": {
+        "mean": 13.22,
+        "median": 12.91,
+        "top_tier_mean": 14.12
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 40.3,
+      "cool_palette_pct": 9.1,
+      "center_focus_pct": 69.4,
+      "dark_ratio": 45.1,
+      "light_ratio": 22.2
+    },
+    "Turn-Based Tactics": {
+      "name": "Turn-Based Tactics",
+      "count": 5529,
+      "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.4,
+        "top_tier_mean": 61.91
+      },
+      "brightness": {
+        "mean": 99.88,
+        "median": 95.6
+      },
+      "saturation": {
+        "mean": 111.4,
+        "median": 110.2
+      },
+      "entropy": {
+        "mean": 6.88,
+        "median": 7.26,
+        "top_tier_mean": 7.12
+      },
+      "edge_density": {
+        "mean": 14.22,
+        "median": 13.94,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 42.2,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 70.7,
+      "dark_ratio": 48.4,
+      "light_ratio": 19.1
+    },
+    "Turn-Based Strategy": {
+      "name": "Turn-Based Strategy",
+      "count": 5529,
+      "tip": "Rich strategic map depth with prominent empire crests and crisp territorial contrast.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.4,
+        "top_tier_mean": 61.91
+      },
+      "brightness": {
+        "mean": 99.88,
+        "median": 95.6
+      },
+      "saturation": {
+        "mean": 111.4,
+        "median": 110.2
+      },
+      "entropy": {
+        "mean": 6.88,
+        "median": 7.26,
+        "top_tier_mean": 7.12
+      },
+      "edge_density": {
+        "mean": 14.22,
+        "median": 13.94,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 42.2,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 70.7,
+      "dark_ratio": 48.4,
+      "light_ratio": 19.1
+    },
+    "City Builder": {
+      "name": "City Builder",
+      "count": 8483,
+      "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting.",
+      "contrast": {
+        "mean": 60.82,
+        "median": 61.1,
+        "top_tier_mean": 62.44
+      },
+      "brightness": {
+        "mean": 101.6,
+        "median": 97.8
+      },
+      "saturation": {
+        "mean": 109.69,
+        "median": 107.9
+      },
+      "entropy": {
+        "mean": 6.87,
+        "median": 7.25,
+        "top_tier_mean": 7.08
+      },
+      "edge_density": {
+        "mean": 13.94,
+        "median": 13.66,
+        "top_tier_mean": 14.71
+      },
+      "warm_palette_pct": 50.6,
+      "neutral_palette_pct": 42.1,
+      "cool_palette_pct": 7.3,
+      "center_focus_pct": 70.4,
+      "dark_ratio": 47.6,
+      "light_ratio": 20.0
+    },
+    "Retro FPS": {
+      "name": "Retro FPS",
+      "count": 10448,
+      "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus.",
+      "contrast": {
+        "mean": 60.85,
+        "median": 61.3,
+        "top_tier_mean": 63.24
+      },
+      "brightness": {
+        "mean": 91.87,
+        "median": 86.9
+      },
+      "saturation": {
+        "mean": 114.54,
+        "median": 114.35
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.11,
+        "top_tier_mean": 6.98
+      },
+      "edge_density": {
+        "mean": 12.97,
+        "median": 12.72,
+        "top_tier_mean": 14.16
+      },
+      "warm_palette_pct": 42.9,
+      "neutral_palette_pct": 50.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 72.8,
+      "dark_ratio": 53.7,
+      "light_ratio": 17.4
+    },
+    "Dragons": {
+      "name": "Dragons",
+      "count": 16516,
+      "tip": "Epic creature scale with warm fiery or arcane lighting accents cutting through dark atmospheric skies.",
+      "contrast": {
+        "mean": 60.62,
+        "median": 60.9,
+        "top_tier_mean": 62.61
+      },
+      "brightness": {
+        "mean": 96.29,
+        "median": 91.5
+      },
+      "saturation": {
+        "mean": 112.42,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.17,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.52,
+        "median": 13.26,
+        "top_tier_mean": 14.53
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.5,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 51.0,
+      "light_ratio": 18.7
+    },
+    "PvP": {
+      "name": "PvP",
+      "count": 14424,
+      "tip": "Opposing color clashes (red vs blue, gold vs shadow) indicating intense multiplayer competition.",
+      "contrast": {
+        "mean": 60.6,
+        "median": 60.9,
+        "top_tier_mean": 62.73
+      },
+      "brightness": {
+        "mean": 94.9,
+        "median": 90.0
+      },
+      "saturation": {
+        "mean": 113.66,
+        "median": 112.8
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.16,
+        "top_tier_mean": 7.02
+      },
+      "edge_density": {
+        "mean": 13.39,
+        "median": 13.12,
+        "top_tier_mean": 14.45
+      },
+      "warm_palette_pct": 45.6,
+      "neutral_palette_pct": 47.0,
+      "cool_palette_pct": 7.4,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 51.7,
+      "light_ratio": 18.1
+    },
+    "PvE": {
+      "name": "PvE",
+      "count": 17601,
+      "tip": "Heroic squad lineup facing formidable boss silhouettes in evocative fantasy or sci-fi environments.",
+      "contrast": {
+        "mean": 60.49,
+        "median": 60.8,
+        "top_tier_mean": 62.66
+      },
+      "brightness": {
+        "mean": 95.41,
+        "median": 89.4
+      },
+      "saturation": {
+        "mean": 111.31,
+        "median": 110.7
+      },
+      "entropy": {
+        "mean": 6.72,
+        "median": 7.13,
+        "top_tier_mean": 6.95
+      },
+      "edge_density": {
+        "mean": 13.22,
+        "median": 12.94,
+        "top_tier_mean": 14.13
+      },
+      "warm_palette_pct": 44.9,
+      "neutral_palette_pct": 47.9,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 72.4,
+      "dark_ratio": 51.8,
+      "light_ratio": 18.8
+    },
+    "Fantasy": {
+      "name": "Fantasy",
+      "count": 15788,
+      "tip": "Luminous magical particle effects and rich mystical textures with clear character silhouettes.",
+      "contrast": {
+        "mean": 60.15,
+        "median": 60.3,
+        "top_tier_mean": 61.95
+      },
+      "brightness": {
+        "mean": 97.32,
+        "median": 91.85
+      },
+      "saturation": {
+        "mean": 109.93,
+        "median": 108.7
+      },
+      "entropy": {
+        "mean": 6.77,
+        "median": 7.16,
+        "top_tier_mean": 6.99
+      },
+      "edge_density": {
+        "mean": 13.53,
+        "median": 13.23,
+        "top_tier_mean": 14.39
+      },
+      "warm_palette_pct": 46.8,
+      "neutral_palette_pct": 46.1,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 72.3,
+      "dark_ratio": 50.6,
+      "light_ratio": 19.2
+    },
+    "Magic": {
+      "name": "Magic",
+      "count": 16516,
+      "tip": "Radiant spell glow effects with high luminous contrast against shadowed mystical backdrops.",
+      "contrast": {
+        "mean": 60.62,
+        "median": 60.9,
+        "top_tier_mean": 62.61
+      },
+      "brightness": {
+        "mean": 96.29,
+        "median": 91.5
+      },
+      "saturation": {
+        "mean": 112.42,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.17,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.52,
+        "median": 13.26,
+        "top_tier_mean": 14.53
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.5,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 51.0,
+      "light_ratio": 18.7
+    },
+    "Medieval": {
+      "name": "Medieval",
+      "count": 16516,
+      "tip": "Grit, burnished armor sheen, and torchlit atmosphere with distinct heraldic color banners.",
+      "contrast": {
+        "mean": 60.62,
+        "median": 60.9,
+        "top_tier_mean": 62.61
+      },
+      "brightness": {
+        "mean": 96.29,
+        "median": 91.5
+      },
+      "saturation": {
+        "mean": 112.42,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.17,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.52,
+        "median": 13.26,
+        "top_tier_mean": 14.53
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.5,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 51.0,
+      "light_ratio": 18.7
+    },
+    "Military": {
+      "name": "Military",
+      "count": 16382,
+      "tip": "Camouflage textures balanced by sharp tactical orange/amber HUD elements and distinct hardware silhouettes.",
+      "contrast": {
+        "mean": 60.79,
+        "median": 61.1,
+        "top_tier_mean": 62.83
+      },
+      "brightness": {
+        "mean": 96.52,
+        "median": 92.2
+      },
+      "saturation": {
+        "mean": 112.61,
+        "median": 111.6
+      },
+      "entropy": {
+        "mean": 6.77,
+        "median": 7.17,
+        "top_tier_mean": 7.02
+      },
+      "edge_density": {
+        "mean": 13.41,
+        "median": 13.13,
+        "top_tier_mean": 14.43
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.2,
+      "cool_palette_pct": 7.5,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 50.8,
+      "light_ratio": 18.7
+    },
+    "Wargame": {
+      "name": "Wargame",
+      "count": 8483,
+      "tip": "Detailed tactical battle maps and unit counters with disciplined typographic contrast.",
+      "contrast": {
+        "mean": 60.82,
+        "median": 61.1,
+        "top_tier_mean": 62.44
+      },
+      "brightness": {
+        "mean": 101.6,
+        "median": 97.8
+      },
+      "saturation": {
+        "mean": 109.69,
+        "median": 107.9
+      },
+      "entropy": {
+        "mean": 6.87,
+        "median": 7.25,
+        "top_tier_mean": 7.08
+      },
+      "edge_density": {
+        "mean": 13.94,
+        "median": 13.66,
+        "top_tier_mean": 14.71
+      },
+      "warm_palette_pct": 50.6,
+      "neutral_palette_pct": 42.1,
+      "cool_palette_pct": 7.3,
+      "center_focus_pct": 70.4,
+      "dark_ratio": 47.6,
+      "light_ratio": 20.0
+    },
+    "Card Game": {
+      "name": "Card Game",
+      "count": 11186,
+      "tip": "Embossed card borders with saturated gem/mana accents and readable card art at browse scales.",
+      "contrast": {
+        "mean": 59.92,
+        "median": 60.1,
+        "top_tier_mean": 61.76
+      },
+      "brightness": {
+        "mean": 104.7,
+        "median": 100.5
+      },
+      "saturation": {
+        "mean": 111.89,
+        "median": 111.6
+      },
+      "entropy": {
+        "mean": 6.74,
+        "median": 7.19,
+        "top_tier_mean": 7.01
+      },
+      "edge_density": {
+        "mean": 13.46,
+        "median": 13.19,
+        "top_tier_mean": 14.51
+      },
+      "warm_palette_pct": 50.6,
+      "neutral_palette_pct": 40.6,
+      "cool_palette_pct": 8.7,
+      "center_focus_pct": 69.8,
+      "dark_ratio": 46.0,
+      "light_ratio": 21.4
+    },
+    "Pixel Graphics": {
+      "name": "Pixel Graphics",
+      "count": 20353,
+      "tip": "Crisp pixel cluster readability with bold color separation avoiding visual noise at small thumbnail sizes.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.6,
+        "top_tier_mean": 62.51
+      },
+      "brightness": {
+        "mean": 96.72,
+        "median": 90.8
+      },
+      "saturation": {
+        "mean": 111.35,
+        "median": 110.9
+      },
+      "entropy": {
+        "mean": 6.66,
+        "median": 7.1,
+        "top_tier_mean": 6.91
+      },
+      "edge_density": {
+        "mean": 12.98,
+        "median": 12.64,
+        "top_tier_mean": 13.96
+      },
+      "warm_palette_pct": 45.2,
+      "neutral_palette_pct": 47.1,
+      "cool_palette_pct": 7.7,
+      "center_focus_pct": 72.1,
+      "dark_ratio": 51.1,
+      "light_ratio": 19.3
+    },
+    "Cyberpunk": {
+      "name": "Cyberpunk",
+      "count": 13753,
+      "tip": "Vibrant cyan/magenta neon contrast cutting through rain-slicked dark industrial geometry.",
+      "contrast": {
+        "mean": 60.8,
+        "median": 61.2,
+        "top_tier_mean": 63.0
+      },
+      "brightness": {
+        "mean": 94.78,
+        "median": 89.6
+      },
+      "saturation": {
+        "mean": 112.34,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.74,
+        "median": 7.16,
+        "top_tier_mean": 6.99
+      },
+      "edge_density": {
+        "mean": 13.38,
+        "median": 13.14,
+        "top_tier_mean": 14.42
+      },
+      "warm_palette_pct": 44.9,
+      "neutral_palette_pct": 48.3,
+      "cool_palette_pct": 6.8,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 52.0,
+      "light_ratio": 18.4
+    },
+    "Open World": {
+      "name": "Open World",
+      "count": 17601,
+      "tip": "Dramatic vanishing point horizon with atmospheric haze separating foreground protagonist from expansive world.",
+      "contrast": {
+        "mean": 60.49,
+        "median": 60.8,
+        "top_tier_mean": 62.66
+      },
+      "brightness": {
+        "mean": 95.41,
+        "median": 89.4
+      },
+      "saturation": {
+        "mean": 111.31,
+        "median": 110.7
+      },
+      "entropy": {
+        "mean": 6.72,
+        "median": 7.13,
+        "top_tier_mean": 6.95
+      },
+      "edge_density": {
+        "mean": 13.22,
+        "median": 12.94,
+        "top_tier_mean": 14.13
+      },
+      "warm_palette_pct": 44.9,
+      "neutral_palette_pct": 47.9,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 72.4,
+      "dark_ratio": 51.8,
+      "light_ratio": 18.8
+    },
+    "Sci-fi": {
+      "name": "Sci-fi",
+      "count": 16382,
+      "tip": "Sleek geometric paneling with electric laser blue or solar orange emissive lighting lines.",
+      "contrast": {
+        "mean": 60.79,
+        "median": 61.1,
+        "top_tier_mean": 62.83
+      },
+      "brightness": {
+        "mean": 96.52,
+        "median": 92.2
+      },
+      "saturation": {
+        "mean": 112.61,
+        "median": 111.6
+      },
+      "entropy": {
+        "mean": 6.77,
+        "median": 7.17,
+        "top_tier_mean": 7.02
+      },
+      "edge_density": {
+        "mean": 13.41,
+        "median": 13.13,
+        "top_tier_mean": 14.43
+      },
+      "warm_palette_pct": 46.3,
+      "neutral_palette_pct": 46.2,
+      "cool_palette_pct": 7.5,
+      "center_focus_pct": 71.7,
+      "dark_ratio": 50.8,
+      "light_ratio": 18.7
+    },
+    "Co-op": {
+      "name": "Co-op",
+      "count": 20353,
+      "tip": "Multiple complementary character silhouettes showing distinct classes or comedic camaraderie.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.6,
+        "top_tier_mean": 62.51
+      },
+      "brightness": {
+        "mean": 96.72,
+        "median": 90.8
+      },
+      "saturation": {
+        "mean": 111.35,
+        "median": 110.9
+      },
+      "entropy": {
+        "mean": 6.66,
+        "median": 7.1,
+        "top_tier_mean": 6.91
+      },
+      "edge_density": {
+        "mean": 12.98,
+        "median": 12.64,
+        "top_tier_mean": 13.96
+      },
+      "warm_palette_pct": 45.2,
+      "neutral_palette_pct": 47.1,
+      "cool_palette_pct": 7.7,
+      "center_focus_pct": 72.1,
+      "dark_ratio": 51.1,
+      "light_ratio": 19.3
+    },
+    "Multiplayer": {
+      "name": "Multiplayer",
+      "count": 14424,
+      "tip": "Kinetic confrontation energy with clear opposing faction visuals and high-saliency action focal points.",
+      "contrast": {
+        "mean": 60.6,
+        "median": 60.9,
+        "top_tier_mean": 62.73
+      },
+      "brightness": {
+        "mean": 94.9,
+        "median": 90.0
+      },
+      "saturation": {
+        "mean": 113.66,
+        "median": 112.8
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.16,
+        "top_tier_mean": 7.02
+      },
+      "edge_density": {
+        "mean": 13.39,
+        "median": 13.12,
+        "top_tier_mean": 14.45
+      },
+      "warm_palette_pct": 45.6,
+      "neutral_palette_pct": 47.0,
+      "cool_palette_pct": 7.4,
+      "center_focus_pct": 72.0,
+      "dark_ratio": 51.7,
+      "light_ratio": 18.1
     }
   },
   "presets": [
@@ -727,10 +1477,13 @@
       "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
       "price": "4,99\u20ac",
       "tags": [
-        "Indie",
-        "Strategy",
         "Auto Battler",
-        "Roguelike Deckbuilder"
+        "Roguelike Deckbuilder",
+        "Turn-Based Tactics",
+        "Strategy",
+        "Indie",
+        "Dice",
+        "PvP"
       ]
     },
     {
@@ -743,10 +1496,14 @@
       "price": "Coming Soon",
       "tags": [
         "Auto Battler",
+        "Turn-Based Strategy",
+        "Turn-Based Tactics",
+        "Strategy",
+        "Simulation",
         "Action",
         "Indie",
-        "Strategy",
-        "Turn-Based Tactics"
+        "Dragons",
+        "PvP"
       ]
     },
     {
@@ -761,7 +1518,10 @@
         "Souls-like",
         "RPG",
         "Dark Fantasy",
-        "Open World"
+        "Open World",
+        "Difficult",
+        "Action RPG",
+        "Action"
       ]
     },
     {
@@ -775,7 +1535,10 @@
       "tags": [
         "Action Roguelike",
         "Hack and Slash",
-        "Indie"
+        "Indie",
+        "Mythology",
+        "Action",
+        "Rogue-lite"
       ]
     },
     {
@@ -788,8 +1551,11 @@
       "price": "$14.99",
       "tags": [
         "Roguelike Deckbuilder",
+        "Card Game",
         "Strategy",
-        "Indie"
+        "Indie",
+        "Deckbuilding",
+        "Addictive"
       ]
     },
     {
@@ -804,7 +1570,9 @@
         "Farming Sim",
         "Cozy Sim",
         "Simulation",
-        "Pixel Graphics"
+        "Pixel Graphics",
+        "RPG",
+        "Life Sim"
       ]
     },
     {
@@ -819,7 +1587,9 @@
         "Cyberpunk",
         "Open World",
         "RPG",
-        "Sci-fi"
+        "Sci-fi",
+        "Action",
+        "Shooter"
       ]
     },
     {
@@ -832,9 +1602,11 @@
       "price": "$14.99",
       "tags": [
         "Metroidvania",
-        "Adventure",
         "Souls-like",
-        "2D"
+        "Adventure",
+        "2D Platformer",
+        "Difficult",
+        "Action"
       ]
     }
   ],

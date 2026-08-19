@@ -82,10 +82,6 @@
                 <div class="steam-nav-links">
                     <button class="nav-tab-btn active" id="navHomeBtn" type="button">Home</button>
                     <button class="nav-tab-btn" id="navBenchmarkBtn" type="button">Benchmark</button>
-                    <a href="https://github.com/alexanderthurn/capsulu" target="_blank" rel="noopener noreferrer" class="nav-tab-btn nav-tab-link" title="Open Source Repository on GitHub">
-                        <svg class="github-icon-svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                        GitHub ↗
-                    </a>
                 </div>
             </div>
 
@@ -168,8 +164,13 @@
                     <div class="game-huge-meta-row">
                         <span class="meta-pill" id="resultAppIdTag">App ID: --</span>
                         <span class="meta-pill price-pill" id="resultPriceTag">--</span>
-                        <div class="game-hero-tags" id="resultHeroTags">
-                            <!-- Tags injected via JS -->
+                        <div class="meta-group" id="resultHeroGenresGroup" style="display: none;">
+                            <span class="meta-group-label">Genre:</span>
+                            <div class="game-hero-genres" id="resultHeroGenres"></div>
+                        </div>
+                        <div class="meta-group" id="resultHeroTagsGroup" style="display: none;">
+                            <span class="meta-group-label">Tags:</span>
+                            <div class="game-hero-tags" id="resultHeroTags"></div>
                         </div>
                     </div>
                 </section>
@@ -284,29 +285,28 @@
                                 </div>
                             </div>
                             <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Change competitor lineup genre">
-                                    <option value="auto">🎯 Competitors (Auto)</option>
-                                    <option value="all">🌐 All Steam Games (28,754)</option>
-                                    <optgroup label="Sub-Genres & Tags">
-                                        <option value="Auto Battler">⚔️ Auto Battler / Auto Chess</option>
-                                        <option value="Roguelike Deckbuilder">🃏 Roguelike Deckbuilder</option>
-                                        <option value="Action Roguelike">🔥 Action Roguelike / Survivors</option>
-                                        <option value="Metroidvania">🦇 Metroidvania / 2D Action</option>
-                                        <option value="Souls-like">💀 Souls-like / Dark Fantasy</option>
-                                        <option value="Survival Horror">🩸 Survival Horror</option>
-                                        <option value="Cozy Sim">🌾 Cozy & Farming Sim</option>
-                                        <option value="Turn-Based Tactics">♟️ Turn-Based Tactics</option>
-                                        <option value="City Builder">🏗️ City Builder / Colony Sim</option>
-                                        <option value="Retro FPS">💥 Boomer Shooter / Retro FPS</option>
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                    <option value="all">All Steam Games</option>
+                                    <optgroup label="Genre">
+                                        <option value="Action">Action</option>
+                                        <option value="Adventure">Adventure</option>
+                                        <option value="RPG">RPG</option>
+                                        <option value="Strategy">Strategy</option>
+                                        <option value="Simulation">Simulation</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Indie">Indie</option>
                                     </optgroup>
-                                    <optgroup label="Broad Steam Genres">
-                                        <option value="Action">⚔️ Action / Shooter</option>
-                                        <option value="RPG">🛡️ RPG / Role-Playing</option>
-                                        <option value="Strategy">♟️ Strategy / Tactics</option>
-                                        <option value="Adventure">🗺️ Adventure / Narrative</option>
-                                        <option value="Simulation">🚜 Simulation / Management</option>
-                                        <option value="Casual">☕ Casual / Cozy</option>
-                                        <option value="Indie">✨ Indie Highlights</option>
+                                    <optgroup label="Tags">
+                                        <option value="Auto Battler">Auto Battler</option>
+                                        <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                        <option value="Action Roguelike">Action Roguelike</option>
+                                        <option value="Metroidvania">Metroidvania</option>
+                                        <option value="Souls-like">Souls-like</option>
+                                        <option value="Survival Horror">Survival Horror</option>
+                                        <option value="Cozy Sim">Cozy Sim</option>
+                                        <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                        <option value="City Builder">City Builder</option>
+                                        <option value="Retro FPS">Retro FPS</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -334,29 +334,28 @@
                         <div class="panel-header">
                             <h3>🛠️ Design Recommendations</h3>
                             <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Change recommendations target genre">
-                                    <option value="auto">🎯 Target Genre (Auto)</option>
-                                    <option value="all">🌐 All Steam Games (28,754)</option>
-                                    <optgroup label="Sub-Genres & Tags">
-                                        <option value="Auto Battler">⚔️ Auto Battler / Auto Chess</option>
-                                        <option value="Roguelike Deckbuilder">🃏 Roguelike Deckbuilder</option>
-                                        <option value="Action Roguelike">🔥 Action Roguelike / Survivors</option>
-                                        <option value="Metroidvania">🦇 Metroidvania / 2D Action</option>
-                                        <option value="Souls-like">💀 Souls-like / Dark Fantasy</option>
-                                        <option value="Survival Horror">🩸 Survival Horror</option>
-                                        <option value="Cozy Sim">🌾 Cozy & Farming Sim</option>
-                                        <option value="Turn-Based Tactics">♟️ Turn-Based Tactics</option>
-                                        <option value="City Builder">🏗️ City Builder / Colony Sim</option>
-                                        <option value="Retro FPS">💥 Boomer Shooter / Retro FPS</option>
+                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                    <option value="all">All Steam Games</option>
+                                    <optgroup label="Genre">
+                                        <option value="Action">Action</option>
+                                        <option value="Adventure">Adventure</option>
+                                        <option value="RPG">RPG</option>
+                                        <option value="Strategy">Strategy</option>
+                                        <option value="Simulation">Simulation</option>
+                                        <option value="Casual">Casual</option>
+                                        <option value="Indie">Indie</option>
                                     </optgroup>
-                                    <optgroup label="Broad Steam Genres">
-                                        <option value="Action">⚔️ Action / Shooter</option>
-                                        <option value="RPG">🛡️ RPG / Role-Playing</option>
-                                        <option value="Strategy">♟️ Strategy / Tactics</option>
-                                        <option value="Adventure">🗺️ Adventure / Narrative</option>
-                                        <option value="Simulation">🚜 Simulation / Management</option>
-                                        <option value="Casual">☕ Casual / Cozy</option>
-                                        <option value="Indie">✨ Indie Highlights</option>
+                                    <optgroup label="Tags">
+                                        <option value="Auto Battler">Auto Battler</option>
+                                        <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                        <option value="Action Roguelike">Action Roguelike</option>
+                                        <option value="Metroidvania">Metroidvania</option>
+                                        <option value="Souls-like">Souls-like</option>
+                                        <option value="Survival Horror">Survival Horror</option>
+                                        <option value="Cozy Sim">Cozy Sim</option>
+                                        <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                        <option value="City Builder">City Builder</option>
+                                        <option value="Retro FPS">Retro FPS</option>
                                     </optgroup>
                                 </select>
                             </div>
@@ -368,40 +367,39 @@
 
                 </div>
 
-                <!-- 4. DEDICATED UNIFIED GENRE BENCHMARK & LENS PANEL (Directly After Design Recommendations) -->
+                <!-- 4. DEDICATED UNIFIED TAG & GENRE BENCHMARK PANEL (Directly After Design Recommendations) -->
                 <section class="steam-panel genre-benchmark-card" id="genreBenchmarkCard" style="margin-top: 20px; display: block;">
                     <div class="panel-header">
                         <div class="genre-card-header-left">
-                            <span class="genre-card-icon" id="genreCardIcon">🎯</span>
+                            <span class="genre-card-icon" id="genreCardIcon">🏷️</span>
                             <div>
-                                <h3 id="genreCardTitle">Genre Market Benchmark</h3>
-                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing your capsule directly against competitors in its specific genre.</p>
+                                <h3 id="genreCardTitle">Steam Tag & Genre Benchmark</h3>
+                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing your capsule directly against competitors with matching Steam tags & genres.</p>
                             </div>
                         </div>
                         <div class="panel-header-right-controls">
-                            <select id="genreSelectDropdown" class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select target genre benchmark">
-                                <option value="auto">🎯 Target Genre (Auto)</option>
-                                <option value="all">🌐 All Steam Games (28,754)</option>
-                                <optgroup label="Sub-Genres & Tags">
-                                    <option value="Auto Battler">⚔️ Auto Battler / Auto Chess</option>
-                                    <option value="Roguelike Deckbuilder">🃏 Roguelike Deckbuilder</option>
-                                    <option value="Action Roguelike">🔥 Action Roguelike / Survivors</option>
-                                    <option value="Metroidvania">🦇 Metroidvania / 2D Action</option>
-                                    <option value="Souls-like">💀 Souls-like / Dark Fantasy</option>
-                                    <option value="Survival Horror">🩸 Survival Horror</option>
-                                    <option value="Cozy Sim">🌾 Cozy & Farming Sim</option>
-                                    <option value="Turn-Based Tactics">♟️ Turn-Based Tactics</option>
-                                    <option value="City Builder">🏗️ City Builder / Colony Sim</option>
-                                    <option value="Retro FPS">💥 Boomer Shooter / Retro FPS</option>
+                            <select id="genreSelectDropdown" class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                <option value="all">All Steam Games</option>
+                                <optgroup label="Genre">
+                                    <option value="Action">Action</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="RPG">RPG</option>
+                                    <option value="Strategy">Strategy</option>
+                                    <option value="Simulation">Simulation</option>
+                                    <option value="Casual">Casual</option>
+                                    <option value="Indie">Indie</option>
                                 </optgroup>
-                                <optgroup label="Broad Steam Genres">
-                                    <option value="Action">⚔️ Action / Shooter</option>
-                                    <option value="RPG">🛡️ RPG / Role-Playing</option>
-                                    <option value="Strategy">♟️ Strategy / Tactics</option>
-                                    <option value="Adventure">🗺️ Adventure / Narrative</option>
-                                    <option value="Simulation">🚜 Simulation / Management</option>
-                                    <option value="Casual">☕ Casual / Cozy</option>
-                                    <option value="Indie">✨ Indie Highlights</option>
+                                <optgroup label="Tags">
+                                    <option value="Auto Battler">Auto Battler</option>
+                                    <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                    <option value="Action Roguelike">Action Roguelike</option>
+                                    <option value="Metroidvania">Metroidvania</option>
+                                    <option value="Souls-like">Souls-like</option>
+                                    <option value="Survival Horror">Survival Horror</option>
+                                    <option value="Cozy Sim">Cozy Sim</option>
+                                    <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                    <option value="City Builder">City Builder</option>
+                                    <option value="Retro FPS">Retro FPS</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -410,22 +408,22 @@
                     <!-- 4-Stat Metric Grid -->
                     <div class="genre-metrics-grid">
                         <div class="genre-stat-box">
-                            <span class="genre-stat-label">Genre Contrast Median</span>
+                            <span class="genre-stat-label">Tag Contrast Median</span>
                             <span class="genre-stat-val" id="genreMedContrast">--</span>
                             <span class="genre-stat-delta" id="genreDeltaContrast">vs Your: --</span>
                         </div>
                         <div class="genre-stat-box">
-                            <span class="genre-stat-label">Warm Saliency Share</span>
+                            <span class="genre-stat-label">Tag Warm Saliency</span>
                             <span class="genre-stat-val" id="genreWarmShare">--</span>
                             <span class="genre-stat-delta" id="genreDeltaWarm">vs Your: --</span>
                         </div>
                         <div class="genre-stat-box">
-                            <span class="genre-stat-label">Genre Tonal Entropy</span>
+                            <span class="genre-stat-label">Tag Tonal Entropy</span>
                             <span class="genre-stat-val" id="genreEntropy">--</span>
                             <span class="genre-stat-delta" id="genreDeltaEntropy">vs Your: --</span>
                         </div>
                         <div class="genre-stat-box">
-                            <span class="genre-stat-label">Edge Line Density</span>
+                            <span class="genre-stat-label">Tag Edge Line Density</span>
                             <span class="genre-stat-val" id="genreEdgeDensity">--</span>
                             <span class="genre-stat-delta" id="genreDeltaEdge">vs Your: --</span>
                         </div>
@@ -433,7 +431,7 @@
 
                     <div class="genre-recommendation-box" id="genreRecommendationBox">
                         <span class="rec-icon">💡</span>
-                        <p id="genreRecommendationText">Select a genre lens above or analyze a Steam game to see tailored market recommendations.</p>
+                        <p id="genreRecommendationText">Select a Steam tag or genre above or analyze a Steam game to see tailored market recommendations.</p>
                     </div>
                 </section>
 
@@ -442,29 +440,28 @@
                     <div class="panel-header">
                         <h3>📊 Metric Breakdown vs. 28,754 Games</h3>
                         <div class="panel-header-right-controls">
-                            <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select benchmark metric lens">
-                                <option value="auto">🎯 Target Genre (Auto)</option>
-                                <option value="all">🌐 All Steam Games (28,754)</option>
-                                <optgroup label="Sub-Genres & Tags">
-                                    <option value="Auto Battler">⚔️ Auto Battler / Auto Chess</option>
-                                    <option value="Roguelike Deckbuilder">🃏 Roguelike Deckbuilder</option>
-                                    <option value="Action Roguelike">🔥 Action Roguelike / Survivors</option>
-                                    <option value="Metroidvania">🦇 Metroidvania / 2D Action</option>
-                                    <option value="Souls-like">💀 Souls-like / Dark Fantasy</option>
-                                    <option value="Survival Horror">🩸 Survival Horror</option>
-                                    <option value="Cozy Sim">🌾 Cozy & Farming Sim</option>
-                                    <option value="Turn-Based Tactics">♟️ Turn-Based Tactics</option>
-                                    <option value="City Builder">🏗️ City Builder / Colony Sim</option>
-                                    <option value="Retro FPS">💥 Boomer Shooter / Retro FPS</option>
+                            <select class="select-steam-genre select-genre-compact genre-sync-dropdown" title="Select comparison lens">
+                                <option value="all">All Steam Games</option>
+                                <optgroup label="Genre">
+                                    <option value="Action">Action</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="RPG">RPG</option>
+                                    <option value="Strategy">Strategy</option>
+                                    <option value="Simulation">Simulation</option>
+                                    <option value="Casual">Casual</option>
+                                    <option value="Indie">Indie</option>
                                 </optgroup>
-                                <optgroup label="Broad Steam Genres">
-                                    <option value="Action">⚔️ Action / Shooter</option>
-                                    <option value="RPG">🛡️ RPG / Role-Playing</option>
-                                    <option value="Strategy">♟️ Strategy / Tactics</option>
-                                    <option value="Adventure">🗺️ Adventure / Narrative</option>
-                                    <option value="Simulation">🚜 Simulation / Management</option>
-                                    <option value="Casual">☕ Casual / Cozy</option>
-                                    <option value="Indie">✨ Indie Highlights</option>
+                                <optgroup label="Tags">
+                                    <option value="Auto Battler">Auto Battler</option>
+                                    <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                    <option value="Action Roguelike">Action Roguelike</option>
+                                    <option value="Metroidvania">Metroidvania</option>
+                                    <option value="Souls-like">Souls-like</option>
+                                    <option value="Survival Horror">Survival Horror</option>
+                                    <option value="Cozy Sim">Cozy Sim</option>
+                                    <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                    <option value="City Builder">City Builder</option>
+                                    <option value="Retro FPS">Retro FPS</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -843,7 +840,10 @@
     <footer class="steam-footer">
         <div class="footer-inner">
             <div class="footer-links-row">
-                <a href="https://github.com/alexanderthurn/capsulu" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repository</a>
+                <a href="https://github.com/alexanderthurn/capsulu" target="_blank" rel="noopener noreferrer" class="footer-link footer-github-link" title="Open Source on GitHub">
+                    <svg class="github-icon-svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub ↗
+                </a>
                 <span class="footer-dot">•</span>
                 <a href="https://feuerware.com/2025/imprint.html" target="_blank" rel="noopener noreferrer" class="footer-link">Imprint</a>
                 <span class="footer-dot">•</span>

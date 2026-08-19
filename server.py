@@ -228,11 +228,8 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
 
             target_appid = appid
             if not target_appid and url:
-                match = urllib.parse.re.search(r'store\.steampowered\.com/app/(\d+)', url) if hasattr(urllib.parse, 're') else None
-                if not match:
-                    import re
-                    m = re.search(r'store\.steampowered\.com/app/(\d+)', url)
-                    if m: target_appid = m.group(1)
+                m = re.search(r'store\.steampowered\.com/app/(\d+)', url)
+                if m: target_appid = m.group(1)
 
             if not target_appid and not img_url:
                 self.send_error(400, "Missing required query parameter: appid, url, or image_url")
@@ -408,12 +405,17 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                         store_page_url = f"https://store.steampowered.com/app/{appid}/"
                         page_req = urllib.request.Request(
                             store_page_url,
-                            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", "Cookie": "birthtime=283993201; mature_content=1"}
+                            headers={
+                                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                                "Cookie": "birthtime=283993201; mature_content=1; wants_mature_content=1; lastagecheckage=1-0-1990"
+                            }
                         )
-                        with urllib.request.urlopen(page_req, timeout=6) as page_resp:
+                        with urllib.request.urlopen(page_req, timeout=5) as page_resp:
                             html = page_resp.read().decode("utf-8", errors="ignore")
-                            tags = [t.strip() for t in re.findall(r'class=["\']app_tag[^"\']*["\'][^>]*>\s*([^<]+?)\s*<', html) if t.strip()]
+                            raw_tags = re.findall(r'class=["\']app_tag[^"\']*["\'][^>]*>\s*([^<]+?)\s*<', html)
+                            tags = [t.strip() for t in raw_tags if t.strip() and t.strip() not in ["+", "(?)"]]
                     except Exception as tag_err:
+                        print(f"Error scraping store page tags for {appid}: {tag_err}", flush=True)
                         tags = []
 
                     raw_genres = [g.get("description") for g in app_data.get("genres", []) if isinstance(g, dict)]

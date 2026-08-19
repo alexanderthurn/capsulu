@@ -444,15 +444,15 @@ body {
 
 /* Top Scorecard Banner */
 .score-card-banner {
-    background: linear-gradient(135deg, #1b2838 0%, #171a21 100%);
-    border: 1px solid var(--steam-border-blue);
-    border-radius: var(--radius-md);
-    padding: 24px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     display: grid;
     grid-template-columns: 130px 1fr 320px;
     gap: 24px;
     align-items: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: none;
     margin-bottom: 24px;
 }
 
@@ -646,11 +646,11 @@ body {
 }
 
 .steam-panel {
-    background: var(--steam-panel);
-    border: 1px solid var(--steam-border);
-    border-radius: var(--radius-md);
-    padding: 20px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
 }
 
 .panel-header {
@@ -1479,11 +1479,25 @@ body {
     font-size: 0.82rem;
     font-weight: 600;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .footer-link:hover {
     color: var(--steam-cyan);
     text-decoration: underline;
+}
+
+.footer-github-link .github-icon-svg {
+    opacity: 0.85;
+    vertical-align: middle;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.footer-github-link:hover .github-icon-svg {
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .footer-dot {
@@ -1501,14 +1515,14 @@ body {
    ========================================================================== */
 
 .game-result-hero-card {
-    background: linear-gradient(135deg, #1b2838 0%, #171a21 100%);
-    border: 1px solid var(--steam-border-blue);
-    border-radius: var(--radius-md);
-    padding: 20px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     display: flex;
     gap: 20px;
-    align-items: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    align-items: flex-start;
+    box-shadow: none;
     margin-bottom: 20px;
 }
 
@@ -1616,10 +1630,91 @@ body {
     border-color: rgba(164, 208, 7, 0.3);
 }
 
+.meta-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 3px 8px 3px 6px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.meta-group-label {
+    font-size: 0.70rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #8f9ea6;
+}
+
+.game-hero-genres,
 .game-hero-tags {
-    display: flex;
+    display: inline-flex;
     gap: 6px;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+/* Genre Pills: Distinct Accent */
+.genre-pill-btn {
+    cursor: pointer;
+    background: rgba(41, 128, 185, 0.18);
+    border: 1px solid rgba(103, 193, 245, 0.35);
+    color: #a4d0ec;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.genre-pill-btn:hover {
+    background: rgba(41, 128, 185, 0.4);
+    border-color: var(--steam-cyan);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(103, 193, 245, 0.3);
+}
+
+.genre-pill-btn.active-genre-pill {
+    background: linear-gradient(90deg, #1976d2 0%, #1565c0 100%);
+    color: #ffffff;
+    border-color: #90caf9;
+    font-weight: 700;
+    box-shadow: 0 0 10px rgba(25, 118, 210, 0.6);
+}
+
+/* Tag Pills: Sleek Steam Tag Neutral Pill */
+.tag-pill-btn {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #c7d5e0;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.tag-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.tag-pill-btn.active-tag-pill {
+    background: rgba(103, 193, 245, 0.25);
+    color: var(--steam-cyan);
+    border-color: var(--steam-cyan);
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(103, 193, 245, 0.4);
 }
 
 /* ==========================================================================
@@ -1691,9 +1786,10 @@ body {
 
 /* Dedicated Genre Benchmark Card */
 .genre-benchmark-card {
-    background: linear-gradient(135deg, rgba(27, 40, 56, 0.85) 0%, rgba(18, 28, 40, 0.95) 100%);
-    border: 1px solid rgba(103, 193, 245, 0.3);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .genre-card-header-left {
@@ -2407,6 +2503,26 @@ body {
     border: none;
 }
 
+/* Clickable Visual Check Items */
+.clickable-sim-item {
+    cursor: pointer;
+    outline: none;
+}
+
+.clickable-sim-item:hover {
+    cursor: pointer;
+    filter: brightness(1.15);
+}
+
+.clickable-sim-item:focus-visible {
+    outline: 2px solid var(--steam-cyan);
+    z-index: 10;
+}
+
+.clickable-sim-item:active {
+    transform: scale(0.98);
+}
+
 @media (max-width: 768px) {
     .sim-capsule-large-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -2619,7 +2735,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .top-right-col {
@@ -2628,25 +2744,25 @@ body {
 }
 
 .game-result-hero-card {
-    background: linear-gradient(135deg, #1b2838 0%, #171a21 100%);
-    border: 1px solid var(--steam-border-blue);
-    border-radius: var(--radius-md);
-    padding: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     display: flex;
     gap: 16px;
-    align-items: center;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    align-items: flex-start;
+    box-shadow: none;
     margin-bottom: 0;
-    flex: 1;
+    flex: 0 0 auto;
 }
 
 .palette-dedicated-panel {
-    background: linear-gradient(135deg, #171a21 0%, #0e141b 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     margin-bottom: 0;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
 }
 
 .palette-dedicated-panel .swatches-grid {
@@ -2701,17 +2817,17 @@ body {
 .dominant-score-card {
     height: 100%;
     margin-bottom: 0;
-    padding: 28px 24px;
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     text-align: center;
     gap: 20px;
-    border: 1px solid rgba(102, 192, 244, 0.35);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.65);
-    background: linear-gradient(135deg, #1b2838 0%, #101822 100%);
+    background: linear-gradient(135deg, rgba(27, 40, 56, 0.92) 0%, rgba(20, 29, 41, 0.96) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-md);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 .score-radial-group-huge {
@@ -2816,12 +2932,12 @@ body {
 
 /* Dedicated Dominant Palette Panel with D3 Pie Chart */
 .palette-dedicated-panel {
-    background: linear-gradient(135deg, #171a21 0%, #0e141b 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    padding: 16px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     margin-bottom: 0;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+    box-shadow: none;
 }
 
 .palette-chart-flex {
@@ -2932,12 +3048,12 @@ body {
    ========================================================================== */
 
 .game-huge-title-banner {
-    background: linear-gradient(135deg, #1b2838 0%, #171a21 100%);
-    border: 1px solid var(--steam-border-blue);
-    border-radius: var(--radius-md);
-    padding: 22px 28px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0 0 16px 0;
     margin-bottom: 20px;
-    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
+    box-shadow: none;
 }
 
 .game-huge-title-row {
@@ -2991,14 +3107,14 @@ body {
 /* Dedicated Capsule Preview Card */
 .capsule-preview-only-card {
     padding: 0;
-    background: #000000;
-    border-radius: var(--radius-md);
+    background: transparent;
+    border-radius: 0;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.55);
+    border: none;
+    box-shadow: none;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     margin-bottom: 0;
 }
 
