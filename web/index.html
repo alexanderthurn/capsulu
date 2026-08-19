@@ -943,17 +943,24 @@ Workflow:
                     <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically generates a custom prompt tailored to that capsule's exact CV deficits. Here is the general structure:</p>
                     
                     <div class="ai-code-wrapper">
-                        <pre class="ai-code-block" id="aiGenArtPromptExample">I have attached my current Steam Store header capsule art (460x215) for "[Game Title]".
+                        <pre class="ai-code-block" id="aiGenArtPromptExample">Please optimize this attached steam capsule artwork:
 
-Please analyze the attached capsule image and help me optimize and revise this artwork based on empirical Steam store data (benchmarked against 28,754 Steam games):
+1. Dynamic Contrast &amp; Lighting:
+• Push specular highlights and deepen shadows (std dev &gt;= 63.0).
 
-1. Dynamic Contrast: Push specular highlights and deepen shadows (std dev >= 63.0).
-2. Color Saliency: Add warm amber/golden rim-lighting to pop against Steam dark #171a21 UI.
-3. Title Typography: Title text at Top Left needs >= 4.5:1 WCAG AA contrast (add drop shadow or scrim).
-4. Compositional Vignette: Apply 15% radial perimeter darkening to guide eye to center hero.
-5. 120px Discovery Queue: Keep primary character silhouette crisp and readable at tiny scale.
+2. Color Temperature &amp; Steam UI Pop:
+• Add warm amber/golden rim-lighting to pop against Steam dark #171a21 UI.
 
-Compliance: Adhere strictly to Steam rules (clean title typography only, no review scores, no discount stickers). Please describe visual revisions in detail [or generate the improved artwork].</pre>
+3. Title Typography &amp; Readability:
+• Title text needs &gt;= 4.5:1 WCAG AA contrast against background (add drop shadow or scrim).
+
+4. Compositional Hierarchy:
+• Apply 15% radial perimeter darkening to guide eye to center hero.
+
+5. Thumbnail Downscaling (120px Discovery Queue):
+• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue). But do not add a thumbnail to the image.
+
+Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Do not add stuff, this needs to be the final capsule art that can be uploaded.</pre>
                         <button type="button" class="btn-copy-code" id="btnCopyGenPrompt">📋 Copy Template</button>
                     </div>
                 </div>

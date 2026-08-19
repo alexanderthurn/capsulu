@@ -2466,13 +2466,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
  * Generate Customized AI Art Optimization Prompt
  */
 function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all') {
-    const nameStr = gameName || "My Steam Game";
-    const origin = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:8000';
-    const apiLink = appid 
-        ? `${origin}/api/rate?appid=${appid}&format=markdown` 
-        : (imgSrc && !imgSrc.startsWith('data:') ? `${origin}/api/rate?image_url=${encodeURIComponent(imgSrc)}&format=markdown` : null);
-    
-    // Contrast assessment
+    // 1. Contrast assessment
     let contrastGuidance = "";
     if (cv.brightnessStd < 55) {
         contrastGuidance = `• Deepen cast shadows and push specular highlights on the main hero/subject to increase dynamic contrast std dev from ${cv.brightnessStd} up to the Steam Mega-Hit benchmark of >= 63.0.`;
@@ -2482,7 +2476,7 @@ function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all')
         contrastGuidance = `• Maintain the strong lighting contrast (${cv.brightnessStd} std dev), which already exceeds commercial benchmarks.`;
     }
 
-    // Warmth / Saliency assessment
+    // 2. Warmth / Saliency assessment
     let warmGuidance = "";
     if (cv.warmPct < 30) {
         warmGuidance = `• Introduce warm accents (e.g. golden/amber rim-lighting, torch flame, magical particle glow) to increase warm pixel share from ${cv.warmPct}% towards ~45% so the capsule pops against Steam's dark navy #171a21 interface.`;
@@ -2490,7 +2484,7 @@ function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all')
         warmGuidance = `• Color temperature is well balanced (${cv.warmPct}% warm color share). Ensure focal elements retain primary chromatic emphasis.`;
     }
 
-    // Title Typography assessment
+    // 3. Title Typography assessment
     let titleGuidance = "";
     if (cv.titleContrast < 4.5) {
         titleGuidance = `• Title text at ${cv.titleZone} currently has low photometric contrast (${cv.titleContrast}:1). Add a subtle dark drop shadow, outer stroke, or backdrop gradient scrim to achieve at least 4.5:1 WCAG AA readability.`;
@@ -2498,22 +2492,15 @@ function generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey = 'all')
         titleGuidance = `• Title text at ${cv.titleZone} has high readability (${cv.titleContrast}:1 WCAG). Keep font lettering sharp and unhindered by clutter.`;
     }
 
-    // Focal hierarchy / Vignette
+    // 4. Focal hierarchy / Vignette
     let vignetteGuidance = cv.isCenterFocused
         ? `• Good hero illumination. Keep secondary background elements subdued.`
         : `• Apply a subtle 15% radial edge vignette (darkening borders) to funnel the viewer's gaze toward the center hero character.`;
 
-    // 120px scale readability
-    let scaleGuidance = `• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue).`;
+    // 5. 120px scale readability
+    let scaleGuidance = `• Ensure the hero silhouette and title typography remain instantly legible when downscaled to 120px wide (as seen in Steam Discovery Queue). But do not add a thumbnail to the image.`;
 
-    const reportLine = apiLink ? `\n• Live Benchmark Report: ${apiLink}` : '';
-
-    const prompt = `I have attached my current Steam Store header capsule art (460x215) for "${nameStr}".
-
-Current Capsulu Evaluation:
-• Overall Score: ${scores.overallScore}/100 (${scores.tierName})${reportLine}
-
-Please analyze the attached capsule image and help me optimize and revise this artwork based on empirical Steam store data (benchmarked against 28,754 Steam games):
+    const prompt = `Please optimize this attached steam capsule artwork:
 
 1. Dynamic Contrast & Lighting:
 ${contrastGuidance}
@@ -2530,7 +2517,7 @@ ${vignetteGuidance}
 5. Thumbnail Downscaling (120px Discovery Queue):
 ${scaleGuidance}
 
-Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Please provide a detailed visual critique and step-by-step instructions [or generate the revised capsule concept].`;
+Compliance: Adhere strictly to Steam asset rules (clean title typography only, no review quotes, no discount stickers). Do not add stuff, this needs to be the final capsule art that can be uploaded.`;
 
     return prompt;
 }
