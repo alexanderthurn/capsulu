@@ -251,6 +251,44 @@ function setupEventListeners() {
         });
     }
 
+    // Chart Lightbox Modal Logic
+    const chartLightboxModal = document.getElementById('chartLightboxModal');
+    const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+    const lightboxCloseBtn = document.getElementById('lightboxCloseBtn');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+
+    function openLightbox(src, title) {
+        if (!chartLightboxModal || !lightboxImg) return;
+        lightboxImg.src = src;
+        if (lightboxTitle) lightboxTitle.textContent = title || 'Benchmark Chart';
+        chartLightboxModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        if (!chartLightboxModal) return;
+        chartLightboxModal.style.display = 'none';
+        document.body.style.overflow = '';
+        if (lightboxImg) lightboxImg.src = '';
+    }
+
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && chartLightboxModal && chartLightboxModal.style.display === 'flex') {
+            closeLightbox();
+        }
+    });
+
+    document.querySelectorAll('.chart-img-wrapper').forEach(wrapper => {
+        wrapper.addEventListener('click', () => {
+            const src = wrapper.getAttribute('data-chart-src');
+            const title = wrapper.getAttribute('data-chart-title');
+            if (src) openLightbox(src, title);
+        });
+    });
+
 
     browseBtn.addEventListener('click', (e) => {
         e.preventDefault();
