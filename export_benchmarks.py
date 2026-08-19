@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 export_benchmarks.py — Compile statistical benchmarks from clean, verified Steam games
-(excluding error/corrupt records) into benchmarks.json, including Sales Tiers and Genre Profiles.
+(excluding error/corrupt records) into benchmarks.json, including Sales Tiers, Broad Genres,
+and High-Interest Subcategories & Subgenres (Auto Battlers, Deckbuilders, Metroidvanias, etc.).
 """
 
 import json
@@ -83,54 +84,106 @@ for t in tiers:
         "light_ratio": round(float(sub["light_ratio"].mean() * 100), 1),
     }
 
-# 2. Genre-Specific Statistical Benchmarks
-tracked_genres = {
+# 2. Comprehensive Genre & High-Interest Subcategory Definitions
+tracked_categories = {
+    # Sub-genres
+    "Auto Battler": {
+        "label": "Auto Battler / Auto Chess",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Simulation|Casual", case=False, regex=True)],
+        "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale."
+    },
+    "Roguelike Deckbuilder": {
+        "label": "Roguelike Deckbuilder / Card Game",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy|Indie", case=False, regex=True)],
+        "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence."
+    },
+    "Action Roguelike": {
+        "label": "Action Roguelike / Survivors-like",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action|Indie", case=False, regex=True)],
+        "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist."
+    },
+    "Metroidvania": {
+        "label": "Metroidvania / 2D Platformer",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Adventure|Action|Indie", case=False, regex=True)],
+        "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth."
+    },
+    "Souls-like": {
+        "label": "Souls-like / Dark Fantasy",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("RPG|Action", case=False, regex=True)],
+        "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale."
+    },
+    "Survival Horror": {
+        "label": "Survival Horror / Psychological",
+        "filter_query": lambda d: d[(d["all_genres"].fillna("").str.contains("Action|Adventure", case=False, regex=True)) & (d["dark_ratio"] > 0.20)],
+        "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject."
+    },
+    "Cozy Sim": {
+        "label": "Cozy & Farming Sim",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Casual", case=False, regex=True)],
+        "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design."
+    },
+    "Turn-Based Tactics": {
+        "label": "Turn-Based Tactics / Strategy",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=True)],
+        "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry."
+    },
+    "City Builder": {
+        "label": "City Builder / Colony Sim",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Simulation|Strategy", case=False, regex=True)],
+        "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting."
+    },
+    "Retro FPS": {
+        "label": "Boomer Shooter / Retro FPS",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Action", case=False, regex=True)],
+        "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus."
+    },
+    # Broad Genres
     "Action": {
         "label": "Action / Shooter / Hack & Slash",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Action") | d["all_genres"].fillna("").str.contains("Action", case=False, regex=False)],
         "tip": "High dynamic lighting and warm rim-lighting are critical to pop against fast-paced Steam browse feeds."
     },
     "Adventure": {
         "label": "Adventure / Narrative / Exploration",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Adventure") | d["all_genres"].fillna("").str.contains("Adventure", case=False, regex=False)],
         "tip": "Atmospheric lighting with high tonal entropy and clear environmental depth performs best."
     },
     "RPG": {
-        "label": "RPG / CRPG / Roguelike RPG",
+        "label": "RPG / CRPG / JRPG",
+        "filter_query": lambda d: d[(d["primary_genre"] == "RPG") | d["all_genres"].fillna("").str.contains("RPG", case=False, regex=False)],
         "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding."
     },
     "Strategy": {
-        "label": "Strategy / Tactics / Deckbuilder",
+        "label": "Strategy / Grand Strategy / Tactics",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Strategy") | d["all_genres"].fillna("").str.contains("Strategy", case=False, regex=False)],
         "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes."
     },
     "Simulation": {
         "label": "Simulation / Management / Sandbox",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Simulation") | d["all_genres"].fillna("").str.contains("Simulation", case=False, regex=False)],
         "tip": "Balanced, inviting color temperatures with crisp line art and clear theme cues."
     },
     "Casual": {
         "label": "Casual / Puzzle / Cozy",
+        "filter_query": lambda d: d[(d["primary_genre"] == "Casual") | d["all_genres"].fillna("").str.contains("Casual", case=False, regex=False)],
         "tip": "Vibrant, cheerful color palettes with higher average brightness and clean geometric shapes."
     },
     "Indie": {
         "label": "Indie Highlights",
+        "filter_query": lambda d: d[d["all_genres"].fillna("").str.contains("Indie", case=False, regex=False)],
         "tip": "Distinct stylized visual identity with strong hero focus to stand out from AAA realism."
     }
 }
 
 genre_benchmarks = {}
 
-for g_key, g_meta in tracked_genres.items():
-    if g_key == "Indie":
-        sub = clean_df[clean_df["all_genres"].fillna("").str.contains("Indie", case=False, regex=False)]
-    else:
-        sub = clean_df[
-            (clean_df["primary_genre"] == g_key) | 
-            clean_df["all_genres"].fillna("").str.contains(g_key, case=False, regex=False)
-        ]
-    
+for g_key, g_meta in tracked_categories.items():
+    sub = g_meta["filter_query"](clean_df)
     n = len(sub)
     if n < 10:
         continue
 
-    # Get top performers in this genre
+    # Get top performers in this category
     top_sub = sub[sub["tier"].isin(["mega_hit", "successful"])]
     if len(top_sub) < 5:
         top_sub = sub
@@ -179,7 +232,7 @@ overall_stats = {
     "edge_density_p10": round(float(clean_df["edge_density"].quantile(0.10) * 100), 2),
 }
 
-# 4. Curated sample presets & genre lineups
+# 4. Curated sample presets
 sample_presets = [
     {
         "id": "diception",
@@ -189,7 +242,7 @@ sample_presets = [
         "tier_label": "🎲 DICEPTION",
         "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
         "price": "4,99€",
-        "tags": ["Indie", "Strategy"]
+        "tags": ["Indie", "Strategy", "Auto Battler", "Roguelike Deckbuilder"]
     },
     {
         "id": "melodan",
@@ -199,7 +252,7 @@ sample_presets = [
         "tier_label": "⚔️ Melodan",
         "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
         "price": "Coming Soon",
-        "tags": ["Action", "Indie", "Strategy"]
+        "tags": ["Auto Battler", "Action", "Indie", "Strategy", "Turn-Based Tactics"]
     },
     {
         "id": "elden_ring",
@@ -239,7 +292,7 @@ sample_presets = [
         "appid": 413150,
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
         "price": "$14.99",
-        "tags": ["Farming Sim", "Simulation", "Pixel Graphics", "Co-op"]
+        "tags": ["Farming Sim", "Cozy Sim", "Simulation", "Pixel Graphics"]
     },
     {
         "id": "cyberpunk",
@@ -260,31 +313,101 @@ sample_presets = [
         "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
         "price": "$14.99",
         "tags": ["Metroidvania", "Adventure", "Souls-like", "2D"]
-    },
-    {
-        "id": "sample_modest",
-        "name": "Ironcast",
-        "tier": "moderate",
-        "tier_label": "📊 Moderate (~500 reviews)",
-        "appid": 327670,
-        "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/327670/header.jpg",
-        "price": "$14.99",
-        "tags": ["Match 3", "Steampunk", "Strategy"]
-    },
-    {
-        "id": "sample_flop",
-        "name": "Putridum Horror",
-        "tier": "near_zero",
-        "tier_label": "🕳️ Near-Zero (3 reviews)",
-        "appid": 2294100,
-        "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/2294100/header.jpg",
-        "price": "$1.99",
-        "tags": ["Horror", "Action", "Indie"]
     }
 ]
 
-# 5. Genre-specific catalog for dynamic 3x3 competitor simulator
+# 5. Genre & Subcategory competitor catalogs for dynamic 3x3 simulator
 genre_competitor_catalogs = {
+    "Auto Battler": [
+        {"name": "Backpack Battles", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2427700/header.jpg", "appid": 2427700},
+        {"name": "Mechabellum", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/983870/header.jpg", "appid": 983870},
+        {"name": "Super Auto Pets", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1714040/header.jpg", "appid": 1714040},
+        {"name": "Despot's Game", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1399700/header.jpg", "appid": 1399700},
+        {"name": "Legion TD 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/469600/header.jpg", "appid": 469600},
+        {"name": "Slice & Dice", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1875880/header.jpg", "appid": 1875880},
+        {"name": "Melodan", "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037", "appid": 4987230},
+        {"name": "DICEPTION", "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104", "appid": 4429000}
+    ],
+    "Roguelike Deckbuilder": [
+        {"name": "Balatro", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg", "appid": 2379780},
+        {"name": "Slay the Spire", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/646570/header.jpg", "appid": 646570},
+        {"name": "Monster Train", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1102190/header.jpg", "appid": 1102190},
+        {"name": "Inscryption", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1092790/header.jpg", "appid": 1092790},
+        {"name": "Wildfrost", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1811990/header.jpg", "appid": 1811990},
+        {"name": "Across the Obelisk", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1385380/header.jpg", "appid": 1385380},
+        {"name": "Peglin", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1296610/header.jpg", "appid": 1296610},
+        {"name": "Cobalt Core", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2179850/header.jpg", "appid": 2179850}
+    ],
+    "Action Roguelike": [
+        {"name": "Vampire Survivors", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1794680/header.jpg", "appid": 1794680},
+        {"name": "Hades", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg", "appid": 1145360},
+        {"name": "Dead Cells", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg", "appid": 588650},
+        {"name": "Risk of Rain 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/632360/header.jpg", "appid": 632360},
+        {"name": "Brotato", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1942280/header.jpg", "appid": 1942280},
+        {"name": "Death Must Die", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2334730/header.jpg", "appid": 2334730},
+        {"name": "20 Minutes Till Dawn", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1966900/header.jpg", "appid": 1966900},
+        {"name": "Enter the Gungeon", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/311690/header.jpg", "appid": 311690}
+    ],
+    "Metroidvania": [
+        {"name": "Hollow Knight", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg", "appid": 367520},
+        {"name": "Ori and the Will of the Wisps", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1057090/header.jpg", "appid": 1057090},
+        {"name": "Blasphemous 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2114740/header.jpg", "appid": 2114740},
+        {"name": "Nine Sols", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1809540/header.jpg", "appid": 1809540},
+        {"name": "Dead Cells", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg", "appid": 588650},
+        {"name": "Bloodstained: Ritual of the Night", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/692850/header.jpg", "appid": 692850},
+        {"name": "Animal Well", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/813230/header.jpg", "appid": 813230},
+        {"name": "Ender Lilies", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1368030/header.jpg", "appid": 1368030}
+    ],
+    "Souls-like": [
+        {"name": "ELDEN RING", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg", "appid": 1245620},
+        {"name": "Dark Souls III", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg", "appid": 374320},
+        {"name": "Lies of P", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1627720/header.jpg", "appid": 1627720},
+        {"name": "Lords of the Fallen", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1501750/header.jpg", "appid": 1501750},
+        {"name": "Remnant II", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1282100/header.jpg", "appid": 1282100},
+        {"name": "Nioh 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1326470/header.jpg", "appid": 1326470},
+        {"name": "Sekiro: Shadows Die Twice", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg", "appid": 814380},
+        {"name": "Black Myth: Wukong", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2358720/header.jpg", "appid": 2358720}
+    ],
+    "Survival Horror": [
+        {"name": "Resident Evil 4", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2050650/header.jpg", "appid": 2050650},
+        {"name": "Dead Space", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1693980/header.jpg", "appid": 1693980},
+        {"name": "Phasmophobia", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/739630/header.jpg", "appid": 739630},
+        {"name": "Lethal Company", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1966720/header.jpg", "appid": 1966720},
+        {"name": "Sons of the Forest", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1326470/header.jpg", "appid": 1326470},
+        {"name": "Outlast", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/238320/header.jpg", "appid": 238320},
+        {"name": "Signalis", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1262350/header.jpg", "appid": 1262350},
+        {"name": "Alan Wake 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2427700/header.jpg", "appid": 2427700}
+    ],
+    "Cozy Sim": [
+        {"name": "Stardew Valley", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg", "appid": 413150},
+        {"name": "Slime Rancher", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/433340/header.jpg", "appid": 433340},
+        {"name": "Dave the Diver", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1868140/header.jpg", "appid": 1868140},
+        {"name": "Coral Island", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1158160/header.jpg", "appid": 1158160},
+        {"name": "Sun Haven", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1434910/header.jpg", "appid": 1434910},
+        {"name": "Roots of Pacha", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245590/header.jpg", "appid": 1245590},
+        {"name": "Fae Farm", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2230110/header.jpg", "appid": 2230110},
+        {"name": "Fields of Mistria", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2142790/header.jpg", "appid": 2142790}
+    ],
+    "Turn-Based Tactics": [
+        {"name": "Into the Breach", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/590380/header.jpg", "appid": 590380},
+        {"name": "Wartales", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1527950/header.jpg", "appid": 1527950},
+        {"name": "Tactics Ogre: Reborn", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1451040/header.jpg", "appid": 1451040},
+        {"name": "Marvel's Midnight Suns", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/368260/header.jpg", "appid": 368260},
+        {"name": "Songs of Conquest", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/867210/header.jpg", "appid": 867210},
+        {"name": "Battle Brothers", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/365360/header.jpg", "appid": 365360},
+        {"name": "Triangle Strategy", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1850510/header.jpg", "appid": 1850510},
+        {"name": "XCOM 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/268500/header.jpg", "appid": 268500}
+    ],
+    "City Builder": [
+        {"name": "Manor Lords", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1363080/header.jpg", "appid": 1363080},
+        {"name": "Cities: Skylines", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/255710/header.jpg", "appid": 255710},
+        {"name": "RimWorld", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/294100/header.jpg", "appid": 294100},
+        {"name": "Frostpunk", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/323190/header.jpg", "appid": 323190},
+        {"name": "Against the Storm", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1336490/header.jpg", "appid": 1336490},
+        {"name": "Workers & Resources", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/784150/header.jpg", "appid": 784150},
+        {"name": "Timberborn", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1062090/header.jpg", "appid": 1062090},
+        {"name": "Farthest Frontier", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1044720/header.jpg", "appid": 1044720}
+    ],
     "Action": [
         {"name": "Hades", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg", "appid": 1145360},
         {"name": "Dead Cells", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg", "appid": 588650},
@@ -369,4 +492,4 @@ output_payload = {
 with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
     json.dump(output_payload, f, indent=2)
 
-print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records & {len(genre_benchmarks)} genre benchmarks.")
+print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records & {len(genre_benchmarks)} category/subgenre benchmarks.")

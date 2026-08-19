@@ -1053,28 +1053,61 @@ function evaluateScores(cv) {
 }
 
 /**
- * Genre Detection Helper
+ * Genre & Subcategory Detection Helper
  */
 function detectGenreFromTags(tags) {
     if (!tags || tags.length === 0) return null;
     const tagStr = tags.join(" ").toLowerCase();
 
+    // 1. High-Specificity Subcategories & Subgenres
+    if (tagStr.includes("auto battler") || tagStr.includes("autobattler") || tagStr.includes("auto chess")) {
+        return "Auto Battler";
+    }
+    if (tagStr.includes("deckbuilder") || tagStr.includes("card battler") || tagStr.includes("card game")) {
+        return "Roguelike Deckbuilder";
+    }
+    if (tagStr.includes("action roguelike") || tagStr.includes("survivor") || tagStr.includes("bullet hell") || tagStr.includes("roguelite")) {
+        return "Action Roguelike";
+    }
+    if (tagStr.includes("metroidvania") || tagStr.includes("precision platformer")) {
+        return "Metroidvania";
+    }
+    if (tagStr.includes("souls-like") || tagStr.includes("soulslike") || tagStr.includes("dark fantasy")) {
+        return "Souls-like";
+    }
+    if (tagStr.includes("survival horror") || tagStr.includes("psychological horror") || tagStr.includes("horror")) {
+        return "Survival Horror";
+    }
+    if (tagStr.includes("cozy") || tagStr.includes("farming sim") || tagStr.includes("life sim")) {
+        return "Cozy Sim";
+    }
+    if (tagStr.includes("turn-based tactics") || tagStr.includes("tactics") || tagStr.includes("tactical")) {
+        return "Turn-Based Tactics";
+    }
+    if (tagStr.includes("city builder") || tagStr.includes("colony sim") || tagStr.includes("base building")) {
+        return "City Builder";
+    }
+    if (tagStr.includes("boomer shooter") || tagStr.includes("retro fps") || tagStr.includes("arena shooter")) {
+        return "Retro FPS";
+    }
+
+    // 2. Broad Top-Level Genres
     if (tagStr.includes("action") || tagStr.includes("shooter") || tagStr.includes("hack and slash") || tagStr.includes("fps") || tagStr.includes("fighting")) {
         return "Action";
     }
-    if (tagStr.includes("rpg") || tagStr.includes("role-playing") || tagStr.includes("souls-like") || tagStr.includes("dark fantasy")) {
+    if (tagStr.includes("rpg") || tagStr.includes("role-playing")) {
         return "RPG";
     }
-    if (tagStr.includes("strategy") || tagStr.includes("tactics") || tagStr.includes("deckbuilder") || tagStr.includes("rts") || tagStr.includes("turn-based")) {
+    if (tagStr.includes("strategy") || tagStr.includes("rts") || tagStr.includes("turn-based") || tagStr.includes("grand strategy")) {
         return "Strategy";
     }
-    if (tagStr.includes("adventure") || tagStr.includes("metroidvania") || tagStr.includes("exploration") || tagStr.includes("platformer")) {
+    if (tagStr.includes("adventure") || tagStr.includes("exploration") || tagStr.includes("narrative")) {
         return "Adventure";
     }
-    if (tagStr.includes("simulation") || tagStr.includes("management") || tagStr.includes("sandbox") || tagStr.includes("building") || tagStr.includes("farming")) {
+    if (tagStr.includes("simulation") || tagStr.includes("management") || tagStr.includes("sandbox")) {
         return "Simulation";
     }
-    if (tagStr.includes("casual") || tagStr.includes("puzzle") || tagStr.includes("cozy") || tagStr.includes("party")) {
+    if (tagStr.includes("casual") || tagStr.includes("puzzle") || tagStr.includes("party")) {
         return "Casual";
     }
     if (tagStr.includes("indie")) {
@@ -1130,6 +1163,16 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
 
     const gData = benchmarksData.genres[targetGenre];
     const genreIcons = {
+        "Auto Battler": "⚔️",
+        "Roguelike Deckbuilder": "🃏",
+        "Action Roguelike": "🔥",
+        "Metroidvania": "🦇",
+        "Souls-like": "💀",
+        "Survival Horror": "🩸",
+        "Cozy Sim": "🌾",
+        "Turn-Based Tactics": "♟️",
+        "City Builder": "🏗️",
+        "Retro FPS": "💥",
         "Action": "⚔️",
         "RPG": "🛡️",
         "Strategy": "♟️",

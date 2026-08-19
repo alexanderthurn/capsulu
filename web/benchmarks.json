@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T11:59:12.488260",
+  "generated_at": "2026-08-19T12:40:18.526979",
   "overall": {
     "total_games_analyzed": 28754,
     "contrast_p90": 78.4,
@@ -172,6 +172,326 @@
     }
   },
   "genres": {
+    "Auto Battler": {
+      "name": "Auto Battler / Auto Chess",
+      "count": 12976,
+      "tip": "Auto Battlers require crisp unit silhouette contrast and distinct character color coding so armies are readable at small scale.",
+      "contrast": {
+        "mean": 60.24,
+        "median": 60.5,
+        "top_tier_mean": 62.17
+      },
+      "brightness": {
+        "mean": 103.88,
+        "median": 99.8
+      },
+      "saturation": {
+        "mean": 110.9,
+        "median": 110.3
+      },
+      "entropy": {
+        "mean": 6.76,
+        "median": 7.19,
+        "top_tier_mean": 7.0
+      },
+      "edge_density": {
+        "mean": 13.44,
+        "median": 13.16,
+        "top_tier_mean": 14.38
+      },
+      "warm_palette_pct": 50.0,
+      "neutral_palette_pct": 41.5,
+      "cool_palette_pct": 8.5,
+      "center_focus_pct": 70.0
+    },
+    "Roguelike Deckbuilder": {
+      "name": "Roguelike Deckbuilder / Card Game",
+      "count": 17540,
+      "tip": "High typographic contrast and bold card/rune iconography with warm accent glows create an addictive visual presence.",
+      "contrast": {
+        "mean": 59.85,
+        "median": 60.2,
+        "top_tier_mean": 61.76
+      },
+      "brightness": {
+        "mean": 96.77,
+        "median": 91.0
+      },
+      "saturation": {
+        "mean": 111.75,
+        "median": 111.35
+      },
+      "entropy": {
+        "mean": 6.63,
+        "median": 7.08,
+        "top_tier_mean": 6.9
+      },
+      "edge_density": {
+        "mean": 12.84,
+        "median": 12.43,
+        "top_tier_mean": 13.82
+      },
+      "warm_palette_pct": 45.4,
+      "neutral_palette_pct": 46.9,
+      "cool_palette_pct": 7.8,
+      "center_focus_pct": 72.1
+    },
+    "Action Roguelike": {
+      "name": "Action Roguelike / Survivors-like",
+      "count": 18849,
+      "tip": "Punchy kinetic lighting with warm bursts (embers, lightning, magic) anchored by a prominent central protagonist.",
+      "contrast": {
+        "mean": 60.21,
+        "median": 60.6,
+        "top_tier_mean": 62.48
+      },
+      "brightness": {
+        "mean": 96.14,
+        "median": 90.4
+      },
+      "saturation": {
+        "mean": 111.64,
+        "median": 111.1
+      },
+      "entropy": {
+        "mean": 6.63,
+        "median": 7.07,
+        "top_tier_mean": 6.9
+      },
+      "edge_density": {
+        "mean": 12.82,
+        "median": 12.47,
+        "top_tier_mean": 13.88
+      },
+      "warm_palette_pct": 44.7,
+      "neutral_palette_pct": 47.6,
+      "cool_palette_pct": 7.6,
+      "center_focus_pct": 72.3
+    },
+    "Metroidvania": {
+      "name": "Metroidvania / 2D Platformer",
+      "count": 20353,
+      "tip": "Deep multi-plane atmospheric lighting and distinct silhouetted landscapes with rich textural depth.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.6,
+        "top_tier_mean": 62.51
+      },
+      "brightness": {
+        "mean": 96.72,
+        "median": 90.8
+      },
+      "saturation": {
+        "mean": 111.35,
+        "median": 110.9
+      },
+      "entropy": {
+        "mean": 6.66,
+        "median": 7.1,
+        "top_tier_mean": 6.91
+      },
+      "edge_density": {
+        "mean": 12.98,
+        "median": 12.64,
+        "top_tier_mean": 13.96
+      },
+      "warm_palette_pct": 45.2,
+      "neutral_palette_pct": 47.1,
+      "cool_palette_pct": 7.7,
+      "center_focus_pct": 72.1
+    },
+    "Souls-like": {
+      "name": "Souls-like / Dark Fantasy",
+      "count": 13753,
+      "tip": "Deep chiaroscuro shadows with piercing key highlights (golden grace, bonfires, arcane glow) and monolithic scale.",
+      "contrast": {
+        "mean": 60.8,
+        "median": 61.2,
+        "top_tier_mean": 63.0
+      },
+      "brightness": {
+        "mean": 94.78,
+        "median": 89.6
+      },
+      "saturation": {
+        "mean": 112.34,
+        "median": 111.4
+      },
+      "entropy": {
+        "mean": 6.74,
+        "median": 7.16,
+        "top_tier_mean": 6.99
+      },
+      "edge_density": {
+        "mean": 13.38,
+        "median": 13.14,
+        "top_tier_mean": 14.42
+      },
+      "warm_palette_pct": 44.9,
+      "neutral_palette_pct": 48.3,
+      "cool_palette_pct": 6.8,
+      "center_focus_pct": 72.0
+    },
+    "Survival Horror": {
+      "name": "Survival Horror / Psychological",
+      "count": 13292,
+      "tip": "Heavy dark-ratio edge vignetting with isolated warm flashlight/crimson illumination on the threat subject.",
+      "contrast": {
+        "mean": 61.22,
+        "median": 61.7,
+        "top_tier_mean": 63.58
+      },
+      "brightness": {
+        "mean": 80.64,
+        "median": 78.6
+      },
+      "saturation": {
+        "mean": 116.26,
+        "median": 116.4
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.1,
+        "top_tier_mean": 6.97
+      },
+      "edge_density": {
+        "mean": 13.02,
+        "median": 12.7,
+        "top_tier_mean": 14.03
+      },
+      "warm_palette_pct": 37.5,
+      "neutral_palette_pct": 55.5,
+      "cool_palette_pct": 7.0,
+      "center_focus_pct": 77.7
+    },
+    "Cozy Sim": {
+      "name": "Cozy & Farming Sim",
+      "count": 10497,
+      "tip": "Vibrant, inviting color temperatures with warm golden hour tones and soft, welcoming character design.",
+      "contrast": {
+        "mean": 60.32,
+        "median": 60.6,
+        "top_tier_mean": 62.24
+      },
+      "brightness": {
+        "mean": 106.41,
+        "median": 103.2
+      },
+      "saturation": {
+        "mean": 110.9,
+        "median": 110.6
+      },
+      "entropy": {
+        "mean": 6.73,
+        "median": 7.18,
+        "top_tier_mean": 6.98
+      },
+      "edge_density": {
+        "mean": 13.22,
+        "median": 12.91,
+        "top_tier_mean": 14.12
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 40.3,
+      "cool_palette_pct": 9.1,
+      "center_focus_pct": 69.4
+    },
+    "Turn-Based Tactics": {
+      "name": "Turn-Based Tactics / Strategy",
+      "count": 5529,
+      "tip": "Clean isometric/grid clarity with deliberate edge line density and clear faction heraldry.",
+      "contrast": {
+        "mean": 60.27,
+        "median": 60.4,
+        "top_tier_mean": 61.91
+      },
+      "brightness": {
+        "mean": 99.88,
+        "median": 95.6
+      },
+      "saturation": {
+        "mean": 111.4,
+        "median": 110.2
+      },
+      "entropy": {
+        "mean": 6.88,
+        "median": 7.26,
+        "top_tier_mean": 7.12
+      },
+      "edge_density": {
+        "mean": 14.22,
+        "median": 13.94,
+        "top_tier_mean": 15.13
+      },
+      "warm_palette_pct": 50.7,
+      "neutral_palette_pct": 42.2,
+      "cool_palette_pct": 7.2,
+      "center_focus_pct": 70.7
+    },
+    "City Builder": {
+      "name": "City Builder / Colony Sim",
+      "count": 8483,
+      "tip": "Expansive landscape panoramas with rich structural edge density and natural environmental lighting.",
+      "contrast": {
+        "mean": 60.82,
+        "median": 61.1,
+        "top_tier_mean": 62.44
+      },
+      "brightness": {
+        "mean": 101.6,
+        "median": 97.8
+      },
+      "saturation": {
+        "mean": 109.69,
+        "median": 107.9
+      },
+      "entropy": {
+        "mean": 6.87,
+        "median": 7.25,
+        "top_tier_mean": 7.08
+      },
+      "edge_density": {
+        "mean": 13.94,
+        "median": 13.66,
+        "top_tier_mean": 14.71
+      },
+      "warm_palette_pct": 50.6,
+      "neutral_palette_pct": 42.1,
+      "cool_palette_pct": 7.3,
+      "center_focus_pct": 70.4
+    },
+    "Retro FPS": {
+      "name": "Boomer Shooter / Retro FPS",
+      "count": 10448,
+      "tip": "Saturated, aggressive color palettes with fiery contrast and high-velocity central focus.",
+      "contrast": {
+        "mean": 60.85,
+        "median": 61.3,
+        "top_tier_mean": 63.24
+      },
+      "brightness": {
+        "mean": 91.87,
+        "median": 86.9
+      },
+      "saturation": {
+        "mean": 114.54,
+        "median": 114.35
+      },
+      "entropy": {
+        "mean": 6.7,
+        "median": 7.11,
+        "top_tier_mean": 6.98
+      },
+      "edge_density": {
+        "mean": 12.97,
+        "median": 12.72,
+        "top_tier_mean": 14.16
+      },
+      "warm_palette_pct": 42.9,
+      "neutral_palette_pct": 50.0,
+      "cool_palette_pct": 7.1,
+      "center_focus_pct": 72.8
+    },
     "Action": {
       "name": "Action / Shooter / Hack & Slash",
       "count": 10448,
@@ -237,7 +557,7 @@
       "center_focus_pct": 73.3
     },
     "RPG": {
-      "name": "RPG / CRPG / Roguelike RPG",
+      "name": "RPG / CRPG / JRPG",
       "count": 5590,
       "tip": "Deep textural richness and unobstructed character silhouettes with prominent title branding.",
       "contrast": {
@@ -269,7 +589,7 @@
       "center_focus_pct": 70.8
     },
     "Strategy": {
-      "name": "Strategy / Tactics / Deckbuilder",
+      "name": "Strategy / Grand Strategy / Tactics",
       "count": 5529,
       "tip": "Sharp typographic contrast and distinct iconography. Avoid oversaturated neon washes.",
       "contrast": {
@@ -408,7 +728,9 @@
       "price": "4,99\u20ac",
       "tags": [
         "Indie",
-        "Strategy"
+        "Strategy",
+        "Auto Battler",
+        "Roguelike Deckbuilder"
       ]
     },
     {
@@ -420,9 +742,11 @@
       "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
       "price": "Coming Soon",
       "tags": [
+        "Auto Battler",
         "Action",
         "Indie",
-        "Strategy"
+        "Strategy",
+        "Turn-Based Tactics"
       ]
     },
     {
@@ -478,9 +802,9 @@
       "price": "$14.99",
       "tags": [
         "Farming Sim",
+        "Cozy Sim",
         "Simulation",
-        "Pixel Graphics",
-        "Co-op"
+        "Pixel Graphics"
       ]
     },
     {
@@ -512,37 +836,387 @@
         "Souls-like",
         "2D"
       ]
-    },
-    {
-      "id": "sample_modest",
-      "name": "Ironcast",
-      "tier": "moderate",
-      "tier_label": "\ud83d\udcca Moderate (~500 reviews)",
-      "appid": 327670,
-      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/327670/header.jpg",
-      "price": "$14.99",
-      "tags": [
-        "Match 3",
-        "Steampunk",
-        "Strategy"
-      ]
-    },
-    {
-      "id": "sample_flop",
-      "name": "Putridum Horror",
-      "tier": "near_zero",
-      "tier_label": "\ud83d\udd73\ufe0f Near-Zero (3 reviews)",
-      "appid": 2294100,
-      "image_url": "https://cdn.akamai.steamstatic.com/steam/apps/2294100/header.jpg",
-      "price": "$1.99",
-      "tags": [
-        "Horror",
-        "Action",
-        "Indie"
-      ]
     }
   ],
   "genre_competitors": {
+    "Auto Battler": [
+      {
+        "name": "Backpack Battles",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2427700/header.jpg",
+        "appid": 2427700
+      },
+      {
+        "name": "Mechabellum",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/983870/header.jpg",
+        "appid": 983870
+      },
+      {
+        "name": "Super Auto Pets",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1714040/header.jpg",
+        "appid": 1714040
+      },
+      {
+        "name": "Despot's Game",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1399700/header.jpg",
+        "appid": 1399700
+      },
+      {
+        "name": "Legion TD 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/469600/header.jpg",
+        "appid": 469600
+      },
+      {
+        "name": "Slice & Dice",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1875880/header.jpg",
+        "appid": 1875880
+      },
+      {
+        "name": "Melodan",
+        "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
+        "appid": 4987230
+      },
+      {
+        "name": "DICEPTION",
+        "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
+        "appid": 4429000
+      }
+    ],
+    "Roguelike Deckbuilder": [
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Slay the Spire",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/646570/header.jpg",
+        "appid": 646570
+      },
+      {
+        "name": "Monster Train",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1102190/header.jpg",
+        "appid": 1102190
+      },
+      {
+        "name": "Inscryption",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1092790/header.jpg",
+        "appid": 1092790
+      },
+      {
+        "name": "Wildfrost",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1811990/header.jpg",
+        "appid": 1811990
+      },
+      {
+        "name": "Across the Obelisk",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1385380/header.jpg",
+        "appid": 1385380
+      },
+      {
+        "name": "Peglin",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1296610/header.jpg",
+        "appid": 1296610
+      },
+      {
+        "name": "Cobalt Core",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2179850/header.jpg",
+        "appid": 2179850
+      }
+    ],
+    "Action Roguelike": [
+      {
+        "name": "Vampire Survivors",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1794680/header.jpg",
+        "appid": 1794680
+      },
+      {
+        "name": "Hades",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+        "appid": 1145360
+      },
+      {
+        "name": "Dead Cells",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg",
+        "appid": 588650
+      },
+      {
+        "name": "Risk of Rain 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/632360/header.jpg",
+        "appid": 632360
+      },
+      {
+        "name": "Brotato",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1942280/header.jpg",
+        "appid": 1942280
+      },
+      {
+        "name": "Death Must Die",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2334730/header.jpg",
+        "appid": 2334730
+      },
+      {
+        "name": "20 Minutes Till Dawn",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1966900/header.jpg",
+        "appid": 1966900
+      },
+      {
+        "name": "Enter the Gungeon",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/311690/header.jpg",
+        "appid": 311690
+      }
+    ],
+    "Metroidvania": [
+      {
+        "name": "Hollow Knight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+        "appid": 367520
+      },
+      {
+        "name": "Ori and the Will of the Wisps",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1057090/header.jpg",
+        "appid": 1057090
+      },
+      {
+        "name": "Blasphemous 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2114740/header.jpg",
+        "appid": 2114740
+      },
+      {
+        "name": "Nine Sols",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1809540/header.jpg",
+        "appid": 1809540
+      },
+      {
+        "name": "Dead Cells",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg",
+        "appid": 588650
+      },
+      {
+        "name": "Bloodstained: Ritual of the Night",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/692850/header.jpg",
+        "appid": 692850
+      },
+      {
+        "name": "Animal Well",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/813230/header.jpg",
+        "appid": 813230
+      },
+      {
+        "name": "Ender Lilies",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1368030/header.jpg",
+        "appid": 1368030
+      }
+    ],
+    "Souls-like": [
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "Dark Souls III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg",
+        "appid": 374320
+      },
+      {
+        "name": "Lies of P",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1627720/header.jpg",
+        "appid": 1627720
+      },
+      {
+        "name": "Lords of the Fallen",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1501750/header.jpg",
+        "appid": 1501750
+      },
+      {
+        "name": "Remnant II",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1282100/header.jpg",
+        "appid": 1282100
+      },
+      {
+        "name": "Nioh 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1326470/header.jpg",
+        "appid": 1326470
+      },
+      {
+        "name": "Sekiro: Shadows Die Twice",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg",
+        "appid": 814380
+      },
+      {
+        "name": "Black Myth: Wukong",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2358720/header.jpg",
+        "appid": 2358720
+      }
+    ],
+    "Survival Horror": [
+      {
+        "name": "Resident Evil 4",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2050650/header.jpg",
+        "appid": 2050650
+      },
+      {
+        "name": "Dead Space",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1693980/header.jpg",
+        "appid": 1693980
+      },
+      {
+        "name": "Phasmophobia",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/739630/header.jpg",
+        "appid": 739630
+      },
+      {
+        "name": "Lethal Company",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1966720/header.jpg",
+        "appid": 1966720
+      },
+      {
+        "name": "Sons of the Forest",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1326470/header.jpg",
+        "appid": 1326470
+      },
+      {
+        "name": "Outlast",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/238320/header.jpg",
+        "appid": 238320
+      },
+      {
+        "name": "Signalis",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1262350/header.jpg",
+        "appid": 1262350
+      },
+      {
+        "name": "Alan Wake 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2427700/header.jpg",
+        "appid": 2427700
+      }
+    ],
+    "Cozy Sim": [
+      {
+        "name": "Stardew Valley",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+        "appid": 413150
+      },
+      {
+        "name": "Slime Rancher",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/433340/header.jpg",
+        "appid": 433340
+      },
+      {
+        "name": "Dave the Diver",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1868140/header.jpg",
+        "appid": 1868140
+      },
+      {
+        "name": "Coral Island",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1158160/header.jpg",
+        "appid": 1158160
+      },
+      {
+        "name": "Sun Haven",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1434910/header.jpg",
+        "appid": 1434910
+      },
+      {
+        "name": "Roots of Pacha",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245590/header.jpg",
+        "appid": 1245590
+      },
+      {
+        "name": "Fae Farm",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2230110/header.jpg",
+        "appid": 2230110
+      },
+      {
+        "name": "Fields of Mistria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2142790/header.jpg",
+        "appid": 2142790
+      }
+    ],
+    "Turn-Based Tactics": [
+      {
+        "name": "Into the Breach",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/590380/header.jpg",
+        "appid": 590380
+      },
+      {
+        "name": "Wartales",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1527950/header.jpg",
+        "appid": 1527950
+      },
+      {
+        "name": "Tactics Ogre: Reborn",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1451040/header.jpg",
+        "appid": 1451040
+      },
+      {
+        "name": "Marvel's Midnight Suns",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/368260/header.jpg",
+        "appid": 368260
+      },
+      {
+        "name": "Songs of Conquest",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/867210/header.jpg",
+        "appid": 867210
+      },
+      {
+        "name": "Battle Brothers",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/365360/header.jpg",
+        "appid": 365360
+      },
+      {
+        "name": "Triangle Strategy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1850510/header.jpg",
+        "appid": 1850510
+      },
+      {
+        "name": "XCOM 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/268500/header.jpg",
+        "appid": 268500
+      }
+    ],
+    "City Builder": [
+      {
+        "name": "Manor Lords",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1363080/header.jpg",
+        "appid": 1363080
+      },
+      {
+        "name": "Cities: Skylines",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/255710/header.jpg",
+        "appid": 255710
+      },
+      {
+        "name": "RimWorld",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/294100/header.jpg",
+        "appid": 294100
+      },
+      {
+        "name": "Frostpunk",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/323190/header.jpg",
+        "appid": 323190
+      },
+      {
+        "name": "Against the Storm",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1336490/header.jpg",
+        "appid": 1336490
+      },
+      {
+        "name": "Workers & Resources",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/784150/header.jpg",
+        "appid": 784150
+      },
+      {
+        "name": "Timberborn",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1062090/header.jpg",
+        "appid": 1062090
+      },
+      {
+        "name": "Farthest Frontier",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1044720/header.jpg",
+        "appid": 1044720
+      }
+    ],
     "Action": [
       {
         "name": "Hades",

@@ -12,6 +12,7 @@ import http.server
 import json
 import math
 import os
+import re
 import socketserver
 import urllib.request
 import urllib.parse
@@ -401,6 +402,22 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
 
                     review_status = "Coming Soon" if is_coming_soon else "Positive"
 
+                    # Scrape rich user tags from store page HTML
+                    tags = []
+                    try:
+                        store_page_url = f"https://store.steampowered.com/app/{appid}/"
+                        page_req = urllib.request.Request(
+                            store_page_url,
+                            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36", "Cookie": "birthtime=283993201; mature_content=1"}
+                        )
+                        with urllib.request.urlopen(page_req, timeout=6) as page_resp:
+                            html = page_resp.read().decode("utf-8", errors="ignore")
+                            tags = [t.strip() for t in re.findall(r'class=["\']app_tag[^"\']*["\'][^>]*>\s*([^<]+?)\s*<', html) if t.strip()]
+                    except Exception as tag_err:
+                        tags = []
+
+                    raw_genres = [g.get("description") for g in app_data.get("genres", []) if isinstance(g, dict)]
+
                     res_payload = {
                         "success": True,
                         "appid": int(appid),
@@ -411,7 +428,8 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                         "is_coming_soon": is_coming_soon,
                         "release_date": rel_date,
                         "review_status": review_status,
-                        "genres": [g.get("description") for g in app_data.get("genres", [])]
+                        "genres": raw_genres,
+                        "tags": tags if tags else raw_genres
                     }
 
                 body = json.dumps(res_payload).encode("utf-8")
