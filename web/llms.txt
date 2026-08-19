@@ -1,0 +1,36 @@
+# Capsulu – The Steam Capsule Rater API
+
+Capsulu is an open-source Computer Vision engine that rates and benchmarks Steam capsule artwork against an empirical dataset of 28,754 real Steam games.
+
+## Public AI API Endpoints
+
+### 1. Rate Game Capsule by Steam App ID / Store URL
+- **Endpoint**: `GET /api/rate?appid={appid}`
+- **Parameters**:
+  - `appid` (int): Steam Store App ID (e.g. `4429000` for DICEPTION, `1245620` for ELDEN RING).
+  - `url` (string, optional): Full Steam Store URL (e.g. `https://store.steampowered.com/app/4429000/DICEPTION/`).
+  - `image_url` (string, optional): Direct URL to a 460x215 capsule image.
+  - `format` (string, optional): `json` (default) or `markdown`.
+
+### Example AI Query:
+```http
+GET /api/rate?appid=4429000 HTTP/1.1
+Host: localhost:8000
+```
+
+### JSON Response Fields:
+- `score.overall`: Integer (0-100)
+- `score.tier`: Commercial sales tier (e.g. Mega-Hit Grade, Solid Indie Grade, Moderate Visibility, Struggling, Flop)
+- `score.percentile`: Percentile rank across 28,754 Steam games
+- `metrics.contrast_std`: Luminance standard deviation (Mega-Hit average is 63.0)
+- `metrics.warm_palette_pct`: Percentage of warm tones that pop against Steam's navy UI (Mega-Hit average is 49.9%)
+- `metrics.shannon_entropy`: Tonal depth and texture information in bits (Mega-Hit average is 6.99)
+- `metrics.edge_density_pct`: Structural sharpness and silhouette clarity (Mega-Hit average is 14.2%)
+- `recommendations`: Array of tailored action items for the game developer
+- `ai_summary`: Pre-formatted natural language sentence for AI chatbots to read directly to the user
+- `web_report_url`: Deep link to the full interactive Visual Check and Storefront Simulator
+
+### Example Markdown Format:
+```http
+GET /api/rate?appid=4429000&format=markdown
+```
