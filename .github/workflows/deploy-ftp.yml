@@ -21,8 +21,12 @@ jobs:
         run: |
           if [ "${{ github.ref_name }}" = "main" ]; then
             echo "dir=/2025/capsulu/" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_name }}" = "qa" ]; then
+            echo "dir=/2025/capsulu/qa/" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref_name }}" = "dev" ]; then
+            echo "dir=/2025/capsulu/dev/" >> $GITHUB_OUTPUT
           else
-            echo "dir=/2025/capsulu-${{ github.ref_name }}/" >> $GITHUB_OUTPUT
+            echo "dir=/2025/capsulu/${{ github.ref_name }}/" >> $GITHUB_OUTPUT
           fi
 
       - name: FTP Deploy Web App
