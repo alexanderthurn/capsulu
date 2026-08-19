@@ -4,6 +4,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Analyzed Games](https://img.shields.io/badge/benchmark-28%2C754%20Steam%20Games-orange.svg)](output/report.md)
 
+> [!NOTE]
+> **Legal Notice**: This project is an independent open-source research and developer tool. It is **not affiliated with, endorsed by, or sponsored by Valve Corporation**. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.
+
 **Capsulu** is an open-source Computer Vision engine and storefront competition simulator for evaluating Steam capsule artwork. It benchmarks any game's capsule art against an empirical dataset of **28,754 real Steam games across 5 commercial sales tiers**.
 
 ---
