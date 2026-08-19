@@ -1378,10 +1378,70 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl) 
     document.getElementById('scoreHeadline').textContent = scores.headline;
     document.getElementById('scoreSummary').textContent = scores.summary;
 
-    document.getElementById('qsContrast').textContent = `${cv.brightnessStd > 60 ? 'High' : 'Flat'} (${cv.brightnessStd})`;
-    document.getElementById('qsPalette').textContent = `${cv.warmPct > 45 ? 'Warm Pop' : 'Cool/Neutral'}`;
-    document.getElementById('qsEntropy').textContent = `${cv.entropy} bits`;
-    document.getElementById('qsFocus').textContent = cv.isCenterFocused ? 'Center Hero' : 'Edge-Heavy';
+    // 5.5 Update Dominant Scorecard Quick-Metrics Table with Color-Coded Ratings
+    // Contrast
+    const qsContrastElem = document.getElementById('qsContrast');
+    if (qsContrastElem) {
+        qsContrastElem.textContent = `${cv.brightnessStd} std dev`;
+        qsContrastElem.className = `qm-val ${scores.contrastScore >= 80 ? 'val-green' : scores.contrastScore >= 60 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeContrast = document.getElementById('qmBadgeContrast');
+    if (qmBadgeContrast) {
+        qmBadgeContrast.textContent = scores.contrastScore >= 80 ? 'Excellent' : scores.contrastScore >= 60 ? 'Moderate' : 'Flat';
+        qmBadgeContrast.className = `qm-badge ${scores.contrastScore >= 80 ? 'qm-badge-green' : scores.contrastScore >= 60 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubContrast = document.getElementById('qmSubContrast');
+    if (qmSubContrast) {
+        qmSubContrast.textContent = cv.brightnessStd >= 63 ? '✓ Beats Mega-Hit Avg (63.0)' : '⚠️ Below 63.0 Mega-Hit Avg';
+    }
+
+    // Warmth / Saliency
+    const qsPaletteElem = document.getElementById('qsPalette');
+    if (qsPaletteElem) {
+        qsPaletteElem.textContent = `${cv.warmPct}% Warm Saliency`;
+        qsPaletteElem.className = `qm-val ${cv.warmPct >= 45 ? 'val-green' : cv.warmPct >= 25 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgePalette = document.getElementById('qmBadgePalette');
+    if (qmBadgePalette) {
+        qmBadgePalette.textContent = cv.warmPct >= 45 ? 'High Pop' : cv.warmPct >= 25 ? 'Balanced' : 'Low Pop';
+        qmBadgePalette.className = `qm-badge ${cv.warmPct >= 45 ? 'qm-badge-green' : cv.warmPct >= 25 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubPalette = document.getElementById('qmSubPalette');
+    if (qmSubPalette) {
+        qmSubPalette.textContent = cv.warmPct >= 45 ? '✓ Strong against Steam UI' : '⚠️ Mostly cool/neutral palette';
+    }
+
+    // Entropy / Texture
+    const qsEntropyElem = document.getElementById('qsEntropy');
+    if (qsEntropyElem) {
+        qsEntropyElem.textContent = `${cv.entropy} bits depth`;
+        qsEntropyElem.className = `qm-val ${cv.entropy >= 6.8 ? 'val-green' : cv.entropy >= 6.2 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeEntropy = document.getElementById('qmBadgeEntropy');
+    if (qmBadgeEntropy) {
+        qmBadgeEntropy.textContent = cv.entropy >= 6.8 ? 'Rich Detail' : cv.entropy >= 6.2 ? 'Adequate' : 'Low Detail';
+        qmBadgeEntropy.className = `qm-badge ${cv.entropy >= 6.8 ? 'qm-badge-green' : cv.entropy >= 6.2 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubEntropy = document.getElementById('qmSubEntropy');
+    if (qmSubEntropy) {
+        qmSubEntropy.textContent = cv.entropy >= 6.8 ? '✓ Deep tonal rendering' : '⚠️ Washed midtone gradients';
+    }
+
+    // Focal Lighting / Spotlight
+    const qsFocusElem = document.getElementById('qsFocus');
+    if (qsFocusElem) {
+        qsFocusElem.textContent = cv.isCenterFocused ? `Spotlight (+${cv.spotlightRatio})` : 'Border-Heavy';
+        qsFocusElem.className = `qm-val ${cv.isCenterFocused ? 'val-green' : 'val-gold'}`;
+    }
+    const qmBadgeFocus = document.getElementById('qmBadgeFocus');
+    if (qmBadgeFocus) {
+        qmBadgeFocus.textContent = cv.isCenterFocused ? 'Spotlit' : 'Needs Vignette';
+        qmBadgeFocus.className = `qm-badge ${cv.isCenterFocused ? 'qm-badge-green' : 'qm-badge-gold'}`;
+    }
+    const qmSubFocus = document.getElementById('qmSubFocus');
+    if (qmSubFocus) {
+        qmSubFocus.textContent = cv.isCenterFocused ? '✓ Central hero illuminated' : '⚠️ Outer edges need vignette';
+    }
 
     // 6. Update Palette Swatches & D3 Cake Diagram
     renderPalettePieChart(cv.dominantColors);

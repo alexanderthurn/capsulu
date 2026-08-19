@@ -557,29 +557,84 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    margin-top: 14px;
 }
 
 .qm-cell {
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid var(--steam-border);
-    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
     padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+.qm-cell:hover {
+    border-color: rgba(103, 193, 245, 0.35);
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.qm-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
 }
 
 .qm-label {
     display: block;
     font-size: 0.68rem;
-    color: var(--steam-text-muted);
+    color: #8f98a0;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.qm-badge {
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.02em;
+}
+
+.qm-badge-green {
+    background: rgba(164, 208, 7, 0.18);
+    color: #a4d007;
+    border: 1px solid rgba(164, 208, 7, 0.35);
+}
+
+.qm-badge-gold {
+    background: rgba(241, 196, 15, 0.18);
+    color: #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.35);
+}
+
+.qm-badge-red {
+    background: rgba(231, 76, 60, 0.18);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.35);
 }
 
 .qm-val {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.96rem;
+    font-weight: 800;
+    font-family: var(--font-heading);
+    margin-top: 1px;
     color: #ffffff;
+}
+
+.qm-val.val-green { color: #a4d007; }
+.qm-val.val-gold { color: #f1c40f; }
+.qm-val.val-red { color: #e74c3c; }
+
+.qm-sub {
+    font-size: 0.7rem;
+    color: #8c9ea6;
     margin-top: 2px;
+    font-weight: 500;
 }
 
 /* Content Split Grid */

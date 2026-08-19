@@ -232,21 +232,37 @@
                             </div>
 
                             <div class="quick-metrics-table">
-                                <div class="qm-cell">
-                                    <span class="qm-label">Contrast Rating</span>
+                                <div class="qm-cell" id="qmCellContrast">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">⚡ Dynamic Contrast</span>
+                                        <span class="qm-badge" id="qmBadgeContrast">--</span>
+                                    </div>
                                     <span class="qm-val" id="qsContrast">--</span>
+                                    <span class="qm-sub" id="qmSubContrast">vs 63.0 Mega-Hit</span>
                                 </div>
-                                <div class="qm-cell">
-                                    <span class="qm-label">Color Temp</span>
+                                <div class="qm-cell" id="qmCellPalette">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">🎨 Steam UI Pop</span>
+                                        <span class="qm-badge" id="qmBadgePalette">--</span>
+                                    </div>
                                     <span class="qm-val" id="qsPalette">--</span>
+                                    <span class="qm-sub" id="qmSubPalette">Warm color saliency</span>
                                 </div>
-                                <div class="qm-cell">
-                                    <span class="qm-label">Tonal Depth</span>
+                                <div class="qm-cell" id="qmCellEntropy">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">🔍 Tonal Depth</span>
+                                        <span class="qm-badge" id="qmBadgeEntropy">--</span>
+                                    </div>
                                     <span class="qm-val" id="qsEntropy">--</span>
+                                    <span class="qm-sub" id="qmSubEntropy">Shannon entropy</span>
                                 </div>
-                                <div class="qm-cell">
-                                    <span class="qm-label">Focal Lighting</span>
+                                <div class="qm-cell" id="qmCellFocus">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">💡 Hero Spotlight</span>
+                                        <span class="qm-badge" id="qmBadgeFocus">--</span>
+                                    </div>
                                     <span class="qm-val" id="qsFocus">--</span>
+                                    <span class="qm-sub" id="qmSubFocus">Vignetting & focus</span>
                                 </div>
                             </div>
                         </section>
