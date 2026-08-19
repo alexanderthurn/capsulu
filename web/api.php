@@ -211,29 +211,31 @@ function analyze_image_php($img_url) {
     $is_center_focused = $spotlight_ratio > 0;
     $warmth_pct = ($warm_count / max(1, $total_pixels)) * 100;
 
-    // 1. Dynamic Contrast (Benchmark: 63.0, Floor: 10.0)
-    $contrast_score = $contrast_std >= 63.0 
-        ? min(100, 95 + ($contrast_std - 63.0) * 0.8) 
-        : max(0, (($contrast_std - 10.0) / (63.0 - 10.0)) * 95.0);
+    // 1. Dynamic Contrast (Mega-Hit Benchmark: 63.0)
+    if ($contrast_std >= 63.0) {
+        $contrast_score = min(100.0, 95.0 + ($contrast_std - 63.0) * 0.8);
+    } else {
+        $contrast_score = max(0.0, 100.0 - (63.0 - $contrast_std) * 3.5);
+    }
 
-    // 2. Warmth / Saliency (Benchmark: 45%, Floor: 3%)
-    $warmth_score = $warmth_pct >= 45.0 
-        ? min(100, 95 + ($warmth_pct - 45.0) * 0.2) 
-        : max(0, (($warmth_pct - 3.0) / (45.0 - 3.0)) * 95.0);
+    // 2. Warmth / Saliency (Mega-Hit Benchmark: 45.0%)
+    if ($warmth_pct >= 45.0) {
+        $warmth_score = min(100.0, 95.0 + ($warmth_pct - 45.0) * 0.2);
+    } else {
+        $warmth_score = max(0.0, 100.0 - (45.0 - $warmth_pct) * 2.0);
+    }
 
     // 3. Shannon Entropy & Edges
-    $entropy_score = 98;
-    $edge_score = 95;
+    $entropy_score = 98.0;
+    $edge_score = 95.0;
 
     // 4. Hero Spotlight / Composition
     if ($spotlight_ratio > 10.0) {
-        $focus_score = 98;
-    } elseif ($is_center_focused && $spotlight_ratio > 0) {
-        $focus_score = min(95, 80 + $spotlight_ratio * 1.5);
+        $focus_score = 98.0;
     } elseif ($is_center_focused) {
-        $focus_score = 70;
+        $focus_score = 85.0;
     } else {
-        $focus_score = max(10, 45 + $spotlight_ratio * 2.5);
+        $focus_score = 45.0;
     }
 
     $sub_scores = [$contrast_score, $warmth_score, $entropy_score, $edge_score, $focus_score];
@@ -245,15 +247,19 @@ function analyze_image_php($img_url) {
         $focus_score * 0.15
     );
 
-    // Critical Deficit / Bottleneck Rule:
-    // If any single metric is critically low (< 35), apply a steep penalty.
+    // Strict Flaw Penalty
+    $is_contrast_flaw = $contrast_std < 58.0;
+    $is_warmth_flaw = $warmth_pct < 35.0;
+    $is_focus_flaw = !$is_center_focused;
+
+    $flaw_count = ($is_contrast_flaw ? 1 : 0) + ($is_warmth_flaw ? 1 : 0) + ($is_focus_flaw ? 1 : 0);
     $min_sub = min($sub_scores);
-    $bottleneck_penalty = 0;
-    if ($min_sub < 35) {
-        $bottleneck_penalty = pow((35 - $min_sub) / 35.0, 1.2) * 35.0;
+    $flaw_penalty = 0;
+    if ($flaw_count > 0) {
+        $flaw_penalty = $flaw_count * 13.0 + max(0, (40 - $min_sub) * 0.8);
     }
 
-    $overall_score = max(0, min(100, round($base_score - $bottleneck_penalty)));
+    $overall_score = max(0, min(100, round($base_score - $flaw_penalty)));
 
     if ($overall_score >= 88) {
         $tier = "🏆 Mega-Hit Grade";

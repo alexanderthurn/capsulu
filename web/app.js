@@ -1363,51 +1363,45 @@ function rgbToHex(r, g, b) {
 }
 
 /**
- * Score Evaluation Engine (Full 0-100 Dynamic Range with Bottleneck Flaw Penalty)
+ * Score Evaluation Engine (Strict Multi-Flaw Penalty & Full 0-100 Dynamic Range)
  */
 function evaluateScores(cv) {
-    // 1. Dynamic Contrast (Benchmark: 63.0, Floor: 10.0)
+    // 1. Dynamic Contrast (Mega-Hit Benchmark: 63.0)
     let contrastScore = 100;
     if (cv.brightnessStd >= 63.0) {
         contrastScore = Math.min(100, 95 + (cv.brightnessStd - 63.0) * 0.8);
     } else {
-        contrastScore = Math.max(0, ((cv.brightnessStd - 10.0) / (63.0 - 10.0)) * 95.0);
+        contrastScore = Math.max(0, 100 - (63.0 - cv.brightnessStd) * 3.5);
     }
 
-    // 2. Warmth / Saliency (Benchmark: 45%, Floor: 3%)
+    // 2. Warmth / Saliency (Mega-Hit Benchmark: 45.0%)
     let warmthScore = 100;
     if (cv.warmPct >= 45.0) {
         warmthScore = Math.min(100, 95 + (cv.warmPct - 45.0) * 0.2);
     } else {
-        warmthScore = Math.max(0, ((cv.warmPct - 3.0) / (45.0 - 3.0)) * 95.0);
+        warmthScore = Math.max(0, 100 - (45.0 - cv.warmPct) * 2.0);
     }
 
-    // 3. Shannon Entropy (Benchmark: 6.90 bits, Floor: 2.5)
+    // 3. Shannon Entropy (Mega-Hit Benchmark: 6.90 bits)
     let entropyScore = 100;
     if (cv.entropy >= 6.90) {
         entropyScore = 98;
     } else {
-        entropyScore = Math.max(0, ((cv.entropy - 2.5) / (6.90 - 2.5)) * 98.0);
+        entropyScore = Math.max(0, 100 - (6.90 - cv.entropy) * 50.0);
     }
 
-    // 4. Edge Density (Benchmark: 13.5%, Floor: 2.0%)
+    // 4. Edge Density (Mega-Hit Benchmark: 13.5%)
     let edgeScore = 100;
     if (cv.edgeDensity >= 13.5) {
         edgeScore = 95;
     } else {
-        edgeScore = Math.max(0, ((cv.edgeDensity - 2.0) / (13.5 - 2.0)) * 95.0);
+        edgeScore = Math.max(0, 100 - (13.5 - cv.edgeDensity) * 8.0);
     }
 
     // 5. Hero Spotlight / Composition
-    let focusScore = 75;
-    if (cv.spotlightRatio > 10.0) {
-        focusScore = 98;
-    } else if (cv.isCenterFocused && cv.spotlightRatio > 0) {
-        focusScore = Math.min(95, 80 + cv.spotlightRatio * 1.5);
-    } else if (cv.isCenterFocused) {
-        focusScore = 70;
-    } else {
-        focusScore = Math.max(10, 45 + cv.spotlightRatio * 2.5);
+    let focusScore = 45;
+    if (cv.isCenterFocused) {
+        focusScore = cv.spotlightRatio > 10.0 ? 98 : 85;
     }
 
     // 6. Title Typography Contrast (Benchmark: 4.5:1, Floor: 1.2:1)
@@ -1415,9 +1409,9 @@ function evaluateScores(cv) {
     if (cv.titleContrast >= 4.5) {
         textScore = Math.min(100, Math.round(92 + (cv.titleContrast - 4.5) * 2.0));
     } else if (cv.titleContrast >= 3.0) {
-        textScore = Math.round(65 + ((cv.titleContrast - 3.0) / 1.5) * 27.0);
+        textScore = Math.round(60 + ((cv.titleContrast - 3.0) / 1.5) * 25.0);
     } else {
-        textScore = Math.max(0, Math.round(((cv.titleContrast - 1.2) / (3.0 - 1.2)) * 65.0));
+        textScore = Math.max(0, Math.round(cv.titleContrast * 18.0));
     }
 
     const subScores = [contrastScore, warmthScore, entropyScore, edgeScore, focusScore, textScore];
@@ -1430,16 +1424,24 @@ function evaluateScores(cv) {
         textScore * 0.15
     );
 
-    // Critical Deficit / Bottleneck Rule:
-    // If any single metric is critically low (< 35), apply a steep penalty.
-    // If a metric is medium (50-70), penalty is 0.
+    // Strict Flaw Penalty:
+    // Any section below benchmark (< 60 for warmth/contrast, or < 75 for other critical metrics)
+    const isContrastFlaw = cv.brightnessStd < 58.0;
+    const isWarmthFlaw = cv.warmPct < 35.0;
+    const isEntropyFlaw = cv.entropy < 6.2;
+    const isEdgeFlaw = cv.edgeDensity < 8.0;
+    const isFocusFlaw = !cv.isCenterFocused;
+    const isTextFlaw = cv.titleContrast < 3.0;
+
+    const flawCount = [isContrastFlaw, isWarmthFlaw, isEntropyFlaw, isEdgeFlaw, isFocusFlaw, isTextFlaw].filter(Boolean).length;
     const minSub = Math.min(...subScores);
-    let bottleneckPenalty = 0;
-    if (minSub < 35) {
-        bottleneckPenalty = Math.pow((35 - minSub) / 35.0, 1.2) * 35.0;
+    
+    let flawPenalty = 0;
+    if (flawCount > 0) {
+        flawPenalty = flawCount * 13.0 + Math.max(0, (40 - minSub) * 0.8);
     }
 
-    const overallScore = Math.max(0, Math.min(100, Math.round(baseScore - bottleneckPenalty)));
+    const overallScore = Math.max(0, Math.min(100, Math.round(baseScore - flawPenalty)));
 
     let tierName = "🏆 Mega-Hit Grade";
     let tierBadgeClass = "badge-gold";
@@ -1482,7 +1484,7 @@ function evaluateScores(cv) {
     return {
         overallScore,
         baseScore: Math.round(baseScore),
-        bottleneckPenalty: Math.round(bottleneckPenalty),
+        flawPenalty: Math.round(flawPenalty),
         contrastScore: Math.round(contrastScore),
         warmthScore: Math.round(warmthScore),
         entropyScore: Math.round(entropyScore),
@@ -1502,110 +1504,6 @@ function round(val, dec) {
 }
 
 /**
- * Score Evaluation Engine
- */
-function evaluateScores(cv) {
-    let contrastScore = 100;
-    if (cv.brightnessStd < 63) {
-        contrastScore = Math.max(30, 100 - (63 - cv.brightnessStd) * 6);
-    } else {
-        contrastScore = Math.min(100, 95 + (cv.brightnessStd - 63) * 1);
-    }
-
-    let warmthScore = 100;
-    if (cv.warmPct < 45) {
-        warmthScore = Math.max(35, 100 - (45 - cv.warmPct) * 2.5);
-    } else {
-        warmthScore = 96;
-    }
-
-    let entropyScore = 100;
-    if (cv.entropy < 6.90) {
-        entropyScore = Math.max(30, 100 - (6.90 - cv.entropy) * 75);
-    } else {
-        entropyScore = 98;
-    }
-
-    let edgeScore = 100;
-    if (cv.edgeDensity < 13.5) {
-        edgeScore = Math.max(35, 100 - (13.5 - cv.edgeDensity) * 12);
-    } else {
-        edgeScore = 95;
-    }
-
-    let focusScore = cv.isCenterFocused ? 92 : 60;
-    if (cv.spotlightRatio > 10) focusScore = 98;
-
-    let textScore = 90;
-    if (cv.titleContrast < 3.0) {
-        textScore = Math.max(35, Math.round(cv.titleContrast * 20));
-    } else if (cv.titleContrast < 4.5) {
-        textScore = Math.round(70 + (cv.titleContrast - 3.0) * 15);
-    } else {
-        textScore = Math.min(100, Math.round(92 + (cv.titleContrast - 4.5) * 2));
-    }
-
-    const overallScore = Math.round(
-        contrastScore * 0.25 +
-        warmthScore * 0.15 +
-        entropyScore * 0.15 +
-        edgeScore * 0.15 +
-        focusScore * 0.15 +
-        textScore * 0.15
-    );
-
-    let tierName = "🏆 Mega-Hit Grade";
-    let tierBadgeClass = "badge-gold";
-    let percentile = "Top 10% of Steam Capsules";
-    let headline = "Exceptional";
-    let summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
-
-    if (overallScore >= 88) {
-        tierName = "🏆 Mega-Hit Grade";
-        tierBadgeClass = "badge-gold";
-        percentile = "Top 10% of Steam Capsules";
-        headline = "Exceptional";
-        summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
-    } else if (overallScore >= 75) {
-        tierName = "🌟 Solid Indie Grade";
-        tierBadgeClass = "badge-green";
-        percentile = "Top 35% of Steam Capsules";
-        headline = "Strong";
-        summary = "Well-balanced capsule with solid contrast and focal hierarchy. Minor tweaks to highlight contrast can push it to top-tier.";
-    } else if (overallScore >= 60) {
-        tierName = "📊 Moderate Visibility";
-        tierBadgeClass = "badge-blue";
-        percentile = "Median 50% Distribution";
-        headline = "Average";
-        summary = "Readable, but risks blending into the browse queue due to neutral color temperatures or softer midtone contrast.";
-    } else if (overallScore >= 48) {
-        tierName = "📉 Struggling Grade";
-        tierBadgeClass = "badge-orange";
-        percentile = "Bottom 30% of Steam Capsules";
-        headline = "Low";
-        summary = "Artwork is too flat or dark. When scaled down to small browse cards, character details and title text will blur together.";
-    } else {
-        tierName = "🕳️ Near-Zero Flop Risk";
-        tierBadgeClass = "badge-red";
-        percentile = "Bottom 15% of Steam Capsules";
-        headline = "Critical";
-        summary = "Your capsule lacks dynamic highlights, deep shadows, and color punch. Highly recommended to re-render with higher contrast lighting.";
-    }
-
-    return {
-        overallScore,
-        contrastScore: Math.round(contrastScore),
-        warmthScore: Math.round(warmthScore),
-        entropyScore: Math.round(entropyScore),
-        edgeScore: Math.round(edgeScore),
-        focusScore: Math.round(focusScore),
-        tierName,
-        tierBadgeClass,
-        percentile,
-        headline,
-        summary
-    };
-}
 
 /**
  * Genre & Subcategory Detection Helper
@@ -2217,36 +2115,36 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     document.getElementById('scoreSummary').textContent = scores.summary;
 
     // 5.5 Update Dominant Scorecard Quick-Metrics Table with Color-Coded Ratings
-    // Contrast
+    // Contrast (Mega-Hit Benchmark: 63.0)
     const qsContrastElem = document.getElementById('qsContrast');
     if (qsContrastElem) {
         qsContrastElem.textContent = `${cv.brightnessStd} std dev`;
-        qsContrastElem.className = `qm-val ${scores.contrastScore >= 80 ? 'val-green' : scores.contrastScore >= 60 ? 'val-gold' : 'val-red'}`;
+        qsContrastElem.className = `qm-val ${cv.brightnessStd >= 63 ? 'val-green' : cv.brightnessStd >= 58 ? 'val-gold' : 'val-red'}`;
     }
     const qmBadgeContrast = document.getElementById('qmBadgeContrast');
     if (qmBadgeContrast) {
-        qmBadgeContrast.textContent = scores.contrastScore >= 80 ? 'Excellent' : scores.contrastScore >= 60 ? 'Moderate' : 'Flat';
-        qmBadgeContrast.className = `qm-badge ${scores.contrastScore >= 80 ? 'qm-badge-green' : scores.contrastScore >= 60 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+        qmBadgeContrast.textContent = cv.brightnessStd >= 63 ? 'High Punch' : cv.brightnessStd >= 58 ? 'Moderate' : 'Flat Midtones';
+        qmBadgeContrast.className = `qm-badge ${cv.brightnessStd >= 63 ? 'qm-badge-green' : cv.brightnessStd >= 58 ? 'qm-badge-gold' : 'qm-badge-red'}`;
     }
     const qmSubContrast = document.getElementById('qmSubContrast');
     if (qmSubContrast) {
-        qmSubContrast.textContent = cv.brightnessStd >= 63 ? '✓ Beats Mega-Hit Avg (63.0)' : '⚠️ Below 63.0 Mega-Hit Avg';
+        qmSubContrast.textContent = cv.brightnessStd >= 63 ? '✓ Beats Mega-Hit Avg (63.0)' : '⚠️ Below 63.0 Mega-Hit Avg (Flat Midtones)';
     }
 
-    // Warmth / Saliency
+    // Warmth / Saliency (Mega-Hit Benchmark: 45%)
     const qsPaletteElem = document.getElementById('qsPalette');
     if (qsPaletteElem) {
         qsPaletteElem.textContent = `${cv.warmPct}% Warm Saliency`;
-        qsPaletteElem.className = `qm-val ${cv.warmPct >= 45 ? 'val-green' : cv.warmPct >= 25 ? 'val-gold' : 'val-red'}`;
+        qsPaletteElem.className = `qm-val ${cv.warmPct >= 45 ? 'val-green' : cv.warmPct >= 35 ? 'val-gold' : 'val-red'}`;
     }
     const qmBadgePalette = document.getElementById('qmBadgePalette');
     if (qmBadgePalette) {
-        qmBadgePalette.textContent = cv.warmPct >= 45 ? 'High Pop' : cv.warmPct >= 25 ? 'Balanced' : 'Low Pop';
-        qmBadgePalette.className = `qm-badge ${cv.warmPct >= 45 ? 'qm-badge-green' : cv.warmPct >= 25 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+        qmBadgePalette.textContent = cv.warmPct >= 45 ? 'High Pop' : cv.warmPct >= 35 ? 'Moderate' : 'Low Pop (Cold Blend)';
+        qmBadgePalette.className = `qm-badge ${cv.warmPct >= 45 ? 'qm-badge-green' : cv.warmPct >= 35 ? 'qm-badge-gold' : 'qm-badge-red'}`;
     }
     const qmSubPalette = document.getElementById('qmSubPalette');
     if (qmSubPalette) {
-        qmSubPalette.textContent = cv.warmPct >= 45 ? '✓ Strong against Steam UI' : '⚠️ Mostly cool/neutral palette';
+        qmSubPalette.textContent = cv.warmPct >= 45 ? '✓ Strong against Steam UI' : '⚠️ Mostly cool/neutral palette (Needs Warm Accent)';
     }
 
     // Entropy / Texture
@@ -2347,9 +2245,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `Your: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
     updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `Your: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
     updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
-
-    let textScore = Math.min(100, Math.round(cv.titleContrast >= 4.5 ? 90 + (cv.titleContrast - 4.5) * 2 : cv.titleContrast * 20));
-    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', textScore, `Your: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
+    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', scores.textScore, `Your: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
 
     // 8. Generate Tailored Checklist & AI Art Fix Prompt
     generateChecklist(cv, scores, currentGenreLens);

@@ -130,21 +130,34 @@ def analyze_capsule_image(img_bytes):
         pct = round((b['count'] / len(color_samples)) * 100, 1)
         dominant_palette.append({"hex": hex_code, "pct": pct})
 
-    # Scoring Formulas (Full 0-100 Dynamic Range with Bottleneck Flaw Penalty)
-    contrast_score = min(100.0, 95.0 + (contrast_std - 63.0) * 0.8) if contrast_std >= 63.0 else max(0.0, ((contrast_std - 10.0) / (63.0 - 10.0)) * 95.0)
+    # Scoring Formulas (Strict Multi-Flaw Penalty & Full 0-100 Dynamic Range)
+    if contrast_std >= 63.0:
+        contrast_score = min(100.0, 95.0 + (contrast_std - 63.0) * 0.8)
+    else:
+        contrast_score = max(0.0, 100.0 - (63.0 - contrast_std) * 3.5)
+
     warmth_pct = (warm_count / total_pixels) * 100
-    warmth_score = min(100.0, 95.0 + (warmth_pct - 45.0) * 0.2) if warmth_pct >= 45.0 else max(0.0, ((warmth_pct - 3.0) / (45.0 - 3.0)) * 95.0)
-    entropy_score = 98.0 if entropy >= 6.90 else max(0.0, ((entropy - 2.5) / (6.90 - 2.5)) * 98.0)
-    edge_score = 95.0 if edge_density >= 13.5 else max(0.0, ((edge_density - 2.0) / (13.5 - 2.0)) * 95.0)
+    if warmth_pct >= 45.0:
+        warmth_score = min(100.0, 95.0 + (warmth_pct - 45.0) * 0.2)
+    else:
+        warmth_score = max(0.0, 100.0 - (45.0 - warmth_pct) * 2.0)
+
+    if entropy >= 6.90:
+        entropy_score = 98.0
+    else:
+        entropy_score = max(0.0, 100.0 - (6.90 - entropy) * 50.0)
+
+    if edge_density >= 13.5:
+        edge_score = 95.0
+    else:
+        edge_score = max(0.0, 100.0 - (13.5 - edge_density) * 8.0)
 
     if spotlight_ratio > 10.0:
         focus_score = 98.0
-    elif is_center_focused and spotlight_ratio > 0:
-        focus_score = min(95.0, 80.0 + spotlight_ratio * 1.5)
     elif is_center_focused:
-        focus_score = 70.0
+        focus_score = 85.0
     else:
-        focus_score = max(10.0, 45.0 + spotlight_ratio * 2.5)
+        focus_score = 45.0
 
     sub_scores = [contrast_score, warmth_score, entropy_score, edge_score, focus_score]
     base_score = (
@@ -155,13 +168,18 @@ def analyze_capsule_image(img_bytes):
         focus_score * 0.15
     )
 
-    # Bottleneck Flaw Penalty: if any sub-score < 35, penalize heavily
-    min_sub = min(sub_scores)
-    bottleneck_penalty = 0.0
-    if min_sub < 35:
-        bottleneck_penalty = ((35.0 - min_sub) / 35.0) ** 1.2 * 35.0
+    # Strict Flaw Penalty
+    is_contrast_flaw = contrast_std < 58.0
+    is_warmth_flaw = warmth_pct < 35.0
+    is_focus_flaw = not is_center_focused
 
-    overall_score = max(0, min(100, round(base_score - bottleneck_penalty)))
+    flaw_count = sum([is_contrast_flaw, is_warmth_flaw, is_focus_flaw])
+    min_sub = min(sub_scores)
+    flaw_penalty = 0.0
+    if flaw_count > 0:
+        flaw_penalty = flaw_count * 13.0 + max(0.0, (40.0 - min_sub) * 0.8)
+
+    overall_score = max(0, min(100, round(base_score - flaw_penalty)))
 
     if overall_score >= 88:
         tier = "🏆 Mega-Hit Grade"
