@@ -1395,6 +1395,86 @@ genre_competitor_catalogs = {
     ]
 }
 
+# 3. Compute Top 25 Highest Rated and Lowest 25 Rated Flop Showcases
+def compute_strict_score(row):
+    c_std = float(row["brightness_std"]) if pd.notna(row["brightness_std"]) else 50.0
+    warm_pct = 50.0 if row["palette_type"] == "warm" else (20.0 if row["palette_type"] == "neutral" else 5.0)
+    entropy = float(row["entropy"]) if pd.notna(row["entropy"]) else 6.0
+    edge_density = float(row["edge_density"]) * 100.0 if pd.notna(row["edge_density"]) and float(row["edge_density"]) < 1.0 else (float(row["edge_density"]) if pd.notna(row["edge_density"]) else 10.0)
+    is_center_focused = (row["focus"] == "center")
+    spotlight_ratio = float(row["center_vs_edge_brightness"]) if pd.notna(row.get("center_vs_edge_brightness")) else 0.0
+    title_contrast = float(row["title_contrast"]) if pd.notna(row.get("title_contrast")) else 3.5
+
+    # 1. Dynamic Contrast (Mega-Hit Benchmark: 63.0)
+    contrast_score = min(100.0, 95.0 + (c_std - 63.0) * 0.8) if c_std >= 63.0 else max(0.0, 100.0 - (63.0 - c_std) * 3.5)
+    # 2. Warmth / Saliency (Mega-Hit Benchmark: 45.0%)
+    warmth_score = min(100.0, 95.0 + (warm_pct - 45.0) * 0.2) if warm_pct >= 45.0 else max(0.0, 100.0 - (45.0 - warm_pct) * 2.0)
+    # 3. Shannon Entropy (Mega-Hit Benchmark: 6.90 bits)
+    entropy_score = 98.0 if entropy >= 6.90 else max(0.0, 100.0 - (6.90 - entropy) * 50.0)
+    # 4. Edge Density (Mega-Hit Benchmark: 13.5%)
+    edge_score = 95.0 if edge_density >= 13.5 else max(0.0, 100.0 - (13.5 - edge_density) * 8.0)
+    # 5. Hero Spotlight / Composition
+    focus_score = 98.0 if spotlight_ratio > 10.0 else (85.0 if is_center_focused else 45.0)
+    # 6. Title Typography Contrast
+    if title_contrast >= 4.5:
+        text_score = min(100.0, 92.0 + (title_contrast - 4.5) * 2.0)
+    elif title_contrast >= 3.0:
+        text_score = 60.0 + ((title_contrast - 3.0) / 1.5) * 25.0
+    else:
+        text_score = max(0.0, title_contrast * 18.0)
+
+    sub_scores = [contrast_score, warmth_score, entropy_score, edge_score, focus_score, text_score]
+    base_score = (
+        contrast_score * 0.25 +
+        warmth_score * 0.15 +
+        entropy_score * 0.15 +
+        edge_score * 0.15 +
+        focus_score * 0.15 +
+        text_score * 0.15
+    )
+
+    is_contrast_flaw = c_std < 58.0
+    is_warmth_flaw = warm_pct < 35.0
+    is_entropy_flaw = entropy < 6.2
+    is_edge_flaw = edge_density < 8.0
+    is_focus_flaw = not is_center_focused
+    is_text_flaw = title_contrast < 3.0
+
+    flaw_count = sum([is_contrast_flaw, is_warmth_flaw, is_entropy_flaw, is_edge_flaw, is_focus_flaw, is_text_flaw])
+    min_sub = min(sub_scores)
+    flaw_penalty = 0.0
+    if flaw_count > 0:
+        flaw_penalty = flaw_count * 13.0 + max(0.0, (40.0 - min_sub) * 0.8)
+
+    overall = max(0, min(100, round(base_score - flaw_penalty)))
+    return overall
+
+clean_df["score"] = clean_df.apply(compute_strict_score, axis=1)
+
+def format_game_card(r):
+    aid = int(r["appid"])
+    c_std = round(float(r["brightness_std"]), 1) if pd.notna(r["brightness_std"]) else 0.0
+    warm_type = str(r["palette_type"]) if pd.notna(r["palette_type"]) else "neutral"
+    reviews = int(r["total_reviews"]) if pd.notna(r["total_reviews"]) else 0
+    t = str(r["tier"]) if pd.notna(r["tier"]) else "moderate"
+    genres = str(r["all_genres"]) if pd.notna(r["all_genres"]) else (str(r["primary_genre"]) if pd.notna(r["primary_genre"]) else "Indie")
+    return {
+        "appid": aid,
+        "name": str(r["name"]),
+        "score": int(r["score"]),
+        "tier": t,
+        "tier_label": tier_labels.get(t, t.title()),
+        "reviews": reviews,
+        "contrast_std": c_std,
+        "palette_type": warm_type,
+        "genre": genres.split(";")[0].split(",")[0].strip(),
+        "imageUrl": f"https://cdn.akamai.steamstatic.com/steam/apps/{aid}/header.jpg",
+        "storeUrl": f"https://store.steampowered.com/app/{aid}/"
+    }
+
+top_rated_games = [format_game_card(r) for _, r in clean_df.sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
+lowest_rated_games = [format_game_card(r) for _, r in clean_df[clean_df["tier"].isin(["near_zero", "struggling"])].sort_values(by=["score", "total_reviews"], ascending=[True, True]).head(25).iterrows()]
+
 output_payload = {
     "generated_at": pd.Timestamp.now().isoformat(),
     "overall": overall_stats,
@@ -1402,11 +1482,13 @@ output_payload = {
     "genres": genre_benchmarks,
     "tags": tag_benchmarks,
     "presets": sample_presets,
-    "genre_competitors": genre_competitor_catalogs
+    "genre_competitors": genre_competitor_catalogs,
+    "top_rated": top_rated_games,
+    "lowest_rated": lowest_rated_games
 }
 
 with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
     json.dump(output_payload, f, indent=2)
 
-print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records, {len(genre_benchmarks)} broad genres, and {len(tag_benchmarks)} tags benchmarks.")
+print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records, {len(genre_benchmarks)} broad genres, {len(tag_benchmarks)} tags benchmarks, 25 Top-Rated, and 25 Lowest-Rated.")
 

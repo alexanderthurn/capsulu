@@ -163,7 +163,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadBenchmarks();
     initRecentList();
     checkDeepLink();
+    checkInitialTab();
 });
+
+/**
+ * Check and restore active tab from URL query param or hash on initial load
+ */
+function checkInitialTab() {
+    const params = new URLSearchParams(window.location.search);
+    const tabFromUrl = params.get('tab') || (window.location.hash ? window.location.hash.replace('#', '') : null);
+    if (tabFromUrl && (tabFromUrl === 'benchmark' || tabFromUrl === 'ai')) {
+        if (typeof window.setActiveTab === 'function') {
+            window.setActiveTab(tabFromUrl, false);
+        }
+    }
+}
 
 /**
  * Check and execute URL deep link on initial load
@@ -191,6 +205,9 @@ async function loadBenchmarks() {
                 }
                 populateGenreDropdowns(currentLoadedGenres || [], currentLoadedTags || []);
             }
+            if (benchmarksData.top_rated || benchmarksData.lowest_rated) {
+                renderBenchmarkShowcases(benchmarksData.top_rated || [], benchmarksData.lowest_rated || []);
+            }
         }
     } catch (e) {
         console.warn('Error loading benchmarks.json:', e);
@@ -209,7 +226,7 @@ function setupEventListeners() {
     const aiView = document.getElementById('aiView');
     const brandHomeLink = document.getElementById('brandHomeLink');
 
-    function setActiveTab(tab) {
+    function setActiveTab(tab, updateUrl = true) {
         if (navHomeBtn) navHomeBtn.classList.toggle('active', tab === 'home');
         if (navBenchmarkBtn) navBenchmarkBtn.classList.toggle('active', tab === 'benchmark');
         if (navAiBtn) navAiBtn.classList.toggle('active', tab === 'ai');
@@ -217,6 +234,12 @@ function setupEventListeners() {
         if (homeView) homeView.style.display = tab === 'home' ? 'block' : 'none';
         if (benchmarkView) benchmarkView.style.display = tab === 'benchmark' ? 'block' : 'none';
         if (aiView) aiView.style.display = tab === 'ai' ? 'block' : 'none';
+
+        if (tab === 'benchmark') {
+            if (typeof benchmarksData !== 'undefined' && benchmarksData && (benchmarksData.top_rated || benchmarksData.lowest_rated)) {
+                renderBenchmarkShowcases(benchmarksData.top_rated || [], benchmarksData.lowest_rated || []);
+            }
+        }
 
         if (tab === 'ai') {
             const origin = window.location.origin;
@@ -226,8 +249,21 @@ function setupEventListeners() {
             if (curlElem) curlElem.textContent = curlElem.textContent.replace(/http:\/\/localhost:8000/g, origin);
         }
 
+        if (updateUrl) {
+            const url = new URL(window.location);
+            if (tab === 'home') {
+                url.searchParams.delete('tab');
+            } else {
+                url.searchParams.set('tab', tab);
+            }
+            window.history.replaceState({}, '', url.toString());
+        }
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Expose globally for deep links and tab switching
+    window.setActiveTab = setActiveTab;
 
     if (brandHomeLink) {
         brandHomeLink.addEventListener('click', (e) => {
@@ -241,6 +277,9 @@ function setupEventListeners() {
     if (navAiBtn) navAiBtn.addEventListener('click', () => setActiveTab('ai'));
 
     window.addEventListener('popstate', () => {
+        const p = new URLSearchParams(window.location.search);
+        const t = p.get('tab') || 'home';
+        setActiveTab(t, false);
         checkDeepLink();
     });
 
@@ -1850,6 +1889,20 @@ function openSimulatorGame(appid, imageUrl, name, isUser) {
         return;
     }
 
+    // Switch to Home / Analyzer tab if not active
+    const navHomeBtn = document.getElementById('navHomeBtn');
+    const homeView = document.getElementById('homeView');
+    const benchmarkView = document.getElementById('benchmarkView');
+    const aiView = document.getElementById('aiView');
+    
+    if (navHomeBtn) {
+        navHomeBtn.click();
+    } else {
+        if (homeView) homeView.style.display = 'block';
+        if (benchmarkView) benchmarkView.style.display = 'none';
+        if (aiView) aiView.style.display = 'none';
+    }
+
     if (appid) {
         const url = `https://store.steampowered.com/app/${appid}/`;
         if (steamUrlInput) steamUrlInput.value = url;
@@ -1862,6 +1915,58 @@ function openSimulatorGame(appid, imageUrl, name, isUser) {
         const heroBanner = document.getElementById('gameHugeTitleBanner');
         if (heroBanner) heroBanner.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+}
+
+/**
+ * Render 5x5 Top 25 Highest Rated and Lowest 25 Flop Capsules
+ */
+function renderBenchmarkShowcases(topRated, lowestRated) {
+    const topGrid = document.getElementById('topRatedGrid');
+    const lowGrid = document.getElementById('lowestRatedGrid');
+
+    if (topGrid && topRated && topRated.length > 0) {
+        topGrid.innerHTML = topRated.map((game, idx) => createBenchmarkCard(game, idx, 'top')).join('');
+    }
+
+    if (lowGrid && lowestRated && lowestRated.length > 0) {
+        lowGrid.innerHTML = lowestRated.map((game, idx) => createBenchmarkCard(game, idx, 'flop')).join('');
+    }
+
+    // Attach click listeners to cards to open in Capsulu Simulator / Analyzer
+    document.querySelectorAll('.benchmark-capsule-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.card-ext-link')) return; // Allow direct store link click
+            const appid = card.getAttribute('data-appid');
+            const img = card.getAttribute('data-img');
+            const name = card.getAttribute('data-name');
+            openSimulatorGame(appid, img, name, false);
+        });
+    });
+}
+
+function createBenchmarkCard(game, index, type) {
+    const isTop = type === 'top';
+    
+    return `
+        <div class="benchmark-capsule-card ${isTop ? 'card-top' : 'card-flop'}" data-appid="${game.appid}" data-img="${game.imageUrl}" data-name="${encodeURIComponent(game.name)}" title="Click to analyze ${game.name} in Capsulu">
+            <div class="card-img-container">
+                <img src="${game.imageUrl}" alt="${game.name}" loading="lazy" class="card-capsule-img" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/capsule_616x353.jpg';">
+                <div class="card-hover-overlay">
+                    <span class="card-analyze-btn">⚡ Analyze in Capsulu</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-title-row">
+                    <h5 class="card-game-title">${game.name}</h5>
+                </div>
+                <div class="card-meta-row">
+                    <span class="card-rank ${isTop ? 'rank-gold' : 'rank-red'}">#${index + 1}</span>
+                    <span class="card-metric-tag ${game.palette_type === 'warm' ? 'tag-warm' : 'tag-neutral'}" title="Color Temperature">${game.palette_type}</span>
+                    <span class="card-metric-tag" title="Total Steam Reviews">${Number(game.reviews).toLocaleString()} ${game.reviews === 1 ? 'review' : 'reviews'}</span>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 /**
