@@ -995,36 +995,43 @@
                 </div>
             </div>
 
-            <!-- 5x5 Top Rated & Lowest Rated Benchmark Showcases -->
+            <!-- 5x5 Benchmark Showcases with Category Tabs -->
             <div class="benchmark-showcase-section">
-                <!-- TOP 25 MEGA-HITS -->
-                <div class="steam-panel showcase-panel" style="margin-bottom: 32px;">
-                    <div class="panel-header showcase-header">
-                        <div class="showcase-title-group">
-                            <span class="showcase-icon">🏆</span>
-                            <div>
-                                <h3 class="showcase-title">Top 25 Highest-Rated Steam Capsules</h3>
-                                <p class="showcase-sub">Masterpiece capsules achieving top scores (98–99/100) across Dynamic Contrast, Steam UI Pop, and Compositional Lighting.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="topRatedGrid" class="capsule-grid-5x5">
-                        <!-- Dynamically populated from benchmarks.json -->
-                    </div>
-                </div>
-
-                <!-- LOWEST 25 FLOPS -->
                 <div class="steam-panel showcase-panel">
                     <div class="panel-header showcase-header">
                         <div class="showcase-title-group">
-                            <span class="showcase-icon">🕳️</span>
+                            <span class="showcase-icon" id="showcaseHeaderIcon">🏆</span>
                             <div>
-                                <h3 class="showcase-title">Lowest 25 Rated Flop Capsules</h3>
-                                <p class="showcase-sub">Capsules scoring near-zero due to critical visual flaws (flat midtones, cold palette blending, unreadable titles).</p>
+                                <h3 class="showcase-title" id="showcaseHeaderTitle">Top 25 Highest-Rated Steam Capsules</h3>
+                                <p class="showcase-sub" id="showcaseHeaderSub">Masterpiece capsules achieving top scores (98–99/100) across Dynamic Contrast, Steam UI Pop, and Compositional Lighting.</p>
                             </div>
                         </div>
+                        <!-- Showcase Category Tabs -->
+                        <div class="showcase-category-tabs" id="showcaseCategoryTabs">
+                            <button type="button" class="showcase-tab-btn active" data-showcase="top_rated">
+                                <span>🏆 Top 25</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="lowest_rated">
+                                <span>🕳️ Flop 25</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="zero_reviews">
+                                <span>👻 0 Reviews</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="reviews_1_5">
+                                <span>👥 1–5 Revs</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="reviews_6_10">
+                                <span>⚡ 6–10 Revs</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="reviews_11_100">
+                                <span>🚀 11–100 Revs</span>
+                            </button>
+                            <button type="button" class="showcase-tab-btn" data-showcase="reviews_100_plus">
+                                <span>🌟 100+ Revs</span>
+                            </button>
+                        </div>
                     </div>
-                    <div id="lowestRatedGrid" class="capsule-grid-5x5">
+                    <div id="benchmarkShowcaseGrid" class="capsule-grid-5x5">
                         <!-- Dynamically populated from benchmarks.json -->
                     </div>
                 </div>

@@ -183,6 +183,10 @@ function checkInitialTab() {
             switchChartMode(chartMode, false);
         }
     }
+    const showcaseFromUrl = params.get('showcase') || params.get('showcase_tab');
+    if (showcaseFromUrl && typeof switchShowcaseTab === 'function') {
+        currentShowcaseTab = showcaseFromUrl;
+    }
 }
 
 /**
@@ -211,8 +215,8 @@ async function loadBenchmarks() {
                 }
                 populateGenreDropdowns(currentLoadedGenres || [], currentLoadedTags || []);
             }
-            if (benchmarksData.top_rated || benchmarksData.lowest_rated) {
-                renderBenchmarkShowcases(benchmarksData.top_rated || [], benchmarksData.lowest_rated || []);
+            if (benchmarksData.showcases || benchmarksData.top_rated) {
+                switchShowcaseTab(currentShowcaseTab, false);
             }
         }
     } catch (e) {
@@ -354,6 +358,14 @@ function setupEventListeners() {
     const btnChartsIndie = document.getElementById('btnChartsIndie');
     if (btnChartsAll) btnChartsAll.addEventListener('click', () => switchChartMode('all', true));
     if (btnChartsIndie) btnChartsIndie.addEventListener('click', () => switchChartMode('indie', true));
+
+    // Benchmark 5x5 Showcase Category Tabs
+    document.querySelectorAll('.showcase-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const showcaseKey = btn.getAttribute('data-showcase');
+            if (showcaseKey) switchShowcaseTab(showcaseKey, true);
+        });
+    });
 
     // Genre Comparison Lens Switcher Listeners
     document.querySelectorAll('.genre-pill-btn').forEach(btn => {
@@ -2148,38 +2160,123 @@ function switchChartMode(mode, updateUrl = false) {
 // Expose switchChartMode globally
 window.switchChartMode = switchChartMode;
 
+const SHOWCASE_TABS_CONFIG = {
+    top_rated: {
+        icon: "🏆",
+        title: "Top 25 Highest-Rated Steam Capsules",
+        sub: "Masterpiece capsules achieving top scores (98–99/100) across Dynamic Contrast, Steam UI Pop, and Compositional Lighting.",
+        type: "top"
+    },
+    lowest_rated: {
+        icon: "🕳️",
+        title: "Lowest 25 Rated Flop Capsules",
+        sub: "Capsules scoring near-zero due to critical visual flaws (flat midtones, cold palette blending, unreadable titles).",
+        type: "flop"
+    },
+    zero_reviews: {
+        icon: "👻",
+        title: "0 Reviews (Ghost Zone / Unbought Capsules)",
+        sub: "Real Steam capsules with 0 reviews. Notice the flat lighting, unreadable text, and cold blue palettes that camouflage against Steam.",
+        type: "flop"
+    },
+    reviews_1_5: {
+        icon: "👥",
+        title: "1–5 Reviews (Friend Reviews Only)",
+        sub: "Games stuck in the 1–5 review range. These capsules rarely attract organic store impressions or discovery queue clicks.",
+        type: "flop"
+    },
+    reviews_6_10: {
+        icon: "⚡",
+        title: "6–10 Reviews (Threshold Frontier)",
+        sub: "Games right at the edge of unlocking the first official Steam Review Score badge (e.g. 'Positive').",
+        type: "neutral"
+    },
+    reviews_11_100: {
+        icon: "🚀",
+        title: "11–100 Reviews (Algorithm Ignition)",
+        sub: "Indies breaking into organic Steam Discovery Queue testing. Notice the sharper silhouettes and specular highlights.",
+        type: "top"
+    },
+    reviews_100_plus: {
+        icon: "🌟",
+        title: "100+ Reviews (Validated Breakout Indies)",
+        sub: "Commercially validated indies with strong store conversion, punchy contrast (>60.0), and 50%+ warm accent lighting.",
+        type: "top"
+    }
+};
+
+let currentShowcaseTab = 'top_rated';
+
 /**
- * Render 5x5 Top 25 Highest Rated and Lowest 25 Flop Capsules
+ * Switch 5x5 Showcase Category Tab
  */
-function renderBenchmarkShowcases(topRated, lowestRated) {
-    const topGrid = document.getElementById('topRatedGrid');
-    const lowGrid = document.getElementById('lowestRatedGrid');
+function switchShowcaseTab(tabKey, updateUrl = false) {
+    if (!SHOWCASE_TABS_CONFIG[tabKey]) return;
+    currentShowcaseTab = tabKey;
 
-    if (topGrid && topRated && topRated.length > 0) {
-        topGrid.innerHTML = topRated.map((game, idx) => createBenchmarkCard(game, idx, 'top')).join('');
-    }
+    const config = SHOWCASE_TABS_CONFIG[tabKey];
 
-    if (lowGrid && lowestRated && lowestRated.length > 0) {
-        lowGrid.innerHTML = lowestRated.map((game, idx) => createBenchmarkCard(game, idx, 'flop')).join('');
-    }
+    const iconElem = document.getElementById('showcaseHeaderIcon');
+    const titleElem = document.getElementById('showcaseHeaderTitle');
+    const subElem = document.getElementById('showcaseHeaderSub');
 
-    // Attach click listeners to cards to open in Capsulu Simulator / Analyzer
-    document.querySelectorAll('.benchmark-capsule-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (e.target.closest('.card-ext-link')) return; // Allow direct store link click
-            const appid = card.getAttribute('data-appid');
-            const img = card.getAttribute('data-img');
-            const name = card.getAttribute('data-name');
-            openSimulatorGame(appid, img, name, false);
-        });
+    if (iconElem) iconElem.textContent = config.icon;
+    if (titleElem) titleElem.textContent = config.title;
+    if (subElem) subElem.textContent = config.sub;
+
+    document.querySelectorAll('.showcase-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-showcase') === tabKey);
     });
+
+    const grid = document.getElementById('benchmarkShowcaseGrid');
+    if (!grid) return;
+
+    let games = [];
+    if (benchmarksData && benchmarksData.showcases && benchmarksData.showcases[tabKey]) {
+        games = benchmarksData.showcases[tabKey];
+    } else if (benchmarksData && benchmarksData[tabKey]) {
+        games = benchmarksData[tabKey];
+    }
+
+    if (games && games.length > 0) {
+        grid.innerHTML = games.map((game, idx) => createBenchmarkCard(game, idx, config.type)).join('');
+        // Attach click listeners to cards to open in Capsulu Simulator / Analyzer
+        grid.querySelectorAll('.benchmark-capsule-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.card-ext-link')) return; // Allow direct store link click
+                const appid = card.getAttribute('data-appid');
+                const img = card.getAttribute('data-img');
+                const name = card.getAttribute('data-name');
+                openSimulatorGame(appid, img, name, false);
+            });
+        });
+    } else {
+        grid.innerHTML = `<div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: #8f98a0;">Loading showcase capsules...</div>`;
+    }
+
+    if (updateUrl) {
+        const url = new URL(window.location);
+        if (tabKey === 'top_rated') {
+            url.searchParams.delete('showcase');
+            url.searchParams.delete('showcase_tab');
+        } else {
+            url.searchParams.set('showcase', tabKey);
+        }
+        window.history.replaceState({}, '', url.toString());
+    }
 }
+
+// Expose switchShowcaseTab globally
+window.switchShowcaseTab = switchShowcaseTab;
 
 function createBenchmarkCard(game, index, type) {
     const isTop = type === 'top';
+    const isNeutral = type === 'neutral';
+    const rankClass = isTop ? 'rank-gold' : (isNeutral ? 'rank-blue' : 'rank-red');
+    const cardClass = isTop ? 'card-top' : (isNeutral ? 'card-neutral' : 'card-flop');
     
     return `
-        <div class="benchmark-capsule-card ${isTop ? 'card-top' : 'card-flop'}" data-appid="${game.appid}" data-img="${game.imageUrl}" data-name="${encodeURIComponent(game.name)}" title="Click to analyze ${game.name} in Capsulu">
+        <div class="benchmark-capsule-card ${cardClass}" data-appid="${game.appid}" data-img="${game.imageUrl}" data-name="${encodeURIComponent(game.name)}" title="Click to analyze ${game.name} in Capsulu">
             <div class="card-img-container">
                 <img src="${game.imageUrl}" alt="${game.name}" loading="lazy" class="card-capsule-img" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/capsule_616x353.jpg';">
                 <div class="card-hover-overlay">
@@ -2191,7 +2288,7 @@ function createBenchmarkCard(game, index, type) {
                     <h5 class="card-game-title">${game.name}</h5>
                 </div>
                 <div class="card-meta-row">
-                    <span class="card-rank ${isTop ? 'rank-gold' : 'rank-red'}">#${index + 1}</span>
+                    <span class="card-rank ${rankClass}">#${index + 1}</span>
                     <span class="card-metric-tag ${game.palette_type === 'warm' ? 'tag-warm' : 'tag-neutral'}" title="Color Temperature">${game.palette_type}</span>
                     <span class="card-metric-tag" title="Total Steam Reviews">${Number(game.reviews).toLocaleString()} ${game.reviews === 1 ? 'review' : 'reviews'}</span>
                 </div>

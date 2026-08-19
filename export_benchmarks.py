@@ -1474,6 +1474,11 @@ def format_game_card(r):
 
 top_rated_games = [format_game_card(r) for _, r in clean_df.sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
 lowest_rated_games = [format_game_card(r) for _, r in clean_df[clean_df["tier"].isin(["near_zero", "struggling"])].sort_values(by=["score", "total_reviews"], ascending=[True, True]).head(25).iterrows()]
+zero_reviews_games = [format_game_card(r) for _, r in clean_df[clean_df["total_reviews"] == 0].sort_values(by=["score", "name"], ascending=[True, True]).head(25).iterrows()]
+reviews_1_5_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 1) & (clean_df["total_reviews"] <= 5)].sort_values(by=["score", "total_reviews"], ascending=[True, True]).head(25).iterrows()]
+reviews_6_10_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 6) & (clean_df["total_reviews"] <= 10)].sort_values(by=["total_reviews", "score"], ascending=[True, True]).head(25).iterrows()]
+reviews_11_100_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 11) & (clean_df["total_reviews"] <= 100)].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
+reviews_100_plus_games = [format_game_card(r) for _, r in clean_df[clean_df["total_reviews"] > 100].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
 
 output_payload = {
     "generated_at": pd.Timestamp.now().isoformat(),
@@ -1483,6 +1488,15 @@ output_payload = {
     "tags": tag_benchmarks,
     "presets": sample_presets,
     "genre_competitors": genre_competitor_catalogs,
+    "showcases": {
+        "top_rated": top_rated_games,
+        "lowest_rated": lowest_rated_games,
+        "zero_reviews": zero_reviews_games,
+        "reviews_1_5": reviews_1_5_games,
+        "reviews_6_10": reviews_6_10_games,
+        "reviews_11_100": reviews_11_100_games,
+        "reviews_100_plus": reviews_100_plus_games
+    },
     "top_rated": top_rated_games,
     "lowest_rated": lowest_rated_games
 }
@@ -1490,5 +1504,5 @@ output_payload = {
 with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
     json.dump(output_payload, f, indent=2)
 
-print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records, {len(genre_benchmarks)} broad genres, {len(tag_benchmarks)} tags benchmarks, 25 Top-Rated, and 25 Lowest-Rated.")
+print(f"✅ Generated {OUTPUT_JSON} with {total_valid:,} records, {len(genre_benchmarks)} broad genres, {len(tag_benchmarks)} tags benchmarks, and 7 25-game showcases.")
 
