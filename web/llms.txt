@@ -1,36 +1,35 @@
-# Capsulu – The Steam Capsule Rater API
+# Capsulu – The Steam Capsule Rater & Intelligence Engine
 
-Capsulu is an open-source Computer Vision engine that rates and benchmarks Steam capsule artwork against an empirical dataset of 28,754 real Steam games.
+> Capsulu is a Computer Vision engine and storefront simulator that benchmarks Steam store capsule artwork against an empirical dataset of 28,754 real Steam games.
+
+- Website: https://capsulu.feuerware.com/
+- OpenAPI Specification: https://capsulu.feuerware.com/openapi.json
+- Sitemap: https://capsulu.feuerware.com/sitemap.xml
+
+## Capabilities & Metrics
+Capsulu measures 5 core visual metrics critical to Steam store click-through rates (CTR):
+1. **Dynamic Contrast (Luminance Std Dev)**: Benchmark for Mega-Hits is >= 63.0. Flop average is 56.9.
+2. **Warm UI Saliency (% Warm Palette)**: Share of warm amber/golden tones that pop against Steam's dark navy #171a21 client interface (Mega-Hit average: 49.9%).
+3. **Shannon Entropy (Tonal Depth & Detail Complexity)**: Measures rendering depth and textural richness (Mega-Hit average: 6.99 bits).
+4. **Edge Density (Sharpness & Silhouette Clarity)**: Structural clarity (Mega-Hit average: 14.2%).
+5. **Hero Spotlight Vignetting**: 71.9% of Mega-Hits concentrate illumination on the central character with radial perimeter darkening.
 
 ## Public AI API Endpoints
 
 ### 1. Rate Game Capsule by Steam App ID / Store URL
-- **Endpoint**: `GET /api/rate?appid={appid}`
+- **Endpoint**: `GET https://capsulu.feuerware.com/api/rate`
 - **Parameters**:
-  - `appid` (int): Steam Store App ID (e.g. `4429000` for DICEPTION, `1245620` for ELDEN RING).
+  - `appid` (int, optional): Steam Store App ID (e.g. `4429000` for DICEPTION, `1145360` for Hades).
   - `url` (string, optional): Full Steam Store URL (e.g. `https://store.steampowered.com/app/4429000/DICEPTION/`).
   - `image_url` (string, optional): Direct URL to a 460x215 capsule image.
-  - `format` (string, optional): `json` (default) or `markdown`.
+  - `format` (string, optional): `markdown` (default for LLMs) or `json`.
 
-### Example AI Query:
+### Example Markdown Query:
 ```http
-GET /api/rate?appid=4429000 HTTP/1.1
-Host: localhost:8000
+GET https://capsulu.feuerware.com/api/rate?appid=4429000&format=markdown
 ```
 
-### JSON Response Fields:
-- `score.overall`: Integer (0-100)
-- `score.tier`: Commercial sales tier (e.g. Mega-Hit Grade, Solid Indie Grade, Moderate Visibility, Struggling, Flop)
-- `score.percentile`: Percentile rank across 28,754 Steam games
-- `metrics.contrast_std`: Luminance standard deviation (Mega-Hit average is 63.0)
-- `metrics.warm_palette_pct`: Percentage of warm tones that pop against Steam's navy UI (Mega-Hit average is 49.9%)
-- `metrics.shannon_entropy`: Tonal depth and texture information in bits (Mega-Hit average is 6.99)
-- `metrics.edge_density_pct`: Structural sharpness and silhouette clarity (Mega-Hit average is 14.2%)
-- `recommendations`: Array of tailored action items for the game developer
-- `ai_summary`: Pre-formatted natural language sentence for AI chatbots to read directly to the user
-- `web_report_url`: Deep link to the full interactive Visual Check and Storefront Simulator
-
-### Example Markdown Format:
+### Example JSON Query:
 ```http
-GET /api/rate?appid=4429000&format=markdown
+GET https://capsulu.feuerware.com/api/rate?appid=4429000&format=json
 ```
