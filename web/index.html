@@ -439,6 +439,50 @@
                     <p class="rule-desc">Edge density is 26.8% higher in top games (14.2% vs 11.2%). Clean character outlines and distinct typographic title treatments ensure readability at 120px micro thumbnail scale.</p>
                 </div>
             </div>
+            <!-- Open Dataset & Bulk Downloads Section -->
+            <div class="steam-panel dataset-download-panel" style="margin-top: 24px;">
+                <div class="panel-header">
+                    <h3>💾 Open Research Dataset & Bulk Downloads</h3>
+                    <span class="panel-badge">Free Open Access</span>
+                </div>
+                <p class="sim-explainer" style="margin-bottom: 16px;">Download the full empirical dataset and capsule image library for academic research, machine learning models, and computer vision experiments.</p>
+                
+                <div class="download-cards-grid">
+                    <!-- Card 1: Full JSON Dataset -->
+                    <div class="download-card">
+                        <div class="download-icon-box icon-json">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <div class="download-info">
+                            <div class="download-title-row">
+                                <h4 class="download-name">Complete Dataset JSON</h4>
+                                <span class="download-size-pill">~35 MB JSON</span>
+                            </div>
+                            <p class="download-desc">All 28,762 Steam games with unified store metadata, sales tiers, review volume, and complete Computer Vision metrics.</p>
+                            <a href="/export/steam_capsules_full_dataset.json" download="steam_capsules_full_dataset.json" class="btn btn-steam-primary btn-download-action">
+                                Download Dataset (.json)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Bulk Capsule Images ZIP -->
+                    <div class="download-card">
+                        <div class="download-icon-box icon-zip">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        </div>
+                        <div class="download-info">
+                            <div class="download-title-row">
+                                <h4 class="download-name">Bulk Capsule Images ZIP</h4>
+                                <span class="download-size-pill">~1.8 GB ZIP</span>
+                            </div>
+                            <p class="download-desc">All 28,762 raw 460×215 header capsule images indexed by Steam App ID for CV model training and computer vision research.</p>
+                            <a href="/export/steam_capsules_images.zip" download="steam_capsules_images.zip" class="btn btn-steam-upload btn-download-action">
+                                Download Images (.zip)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

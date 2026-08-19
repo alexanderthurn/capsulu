@@ -69,3 +69,7 @@ yarn-debug.log*
 yarn-error.log*
 scratch/
 scratch_*.py
+*.zip
+*.tar.gz
+web/export/
+web/downloads/

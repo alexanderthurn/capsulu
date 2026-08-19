@@ -2531,3 +2531,111 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ==========================================================================
+   Open Research Dataset & Bulk Download Cards
+   ========================================================================== */
+
+.download-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.download-card {
+    background: #0e141b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.download-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--steam-cyan);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.7);
+}
+
+.download-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.download-icon-box.icon-json {
+    background: rgba(102, 192, 244, 0.15);
+    color: var(--steam-cyan);
+    border: 1px solid rgba(102, 192, 244, 0.3);
+}
+
+.download-icon-box.icon-zip {
+    background: rgba(230, 126, 34, 0.15);
+    color: #e67e22;
+    border: 1px solid rgba(230, 126, 34, 0.3);
+}
+
+.download-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.download-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.download-name {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.download-size-pill {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #8f9ea6;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.download-desc {
+    font-size: 0.80rem;
+    color: #8f9ea6;
+    line-height: 1.35;
+    margin-bottom: 8px;
+}
+
+.btn-download-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.84rem;
+    padding: 8px 16px;
+    width: fit-content;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .download-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
