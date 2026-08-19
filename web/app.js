@@ -181,14 +181,14 @@ function checkDeepLink() {
  */
 async function loadBenchmarks() {
     try {
-        const res = await fetch('benchmarks.json');
+        const res = await fetch('benchmarks.json?v=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
             benchmarksData = await res.json();
             if (benchmarksData.overall && benchmarksData.overall.total_games_analyzed) {
                 if (benchmarkCountBadge) {
                     benchmarkCountBadge.textContent = `${benchmarksData.overall.total_games_analyzed.toLocaleString()} Games Analyzed`;
                 }
-                populateGenreDropdowns(currentLoadedTags || []);
+                populateGenreDropdowns(currentLoadedGenres || [], currentLoadedTags || []);
             }
         }
     } catch (e) {
@@ -1737,20 +1737,37 @@ function getCompetitorsForLens(lensKey) {
         return comps['all'] || comps['overall'] || STORE_CATALOG;
     }
 
+    // 1. Direct match
     if (comps[lensKey] && comps[lensKey].length > 0) {
         return comps[lensKey];
     }
 
-    // Exact case-insensitive match
+    // 2. Exact case-insensitive match
     const exact = Object.keys(comps).find(k => k.toLowerCase() === lensKey.toLowerCase());
     if (exact && comps[exact] && comps[exact].length > 0) {
         return comps[exact];
     }
 
-    // Partial substring match
+    // 3. Punctuation-normalized match (e.g. "Rogue-lite" vs "Roguelite", "Co-op" vs "Coop")
+    const normKey = lensKey.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const normMatch = Object.keys(comps).find(k => k.toLowerCase().replace(/[^a-z0-9]/g, '') === normKey);
+    if (normMatch && comps[normMatch] && comps[normMatch].length > 0) {
+        return comps[normMatch];
+    }
+
+    // 4. Substring inclusion match
     const partial = Object.keys(comps).find(k => lensKey.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(lensKey.toLowerCase()));
     if (partial && comps[partial] && comps[partial].length > 0) {
         return comps[partial];
+    }
+
+    // 5. Keyword token overlap match (e.g. "Action Adventure" -> matches "Action" or "Adventure")
+    const words = lensKey.toLowerCase().split(/[\s\-_/]+/).filter(w => w.length > 2);
+    for (const w of words) {
+        const tokenMatch = Object.keys(comps).find(k => k.toLowerCase().includes(w));
+        if (tokenMatch && comps[tokenMatch] && comps[tokenMatch].length > 0) {
+            return comps[tokenMatch];
+        }
     }
 
     return comps['all'] || comps['overall'] || STORE_CATALOG;
@@ -1763,8 +1780,19 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
     const catalog = getCompetitorsForLens(genreKey || 'all');
 
     // Filter out user's current game from the catalog
-    const others = catalog.filter(g => String(g.appid) !== String(appid) && (g.name || "").toLowerCase() !== (userGameName || "").toLowerCase());
+    let others = catalog.filter(g => String(g.appid) !== String(appid) && (g.name || "").toLowerCase() !== (userGameName || "").toLowerCase());
     
+    // Backfill from global catalog if fewer than 8 competitors available for this niche tag
+    if (others.length < 8) {
+        const globalComps = (typeof benchmarksData !== 'undefined' && benchmarksData && benchmarksData.genre_competitors && benchmarksData.genre_competitors['all']) || STORE_CATALOG;
+        for (const gc of globalComps) {
+            if (others.length >= 8) break;
+            if (String(gc.appid) !== String(appid) && !others.some(o => String(o.appid) === String(gc.appid))) {
+                others.push(gc);
+            }
+        }
+    }
+
     // Exactly 9 items: 4 surrounding games, USER CAPSULE (at index 4 / center), 4 surrounding games
     const fallbackGame = { name: "Steam Game", imageUrl: "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg", appid: 1245620 };
     const items9 = [
@@ -1792,7 +1820,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
                  tabindex="${g.isUser ? '-1' : '0'}"
                  role="${g.isUser ? 'img' : 'button'}">
                 <div class="sim-capsule-thumb">
-                    <img src="${g.imageUrl}" alt="${g.name}" loading="lazy">
+                    <img src="${g.imageUrl}" alt="${g.name}" loading="lazy" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg';">
                 </div>
             </div>
         `).join('');
@@ -1810,7 +1838,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
                  title="${g.isUser ? 'Your Game (Current Analysis)' : `Click to analyze ${g.name}`}"
                  tabindex="${g.isUser ? '-1' : '0'}"
                  role="${g.isUser ? 'img' : 'button'}">
-                <img src="${g.imageUrl}" alt="${g.name}" loading="lazy">
+                <img src="${g.imageUrl}" alt="${g.name}" loading="lazy" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg';">
             </div>
         `).join('');
     }
