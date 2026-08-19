@@ -1486,7 +1486,6 @@ reviews_1_5_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_r
 reviews_6_10_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 6) & (clean_df["total_reviews"] <= 10)].sort_values(by=["total_reviews", "score"], ascending=[True, True]).head(25).iterrows()]
 reviews_11_100_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 11) & (clean_df["total_reviews"] <= 100)].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
 reviews_100_500_games = [format_game_card(r) for _, r in clean_df[(clean_df["total_reviews"] >= 100) & (clean_df["total_reviews"] <= 500)].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
-reviews_500_plus_games = [format_game_card(r) for _, r in clean_df[clean_df["total_reviews"] > 500].sort_values(by=["score", "total_reviews"], ascending=[False, False]).head(25).iterrows()]
 
 output_payload = {
     "generated_at": pd.Timestamp.now().isoformat(),
@@ -1504,7 +1503,6 @@ output_payload = {
         "reviews_6_10": reviews_6_10_games,
         "reviews_11_100": reviews_11_100_games,
         "reviews_100_500": reviews_100_500_games,
-        "reviews_500_plus": reviews_500_plus_games,
         "reviews_100_plus": reviews_100_500_games
     },
     "top_rated": top_rated_games,

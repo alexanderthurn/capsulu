@@ -246,8 +246,8 @@ function setupEventListeners() {
         if (aiView) aiView.style.display = tab === 'ai' ? 'block' : 'none';
 
         if (tab === 'benchmark') {
-            if (typeof benchmarksData !== 'undefined' && benchmarksData && (benchmarksData.top_rated || benchmarksData.lowest_rated)) {
-                renderBenchmarkShowcases(benchmarksData.top_rated || [], benchmarksData.lowest_rated || []);
+            if (typeof switchShowcaseTab === 'function') {
+                switchShowcaseTab(currentShowcaseTab || 'top_rated', false);
             }
         }
 
@@ -870,6 +870,8 @@ async function handleUrlInput(updateUrlBar = true) {
                 tags: activeTags
             });
 
+            const reviewsCount = (detailsData.total_reviews !== undefined && detailsData.total_reviews !== null) ? detailsData.total_reviews : ((detailsData.reviews !== undefined && detailsData.reviews !== null) ? detailsData.reviews : null);
+
             loadImageWithFallbacks(
                 [
                     `https://images.weserv.nl/?url=${encodeURIComponent(detailsData.header_image)}`,
@@ -881,7 +883,8 @@ async function handleUrlInput(updateUrlBar = true) {
                 activeTags,
                 appid,
                 storeUrl,
-                detailsData.genres || []
+                detailsData.genres || [],
+                reviewsCount
             );
             return;
         }
@@ -922,7 +925,7 @@ async function handleUrlInput(updateUrlBar = true) {
 /**
  * Sequential Candidate Loader
  */
-function loadImageWithFallbacks(urls, gameTitle, price, tags, appid, storeUrl, genres = []) {
+function loadImageWithFallbacks(urls, gameTitle, price, tags, appid, storeUrl, genres = [], reviews = null) {
     showLoading(true);
     let currentIndex = 0;
 
@@ -944,7 +947,7 @@ function loadImageWithFallbacks(urls, gameTitle, price, tags, appid, storeUrl, g
         img.crossOrigin = "anonymous";
 
         img.onload = () => {
-            analyzeAndDisplay(img, currentUrl, gameTitle, price, tags, appid, storeUrl, genres);
+            analyzeAndDisplay(img, currentUrl, gameTitle, price, tags, appid, storeUrl, genres, reviews);
             showLoading(false);
         };
 
@@ -2203,12 +2206,6 @@ const SHOWCASE_TABS_CONFIG = {
         sub: "Commercially validated indies with proven product-market fit, strong store conversion, punchy contrast (>60.0), and 50%+ warm accent lighting.",
         type: "top"
     },
-    reviews_500_plus: {
-        icon: "🔥",
-        title: "500+ Reviews (Hit Indies & Mega-Hits)",
-        sub: "Major indie breakout hits that unlocked the full Steam Discovery Queue algorithm flywheel.",
-        type: "top"
-    },
     reviews_100_plus: {
         icon: "🌟",
         title: "100–500 Reviews (Sustainable Indie Breakouts)",
@@ -2284,27 +2281,19 @@ window.switchShowcaseTab = switchShowcaseTab;
 function createBenchmarkCard(game, index, type) {
     const isTop = type === 'top';
     const isNeutral = type === 'neutral';
-    const rankClass = isTop ? 'rank-gold' : (isNeutral ? 'rank-blue' : 'rank-red');
     const cardClass = isTop ? 'card-top' : (isNeutral ? 'card-neutral' : 'card-flop');
+    const revCount = Number(game.reviews !== undefined ? game.reviews : 0);
+    const revText = `${revCount.toLocaleString()} ${revCount === 1 ? 'review' : 'reviews'}`;
+    const tooltip = `${game.name} • #${index + 1} • ${game.palette_type || 'neutral'} • ${revText} (Click to Analyze)`;
     
     return `
-        <div class="benchmark-capsule-card ${cardClass}" data-appid="${game.appid}" data-img="${game.imageUrl}" data-name="${encodeURIComponent(game.name)}" title="Click to analyze ${game.name} in Capsulu">
-            <div class="card-img-container">
-                <img src="${game.imageUrl}" alt="${game.name}" loading="lazy" class="card-capsule-img" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/capsule_616x353.jpg';">
-                <div class="card-hover-overlay">
-                    <span class="card-analyze-btn">⚡ Analyze in Capsulu</span>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="card-title-row">
-                    <h5 class="card-game-title">${game.name}</h5>
-                </div>
-                <div class="card-meta-row">
-                    <span class="card-rank ${rankClass}">#${index + 1}</span>
-                    <span class="card-metric-tag ${game.palette_type === 'warm' ? 'tag-warm' : 'tag-neutral'}" title="Color Temperature">${game.palette_type}</span>
-                    <span class="card-metric-tag" title="Total Steam Reviews">${Number(game.reviews).toLocaleString()} ${game.reviews === 1 ? 'review' : 'reviews'}</span>
-                </div>
-            </div>
+        <div class="benchmark-capsule-card ${cardClass}" 
+             data-appid="${game.appid}" 
+             data-img="${game.imageUrl}" 
+             data-name="${encodeURIComponent(game.name)}" 
+             data-reviews="${game.reviews !== undefined ? game.reviews : ''}" 
+             title="${tooltip}">
+            <img src="${game.imageUrl}" alt="${game.name}" loading="lazy" class="card-capsule-img" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/${game.appid}/capsule_616x353.jpg';">
         </div>
     `;
 }
@@ -2429,9 +2418,58 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
 }
 
 /**
+ * Look up known review count for an AppID or Game Name from benchmarksData
+ */
+function findKnownReviews(appid, gameName) {
+    if (typeof benchmarksData === 'undefined' || !benchmarksData) return null;
+    const numAppId = appid ? Number(appid) : null;
+    const cleanName = gameName ? gameName.trim().toLowerCase() : null;
+
+    function match(obj) {
+        if (!obj) return false;
+        if (numAppId && Number(obj.appid) === numAppId) return true;
+        if (cleanName && obj.name && obj.name.trim().toLowerCase() === cleanName) return true;
+        return false;
+    }
+
+    if (Array.isArray(benchmarksData.presets)) {
+        const found = benchmarksData.presets.find(match);
+        if (found && (found.reviews !== undefined || found.total_reviews !== undefined)) {
+            return found.reviews !== undefined ? found.reviews : found.total_reviews;
+        }
+    }
+
+    if (benchmarksData.showcases) {
+        for (const key of Object.keys(benchmarksData.showcases)) {
+            const list = benchmarksData.showcases[key];
+            if (Array.isArray(list)) {
+                const found = list.find(match);
+                if (found && (found.reviews !== undefined || found.total_reviews !== undefined)) {
+                    return found.reviews !== undefined ? found.reviews : found.total_reviews;
+                }
+            }
+        }
+    }
+
+    if (benchmarksData.genre_competitors) {
+        for (const key of Object.keys(benchmarksData.genre_competitors)) {
+            const list = benchmarksData.genre_competitors[key];
+            if (Array.isArray(list)) {
+                const found = list.find(match);
+                if (found && (found.reviews !== undefined || found.total_reviews !== undefined)) {
+                    return found.reviews !== undefined ? found.reviews : found.total_reviews;
+                }
+            }
+        }
+    }
+
+    return null;
+}
+
+/**
  * Main Analysis and Dashboard Update
  */
-function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, genres = []) {
+function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, genres = [], reviews = null) {
     const cv = runComputerVision(img);
     const scores = evaluateScores(cv);
 
@@ -2452,12 +2490,28 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     document.getElementById('resultGameTitleText').textContent = gameName || "Steam Game";
 
     const gameTitleLink = document.getElementById('resultGameTitleLink');
+    const resultHeroCapsuleLink = document.getElementById('resultHeroCapsuleLink');
     const storeBtnLink = document.getElementById('resultStoreBtnLink');
     const appIdTag = document.getElementById('resultAppIdTag');
     const priceTag = document.getElementById('resultPriceTag');
+    const reviewsTag = document.getElementById('resultReviewsTag');
     const heroTagsContainer = document.getElementById('resultHeroTags');
 
     const effectiveStoreUrl = storeUrl || (appid ? `https://store.steampowered.com/app/${appid}/` : null);
+
+    if (resultHeroCapsuleLink) {
+        if (effectiveStoreUrl) {
+            resultHeroCapsuleLink.href = effectiveStoreUrl;
+            resultHeroCapsuleLink.style.pointerEvents = 'auto';
+            resultHeroCapsuleLink.style.cursor = 'pointer';
+            resultHeroCapsuleLink.title = `Open ${gameName || 'game'} on Steam (New Tab)`;
+        } else {
+            resultHeroCapsuleLink.removeAttribute('href');
+            resultHeroCapsuleLink.style.pointerEvents = 'none';
+            resultHeroCapsuleLink.style.cursor = 'default';
+            resultHeroCapsuleLink.title = 'Capsule Artwork';
+        }
+    }
 
     if (gameTitleLink) {
         if (effectiveStoreUrl) {
@@ -2489,6 +2543,19 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
             priceTag.style.display = 'inline-block';
         } else {
             priceTag.style.display = 'none';
+        }
+    }
+
+    const effectiveReviews = (reviews !== null && reviews !== undefined) ? reviews : findKnownReviews(appid, gameName);
+    if (reviewsTag) {
+        if (effectiveReviews !== null && effectiveReviews !== undefined && !isNaN(effectiveReviews) && effectiveReviews !== '') {
+            const revNum = Number(effectiveReviews);
+            const revLabel = revNum === 1 ? '1 review' : `${revNum.toLocaleString()} reviews`;
+            reviewsTag.textContent = `💬 ${revLabel}`;
+            reviewsTag.style.display = 'inline-block';
+            reviewsTag.title = `Total Steam User Reviews: ${revNum.toLocaleString()}`;
+        } else {
+            reviewsTag.style.display = 'none';
         }
     }
 

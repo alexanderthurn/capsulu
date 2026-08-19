@@ -45,15 +45,14 @@ plt.rcParams.update({
     "savefig.bbox": "tight"
 })
 
-INDIE_TIER_ORDER = ["0_reviews", "1_5_reviews", "6_10_reviews", "11_100_reviews", "100_500_reviews", "500_plus"]
+INDIE_TIER_ORDER = ["0_reviews", "1_5_reviews", "6_10_reviews", "11_100_reviews", "100_500_reviews"]
 
 INDIE_TIER_LABELS = {
     "0_reviews": "0 Reviews (Ghost Zone)",
     "1_5_reviews": "1-5 Reviews (Friend Zone)",
     "6_10_reviews": "6-10 Reviews (Threshold)",
     "11_100_reviews": "11-100 Reviews (Ignition)",
-    "100_500_reviews": "100-500 Reviews (Validated)",
-    "500_plus": "500+ Reviews (Hit)"
+    "100_500_reviews": "100-500 Reviews (Validated)"
 }
 
 INDIE_SHORT_LABELS = {
@@ -61,8 +60,7 @@ INDIE_SHORT_LABELS = {
     "1_5_reviews": "1-5 Revs\n(Friend)",
     "6_10_reviews": "6-10 Revs\n(Threshold)",
     "11_100_reviews": "11-100 Revs\n(Ignition)",
-    "100_500_reviews": "100-500 Revs\n(Validated)",
-    "500_plus": "500+ Revs\n(Hit)"
+    "100_500_reviews": "100-500 Revs\n(Validated)"
 }
 
 INDIE_COLORS = {
@@ -70,8 +68,7 @@ INDIE_COLORS = {
     "1_5_reviews": "#e74c3c",      # Red
     "6_10_reviews": "#f39c12",     # Gold/Orange
     "11_100_reviews": "#3498db",   # Cyan/Blue
-    "100_500_reviews": "#2ecc71",  # Emerald Green
-    "500_plus": "#9b59b6"          # Purple / Hit
+    "100_500_reviews": "#2ecc71"   # Emerald Green
 }
 
 def classify_indie_tier(reviews):
@@ -86,7 +83,7 @@ def classify_indie_tier(reviews):
     elif 101 <= reviews <= 500:
         return "100_500_reviews"
     else:
-        return "500_plus"
+        return None
 
 def load_clean_data():
     if not os.path.exists(CSV_PATH):
@@ -102,7 +99,8 @@ def load_clean_data():
         ((df["release_year"].isna()) | (df["release_year"] <= 2024))
     ].copy()
     clean_df["indie_tier"] = clean_df["total_reviews"].apply(classify_indie_tier)
-    print(f"📊 Loaded {len(clean_df):,} cleaned mature games (<=2024).")
+    clean_df = clean_df[clean_df["indie_tier"].isin(INDIE_TIER_ORDER)].copy()
+    print(f"📊 Loaded {len(clean_df):,} cleaned mature indie games (0-500 revs, <=2024).")
     print(clean_df["indie_tier"].value_counts())
     return clean_df
 
@@ -451,7 +449,7 @@ def generate_indie_chart_7_indie_milestones(df):
     ax2.plot(x_indices, norm_summary["edge_density"], marker="^", linewidth=2.5, label="Edge Density (120px)", color="#3498db")
     ax2.plot(x_indices, norm_summary["avg_brightness"], marker="d", linewidth=2.5, label="Avg Brightness", color="#2ecc71")
 
-    ax2.set_title("Visual Quality Metric Progression (0 → 100+ Reviews)")
+    ax2.set_title("Visual Quality Metric Progression (0 → 500 Reviews)")
     ax2.set_xlabel("Indie Review Milestone")
     ax2.set_ylabel("Relative Quality Index (0-100)")
     ax2.set_xticks(x_indices)

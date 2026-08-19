@@ -92,11 +92,35 @@ if ($appid) {
         }
     }
     
+    // Fetch review summary
+    $total_reviews = null;
+    $review_desc = null;
+    $reviews_api_url = "https://store.steampowered.com/appreviews/{$appid}?json=1&purchase_type=all&language=all&num_per_page=0";
+    $rev_resp = @file_get_contents($reviews_api_url, false, $context);
+    if ($rev_resp === false && function_exists('curl_init')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $reviews_api_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 4);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+        $rev_resp = curl_exec($ch);
+        curl_close($ch);
+    }
+    if ($rev_resp) {
+        $rdata = json_decode($rev_resp, true);
+        if (isset($rdata['query_summary']['total_reviews'])) {
+            $total_reviews = (int)$rdata['query_summary']['total_reviews'];
+            $review_desc = isset($rdata['query_summary']['review_score_desc']) ? $rdata['query_summary']['review_score_desc'] : null;
+        }
+    }
+
     if (!$header_image) {
         $header_image = "https://cdn.akamai.steamstatic.com/steam/apps/{$appid}/header.jpg";
     }
 } else {
     $header_image = $image_url;
+    $total_reviews = null;
+    $review_desc = null;
 }
 
 // Check if this is a Computer Vision rate evaluation or simple metadata lookup
@@ -113,7 +137,9 @@ if (!$is_rate_request && empty($_GET['rate'])) {
         'price' => $price_str,
         'is_coming_soon' => $is_coming_soon,
         'release_date' => $rel_date,
-        'review_status' => $is_coming_soon ? 'Coming Soon' : 'Positive',
+        'total_reviews' => $total_reviews,
+        'reviews' => $total_reviews,
+        'review_status' => $review_desc ? $review_desc : ($is_coming_soon ? 'Coming Soon' : 'Positive'),
         'genres' => $genres
     ]);
     exit;
