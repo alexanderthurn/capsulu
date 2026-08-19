@@ -387,7 +387,7 @@ sample_presets = [
         "tier_label": "🎲 DICEPTION",
         "image_url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
         "price": "4,99€",
-        "tags": ["Auto Battler", "Roguelike Deckbuilder", "Turn-Based Tactics", "Strategy", "Indie", "Dice", "PvP"]
+        "tags": ["Roguelike Deckbuilder", "Turn-Based Tactics", "Strategy", "Indie", "Dice", "PvP"]
     },
     {
         "id": "melodan",
@@ -491,7 +491,7 @@ genre_competitor_catalogs = {
         {"name": "Legion TD 2", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/469600/header.jpg", "appid": 469600},
         {"name": "Slice & Dice", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1875880/header.jpg", "appid": 1875880},
         {"name": "Melodan", "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037", "appid": 4987230},
-        {"name": "DICEPTION", "imageUrl": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104", "appid": 4429000}
+        {"name": "Just King", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2159490/header.jpg", "appid": 2159490}
     ],
     "Roguelike Deckbuilder": [
         {"name": "Balatro", "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg", "appid": 2379780},
