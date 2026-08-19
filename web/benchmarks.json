@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T12:56:37.989448",
+  "generated_at": "2026-08-19T13:05:51.870077",
   "overall": {
     "total_games_analyzed": 28754,
     "contrast_p90": 78.4,
@@ -1611,6 +1611,90 @@
     }
   ],
   "genre_competitors": {
+    "all": [
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Hades",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+        "appid": 1145360
+      },
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      },
+      {
+        "name": "Stardew Valley",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+        "appid": 413150
+      },
+      {
+        "name": "Hollow Knight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+        "appid": 367520
+      },
+      {
+        "name": "Baldur's Gate 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
+        "appid": 1086940
+      },
+      {
+        "name": "Terraria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
+        "appid": 105600
+      }
+    ],
+    "overall": [
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Hades",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1145360/header.jpg",
+        "appid": 1145360
+      },
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      },
+      {
+        "name": "Stardew Valley",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+        "appid": 413150
+      },
+      {
+        "name": "Hollow Knight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/367520/header.jpg",
+        "appid": 367520
+      },
+      {
+        "name": "Baldur's Gate 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
+        "appid": 1086940
+      },
+      {
+        "name": "Terraria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
+        "appid": 105600
+      }
+    ],
     "Auto Battler": [
       {
         "name": "Backpack Battles",
@@ -1764,7 +1848,7 @@
         "appid": 588650
       },
       {
-        "name": "Bloodstained: Ritual of the Night",
+        "name": "Bloodstained",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/692850/header.jpg",
         "appid": 692850
       },
@@ -1947,6 +2031,48 @@
         "appid": 268500
       }
     ],
+    "Turn-Based Strategy": [
+      {
+        "name": "Sid Meier's Civilization VI",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/289070/header.jpg",
+        "appid": 289070
+      },
+      {
+        "name": "Age of Wonders 4",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1669000/header.jpg",
+        "appid": 1669000
+      },
+      {
+        "name": "Total War: WARHAMMER III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1142710/header.jpg",
+        "appid": 1142710
+      },
+      {
+        "name": "Songs of Conquest",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/867210/header.jpg",
+        "appid": 867210
+      },
+      {
+        "name": "Wartales",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1527950/header.jpg",
+        "appid": 1527950
+      },
+      {
+        "name": "Endless Legend",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/289130/header.jpg",
+        "appid": 289130
+      },
+      {
+        "name": "Old World",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/597180/header.jpg",
+        "appid": 597180
+      },
+      {
+        "name": "Battle Brothers",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/365360/header.jpg",
+        "appid": 365360
+      }
+    ],
     "City Builder": [
       {
         "name": "Manor Lords",
@@ -1987,6 +2113,888 @@
         "name": "Farthest Frontier",
         "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1044720/header.jpg",
         "appid": 1044720
+      }
+    ],
+    "Dragons": [
+      {
+        "name": "Monster Hunter: World",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/582010/header.jpg",
+        "appid": 582010
+      },
+      {
+        "name": "Skyrim Special Edition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg",
+        "appid": 489830
+      },
+      {
+        "name": "Total War: WARHAMMER III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1142710/header.jpg",
+        "appid": 1142710
+      },
+      {
+        "name": "Dragon's Dogma 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2054970/header.jpg",
+        "appid": 2054970
+      },
+      {
+        "name": "Divinity: Original Sin 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/435150/header.jpg",
+        "appid": 435150
+      },
+      {
+        "name": "Dragon Age: Inquisition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1222690/header.jpg",
+        "appid": 1222690
+      },
+      {
+        "name": "Guild Wars 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1284210/header.jpg",
+        "appid": 1284210
+      },
+      {
+        "name": "Middle-earth: Shadow of War",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/356190/header.jpg",
+        "appid": 356190
+      }
+    ],
+    "PvP": [
+      {
+        "name": "Counter-Strike 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/730/header.jpg",
+        "appid": 730
+      },
+      {
+        "name": "Apex Legends",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg",
+        "appid": 1172470
+      },
+      {
+        "name": "Dota 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/570/header.jpg",
+        "appid": 570
+      },
+      {
+        "name": "Rust",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/252490/header.jpg",
+        "appid": 252490
+      },
+      {
+        "name": "Rainbow Six Siege",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/359550/header.jpg",
+        "appid": 359550
+      },
+      {
+        "name": "Street Fighter 6",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1364780/header.jpg",
+        "appid": 1364780
+      },
+      {
+        "name": "Dead by Daylight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/381210/header.jpg",
+        "appid": 381210
+      },
+      {
+        "name": "Rocket League",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/252950/header.jpg",
+        "appid": 252950
+      }
+    ],
+    "PvE": [
+      {
+        "name": "Helldivers 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/553850/header.jpg",
+        "appid": 553850
+      },
+      {
+        "name": "Deep Rock Galactic",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/548430/header.jpg",
+        "appid": 548430
+      },
+      {
+        "name": "Warhammer: Vermintide 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/552500/header.jpg",
+        "appid": 552500
+      },
+      {
+        "name": "Left 4 Dead 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/550/header.jpg",
+        "appid": 550
+      },
+      {
+        "name": "PAYDAY 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/218620/header.jpg",
+        "appid": 218620
+      },
+      {
+        "name": "Remnant II",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1282100/header.jpg",
+        "appid": 1282100
+      },
+      {
+        "name": "Borderlands 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/397540/header.jpg",
+        "appid": 397540
+      },
+      {
+        "name": "GTFO",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/493520/header.jpg",
+        "appid": 493520
+      }
+    ],
+    "Fantasy": [
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "The Witcher 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg",
+        "appid": 292030
+      },
+      {
+        "name": "Baldur's Gate 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1086940/header.jpg",
+        "appid": 1086940
+      },
+      {
+        "name": "Dragon's Dogma 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2054970/header.jpg",
+        "appid": 2054970
+      },
+      {
+        "name": "Dark Souls III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg",
+        "appid": 374320
+      },
+      {
+        "name": "Final Fantasy XIV",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/39210/header.jpg",
+        "appid": 39210
+      },
+      {
+        "name": "Skyrim Special Edition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg",
+        "appid": 489830
+      },
+      {
+        "name": "Divinity: Original Sin 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/435150/header.jpg",
+        "appid": 435150
+      }
+    ],
+    "Magic": [
+      {
+        "name": "Noita",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/881100/header.jpg",
+        "appid": 881100
+      },
+      {
+        "name": "Hogwarts Legacy",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/990080/header.jpg",
+        "appid": 990080
+      },
+      {
+        "name": "Wizard of Legend",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/445980/header.jpg",
+        "appid": 445980
+      },
+      {
+        "name": "Magicka 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/238370/header.jpg",
+        "appid": 238370
+      },
+      {
+        "name": "Archvale",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1296360/header.jpg",
+        "appid": 1296360
+      },
+      {
+        "name": "Spellbreak",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1399780/header.jpg",
+        "appid": 1399780
+      },
+      {
+        "name": "Blade and Sorcery",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/629730/header.jpg",
+        "appid": 629730
+      },
+      {
+        "name": "Fable Anniversary",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/288470/header.jpg",
+        "appid": 288470
+      }
+    ],
+    "Medieval": [
+      {
+        "name": "Kingdom Come: Deliverance",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/379430/header.jpg",
+        "appid": 379430
+      },
+      {
+        "name": "Manor Lords",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1363080/header.jpg",
+        "appid": 1363080
+      },
+      {
+        "name": "Mount & Blade II: Bannerlord",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/261550/header.jpg",
+        "appid": 261550
+      },
+      {
+        "name": "Chivalry 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1824220/header.jpg",
+        "appid": 1824220
+      },
+      {
+        "name": "Crusader Kings III",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1158310/header.jpg",
+        "appid": 1158310
+      },
+      {
+        "name": "Medieval Dynasty",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1129580/header.jpg",
+        "appid": 1129580
+      },
+      {
+        "name": "A Plague Tale: Requiem",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1452500/header.jpg",
+        "appid": 1452500
+      },
+      {
+        "name": "Mordhau",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/868520/header.jpg",
+        "appid": 868520
+      }
+    ],
+    "Military": [
+      {
+        "name": "Arma 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/107410/header.jpg",
+        "appid": 107410
+      },
+      {
+        "name": "Squad",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/393380/header.jpg",
+        "appid": 393380
+      },
+      {
+        "name": "Hell Let Loose",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/686810/header.jpg",
+        "appid": 686810
+      },
+      {
+        "name": "Hearts of Iron IV",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/394360/header.jpg",
+        "appid": 394360
+      },
+      {
+        "name": "War Thunder",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/236390/header.jpg",
+        "appid": 236390
+      },
+      {
+        "name": "Insurgency: Sandstorm",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/581320/header.jpg",
+        "appid": 581320
+      },
+      {
+        "name": "Company of Heroes 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1677280/header.jpg",
+        "appid": 1677280
+      },
+      {
+        "name": "Ready or Not",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1144200/header.jpg",
+        "appid": 1144200
+      }
+    ],
+    "Wargame": [
+      {
+        "name": "WARNO",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1611600/header.jpg",
+        "appid": 1611600
+      },
+      {
+        "name": "Wargame: Red Dragon",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/251060/header.jpg",
+        "appid": 251060
+      },
+      {
+        "name": "Hearts of Iron IV",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/394360/header.jpg",
+        "appid": 394360
+      },
+      {
+        "name": "Steel Division 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/919640/header.jpg",
+        "appid": 919640
+      },
+      {
+        "name": "Men of War II",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1128860/header.jpg",
+        "appid": 1128860
+      },
+      {
+        "name": "Panzer Corps 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1072040/header.jpg",
+        "appid": 1072040
+      },
+      {
+        "name": "Total War: MEDIEVAL II",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/4700/header.jpg",
+        "appid": 4700
+      },
+      {
+        "name": "Command: Modern Operations",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1076160/header.jpg",
+        "appid": 1076160
+      }
+    ],
+    "Card Game": [
+      {
+        "name": "Balatro",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2379780/header.jpg",
+        "appid": 2379780
+      },
+      {
+        "name": "Slay the Spire",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/646570/header.jpg",
+        "appid": 646570
+      },
+      {
+        "name": "Inscryption",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1092790/header.jpg",
+        "appid": 1092790
+      },
+      {
+        "name": "Monster Train",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1102190/header.jpg",
+        "appid": 1102190
+      },
+      {
+        "name": "Yu-Gi-Oh! Master Duel",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1449850/header.jpg",
+        "appid": 1449850
+      },
+      {
+        "name": "Magic: The Gathering Arena",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2141910/header.jpg",
+        "appid": 2141910
+      },
+      {
+        "name": "Wildfrost",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1811990/header.jpg",
+        "appid": 1811990
+      },
+      {
+        "name": "Peglin",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1296610/header.jpg",
+        "appid": 1296610
+      }
+    ],
+    "Pixel Graphics": [
+      {
+        "name": "Stardew Valley",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/413150/header.jpg",
+        "appid": 413150
+      },
+      {
+        "name": "Terraria",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/105600/header.jpg",
+        "appid": 105600
+      },
+      {
+        "name": "Celeste",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/504230/header.jpg",
+        "appid": 504230
+      },
+      {
+        "name": "Dead Cells",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/588650/header.jpg",
+        "appid": 588650
+      },
+      {
+        "name": "Undertale",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/391540/header.jpg",
+        "appid": 391540
+      },
+      {
+        "name": "Sea of Stars",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1244090/header.jpg",
+        "appid": 1244090
+      },
+      {
+        "name": "Blasphemous",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/774361/header.jpg",
+        "appid": 774361
+      },
+      {
+        "name": "Hotline Miami",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/219150/header.jpg",
+        "appid": 219150
+      }
+    ],
+    "Cyberpunk": [
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      },
+      {
+        "name": "Ghostrunner 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2144740/header.jpg",
+        "appid": 2144740
+      },
+      {
+        "name": "The Ascent",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/979690/header.jpg",
+        "appid": 979690
+      },
+      {
+        "name": "Cloudpunk",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/868360/header.jpg",
+        "appid": 868360
+      },
+      {
+        "name": "Stray",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1332010/header.jpg",
+        "appid": 1332010
+      },
+      {
+        "name": "Ruiner",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/464060/header.jpg",
+        "appid": 464060
+      },
+      {
+        "name": "Observer: System Redux",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1386900/header.jpg",
+        "appid": 1386900
+      },
+      {
+        "name": "System Shock",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/482400/header.jpg",
+        "appid": 482400
+      }
+    ],
+    "Open World": [
+      {
+        "name": "Red Dead Redemption 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1174180/header.jpg",
+        "appid": 1174180
+      },
+      {
+        "name": "Grand Theft Auto V",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/271590/header.jpg",
+        "appid": 271590
+      },
+      {
+        "name": "The Witcher 3",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/292030/header.jpg",
+        "appid": 292030
+      },
+      {
+        "name": "ELDEN RING",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg",
+        "appid": 1245620
+      },
+      {
+        "name": "Skyrim Special Edition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/489830/header.jpg",
+        "appid": 489830
+      },
+      {
+        "name": "Cyberpunk 2077",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1091500/header.jpg",
+        "appid": 1091500
+      },
+      {
+        "name": "Horizon Zero Dawn",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1151640/header.jpg",
+        "appid": 1151640
+      },
+      {
+        "name": "Fallout 4",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/377160/header.jpg",
+        "appid": 377160
+      }
+    ],
+    "Sci-fi": [
+      {
+        "name": "No Man's Sky",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/275850/header.jpg",
+        "appid": 275850
+      },
+      {
+        "name": "Starfield",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1716740/header.jpg",
+        "appid": 1716740
+      },
+      {
+        "name": "Stellaris",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/281990/header.jpg",
+        "appid": 281990
+      },
+      {
+        "name": "Mass Effect Legendary Edition",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1328670/header.jpg",
+        "appid": 1328670
+      },
+      {
+        "name": "Deep Rock Galactic",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/548430/header.jpg",
+        "appid": 548430
+      },
+      {
+        "name": "Subnautica",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/264710/header.jpg",
+        "appid": 264710
+      },
+      {
+        "name": "Halo Infinite",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1240440/header.jpg",
+        "appid": 1240440
+      },
+      {
+        "name": "Dead Space",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1693980/header.jpg",
+        "appid": 1693980
+      }
+    ],
+    "Co-op": [
+      {
+        "name": "It Takes Two",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1426210/header.jpg",
+        "appid": 1426210
+      },
+      {
+        "name": "Deep Rock Galactic",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/548430/header.jpg",
+        "appid": 548430
+      },
+      {
+        "name": "Lethal Company",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1966720/header.jpg",
+        "appid": 1966720
+      },
+      {
+        "name": "Helldivers 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/553850/header.jpg",
+        "appid": 553850
+      },
+      {
+        "name": "Valheim",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/892970/header.jpg",
+        "appid": 892970
+      },
+      {
+        "name": "Overcooked! 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/448510/header.jpg",
+        "appid": 448510
+      },
+      {
+        "name": "Raft",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/648800/header.jpg",
+        "appid": 648800
+      },
+      {
+        "name": "Don't Starve Together",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/322330/header.jpg",
+        "appid": 322330
+      }
+    ],
+    "Multiplayer": [
+      {
+        "name": "Rust",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/252490/header.jpg",
+        "appid": 252490
+      },
+      {
+        "name": "Counter-Strike 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/730/header.jpg",
+        "appid": 730
+      },
+      {
+        "name": "Apex Legends",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg",
+        "appid": 1172470
+      },
+      {
+        "name": "Team Fortress 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/440/header.jpg",
+        "appid": 440
+      },
+      {
+        "name": "Rainbow Six Siege",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/359550/header.jpg",
+        "appid": 359550
+      },
+      {
+        "name": "Dead by Daylight",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/381210/header.jpg",
+        "appid": 381210
+      },
+      {
+        "name": "Phasmophobia",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/739630/header.jpg",
+        "appid": 739630
+      },
+      {
+        "name": "Among Us",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/945360/header.jpg",
+        "appid": 945360
+      }
+    ],
+    "Retro FPS": [
+      {
+        "name": "ULTRAKILL",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1229490/header.jpg",
+        "appid": 1229490
+      },
+      {
+        "name": "DUSK",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/504230/header.jpg",
+        "appid": 504230
+      },
+      {
+        "name": "Cultic",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1684930/header.jpg",
+        "appid": 1684930
+      },
+      {
+        "name": "Ion Fury",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/562860/header.jpg",
+        "appid": 562860
+      },
+      {
+        "name": "Prodeus",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/964800/header.jpg",
+        "appid": 964800
+      },
+      {
+        "name": "Amid Evil",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/673130/header.jpg",
+        "appid": 673130
+      },
+      {
+        "name": "Warhammer 40K: Boltgun",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2005010/header.jpg",
+        "appid": 2005010
+      },
+      {
+        "name": "Blood: Fresh Supply",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1010750/header.jpg",
+        "appid": 1010750
+      }
+    ],
+    "Racing": [
+      {
+        "name": "Forza Horizon 5",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1551360/header.jpg",
+        "appid": 1551360
+      },
+      {
+        "name": "F1 23",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2108330/header.jpg",
+        "appid": 2108330
+      },
+      {
+        "name": "Assetto Corsa",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/244210/header.jpg",
+        "appid": 244210
+      },
+      {
+        "name": "Need for Speed Unbound",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1846380/header.jpg",
+        "appid": 1846380
+      },
+      {
+        "name": "Dirt Rally 2.0",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/690790/header.jpg",
+        "appid": 690790
+      },
+      {
+        "name": "Wreckfest",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/228380/header.jpg",
+        "appid": 228380
+      },
+      {
+        "name": "BeamNG.drive",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/284160/header.jpg",
+        "appid": 284160
+      },
+      {
+        "name": "Hot Wheels Unleashed",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1271700/header.jpg",
+        "appid": 1271700
+      }
+    ],
+    "Sports": [
+      {
+        "name": "EA SPORTS FC 24",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2195250/header.jpg",
+        "appid": 2195250
+      },
+      {
+        "name": "NBA 2K24",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2338770/header.jpg",
+        "appid": 2338770
+      },
+      {
+        "name": "Rocket League",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/252950/header.jpg",
+        "appid": 252950
+      },
+      {
+        "name": "WWE 2K24",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2315690/header.jpg",
+        "appid": 2315690
+      },
+      {
+        "name": "Football Manager 2024",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2252570/header.jpg",
+        "appid": 2252570
+      },
+      {
+        "name": "Riders Republic",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2290180/header.jpg",
+        "appid": 2290180
+      },
+      {
+        "name": "Session: Skate Sim",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/861650/header.jpg",
+        "appid": 861650
+      },
+      {
+        "name": "PGA TOUR 2K23",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1588010/header.jpg",
+        "appid": 1588010
+      }
+    ],
+    "Massively Multiplayer": [
+      {
+        "name": "Final Fantasy XIV",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/39210/header.jpg",
+        "appid": 39210
+      },
+      {
+        "name": "Guild Wars 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1284210/header.jpg",
+        "appid": 1284210
+      },
+      {
+        "name": "The Elder Scrolls Online",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/306130/header.jpg",
+        "appid": 306130
+      },
+      {
+        "name": "Black Desert",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/582660/header.jpg",
+        "appid": 582660
+      },
+      {
+        "name": "Warframe",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/230410/header.jpg",
+        "appid": 230410
+      },
+      {
+        "name": "Lost Ark",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1599340/header.jpg",
+        "appid": 1599340
+      },
+      {
+        "name": "New World",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1063730/header.jpg",
+        "appid": 1063730
+      },
+      {
+        "name": "Old School RuneScape",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1343370/header.jpg",
+        "appid": 1343370
+      }
+    ],
+    "Free To Play": [
+      {
+        "name": "Counter-Strike 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/730/header.jpg",
+        "appid": 730
+      },
+      {
+        "name": "Dota 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/570/header.jpg",
+        "appid": 570
+      },
+      {
+        "name": "Apex Legends",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1172470/header.jpg",
+        "appid": 1172470
+      },
+      {
+        "name": "Path of Exile",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/238960/header.jpg",
+        "appid": 238960
+      },
+      {
+        "name": "Warframe",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/230410/header.jpg",
+        "appid": 230410
+      },
+      {
+        "name": "Team Fortress 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/440/header.jpg",
+        "appid": 440
+      },
+      {
+        "name": "Destiny 2",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1085660/header.jpg",
+        "appid": 1085660
+      },
+      {
+        "name": "The Sims 4",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1222670/header.jpg",
+        "appid": 1222670
+      }
+    ],
+    "Early Access": [
+      {
+        "name": "Manor Lords",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1363080/header.jpg",
+        "appid": 1363080
+      },
+      {
+        "name": "Palworld",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1623730/header.jpg",
+        "appid": 1623730
+      },
+      {
+        "name": "Enshrouded",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1203630/header.jpg",
+        "appid": 1203630
+      },
+      {
+        "name": "Sons of the Forest",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1326470/header.jpg",
+        "appid": 1326470
+      },
+      {
+        "name": "Gray Zone Warfare",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/2479810/header.jpg",
+        "appid": 2479810
+      },
+      {
+        "name": "Satisfactory",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/526870/header.jpg",
+        "appid": 526870
+      },
+      {
+        "name": "Valheim",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/892970/header.jpg",
+        "appid": 892970
+      },
+      {
+        "name": "V Rising",
+        "imageUrl": "https://cdn.akamai.steamstatic.com/steam/apps/1604030/header.jpg",
+        "appid": 1604030
       }
     ],
     "Action": [

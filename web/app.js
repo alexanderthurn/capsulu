@@ -1416,20 +1416,41 @@ function openSimulatorGame(appid, imageUrl, name, isUser) {
 }
 
 /**
- * Render In-Situ Competition Simulator (Contextual Genre Lineup with User in Center Position)
+ * Retrieve Competitor Capsule Catalog for Specific Genre / Tag / All
+ */
+function getCompetitorsForLens(lensKey) {
+    if (typeof benchmarksData === 'undefined' || !benchmarksData.genre_competitors) {
+        return typeof STORE_CATALOG !== 'undefined' ? STORE_CATALOG : [];
+    }
+    const comps = benchmarksData.genre_competitors;
+    if (!lensKey || lensKey === 'all' || lensKey.toLowerCase() === 'all steam games') {
+        return comps['all'] || comps['overall'] || STORE_CATALOG;
+    }
+
+    if (comps[lensKey] && comps[lensKey].length > 0) {
+        return comps[lensKey];
+    }
+
+    // Exact case-insensitive match
+    const exact = Object.keys(comps).find(k => k.toLowerCase() === lensKey.toLowerCase());
+    if (exact && comps[exact] && comps[exact].length > 0) {
+        return comps[exact];
+    }
+
+    // Partial substring match
+    const partial = Object.keys(comps).find(k => lensKey.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(lensKey.toLowerCase()));
+    if (partial && comps[partial] && comps[partial].length > 0) {
+        return comps[partial];
+    }
+
+    return comps['all'] || comps['overall'] || STORE_CATALOG;
+}
+
+/**
+ * Render In-Situ Competition Simulator (Contextual Genre/Tag Lineup with User in Center Position)
  */
 function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all') {
-    let catalog = typeof STORE_CATALOG !== 'undefined' ? STORE_CATALOG : [];
-
-    // Pick contextual genre competitors if available
-    let targetGenre = genreKey;
-    if (targetGenre === 'all') {
-        targetGenre = detectGenreFromTags(currentLoadedTags) || 'all';
-    }
-
-    if (typeof benchmarksData !== 'undefined' && benchmarksData.genre_competitors && benchmarksData.genre_competitors[targetGenre]) {
-        catalog = benchmarksData.genre_competitors[targetGenre];
-    }
+    const catalog = getCompetitorsForLens(genreKey || 'all');
 
     // Filter out user's current game from the catalog
     const others = catalog.filter(g => String(g.appid) !== String(appid) && (g.name || "").toLowerCase() !== (userGameName || "").toLowerCase());
