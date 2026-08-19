@@ -3,9 +3,12 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Analyzed Games](https://img.shields.io/badge/benchmark-28%2C754%20Steam%20Games-orange.svg)](output/report.md)
+[![Live App](https://img.shields.io/badge/Live%20App-capsulu.feuerware.com-1a9fff.svg)](https://capsulu.feuerware.com)
 
 > [!NOTE]
 > **Legal Notice**: This project is an independent open-source research and developer tool. It is **not affiliated with, endorsed by, or sponsored by Valve Corporation**. Steam and the Steam logo are trademarks or registered trademarks of Valve Corporation in the U.S. and/or other countries.
+
+🌐 **Live Web Application**: **[https://capsulu.feuerware.com](https://capsulu.feuerware.com)**
 
 **Capsulu** is an open-source Computer Vision engine and storefront competition simulator for evaluating Steam capsule artwork. It benchmarks any game's capsule art against an empirical dataset of **28,754 real Steam games across 5 commercial sales tiers**.
 
@@ -66,7 +69,7 @@ pip install -r requirements.txt
 ```bash
 python3 server.py
 ```
-Open **[http://localhost:8000](http://localhost:8000)** in your browser!
+Open **[http://localhost:8000](http://localhost:8000)** in your browser, or visit the live deployment at **[https://capsulu.feuerware.com](https://capsulu.feuerware.com)**!
 
 ---
 

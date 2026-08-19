@@ -2646,3 +2646,22 @@ body {
         display: none !important;
     }
 }
+
+
+.nav-tab-link {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #8f9ea6;
+}
+
+.nav-tab-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.github-icon-svg {
+    opacity: 0.85;
+    vertical-align: middle;
+}
