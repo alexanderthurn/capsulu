@@ -926,6 +926,7 @@ function runComputerVision(img) {
     const isCenterFocused = spotlightRatio > 0;
 
     const dominantColors = extractDominantColors(colorSamples);
+    const textAnalysis = analyzeTextAndLogo(data, lumArray, w, h);
 
     return {
         avgBrightness: round(avgBrightness, 1),
@@ -940,7 +941,197 @@ function runComputerVision(img) {
         lightRatio: round((lightCount / totalPixels) * 100, 1),
         isCenterFocused: isCenterFocused,
         spotlightRatio: round(spotlightRatio, 1),
-        dominantColors: dominantColors
+        dominantColors: dominantColors,
+        textAnalysis: textAnalysis,
+        titleZone: textAnalysis.zoneLabel,
+        titleZoneKey: textAnalysis.zoneKey,
+        titleSizePct: textAnalysis.sizePct,
+        titleSizeClass: textAnalysis.sizeClass,
+        titleSizeLabel: textAnalysis.sizeLabel,
+        titleContrast: textAnalysis.contrastRatio,
+        titleReadability: textAnalysis.readability,
+        titleReadabilityLabel: textAnalysis.readabilityLabel
+    };
+}
+
+/**
+ * Detect Text & Logo Position, Relative Size %, and Contrast Clarity
+ * Using 9-Zone Spatial Gradient Density & Local Luminance Analysis
+ */
+function analyzeTextAndLogo(rgbaData, lumArray, w, h) {
+    const totalPixels = w * h;
+    
+    // 9 Spatial Zone Definitions (3x3 grid)
+    const zones = {
+        top_left:   { x1: 0.0,  y1: 0.0,  x2: 0.33, y2: 0.33, label: "Top Left" },
+        top_center: { x1: 0.33, y1: 0.0,  x2: 0.67, y2: 0.33, label: "Top Center" },
+        top_right:  { x1: 0.67, y1: 0.0,  x2: 1.0,  y2: 0.33, label: "Top Right" },
+        mid_left:   { x1: 0.0,  y1: 0.33, x2: 0.33, y2: 0.67, label: "Middle Left" },
+        mid_center: { x1: 0.33, y1: 0.33, x2: 0.67, y2: 0.67, label: "Middle Center" },
+        mid_right:  { x1: 0.67, y1: 0.33, x2: 1.0,  y2: 0.67, label: "Middle Right" },
+        bot_left:   { x1: 0.0,  y1: 0.67, x2: 0.33, y2: 1.0,  label: "Bottom Left" },
+        bot_center: { x1: 0.33, y1: 0.67, x2: 0.67, y2: 1.0,  label: "Bottom Center" },
+        bot_right:  { x1: 0.67, y1: 0.67, x2: 1.0,  y2: 1.0,  label: "Bottom Right" }
+    };
+
+    // 1. Grid of block stroke gradients (16x16 pixel blocks)
+    const blockSize = 16;
+    const gridCols = Math.floor(w / blockSize);
+    const gridRows = Math.floor(h / blockSize);
+    const blockScores = new Float32Array(gridCols * gridRows);
+    const blockLums = new Float32Array(gridCols * gridRows);
+
+    let maxBlockScore = 0;
+    for (let by = 0; by < gridRows; by++) {
+        for (let bx = 0; bx < gridCols; bx++) {
+            let strokeEdges = 0;
+            let sumL = 0;
+            let count = 0;
+
+            const startX = bx * blockSize;
+            const startY = by * blockSize;
+
+            for (let y = startY + 1; y < startY + blockSize - 1; y++) {
+                for (let x = startX + 1; x < startX + blockSize - 1; x++) {
+                    const gx = 
+                        -1 * lumArray[(y - 1) * w + (x - 1)] + 1 * lumArray[(y - 1) * w + (x + 1)] +
+                        -2 * lumArray[y * w + (x - 1)]       + 2 * lumArray[y * w + (x + 1)] +
+                        -1 * lumArray[(y + 1) * w + (x - 1)] + 1 * lumArray[(y + 1) * w + (x + 1)];
+
+                    const gy = 
+                        -1 * lumArray[(y - 1) * w + (x - 1)] + -2 * lumArray[(y - 1) * w + x] + -1 * lumArray[(y - 1) * w + (x + 1)] +
+                         1 * lumArray[(y + 1) * w + (x - 1)] +  2 * lumArray[(y + 1) * w + x] +  1 * lumArray[(y + 1) * w + (x + 1)];
+
+                    const mag = Math.sqrt(gx * gx + gy * gy);
+                    if (mag > 60) strokeEdges++;
+                    sumL += lumArray[y * w + x];
+                    count++;
+                }
+            }
+
+            const score = strokeEdges / (count || 1);
+            const idx = by * gridCols + bx;
+            blockScores[idx] = score;
+            blockLums[idx] = sumL / (count || 1);
+            if (score > maxBlockScore) maxBlockScore = score;
+        }
+    }
+
+    // 2. Zone density accumulation
+    const zoneDensity = {};
+    Object.keys(zones).forEach(k => zoneDensity[k] = 0);
+
+    for (let by = 0; by < gridRows; by++) {
+        const ry = (by + 0.5) / gridRows;
+        for (let bx = 0; bx < gridCols; bx++) {
+            const rx = (bx + 0.5) / gridCols;
+            const score = blockScores[by * gridCols + bx];
+
+            for (const [zKey, z] of Object.entries(zones)) {
+                if (rx >= z.x1 && rx < z.x2 && ry >= z.y1 && ry < z.y2) {
+                    zoneDensity[zKey] += score;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Find zone with highest typographic edge concentration
+    let topZoneKey = "mid_center";
+    let topZoneScore = -1;
+    for (const [zKey, score] of Object.entries(zoneDensity)) {
+        if (score > topZoneScore) {
+            topZoneScore = score;
+            topZoneKey = zKey;
+        }
+    }
+
+    // 3. Estimate Logo Bounding Box & Area Size %
+    const threshold = Math.max(0.12, maxBlockScore * 0.45);
+    let minBX = gridCols, maxBX = 0, minBY = gridRows, maxBY = 0;
+    let activeBlocks = 0;
+
+    for (let by = 0; by < gridRows; by++) {
+        for (let bx = 0; bx < gridCols; bx++) {
+            if (blockScores[by * gridCols + bx] >= threshold) {
+                activeBlocks++;
+                if (bx < minBX) minBX = bx;
+                if (bx > maxBX) maxBX = bx;
+                if (by < minBY) minBY = by;
+                if (by > maxBY) maxBY = by;
+            }
+        }
+    }
+
+    let sizePct = 18.5;
+    if (activeBlocks >= 2 && maxBX >= minBX && maxBY >= minBY) {
+        const spanW = (maxBX - minBX + 1) * blockSize;
+        const spanH = (maxBY - minBY + 1) * blockSize;
+        sizePct = Math.min(45, Math.max(8, round((spanW * spanH / totalPixels) * 100, 1)));
+    }
+
+    // Classify size
+    let sizeClass = "medium";
+    let sizeLabel = "Optimal (15-28%)";
+    if (sizePct > 28) {
+        sizeClass = "large";
+        sizeLabel = "Dominant (>28%)";
+    } else if (sizePct < 14) {
+        sizeClass = "small";
+        sizeLabel = "Compact (<14%)";
+    }
+
+    // 4. Calculate Local Text-to-Background WCAG Contrast Ratio
+    const targetZ = zones[topZoneKey];
+    const zStartBX = Math.floor(targetZ.x1 * gridCols);
+    const zEndBX = Math.ceil(targetZ.x2 * gridCols);
+    const zStartBY = Math.floor(targetZ.y1 * gridRows);
+    const zEndBY = Math.ceil(targetZ.y2 * gridRows);
+
+    const insideLums = [];
+    for (let by = zStartBY; by < zEndBY && by < gridRows; by++) {
+        for (let bx = zStartBX; bx < zEndBX && bx < gridCols; bx++) {
+            const idx = by * gridCols + bx;
+            insideLums.push(blockLums[idx]);
+        }
+    }
+
+    insideLums.sort((a, b) => a - b);
+    let contrastRatio = 3.5;
+    if (insideLums.length >= 4) {
+        const darkest = insideLums[0];
+        const brightest = insideLums[insideLums.length - 1];
+        const bgEstimate = insideLums[Math.floor(insideLums.length * 0.3)];
+        
+        const l1 = brightest / 255.0;
+        const l2 = Math.max(0, (darkest + bgEstimate) / (2 * 255.0));
+        contrastRatio = round((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05), 1);
+        if (contrastRatio < 1.1) contrastRatio = 1.2;
+        if (contrastRatio > 21.0) contrastRatio = 21.0;
+    }
+
+    let readability = "good";
+    let readabilityLabel = "High Clarity (≥4.5:1)";
+    if (contrastRatio >= 4.5) {
+        readability = "good";
+        readabilityLabel = "High Clarity (≥4.5:1)";
+    } else if (contrastRatio >= 3.0) {
+        readability = "fair";
+        readabilityLabel = "Moderate (3.0–4.5:1)";
+    } else {
+        readability = "poor";
+        readabilityLabel = "Low Contrast (<3.0:1)";
+    }
+
+    return {
+        zoneKey: topZoneKey,
+        zoneLabel: zones[topZoneKey].label,
+        sizePct: sizePct,
+        sizeClass: sizeClass,
+        sizeLabel: sizeLabel,
+        contrastRatio: contrastRatio,
+        readability: readability,
+        readabilityLabel: readabilityLabel
     };
 }
 
@@ -1017,12 +1208,22 @@ function evaluateScores(cv) {
     let focusScore = cv.isCenterFocused ? 92 : 60;
     if (cv.spotlightRatio > 10) focusScore = 98;
 
+    let textScore = 90;
+    if (cv.titleContrast < 3.0) {
+        textScore = Math.max(35, Math.round(cv.titleContrast * 20));
+    } else if (cv.titleContrast < 4.5) {
+        textScore = Math.round(70 + (cv.titleContrast - 3.0) * 15);
+    } else {
+        textScore = Math.min(100, Math.round(92 + (cv.titleContrast - 4.5) * 2));
+    }
+
     const overallScore = Math.round(
-        contrastScore * 0.30 +
-        warmthScore * 0.20 +
-        entropyScore * 0.20 +
+        contrastScore * 0.25 +
+        warmthScore * 0.15 +
+        entropyScore * 0.15 +
         edgeScore * 0.15 +
-        focusScore * 0.15
+        focusScore * 0.15 +
+        textScore * 0.15
     );
 
     let tierName = "🏆 Mega-Hit Grade";
@@ -1332,7 +1533,25 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
             deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
         }
 
-        if (recElem) recElem.innerHTML = `<strong>Global Steam Benchmark:</strong> High-converting capsules maintain contrast std dev > 63.0 and strong center focal hierarchy across all categories.`;
+        const allTextContrast = 3.5;
+        const diffTextContrast = round(cv.titleContrast - allTextContrast, 1);
+        const textContrastElem = document.getElementById('genreTextContrast');
+        const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
+        if (textContrastElem) textContrastElem.textContent = `${allTextContrast}:1 WCAG`;
+        if (deltaTextContrastElem) {
+            deltaTextContrastElem.textContent = `Your: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
+            deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
+        }
+
+        const textZoneElem = document.getElementById('genreTextZone');
+        const deltaTextZoneElem = document.getElementById('genreDeltaTextZone');
+        if (textZoneElem) textZoneElem.textContent = "Middle Center";
+        if (deltaTextZoneElem) {
+            deltaTextZoneElem.textContent = `Your: ${cv.titleZone} (${cv.titleSizePct}% Area)`;
+            deltaTextZoneElem.className = `genre-stat-delta delta-pos`;
+        }
+
+        if (recElem) recElem.innerHTML = `<strong>Global Steam Benchmark:</strong> High-converting capsules maintain contrast std dev > 63.0, sharp title contrast > 4.5:1, and strong center focal hierarchy across all categories.`;
         card.style.display = 'block';
         return;
     }
@@ -1383,6 +1602,28 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     if (deltaEdgeElem) {
         deltaEdgeElem.textContent = `Your: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
         deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
+    }
+
+    // 5. Title Contrast
+    const catTextContrast = (gData.text && gData.text.contrast && gData.text.contrast.median) || 3.5;
+    const diffTextContrast = round(cv.titleContrast - catTextContrast, 1);
+    const textContrastElem = document.getElementById('genreTextContrast');
+    const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
+    if (textContrastElem) textContrastElem.textContent = `${catTextContrast}:1 WCAG`;
+    if (deltaTextContrastElem) {
+        deltaTextContrastElem.textContent = `Your: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
+        deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
+    }
+
+    // 6. Dominant Placement Zone
+    const catTextZone = formatZoneName((gData.text && gData.text.top_zone) || 'mid_center');
+    const textZoneElem = document.getElementById('genreTextZone');
+    const deltaTextZoneElem = document.getElementById('genreDeltaTextZone');
+    if (textZoneElem) textZoneElem.textContent = catTextZone;
+    if (deltaTextZoneElem) {
+        const isMatch = cv.titleZone.toLowerCase() === catTextZone.toLowerCase();
+        deltaTextZoneElem.textContent = `Your: ${cv.titleZone} ${isMatch ? '(Matches)' : ''}`;
+        deltaTextZoneElem.className = `genre-stat-delta ${isMatch ? 'delta-pos' : 'delta-neutral'}`;
     }
 
     // Tailored Recommendation Tip
@@ -1720,6 +1961,38 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
         qmSubFocus.textContent = cv.isCenterFocused ? '✓ Central hero illuminated' : '⚠️ Outer edges need vignette';
     }
 
+    // Title Contrast & Clarity Quick Metric
+    const qsTextElem = document.getElementById('qsText');
+    if (qsTextElem) {
+        qsTextElem.textContent = `${cv.titleContrast}:1 WCAG`;
+        qsTextElem.className = `qm-val ${cv.titleContrast >= 4.5 ? 'val-green' : cv.titleContrast >= 3.0 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeText = document.getElementById('qmBadgeText');
+    if (qmBadgeText) {
+        qmBadgeText.textContent = cv.titleContrast >= 4.5 ? 'High Clarity' : cv.titleContrast >= 3.0 ? 'Moderate' : 'Low Contrast';
+        qmBadgeText.className = `qm-badge ${cv.titleContrast >= 4.5 ? 'qm-badge-green' : cv.titleContrast >= 3.0 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubText = document.getElementById('qmSubText');
+    if (qmSubText) {
+        qmSubText.textContent = cv.titleContrast >= 4.5 ? '✓ Meets WCAG AA standard' : '⚠️ Text risks blending into art';
+    }
+
+    // Logo Placement & Coverage Quick Metric
+    const qsLogoZoneElem = document.getElementById('qsLogoZone');
+    if (qsLogoZoneElem) {
+        qsLogoZoneElem.textContent = `${cv.titleZone} (${cv.titleSizePct}%)`;
+        qsLogoZoneElem.className = `qm-val ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'val-green' : 'val-gold'}`;
+    }
+    const qmBadgeLogoZone = document.getElementById('qmBadgeLogoZone');
+    if (qmBadgeLogoZone) {
+        qmBadgeLogoZone.textContent = cv.titleSizeLabel || cv.titleSizeClass;
+        qmBadgeLogoZone.className = `qm-badge ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'qm-badge-green' : 'qm-badge-gold'}`;
+    }
+    const qmSubLogoZone = document.getElementById('qmSubLogoZone');
+    if (qmSubLogoZone) {
+        qmSubLogoZone.textContent = cv.titleSizePct >= 12 ? '✓ Clear at 120px scale' : '⚠️ Logo may be too small in queue';
+    }
+
     // 6. Update Palette Swatches & D3 Cake Diagram
     renderPalettePieChart(cv.dominantColors);
 
@@ -1748,12 +2021,15 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
         swatchesContainer.appendChild(swatch);
     });
 
-    // 7. Update 5 Metric Rows
+    // 7. Update 6 Metric Rows
     updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `Your: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
     updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `Your: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
     updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `Your: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
     updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `Your: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
     updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
+
+    let textScore = Math.min(100, Math.round(cv.titleContrast >= 4.5 ? 90 + (cv.titleContrast - 4.5) * 2 : cv.titleContrast * 20));
+    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', textScore, `Your: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
 
     // 8. Generate Tailored Checklist
     generateChecklist(cv, scores, currentGenreLens);
@@ -1775,16 +2051,38 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     }, 50);
 }
 
+function formatZoneName(zoneKey) {
+    const map = {
+        top_left: "Top Left",
+        top_center: "Top Center",
+        top_right: "Top Right",
+        mid_left: "Middle Left",
+        mid_center: "Middle Center",
+        mid_right: "Middle Right",
+        bot_left: "Bottom Left",
+        bot_center: "Bottom Center",
+        bot_right: "Bottom Right"
+    };
+    return map[zoneKey] || zoneKey || "Middle Center";
+}
+
 function updateMetricRow(badgeId, barId, valId, score, valText, barWidthPct) {
     const badge = document.getElementById(badgeId);
-    badge.textContent = `${score}/100`;
-    badge.className = `metric-tag ${score >= 85 ? 'tag-green' : score >= 70 ? 'tag-gold' : 'tag-red'}`;
+    if (badge) {
+        badge.textContent = `${score}/100`;
+        badge.className = `metric-tag ${score >= 85 ? 'tag-green' : score >= 70 ? 'tag-gold' : 'tag-red'}`;
+    }
 
     const bar = document.getElementById(barId);
-    bar.style.width = `${Math.min(100, Math.max(10, barWidthPct))}%`;
-    bar.className = `metric-progress-fill ${score >= 85 ? 'fill-pass' : score >= 70 ? 'fill-warn' : 'fill-fail'}`;
+    if (bar) {
+        bar.style.width = `${Math.min(100, Math.max(10, barWidthPct))}%`;
+        bar.className = `metric-progress-fill ${score >= 85 ? 'fill-pass' : score >= 70 ? 'fill-warn' : 'fill-fail'}`;
+    }
 
-    document.getElementById(valId).textContent = valText;
+    const valElem = document.getElementById(valId);
+    if (valElem) {
+        valElem.textContent = valText;
+    }
 }
 
 /**
@@ -1808,6 +2106,27 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             status: 'pass',
             title: `🏷️ ${targetGenre} Tag Market Advice`,
             desc: gMeta.tip
+        });
+    }
+
+    // Title Contrast & Readability item
+    if (cv.titleContrast >= 4.5) {
+        items.push({
+            status: 'pass',
+            title: 'Title Logo Contrast & Legibility',
+            desc: `Your title typography achieves a strong ${cv.titleContrast}:1 contrast ratio against the backdrop (WCAG AA standard). It will remain sharp on small mobile screens and browse carousels.`
+        });
+    } else if (cv.titleContrast >= 3.0) {
+        items.push({
+            status: 'warn',
+            title: 'Enhance Title Logo Backdrop Contrast',
+            desc: `Title contrast is moderate (${cv.titleContrast}:1 vs 5.2:1 Mega-Hit avg). Consider adding a subtle dark drop shadow or stroke outline behind the logo to prevent blending into the background.`
+        });
+    } else {
+        items.push({
+            status: 'fail',
+            title: 'Critical: Low Title Contrast (< 3.0:1)',
+            desc: `Your title contrast (${cv.titleContrast}:1) is very low. The logo blends directly into the artwork and may be unreadable at 120px browse resolutions. Add a dark scrim or highlight stroke.`
         });
     }
 

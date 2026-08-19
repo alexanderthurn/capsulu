@@ -264,6 +264,22 @@
                                     <span class="qm-val" id="qsFocus">--</span>
                                     <span class="qm-sub" id="qmSubFocus">Vignetting & focus</span>
                                 </div>
+                                <div class="qm-cell" id="qmCellText">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">🔤 Title Clarity</span>
+                                        <span class="qm-badge" id="qmBadgeText">--</span>
+                                    </div>
+                                    <span class="qm-val" id="qsText">--</span>
+                                    <span class="qm-sub" id="qmSubText">Local text contrast</span>
+                                </div>
+                                <div class="qm-cell" id="qmCellLogoZone">
+                                    <div class="qm-header-row">
+                                        <span class="qm-label">📍 Logo Placement</span>
+                                        <span class="qm-badge" id="qmBadgeLogoZone">--</span>
+                                    </div>
+                                    <span class="qm-val" id="qsLogoZone">--</span>
+                                    <span class="qm-sub" id="qmSubLogoZone">Capsule area coverage</span>
+                                </div>
                             </div>
                         </section>
                     </div>
@@ -404,7 +420,7 @@
                         </div>
                     </div>
 
-                    <!-- 4-Stat Metric Grid -->
+                    <!-- 6-Stat Metric Grid -->
                     <div class="genre-metrics-grid">
                         <div class="genre-stat-box">
                             <span class="genre-stat-label">Tag Contrast Median</span>
@@ -425,6 +441,16 @@
                             <span class="genre-stat-label">Tag Edge Line Density</span>
                             <span class="genre-stat-val" id="genreEdgeDensity">--</span>
                             <span class="genre-stat-delta" id="genreDeltaEdge">vs Your: --</span>
+                        </div>
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Tag Title Contrast</span>
+                            <span class="genre-stat-val" id="genreTextContrast">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaTextContrast">vs Your: --</span>
+                        </div>
+                        <div class="genre-stat-box">
+                            <span class="genre-stat-label">Tag Dominant Placement</span>
+                            <span class="genre-stat-val" id="genreTextZone">--</span>
+                            <span class="genre-stat-delta" id="genreDeltaTextZone">vs Your: --</span>
                         </div>
                     </div>
 
@@ -549,6 +575,23 @@
                             <div class="metric-legend">
                                 <span class="legend-user" id="mFocusVal">Your: --</span>
                                 <span class="legend-target">72% of Mega-Hits use center spotlights</span>
+                            </div>
+                        </div>
+
+                        <!-- 6. Typography & Logo Clarity -->
+                        <div class="metric-item">
+                            <div class="metric-top-bar">
+                                <span class="metric-title">🔤 Typography & Title Logo Contrast (WCAG Ratio)</span>
+                                <span class="metric-tag" id="mTextScore">--</span>
+                            </div>
+                            <p class="metric-help">Luminance separation between title text and background art. Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
+                            <div class="metric-progress-track">
+                                <div class="metric-progress-fill" id="mTextBar"></div>
+                                <div class="benchmark-pin" style="left: 55%;" title="Mega-Hit Avg (5.2:1)"></div>
+                            </div>
+                            <div class="metric-legend">
+                                <span class="legend-user" id="mTextVal">Your: --</span>
+                                <span class="legend-target">Mega-Hit Avg: 5.2:1 (WCAG AA) | Flop Avg: 3.5:1</span>
                             </div>
                         </div>
                     </div>

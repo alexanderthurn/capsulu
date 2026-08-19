@@ -291,6 +291,27 @@ def compute_category_stats(cat_dict, dataframe):
         top_sub = sub[sub["tier"].isin(["mega_hit", "successful"])]
         if len(top_sub) < 5:
             top_sub = sub
+            
+        text_sub = sub[sub["title_contrast"].notna() & (sub["title_contrast"] > 0)]
+        has_text_pct = round(float((sub["has_text"] == True).mean() * 100), 1) if "has_text" in sub.columns else 85.0
+        
+        # Title contrast (WCAG ratio)
+        title_contrast_median = round(float(text_sub["title_contrast"].median()), 2) if len(text_sub) > 0 else 3.5
+        title_contrast_mean = round(float(text_sub["title_contrast"].mean()), 2) if len(text_sub) > 0 else 5.2
+        title_contrast_p75 = round(float(text_sub["title_contrast"].quantile(0.75)), 2) if len(text_sub) > 0 else 6.6
+        
+        # Most popular title zone
+        top_zone = "mid_center"
+        if "title_zone" in sub.columns:
+            valid_zones = sub[sub["title_zone"].isin(["top_left", "top_center", "top_right", "mid_left", "mid_center", "mid_right", "bot_left", "bot_center", "bot_right"])]["title_zone"]
+            if len(valid_zones) > 0:
+                top_zone = valid_zones.value_counts().index[0]
+                
+        # Readability percentage
+        good_readability_pct = 0.0
+        if "title_readability" in sub.columns:
+            good_readability_pct = round(float((sub["title_readability"] == "good").mean() * 100), 1)
+
         res[key] = {
             "name": meta["label"],
             "count": int(n),
@@ -324,6 +345,16 @@ def compute_category_stats(cat_dict, dataframe):
             "center_focus_pct": round(float((sub["focus"] == "center").mean() * 100), 1),
             "dark_ratio": round(float(sub["dark_ratio"].mean() * 100), 1),
             "light_ratio": round(float(sub["light_ratio"].mean() * 100), 1),
+            "text": {
+                "has_text_pct": has_text_pct,
+                "contrast": {
+                    "median": title_contrast_median,
+                    "mean": title_contrast_mean,
+                    "p75": title_contrast_p75,
+                },
+                "top_zone": top_zone,
+                "good_readability_pct": good_readability_pct,
+            }
         }
     return res
 
@@ -340,6 +371,10 @@ overall_stats = {
     "entropy_p10": round(float(clean_df["entropy"].quantile(0.10)), 2),
     "edge_density_p90": round(float(clean_df["edge_density"].quantile(0.90) * 100), 2),
     "edge_density_p10": round(float(clean_df["edge_density"].quantile(0.10) * 100), 2),
+    "title_contrast_median": round(float(clean_df["title_contrast"].median()), 2),
+    "title_contrast_mean": round(float(clean_df["title_contrast"].mean()), 2),
+    "title_contrast_p75": round(float(clean_df["title_contrast"].quantile(0.75)), 2),
+    "title_good_readability_pct": round(float((clean_df["title_readability"] == "good").mean() * 100), 1),
 }
 
 # 4. Curated sample presets

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-19T13:05:51.870077",
+  "generated_at": "2026-08-19T13:15:45.625936",
   "overall": {
     "total_games_analyzed": 28754,
     "contrast_p90": 78.4,
@@ -7,7 +7,11 @@
     "entropy_p90": 7.72,
     "entropy_p10": 4.97,
     "edge_density_p90": 20.99,
-    "edge_density_p10": 5.36
+    "edge_density_p10": 5.36,
+    "title_contrast_median": 3.49,
+    "title_contrast_mean": 5.21,
+    "title_contrast_p75": 6.61,
+    "title_good_readability_pct": 32.5
   },
   "tiers": {
     "mega_hit": {
@@ -204,7 +208,17 @@
       "cool_palette_pct": 7.1,
       "center_focus_pct": 72.8,
       "dark_ratio": 53.7,
-      "light_ratio": 17.4
+      "light_ratio": 17.4,
+      "text": {
+        "has_text_pct": 83.9,
+        "contrast": {
+          "median": 3.58,
+          "mean": 5.3,
+          "p75": 6.8
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.1
+      }
     },
     "Adventure": {
       "name": "Adventure",
@@ -238,7 +252,17 @@
       "cool_palette_pct": 7.3,
       "center_focus_pct": 73.3,
       "dark_ratio": 52.1,
-      "light_ratio": 18.8
+      "light_ratio": 18.8,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.58,
+          "mean": 5.41,
+          "p75": 7.04
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 34.3
+      }
     },
     "RPG": {
       "name": "RPG",
@@ -272,7 +296,17 @@
       "cool_palette_pct": 5.7,
       "center_focus_pct": 70.8,
       "dark_ratio": 49.1,
-      "light_ratio": 19.9
+      "light_ratio": 19.9,
+      "text": {
+        "has_text_pct": 86.9,
+        "contrast": {
+          "median": 3.49,
+          "mean": 5.0,
+          "p75": 6.14
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.7
+      }
     },
     "Strategy": {
       "name": "Strategy",
@@ -306,7 +340,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 70.7,
       "dark_ratio": 48.4,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 86.6,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.86,
+          "p75": 5.94
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.3
+      }
     },
     "Simulation": {
       "name": "Simulation",
@@ -340,7 +384,17 @@
       "cool_palette_pct": 7.4,
       "center_focus_pct": 69.8,
       "dark_ratio": 45.8,
-      "light_ratio": 21.1
+      "light_ratio": 21.1,
+      "text": {
+        "has_text_pct": 85.8,
+        "contrast": {
+          "median": 3.28,
+          "mean": 4.93,
+          "p75": 6.12
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 30.7
+      }
     },
     "Casual": {
       "name": "Casual",
@@ -374,7 +428,17 @@
       "cool_palette_pct": 9.9,
       "center_focus_pct": 68.7,
       "dark_ratio": 43.6,
-      "light_ratio": 23.5
+      "light_ratio": 23.5,
+      "text": {
+        "has_text_pct": 82.8,
+        "contrast": {
+          "median": 3.24,
+          "mean": 4.88,
+          "p75": 5.98
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 29.2
+      }
     },
     "Indie": {
       "name": "Indie",
@@ -408,7 +472,17 @@
       "cool_palette_pct": 8.0,
       "center_focus_pct": 72.4,
       "dark_ratio": 51.3,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 83.5,
+        "contrast": {
+          "median": 3.54,
+          "mean": 5.35,
+          "p75": 6.92
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.0
+      }
     },
     "Racing": {
       "name": "Racing",
@@ -442,7 +516,17 @@
       "cool_palette_pct": 8.0,
       "center_focus_pct": 70.0,
       "dark_ratio": 45.4,
-      "light_ratio": 21.3
+      "light_ratio": 21.3,
+      "text": {
+        "has_text_pct": 85.4,
+        "contrast": {
+          "median": 3.15,
+          "mean": 4.78,
+          "p75": 5.8
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 28.6
+      }
     },
     "Sports": {
       "name": "Sports",
@@ -476,7 +560,17 @@
       "cool_palette_pct": 10.2,
       "center_focus_pct": 69.4,
       "dark_ratio": 44.0,
-      "light_ratio": 21.9
+      "light_ratio": 21.9,
+      "text": {
+        "has_text_pct": 83.8,
+        "contrast": {
+          "median": 3.3,
+          "mean": 4.93,
+          "p75": 6.05
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 30.5
+      }
     },
     "Massively Multiplayer": {
       "name": "Massively Multiplayer",
@@ -510,7 +604,17 @@
       "cool_palette_pct": 5.9,
       "center_focus_pct": 71.7,
       "dark_ratio": 51.0,
-      "light_ratio": 18.2
+      "light_ratio": 18.2,
+      "text": {
+        "has_text_pct": 86.4,
+        "contrast": {
+          "median": 3.67,
+          "mean": 4.96,
+          "p75": 6.1
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 34.1
+      }
     },
     "Free To Play": {
       "name": "Free To Play",
@@ -544,7 +648,17 @@
       "cool_palette_pct": 8.1,
       "center_focus_pct": 70.9,
       "dark_ratio": 51.5,
-      "light_ratio": 19.6
+      "light_ratio": 19.6,
+      "text": {
+        "has_text_pct": 84.4,
+        "contrast": {
+          "median": 3.78,
+          "mean": 5.68,
+          "p75": 7.54
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 35.3
+      }
     },
     "Early Access": {
       "name": "Early Access",
@@ -578,7 +692,17 @@
       "cool_palette_pct": 8.5,
       "center_focus_pct": 75.8,
       "dark_ratio": 53.4,
-      "light_ratio": 16.6
+      "light_ratio": 16.6,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.67,
+          "mean": 5.28,
+          "p75": 6.78
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.7
+      }
     }
   },
   "tags": {
@@ -614,7 +738,17 @@
       "cool_palette_pct": 8.5,
       "center_focus_pct": 70.0,
       "dark_ratio": 46.5,
-      "light_ratio": 21.2
+      "light_ratio": 21.2,
+      "text": {
+        "has_text_pct": 84.4,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.97,
+          "p75": 6.12
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 30.7
+      }
     },
     "Roguelike Deckbuilder": {
       "name": "Roguelike Deckbuilder",
@@ -648,7 +782,17 @@
       "cool_palette_pct": 7.8,
       "center_focus_pct": 72.1,
       "dark_ratio": 50.9,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 84.0,
+        "contrast": {
+          "median": 3.52,
+          "mean": 5.27,
+          "p75": 6.74
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.8
+      }
     },
     "Action Roguelike": {
       "name": "Action Roguelike",
@@ -682,7 +826,17 @@
       "cool_palette_pct": 7.6,
       "center_focus_pct": 72.3,
       "dark_ratio": 51.4,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 83.9,
+        "contrast": {
+          "median": 3.54,
+          "mean": 5.3,
+          "p75": 6.82
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.0
+      }
     },
     "Metroidvania": {
       "name": "Metroidvania",
@@ -716,7 +870,17 @@
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
       "dark_ratio": 51.1,
-      "light_ratio": 19.3
+      "light_ratio": 19.3,
+      "text": {
+        "has_text_pct": 84.2,
+        "contrast": {
+          "median": 3.52,
+          "mean": 5.28,
+          "p75": 6.78
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.0
+      }
     },
     "Souls-like": {
       "name": "Souls-like",
@@ -750,7 +914,17 @@
       "cool_palette_pct": 6.8,
       "center_focus_pct": 72.0,
       "dark_ratio": 52.0,
-      "light_ratio": 18.4
+      "light_ratio": 18.4,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.53,
+          "mean": 5.21,
+          "p75": 6.62
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.7
+      }
     },
     "Survival Horror": {
       "name": "Survival Horror",
@@ -784,7 +958,17 @@
       "cool_palette_pct": 7.0,
       "center_focus_pct": 77.7,
       "dark_ratio": 60.6,
-      "light_ratio": 13.3
+      "light_ratio": 13.3,
+      "text": {
+        "has_text_pct": 84.5,
+        "contrast": {
+          "median": 3.83,
+          "mean": 5.59,
+          "p75": 7.35
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 36.1
+      }
     },
     "Cozy Sim": {
       "name": "Cozy Sim",
@@ -818,7 +1002,17 @@
       "cool_palette_pct": 9.1,
       "center_focus_pct": 69.4,
       "dark_ratio": 45.1,
-      "light_ratio": 22.2
+      "light_ratio": 22.2,
+      "text": {
+        "has_text_pct": 83.7,
+        "contrast": {
+          "median": 3.3,
+          "mean": 4.97,
+          "p75": 6.14
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 30.2
+      }
     },
     "Turn-Based Tactics": {
       "name": "Turn-Based Tactics",
@@ -852,7 +1046,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 70.7,
       "dark_ratio": 48.4,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 86.6,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.86,
+          "p75": 5.94
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.3
+      }
     },
     "Turn-Based Strategy": {
       "name": "Turn-Based Strategy",
@@ -886,7 +1090,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 70.7,
       "dark_ratio": 48.4,
-      "light_ratio": 19.1
+      "light_ratio": 19.1,
+      "text": {
+        "has_text_pct": 86.6,
+        "contrast": {
+          "median": 3.34,
+          "mean": 4.86,
+          "p75": 5.94
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.3
+      }
     },
     "City Builder": {
       "name": "City Builder",
@@ -920,7 +1134,17 @@
       "cool_palette_pct": 7.3,
       "center_focus_pct": 70.4,
       "dark_ratio": 47.6,
-      "light_ratio": 20.0
+      "light_ratio": 20.0,
+      "text": {
+        "has_text_pct": 85.9,
+        "contrast": {
+          "median": 3.33,
+          "mean": 4.92,
+          "p75": 6.03
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.0
+      }
     },
     "Retro FPS": {
       "name": "Retro FPS",
@@ -954,7 +1178,17 @@
       "cool_palette_pct": 7.1,
       "center_focus_pct": 72.8,
       "dark_ratio": 53.7,
-      "light_ratio": 17.4
+      "light_ratio": 17.4,
+      "text": {
+        "has_text_pct": 83.9,
+        "contrast": {
+          "median": 3.58,
+          "mean": 5.3,
+          "p75": 6.8
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.1
+      }
     },
     "Dragons": {
       "name": "Dragons",
@@ -988,7 +1222,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 71.7,
       "dark_ratio": 51.0,
-      "light_ratio": 18.7
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 85.0,
+        "contrast": {
+          "median": 3.48,
+          "mean": 5.13,
+          "p75": 6.43
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.3
+      }
     },
     "PvP": {
       "name": "PvP",
@@ -1022,7 +1266,17 @@
       "cool_palette_pct": 7.4,
       "center_focus_pct": 72.0,
       "dark_ratio": 51.7,
-      "light_ratio": 18.1
+      "light_ratio": 18.1,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.49,
+          "mean": 5.15,
+          "p75": 6.49
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.4
+      }
     },
     "PvE": {
       "name": "PvE",
@@ -1056,7 +1310,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 72.4,
       "dark_ratio": 51.8,
-      "light_ratio": 18.8
+      "light_ratio": 18.8,
+      "text": {
+        "has_text_pct": 84.6,
+        "contrast": {
+          "median": 3.54,
+          "mean": 5.28,
+          "p75": 6.77
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.3
+      }
     },
     "Fantasy": {
       "name": "Fantasy",
@@ -1090,7 +1354,17 @@
       "cool_palette_pct": 7.1,
       "center_focus_pct": 72.3,
       "dark_ratio": 50.6,
-      "light_ratio": 19.2
+      "light_ratio": 19.2,
+      "text": {
+        "has_text_pct": 85.5,
+        "contrast": {
+          "median": 3.5,
+          "mean": 5.21,
+          "p75": 6.61
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.1
+      }
     },
     "Magic": {
       "name": "Magic",
@@ -1124,7 +1398,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 71.7,
       "dark_ratio": 51.0,
-      "light_ratio": 18.7
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 85.0,
+        "contrast": {
+          "median": 3.48,
+          "mean": 5.13,
+          "p75": 6.43
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.3
+      }
     },
     "Medieval": {
       "name": "Medieval",
@@ -1158,7 +1442,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 71.7,
       "dark_ratio": 51.0,
-      "light_ratio": 18.7
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 85.0,
+        "contrast": {
+          "median": 3.48,
+          "mean": 5.13,
+          "p75": 6.43
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.3
+      }
     },
     "Military": {
       "name": "Military",
@@ -1192,7 +1486,17 @@
       "cool_palette_pct": 7.5,
       "center_focus_pct": 71.7,
       "dark_ratio": 50.8,
-      "light_ratio": 18.7
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 84.8,
+        "contrast": {
+          "median": 3.46,
+          "mean": 5.12,
+          "p75": 6.43
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.2
+      }
     },
     "Wargame": {
       "name": "Wargame",
@@ -1226,7 +1530,17 @@
       "cool_palette_pct": 7.3,
       "center_focus_pct": 70.4,
       "dark_ratio": 47.6,
-      "light_ratio": 20.0
+      "light_ratio": 20.0,
+      "text": {
+        "has_text_pct": 85.9,
+        "contrast": {
+          "median": 3.33,
+          "mean": 4.92,
+          "p75": 6.03
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 31.0
+      }
     },
     "Card Game": {
       "name": "Card Game",
@@ -1260,7 +1574,17 @@
       "cool_palette_pct": 8.7,
       "center_focus_pct": 69.8,
       "dark_ratio": 46.0,
-      "light_ratio": 21.4
+      "light_ratio": 21.4,
+      "text": {
+        "has_text_pct": 84.4,
+        "contrast": {
+          "median": 3.31,
+          "mean": 4.91,
+          "p75": 6.02
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 30.4
+      }
     },
     "Pixel Graphics": {
       "name": "Pixel Graphics",
@@ -1294,7 +1618,17 @@
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
       "dark_ratio": 51.1,
-      "light_ratio": 19.3
+      "light_ratio": 19.3,
+      "text": {
+        "has_text_pct": 84.2,
+        "contrast": {
+          "median": 3.52,
+          "mean": 5.28,
+          "p75": 6.78
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.0
+      }
     },
     "Cyberpunk": {
       "name": "Cyberpunk",
@@ -1328,7 +1662,17 @@
       "cool_palette_pct": 6.8,
       "center_focus_pct": 72.0,
       "dark_ratio": 52.0,
-      "light_ratio": 18.4
+      "light_ratio": 18.4,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.53,
+          "mean": 5.21,
+          "p75": 6.62
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.7
+      }
     },
     "Open World": {
       "name": "Open World",
@@ -1362,7 +1706,17 @@
       "cool_palette_pct": 7.2,
       "center_focus_pct": 72.4,
       "dark_ratio": 51.8,
-      "light_ratio": 18.8
+      "light_ratio": 18.8,
+      "text": {
+        "has_text_pct": 84.6,
+        "contrast": {
+          "median": 3.54,
+          "mean": 5.28,
+          "p75": 6.77
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.3
+      }
     },
     "Sci-fi": {
       "name": "Sci-fi",
@@ -1396,7 +1750,17 @@
       "cool_palette_pct": 7.5,
       "center_focus_pct": 71.7,
       "dark_ratio": 50.8,
-      "light_ratio": 18.7
+      "light_ratio": 18.7,
+      "text": {
+        "has_text_pct": 84.8,
+        "contrast": {
+          "median": 3.46,
+          "mean": 5.12,
+          "p75": 6.43
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.2
+      }
     },
     "Co-op": {
       "name": "Co-op",
@@ -1430,7 +1794,17 @@
       "cool_palette_pct": 7.7,
       "center_focus_pct": 72.1,
       "dark_ratio": 51.1,
-      "light_ratio": 19.3
+      "light_ratio": 19.3,
+      "text": {
+        "has_text_pct": 84.2,
+        "contrast": {
+          "median": 3.52,
+          "mean": 5.28,
+          "p75": 6.78
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 33.0
+      }
     },
     "Multiplayer": {
       "name": "Multiplayer",
@@ -1464,7 +1838,17 @@
       "cool_palette_pct": 7.4,
       "center_focus_pct": 72.0,
       "dark_ratio": 51.7,
-      "light_ratio": 18.1
+      "light_ratio": 18.1,
+      "text": {
+        "has_text_pct": 84.7,
+        "contrast": {
+          "median": 3.49,
+          "mean": 5.15,
+          "p75": 6.49
+        },
+        "top_zone": "mid_center",
+        "good_readability_pct": 32.4
+      }
     }
   },
   "presets": [
