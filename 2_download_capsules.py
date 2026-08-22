@@ -49,42 +49,52 @@ def load_apps(tier: str) -> list:
 
 
 def download_header(appid: int) -> dict:
-    """Download the header image for a single game."""
+    """Download the header image for a single game with automatic CDN fallbacks."""
     filepath = os.path.join(IMAGES_DIR, f"{appid}.jpg")
 
     # Skip if already downloaded
-    if os.path.exists(filepath) and os.path.getsize(filepath) > 0:
+    if os.path.exists(filepath) and os.path.getsize(filepath) > 1000:
         return {
             "appid": appid,
             "status": "skipped",
             "size": os.path.getsize(filepath),
         }
 
-    url = f"{CDN_BASE}/{appid}/header.jpg"
+    # Candidate URLs: primary static CDN, shared store assets CDN, and raw_store JSON if present
+    candidate_urls = [
+        f"https://cdn.akamai.steamstatic.com/steam/apps/{appid}/header.jpg",
+        f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/header.jpg",
+    ]
 
-    try:
-        resp = requests.get(url, timeout=TIMEOUT)
+    # Check if we already have exact hashed URL in raw_store
+    store_file = os.path.join(DATA_DIR, "raw_store", f"{appid}.json")
+    if os.path.exists(store_file):
+        try:
+            with open(store_file, "r", encoding="utf-8") as sf:
+                s_data = json.load(sf)
+                exact_url = s_data.get("raw_response", {}).get(str(appid), {}).get("data", {}).get("header_image")
+                if exact_url and exact_url not in candidate_urls:
+                    candidate_urls.insert(0, exact_url)
+        except Exception:
+            pass
 
-        if resp.status_code == 200:
-            content_type = resp.headers.get("Content-Type", "")
-            if "image" not in content_type and len(resp.content) < 1000:
-                return {"appid": appid, "status": "not_found", "size": 0}
+    for url in candidate_urls:
+        try:
+            resp = requests.get(url, timeout=TIMEOUT, headers={"User-Agent": "Mozilla/5.0"})
+            if resp.status_code == 200:
+                content_type = resp.headers.get("Content-Type", "")
+                if "image" in content_type or len(resp.content) >= 1000:
+                    with open(filepath, "wb") as f:
+                        f.write(resp.content)
+                    return {
+                        "appid": appid,
+                        "status": "downloaded",
+                        "size": len(resp.content),
+                    }
+        except Exception:
+            continue
 
-            with open(filepath, "wb") as f:
-                f.write(resp.content)
-
-            return {
-                "appid": appid,
-                "status": "downloaded",
-                "size": len(resp.content),
-            }
-        elif resp.status_code == 404:
-            return {"appid": appid, "status": "not_found", "size": 0}
-        else:
-            return {"appid": appid, "status": f"error_{resp.status_code}", "size": 0}
-
-    except requests.exceptions.RequestException as e:
-        return {"appid": appid, "status": "error", "size": 0, "error": str(e)}
+    return {"appid": appid, "status": "not_found", "size": 0}
 
 
 def format_size(size_bytes: int) -> str:

@@ -33,8 +33,8 @@ PROGRESS_FILE = os.path.join(DATA_DIR, "fetch_progress.json")
 
 STORE_API = "https://store.steampowered.com/api/appdetails"
 
-# Default delay between requests (seconds)
-DEFAULT_DELAY = 1.5
+# Default delay between requests (seconds) — conservative 2.0s pause for Steam API (30 req/min, well under 200/5min limit)
+DEFAULT_DELAY = 2.0
 
 # Backoff settings
 INITIAL_BACKOFF = 60       # Wait 60s on first rate limit
@@ -86,7 +86,20 @@ def fetch_app_details(appid: int, delay: float) -> dict:
         if resp.status_code == 429:
             return {"appid": appid, "status": "rate_limited"}
 
-        # Other HTTP errors
+        # Permanent 4xx errors (game delisted, removed, region locked, or 404)
+        if resp.status_code in (400, 403, 404):
+            raw_output = {
+                "appid": appid,
+                "fetched_at": datetime.now(timezone.utc).isoformat(),
+                "http_status": resp.status_code,
+                "api_success": False,
+                "raw_response": {"error": f"HTTP {resp.status_code}"},
+            }
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(raw_output, f, indent=2, ensure_ascii=False)
+            return {"appid": appid, "status": f"not_found_{resp.status_code}"}
+
+        # Other HTTP errors (e.g. 500/502/503 server errors)
         if resp.status_code != 200:
             return {
                 "appid": appid,
@@ -95,26 +108,26 @@ def fetch_app_details(appid: int, delay: float) -> dict:
 
         # Parse response
         try:
-            data = resp.json()
+            data = resp.json() or {}
         except json.JSONDecodeError:
-            return {"appid": appid, "status": "invalid_json"}
+            data = {"error": "invalid_json"}
 
         # Steam returns {"{appid}": {"success": true/false, "data": {...}}}
-        app_data = data.get(str(appid), {})
+        app_data = data.get(str(appid), {}) if isinstance(data, dict) else {}
 
         # Save the FULL raw response regardless of success
         raw_output = {
             "appid": appid,
             "fetched_at": datetime.now(timezone.utc).isoformat(),
             "http_status": resp.status_code,
-            "api_success": app_data.get("success", False),
+            "api_success": app_data.get("success", False) if isinstance(app_data, dict) else False,
             "raw_response": data,
         }
 
         with open(filepath, "w", encoding="utf-8") as f:
             json.dump(raw_output, f, indent=2, ensure_ascii=False)
 
-        if app_data.get("success"):
+        if isinstance(app_data, dict) and app_data.get("success"):
             return {"appid": appid, "status": "success"}
         else:
             return {"appid": appid, "status": "api_failed"}
@@ -258,8 +271,9 @@ def main():
             print(f"     Re-run the script to resume from where we left off.")
             break
 
-        # Progress update
-        if completed % 50 == 0 or completed == total:
+        # Progress update & checkpoint every 10 games
+        if completed % 10 == 0 or completed == total:
+            save_progress(stats, completed + already_done, total_before_filter)
             elapsed = time.time() - start_time
             rate = completed / elapsed if elapsed > 0 else 0
             eta = (total - completed) / rate if rate > 0 else 0

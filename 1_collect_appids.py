@@ -25,8 +25,8 @@ import requests
 STEAMSPY_API = "https://steamspy.com/api.php"
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
-# Rate limit between API requests (seconds)
-RATE_LIMIT_DELAY = 1.2
+# Rate limit between API requests (seconds) — conservative 2.0s pause
+RATE_LIMIT_DELAY = 2.0
 
 # Tier thresholds (by estimated owners)
 TOP_TIER_MIN_OWNERS = 500_000         # 500K+ owners = successful
@@ -90,44 +90,68 @@ def fetch_page(page: int, retries: int = 3) -> dict:
             return {}
 
 
-def collect_apps(num_pages: int) -> list:
-    """Fetch all pages and return a list of apps with tier classification."""
-    all_apps = {}
+def load_existing_apps() -> dict:
+    """Load existing apps_all.json if present to enable incremental non-destructive updates."""
+    filepath = os.path.join(DATA_DIR, "apps_all.json")
+    if not os.path.exists(filepath):
+        return {}
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            apps = data.get("apps", [])
+            print(f"📖 Loaded {len(apps):,} existing games from {filepath}")
+            return {a["appid"]: a for a in apps}
+    except Exception as e:
+        print(f"⚠️  Could not load existing apps: {e}")
+        return {}
 
-    print(f"\n📦 Fetching {num_pages} pages from SteamSpy...\n")
+
+def collect_apps(num_pages: int = 100, start_page: int = 0) -> list:
+    """Fetch pages from SteamSpy, merging into the existing dataset non-destructively."""
+    all_apps = load_existing_apps()
+    existing_count = len(all_apps)
+
+    print(f"\n📦 Fetching up to {num_pages} pages from SteamSpy (starting at page {start_page})...\n")
 
     empty_pages = 0
-    for page in range(num_pages):
+    for page in range(start_page, start_page + num_pages):
         data = fetch_page(page)
 
         if not data:
             empty_pages += 1
             if empty_pages >= 3:
-                print(f"\n  ⚠️  Got 3 empty pages in a row, stopping early.")
+                print(f"\n  🏁 Reached end of catalog (3 empty pages in a row at page {page}). Stopping.")
                 break
         else:
             empty_pages = 0
 
-        for appid_str, info in data.items():
-            appid = int(appid_str)
-            owners_est = parse_owner_range(info.get("owners", "0"))
+            for appid_str, info in data.items():
+                try:
+                    appid = int(appid_str)
+                except ValueError:
+                    continue
 
-            all_apps[appid] = {
-                "appid": appid,
-                "name": info.get("name", "Unknown"),
-                "owners_estimate": owners_est,
-                "players_forever": info.get("players_forever", 0),
-                "average_playtime_forever": info.get("average_forever", 0),
-                "positive_reviews": info.get("positive", 0),
-                "negative_reviews": info.get("negative", 0),
-                "tier": classify_tier(owners_est),
-            }
+                owners_est = parse_owner_range(info.get("owners", "0"))
+
+                all_apps[appid] = {
+                    "appid": appid,
+                    "name": info.get("name", "Unknown"),
+                    "owners_estimate": owners_est,
+                    "players_forever": info.get("players_forever", 0),
+                    "average_playtime_forever": info.get("average_forever", 0),
+                    "positive_reviews": info.get("positive", 0),
+                    "negative_reviews": info.get("negative", 0),
+                    "tier": classify_tier(owners_est),
+                }
 
         time.sleep(RATE_LIMIT_DELAY)
 
     # Sort by estimated owners (descending)
     apps_list = list(all_apps.values())
     apps_list.sort(key=lambda x: x["owners_estimate"], reverse=True)
+
+    new_count = len(apps_list) - existing_count
+    print(f"\n✨ Dataset expanded: {existing_count:,} → {len(apps_list):,} games (+{new_count:,} new games)")
 
     return apps_list
 
@@ -214,19 +238,25 @@ def main():
     parser.add_argument(
         "--pages",
         type=int,
-        default=30,
-        help="Number of pages to fetch (each page ~ 1,000 games). Default: 30",
+        default=100,
+        help="Max number of pages to fetch (each page ~ 1,000 games). Default: 100 (auto-stops at end of catalog)",
+    )
+    parser.add_argument(
+        "--start-page",
+        type=int,
+        default=0,
+        help="Page to start fetching from. Default: 0",
     )
     args = parser.parse_args()
 
     print("🎮 Steam Capsulu — App ID Collector")
-    print(f"   Pages to fetch: {args.pages}")
+    print(f"   Pages to fetch: {args.pages} (starting at page {args.start_page})")
     print(f"   Tier thresholds:")
     print(f"     🏆 Top:  {TOP_TIER_MIN_OWNERS:,}+ owners")
     print(f"     📊 Mid:  {MID_TIER_MIN_OWNERS:,}–{TOP_TIER_MIN_OWNERS:,} owners")
     print(f"     📉 Low:  <{MID_TIER_MIN_OWNERS:,} owners")
 
-    apps = collect_apps(num_pages=args.pages)
+    apps = collect_apps(num_pages=args.pages, start_page=args.start_page)
     result = print_summary(apps)
 
     if result:
