@@ -252,7 +252,7 @@
                             <div class="game-result-capsule-box-full">
                                 <a id="resultHeroCapsuleLink" href="" target="_blank" rel="noopener noreferrer"
                                     title="Open on Steam">
-                                    <img id="resultHeroCapsuleImg" src="" alt="Capsule Artwork">
+                                    <img id="resultHeroCapsuleImg" src="" alt="Capsule Artwork" crossorigin="anonymous">
                                 </a>
                             </div>
                             <!-- Tags & Genres row directly below image -->
@@ -599,7 +599,7 @@
 
                                 <!-- Step 3: Paste in your AI Chat (Inline quick launch targets) -->
                                 <div class="ai-chat-quick-group" id="aiStep3Group">
-                                    <span class="ai-chat-group-label">Paste in your AI Chat:</span>
+                                    <span class="ai-chat-group-label">3. Paste in your AI Chat</span>
                                     <div class="ai-chat-targets-inline" id="aiChatTargetsInline" style="display: none;">
                                         <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
                                             class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
@@ -666,7 +666,7 @@
                             </div>
                         </div>
 
-                        <!-- BOX 3 (100%): WebGPU Neural Diffusion -->
+                        <!-- BOX 3 (50%): WebGPU Neural Diffusion -->
                         <div class="improve-card improve-card-webgpu" id="improveCardWebGpu">
                             <div class="improve-card-header">
                                 <div class="improve-card-title-group">
@@ -681,7 +681,7 @@
 
                             <div class="webgpu-status-card" id="webgpuStatusCard">
                                 <div class="webgpu-header-row">
-                                    <span class="webgpu-device-label" id="webgpuDeviceLabel">--</span>
+                                    <span class="webgpu-device-label" id="webgpuDeviceLabel">Checking Hardware...</span>
                                 </div>
                                 <p class="webgpu-explainer" id="webgpuExplainerText">
                                     In-browser latent diffusion models (SD-Turbo / LCM) run locally on modern graphics
@@ -689,30 +689,61 @@
                                 </p>
                             </div>
 
-                            <div class="webgpu-pipeline-box">
-                                <div class="webgpu-pipeline-step">
-                                    <span class="step-num">1</span>
-                                    <div class="step-content">
-                                        <h4>Hardware Tensor Execution</h4>
-                                        <p>Direct WebGPU WGSL compute shaders map latent noise directly to 224×224 /
-                                            512×512 image tensors.</p>
+                            <!-- WebGPU Action Trigger Buttons -->
+                            <div class="webgpu-actions-row">
+                                <button type="button" id="btnRunWebGpuDiffusion" class="btn-ai-action btn-run-diffusion"
+                                    title="Download model weights & run in-browser WebGPU diffusion">
+                                    <span>🚀</span> <span id="runWebGpuText">Run In-Browser WebGPU Diffusion (~1 GB)</span>
+                                </button>
+                            </div>
+
+                            <!-- Live Progress & Download Tracker (Revealed during generation) -->
+                            <div class="webgpu-progress-card" id="webgpuProgressCard" style="display: none;">
+                                <div class="webgpu-progress-header">
+                                    <div class="webgpu-progress-title-row">
+                                        <span class="webgpu-spinner-icon">⚡</span>
+                                        <span class="webgpu-progress-label" id="webgpuProgressLabel">Streaming quantized neural tensors...</span>
                                     </div>
+                                    <span class="webgpu-progress-pct" id="webgpuProgressPct">0%</span>
                                 </div>
-                                <div class="webgpu-pipeline-step">
-                                    <span class="step-num">2</span>
-                                    <div class="step-content">
-                                        <h4>Deficit-Guided Inpainting</h4>
-                                        <p>Applies localized lighting repair and rim-light highlights while preserving
-                                            the original game title character art.</p>
-                                    </div>
+                                <div class="webgpu-progress-track">
+                                    <div class="webgpu-progress-fill" id="webgpuProgressFill" style="width: 0%;"></div>
+                                </div>
+                                <div class="webgpu-progress-footer">
+                                    <span class="webgpu-phase-desc" id="webgpuPhaseDesc">Initializing WebGPU pipeline...</span>
+                                    <button type="button" id="btnCancelWebGpu" class="btn-cancel-webgpu" title="Cancel Generation">✖ Cancel</button>
                                 </div>
                             </div>
-                            <div class="webgpu-actions-row">
-                                <button type="button" id="btnCopyWebGpuPrompt" class="btn-ai-action btn-copy-prompt"
-                                    title="Copy Diffusion Inpainting Prompt">
-                                    <span id="copyWebGpuIcon">📋</span> <span id="copyWebGpuText">Copy Neural Inpainting
-                                        Prompt</span>
-                                </button>
+
+                            <!-- Interactive Neural Result Card (Revealed after generation) -->
+                            <div class="webgpu-result-card" id="webgpuResultCard" style="display: none;">
+                                <div class="webgpu-result-header">
+                                    <h4 class="webgpu-result-title">✨ Neural Inpainting Output</h4>
+                                    <span class="webgpu-telemetry-badge" id="webgpuTelemetryBadge">⚡ WebGPU Accelerated (1.4s)</span>
+                                </div>
+
+                                <!-- Interactive Before / After Split Slider for WebGPU Neural Output -->
+                                <div class="before-after-slider-wrapper" id="webgpuBeforeAfterSlider">
+                                    <div class="slider-canvas-box">
+                                        <canvas id="webgpuCanvasBefore" width="460" height="215" class="slider-layer slider-before-layer"></canvas>
+                                        <canvas id="webgpuCanvasAfter" width="460" height="215" class="slider-layer slider-after-layer"></canvas>
+                                        <div class="slider-handle" id="webgpuSliderHandle">
+                                            <div class="slider-handle-line"></div>
+                                            <div class="slider-handle-knob">⬌</div>
+                                        </div>
+                                        <span class="slider-tag tag-before">Original</span>
+                                        <span class="slider-tag tag-after">Enhanced</span>
+                                    </div>
+                                </div>
+
+                                <div class="webgpu-result-actions">
+                                    <button type="button" id="btnDownloadWebGpuArt" class="btn-ai-action btn-download-capsule" title="Download neural inpainting capsule artwork">
+                                        <span>⬇️</span> <span>Download (Free to Use)</span>
+                                    </button>
+                                    <button type="button" id="btnTestWebGpuInSim" class="btn-ai-action btn-copy-prompt" title="Preview in the 3x3 storefront simulator">
+                                        <span id="testWebGpuSimIcon">👁️</span> <span id="testWebGpuSimText">Test in 3×3 Simulator</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1128,7 +1159,7 @@
                             <span class="ai-step-circle">2</span>
                             <span class="ai-step-tag" id="aiStep2Tag">Step 2 (Waiting for Step 1)</span>
                         </div>
-                        <h3 class="ai-step-title">Paste in your AI chat</h3>
+                        <h3 class="ai-step-title">3. Paste in your AI chat</h3>
                         <p class="ai-step-desc"></p>
                         <div class="ai-chat-targets">
                             <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
@@ -1452,6 +1483,7 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
     <script src="js/cv_engine.js"></script>
     <script src="js/ai_forecast.js"></script>
     <script src="js/autofix_engine.js"></script>
+    <script src="js/webgpu_diffusion_engine.js"></script>
 
     <!-- Main Controller & UI Engine -->
     <script src="app.js"></script>

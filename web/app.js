@@ -652,35 +652,185 @@ function setupEventListeners() {
         });
     }
 
-    // WebGPU Prompt Copy Button
-    const btnCopyWebGpuPrompt = document.getElementById('btnCopyWebGpuPrompt');
-    if (btnCopyWebGpuPrompt) {
-        btnCopyWebGpuPrompt.addEventListener('click', () => {
-            const prompt = `[Stable Diffusion / ControlNet Inpainting Guide for Steam Capsule]
-Game Title: ${currentLoadedGameName || 'Indie Game'}
-App ID: ${currentLoadedAppId || 'N/A'}
-Resolution: 460x215 (aspect ratio 2.14:1)
+    // In-Browser WebGPU Neural Diffusion Runner
+    const btnRunWebGpu = document.getElementById('btnRunWebGpuDiffusion');
+    const btnCancelWebGpu = document.getElementById('btnCancelWebGpu');
+    const webgpuProgressCard = document.getElementById('webgpuProgressCard');
+    const webgpuResultCard = document.getElementById('webgpuResultCard');
+    const webgpuProgressFill = document.getElementById('webgpuProgressFill');
+    const webgpuProgressPct = document.getElementById('webgpuProgressPct');
+    const webgpuProgressLabel = document.getElementById('webgpuProgressLabel');
+    const webgpuPhaseDesc = document.getElementById('webgpuPhaseDesc');
+    const webgpuTelemetryBadge = document.getElementById('webgpuTelemetryBadge');
 
-Positive Prompt:
-masterpiece, high contrast dramatic studio lighting, golden hour amber rim light, sharp silhouette, deep rich dark background, commercial steam banner artwork, 8k render, octane render
+    if (btnRunWebGpu) {
+        btnRunWebGpu.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (!window.CapsuluWebGpu) return;
 
-Inpainting Mask:
-Mask the outer 15% borders (vignette falloff) and cast shadows behind character silhouettes. Retain 100% clarity on logo typography.
+            let sourceImg = (cvCanvas && cvCanvas.width > 0) ? cvCanvas : document.getElementById('resultHeroCapsuleImg');
+            if (!sourceImg || (sourceImg.naturalWidth === 0 && sourceImg.width === 0)) {
+                if (currentLoadedImgSrc) {
+                    sourceImg = new Image();
+                    sourceImg.crossOrigin = 'anonymous';
+                    await new Promise((res) => {
+                        sourceImg.onload = res;
+                        sourceImg.onerror = res;
+                        sourceImg.src = currentLoadedImgSrc;
+                    });
+                }
+            }
+            if (!sourceImg) return;
 
-Denoising Strength: 0.35 - 0.45`;
+            if (webgpuResultCard) webgpuResultCard.style.display = 'none';
+            if (webgpuProgressCard) webgpuProgressCard.style.display = 'block';
+            btnRunWebGpu.disabled = true;
 
-            navigator.clipboard.writeText(prompt).then(() => {
-                const icon = document.getElementById('copyWebGpuIcon');
-                const text = document.getElementById('copyWebGpuText');
-                if (icon) icon.textContent = '✓';
-                if (text) text.textContent = 'Copied Neural Prompt!';
-                btnCopyWebGpuPrompt.classList.add('copied');
+            try {
+                const result = await window.CapsuluWebGpu.runInpaintingPipeline(
+                    sourceImg,
+                    { gameName: currentLoadedGameName, appid: currentLoadedAppId },
+                    (prog) => {
+                        if (webgpuProgressFill) webgpuProgressFill.style.width = `${prog.pct || 0}%`;
+                        if (webgpuProgressPct) webgpuProgressPct.textContent = `${prog.pct || 0}%`;
+                        if (webgpuProgressLabel && prog.message) webgpuProgressLabel.textContent = prog.message;
+                        if (webgpuPhaseDesc) {
+                            if (prog.speedMBs) {
+                                webgpuPhaseDesc.textContent = `Bandwidth: ${prog.speedMBs} MB/s | Phase: ${prog.phase}`;
+                            } else {
+                                webgpuPhaseDesc.textContent = `Phase: ${prog.phase} (${prog.pct}%)`;
+                            }
+                        }
+                    }
+                );
+
+                currentWebGpuCanvas = result.canvas;
+
+                const nativeW = sourceImg.naturalWidth || sourceImg.videoWidth || sourceImg.width || 460;
+                const nativeH = sourceImg.naturalHeight || sourceImg.videoHeight || sourceImg.height || 215;
+
+                // Render Before Canvas
+                const canvasBefore = document.getElementById('webgpuCanvasBefore');
+                if (canvasBefore) {
+                    canvasBefore.width = nativeW;
+                    canvasBefore.height = nativeH;
+                    const ctxB = canvasBefore.getContext('2d');
+                    ctxB.imageSmoothingEnabled = true;
+                    ctxB.imageSmoothingQuality = 'high';
+                    ctxB.clearRect(0, 0, nativeW, nativeH);
+                    ctxB.drawImage(sourceImg, 0, 0, nativeW, nativeH);
+                }
+
+                // Render After Canvas
+                const canvasAfter = document.getElementById('webgpuCanvasAfter');
+                if (canvasAfter && result.canvas) {
+                    canvasAfter.width = nativeW;
+                    canvasAfter.height = nativeH;
+                    const ctxA = canvasAfter.getContext('2d');
+                    ctxA.imageSmoothingEnabled = true;
+                    ctxA.imageSmoothingQuality = 'high';
+                    ctxA.clearRect(0, 0, nativeW, nativeH);
+                    ctxA.drawImage(result.canvas, 0, 0, nativeW, nativeH);
+                }
+
+                // Initialize Before / After Slider for WebGPU
+                if (window.CapsuluAutofix && window.CapsuluAutofix.initBeforeAfterSlider) {
+                    window.CapsuluAutofix.initBeforeAfterSlider('webgpuBeforeAfterSlider');
+                }
+
+                if (webgpuTelemetryBadge) {
+                    webgpuTelemetryBadge.textContent = `⚡ WebGPU Inpainted in ${(result.durationMs / 1000).toFixed(1)}s (${result.vramUsedMB} MB VRAM)`;
+                }
+
+                if (webgpuProgressCard) webgpuProgressCard.style.display = 'none';
+                if (webgpuResultCard) {
+                    webgpuResultCard.style.display = 'block';
+                    webgpuResultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                const runText = document.getElementById('runWebGpuText');
+                if (runText) runText.textContent = 'Re-Generate with WebGPU';
+            } catch (err) {
+                console.warn('WebGPU execution error or cancelled:', err);
+                if (webgpuProgressCard) webgpuProgressCard.style.display = 'none';
+            } finally {
+                btnRunWebGpu.disabled = false;
+            }
+        });
+    }
+
+    if (btnCancelWebGpu) {
+        btnCancelWebGpu.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (window.CapsuluWebGpu) {
+                window.CapsuluWebGpu.cancelInference();
+            }
+            if (webgpuProgressCard) webgpuProgressCard.style.display = 'none';
+            if (btnRunWebGpu) btnRunWebGpu.disabled = false;
+        });
+    }
+
+    // WebGPU Generated Art Download Button
+    const btnDownloadWebGpuArt = document.getElementById('btnDownloadWebGpuArt');
+    if (btnDownloadWebGpuArt) {
+        btnDownloadWebGpuArt.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentWebGpuCanvas) return;
+            const filename = `${(currentLoadedGameName || 'steam_capsule').toLowerCase().replace(/[^a-z0-9]/g, '_')}_neural_webgpu.jpg`;
+            currentWebGpuCanvas.toBlob((blob) => {
+                if (!blob) return;
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
                 setTimeout(() => {
-                    if (icon) icon.textContent = '📋';
-                    if (text) text.textContent = 'Copy Neural Inpainting Prompt';
-                    btnCopyWebGpuPrompt.classList.remove('copied');
-                }, 2500);
-            });
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+                }, 1000);
+            }, 'image/jpeg', 0.95);
+        });
+    }
+
+    // WebGPU Test in 3x3 Simulator Button
+    const btnTestWebGpuInSim = document.getElementById('btnTestWebGpuInSim');
+    if (btnTestWebGpuInSim) {
+        btnTestWebGpuInSim.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentWebGpuCanvas) return;
+
+            const userSimImgs = document.querySelectorAll('.user-capsule-item img, [data-is-user="true"] img');
+            const testBtnText = document.getElementById('testWebGpuSimText');
+            const testBtnIcon = document.getElementById('testWebGpuSimIcon');
+
+            if (!isWebGpuAppliedToSim) {
+                // Apply WebGPU neural image
+                const neuralDataUrl = currentWebGpuCanvas.toDataURL('image/jpeg', 0.95);
+                userSimImgs.forEach(img => {
+                    img.src = neuralDataUrl;
+                });
+                isWebGpuAppliedToSim = true;
+                if (testBtnText) testBtnText.textContent = '✓ Applied! (Click to Revert)';
+                if (testBtnIcon) testBtnIcon.textContent = '↩️';
+            } else {
+                // Revert to original image
+                userSimImgs.forEach(img => {
+                    if (currentLoadedImgSrc) {
+                        img.src = currentLoadedImgSrc;
+                    }
+                });
+                isWebGpuAppliedToSim = false;
+                if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
+                if (testBtnIcon) testBtnIcon.textContent = '👁️';
+            }
+
+            // Scroll to visual check panel
+            const visualPanel = document.getElementById('visualCheckPanel');
+            if (visualPanel) {
+                visualPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         });
     }
 
@@ -878,6 +1028,11 @@ function initRecentList(forceReset = false) {
         }
     }
 
+    if (Array.isArray(items)) {
+        // Clean out any legacy upload items
+        items = items.filter(it => it && !it.isUpload && (it.appid || it.url));
+    }
+
     if (!items || items.length < 9) {
         items = getDefaultSamples();
     }
@@ -888,9 +1043,15 @@ function initRecentList(forceReset = false) {
 }
 
 function saveRecentItem(newItem) {
+    if (!newItem || newItem.isUpload || (!newItem.appid && !newItem.url)) {
+        return;
+    }
     try {
         let items = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]');
         if (!items || items.length === 0) items = getDefaultSamples();
+
+        // Filter out uploads and clean items
+        items = items.filter(it => it && !it.isUpload && (it.appid || it.url));
 
         // 1. Remove duplicate if already present
         items = items.filter(existing => {
@@ -1192,11 +1353,6 @@ function handleFile(file, customName) {
     reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
-            saveRecentItem({
-                name: gameName,
-                url: null,
-                isUpload: true
-            });
             runVisualAiAnalysisFlow(img, e.target.result, (cv, scores) => {
                 analyzeAndDisplay(img, e.target.result, gameName, null, ["Custom Artwork"], null, null, [], null, cv, scores);
             });
@@ -2939,6 +3095,8 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
 
 let currentAutofixCanvas = null;
 let isAutofixAppliedToSim = false;
+let currentWebGpuCanvas = null;
+let isWebGpuAppliedToSim = false;
 
 /**
  * Update the 3-Box Improve Master Section (AI Chat, 1-Click Autofix, WebGPU Diffusion)
@@ -3040,32 +3198,44 @@ function updateAutofixPane(cv, scores, gameName, imgSrc) {
  * Checks hardware WebGPU capabilities and updates the WebGPU diffusion status panel
  */
 async function updateWebGpuPane(cv, scores, gameName) {
-    if (!window.CapsuluAutofix) return;
+    if (!window.CapsuluWebGpu) return;
 
     const badge = document.getElementById('webgpuBadge');
     const statusText = document.getElementById('webgpuStatusText');
     const deviceLabel = document.getElementById('webgpuDeviceLabel');
     const explainer = document.getElementById('webgpuExplainerText');
+    const runText = document.getElementById('runWebGpuText');
+    const webgpuProgressCard = document.getElementById('webgpuProgressCard');
+    const webgpuResultCard = document.getElementById('webgpuResultCard');
+
+    // Reset studio panels for new analysis
+    if (webgpuProgressCard) webgpuProgressCard.style.display = 'none';
+    if (webgpuResultCard) webgpuResultCard.style.display = 'none';
+    isWebGpuAppliedToSim = false;
 
     try {
-        const gpuStatus = await window.CapsuluAutofix.checkWebGpuStatus();
-        if (gpuStatus.available) {
-            if (badge) {
-                badge.className = 'webgpu-badge badge-supported';
-            }
+        const gpuStatus = await window.CapsuluWebGpu.getWebGpuDevice();
+        const isCached = await window.CapsuluWebGpu.checkModelCached();
+
+        if (runText) {
+            runText.textContent = isCached 
+                ? 'Run In-Browser WebGPU Diffusion (Model Cached)' 
+                : 'Run In-Browser WebGPU Diffusion (~1 GB)';
+        }
+
+        if (gpuStatus.supported) {
+            if (badge) badge.className = 'webgpu-badge badge-supported';
             if (statusText) statusText.textContent = 'WebGPU Hardware Accelerated';
-            if (deviceLabel) deviceLabel.textContent = gpuStatus.vendor ? `${gpuStatus.vendor} (${gpuStatus.architecture || 'GPU'})` : 'Hardware Accelerated Device';
+            if (deviceLabel) deviceLabel.textContent = gpuStatus.info ? `${gpuStatus.info.device || gpuStatus.info.vendor}` : 'Hardware Accelerated Device';
             if (explainer) {
-                explainer.textContent = `Your browser and GPU support direct hardware execution for in-browser diffusion (SD-Turbo/LCM) with 0ms server latency.`;
+                explainer.textContent = `Your GPU supports direct in-browser tensor computation (SD-Turbo/LCM). Weights are stored in IndexedDB so the ~1 GB download runs only once.`;
             }
         } else {
-            if (badge) {
-                badge.className = 'webgpu-badge badge-unsupported';
-            }
+            if (badge) badge.className = 'webgpu-badge badge-unsupported';
             if (statusText) statusText.textContent = 'WebGPU: Software/Cloud Fallback';
-            if (deviceLabel) deviceLabel.textContent = gpuStatus.reason || 'No WebGPU adapter';
+            if (deviceLabel) deviceLabel.textContent = gpuStatus.reason || 'No WebGPU adapter detected';
             if (explainer) {
-                explainer.textContent = `WebGPU is not currently hardware accelerated on this device. Use our 1-Click Autofix or copy the neural prompt to your preferred AI studio.`;
+                explainer.textContent = `WebGPU hardware acceleration is not active in this browser session. You can run software diffusion or copy the neural prompt.`;
             }
         }
     } catch (e) {
