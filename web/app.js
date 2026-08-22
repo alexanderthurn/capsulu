@@ -110,8 +110,6 @@ window.switchSimView = function (mode) {
  */
 
 let benchmarksData = null;
-const CANVAS_WIDTH = 460;
-const CANVAS_HEIGHT = 215;
 const RECENT_STORAGE_KEY = 'steam_capsulu_recents_v4';
 
 // Active analysis evaluation state
@@ -161,6 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     cvCanvas.height = CANVAS_HEIGHT;
     setupEventListeners();
     await loadBenchmarks();
+    initOnnxModel();
     initRecentList();
     checkDeepLink();
     checkInitialTab();
@@ -285,6 +284,48 @@ function setupEventListeners() {
     if (navHomeBtn) navHomeBtn.addEventListener('click', () => setActiveTab('home'));
     if (navBenchmarkBtn) navBenchmarkBtn.addEventListener('click', () => setActiveTab('benchmark'));
     if (navAiBtn) navAiBtn.addEventListener('click', () => setActiveTab('ai'));
+
+    // Global helper to smoothly scroll to AI Methodology & Analysis Section
+    window.scrollToAiMethodology = function() {
+        if (typeof currentTab !== 'undefined' && currentTab !== 'home') {
+            if (typeof setActiveTab === 'function') setActiveTab('home');
+        }
+        
+        const executeScroll = () => {
+            const methodSection = document.getElementById('aiMethodologySection');
+            if (methodSection) {
+                // Compute exact absolute page top offset
+                const rect = methodSection.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                const targetY = Math.max(0, rect.top + scrollTop - 70);
+                
+                try {
+                    window.scrollTo({ top: targetY, behavior: 'smooth' });
+                } catch (e) {
+                    window.scrollTo(0, targetY);
+                }
+                
+                methodSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                methodSection.classList.remove('pulse-highlight');
+                void methodSection.offsetWidth; // trigger reflow
+                methodSection.classList.add('pulse-highlight');
+                setTimeout(() => methodSection.classList.remove('pulse-highlight'), 2500);
+            }
+        };
+
+        setTimeout(executeScroll, 50);
+        setTimeout(executeScroll, 250);
+    };
+
+    const aiForecastCard = document.getElementById('aiForecastCard');
+    if (aiForecastCard) {
+        aiForecastCard.style.cursor = 'pointer';
+        aiForecastCard.title = 'Click to learn how Capsulu analyzes artwork & forecasts sales';
+        aiForecastCard.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollToAiMethodology();
+        });
+    }
 
     window.addEventListener('popstate', () => {
         const p = new URLSearchParams(window.location.search);
@@ -681,8 +722,42 @@ function getDefaultSamples() {
     ];
 }
 
+const PINNED_SAMPLES = [
+    {
+        name: "DICEPTION",
+        appid: 4429000,
+        url: "https://store.steampowered.com/app/4429000/DICEPTION/",
+        imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4429000/56bd8aa0cf2d865acbae5501824e33c4dd8c2269/header.jpg?t=1785770104",
+        price: "4,99€",
+        tags: ["Indie", "Strategy"]
+    },
+    {
+        name: "Melodan",
+        appid: 4987230,
+        url: "https://store.steampowered.com/app/4987230/Melodan/",
+        imageUrl: "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4987230/833a1d7f3a40629d6c8edd334ad871425ccd644b/header.jpg?t=1786736037",
+        price: "Coming Soon (Q1 2027)",
+        tags: ["Action", "Indie", "Strategy"]
+    }
+];
+
+function ensurePinnedInList(items) {
+    if (!Array.isArray(items)) items = [];
+    
+    for (const pinned of PINNED_SAMPLES) {
+        const exists = items.some(x => 
+            (x.appid && String(x.appid) === String(pinned.appid)) || 
+            (x.name && x.name.toLowerCase() === pinned.name.toLowerCase())
+        );
+        if (!exists) {
+            items.push(pinned);
+        }
+    }
+    return items;
+}
+
 /**
- * Initialize / Render Merged Recent List
+ * Initialize / Render Merged Recent List (Guarantees DICEPTION and Melodan are always present)
  */
 function initRecentList(forceReset = false) {
     let items = [];
@@ -696,9 +771,10 @@ function initRecentList(forceReset = false) {
 
     if (!items || items.length < 9) {
         items = getDefaultSamples();
-        localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(items));
     }
 
+    items = ensurePinnedInList(items);
+    localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(items));
     renderRecentList(items);
 }
 
@@ -707,6 +783,7 @@ function saveRecentItem(newItem) {
         let items = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]');
         if (!items || items.length === 0) items = getDefaultSamples();
 
+        // 1. Remove duplicate if already present
         items = items.filter(existing => {
             if (newItem.name && existing.name && existing.name.toLowerCase() === newItem.name.toLowerCase()) return false;
             if (newItem.appid && existing.appid && String(existing.appid) === String(newItem.appid)) return false;
@@ -714,11 +791,34 @@ function saveRecentItem(newItem) {
             return true;
         });
 
+        // 2. Add newly tested item to front
         items.unshift(newItem);
-        items = items.slice(0, 12);
 
-        localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(items));
-        renderRecentList(items);
+        // 3. Separate non-pinned and pinned items so DICEPTION and Melodan NEVER get evicted
+        const nonPinned = items.filter(item => {
+            const isDiception = item.appid == 4429000 || (item.name && item.name.toLowerCase() === 'diception');
+            const isMelodan = item.appid == 4987230 || (item.name && item.name.toLowerCase() === 'melodan');
+            return !isDiception && !isMelodan;
+        });
+
+        // Keep up to 10 dynamic recent items
+        const trimmedNonPinned = nonPinned.slice(0, 10);
+
+        // 4. Assemble merged list preserving pinned games
+        let merged = [newItem, ...trimmedNonPinned];
+        merged = ensurePinnedInList(merged);
+
+        // 5. Deduplicate preserving order
+        const seen = new Set();
+        const finalItems = merged.filter(it => {
+            const key = it.appid ? String(it.appid) : (it.name || '').toLowerCase();
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+
+        localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(finalItems));
+        renderRecentList(finalItems);
     } catch (e) {
         console.warn('Error updating recent items:', e);
     }
@@ -947,8 +1047,9 @@ function loadImageWithFallbacks(urls, gameTitle, price, tags, appid, storeUrl, g
         img.crossOrigin = "anonymous";
 
         img.onload = () => {
-            analyzeAndDisplay(img, currentUrl, gameTitle, price, tags, appid, storeUrl, genres, reviews);
-            showLoading(false);
+            runVisualAiAnalysisFlow(img, currentUrl, (cv, scores) => {
+                analyzeAndDisplay(img, currentUrl, gameTitle, price, tags, appid, storeUrl, genres, reviews, cv, scores);
+            });
         };
 
         img.onerror = () => {
@@ -979,8 +1080,6 @@ function handleFile(file, customName) {
     const reader = new FileReader();
     const gameName = customName || file.name.replace(/\.[^/.]+$/, "");
 
-    showLoading(true);
-
     reader.onload = (e) => {
         const img = new Image();
         img.onload = () => {
@@ -989,613 +1088,192 @@ function handleFile(file, customName) {
                 url: null,
                 isUpload: true
             });
-            analyzeAndDisplay(img, e.target.result, gameName, null, ["Custom Artwork"], null, null);
-            showLoading(false);
+            runVisualAiAnalysisFlow(img, e.target.result, (cv, scores) => {
+                analyzeAndDisplay(img, e.target.result, gameName, null, ["Custom Artwork"], null, null, [], null, cv, scores);
+            });
         };
         img.src = e.target.result;
     };
     reader.readAsDataURL(file);
 }
 
-function showLoading(show, message = null) {
-    loadingBar.style.display = show ? 'block' : 'none';
-    if (show) resultsDashboard.style.display = 'none';
+let aiScanAnimInterval = null;
+
+function showLoading(show, message = null, previewSrc = null) {
+    if (show) {
+        loadingBar.style.display = 'block';
+        resultsDashboard.style.display = 'none';
+
+        const previewImg = document.getElementById('aiScanPreviewImg');
+        const kernelBox = document.getElementById('aiKernelBox');
+        const laser = document.getElementById('aiScanLaser');
+        const placeholder = document.getElementById('aiScanPlaceholder');
+
+        if (previewSrc) {
+            if (previewImg) {
+                previewImg.src = previewSrc;
+                previewImg.style.display = 'block';
+            }
+            if (kernelBox) kernelBox.style.display = 'block';
+            if (laser) laser.style.display = 'block';
+            if (placeholder) placeholder.style.display = 'none';
+            startFeatureCanvasAnimation();
+        } else {
+            if (previewImg) previewImg.style.display = 'none';
+            if (kernelBox) kernelBox.style.display = 'none';
+            if (laser) laser.style.display = 'none';
+            if (placeholder) {
+                placeholder.style.display = 'flex';
+                const span = placeholder.querySelector('span');
+                if (span) span.textContent = message || "Fetching Steam Store details & capsule asset...";
+            }
+        }
+
+        const textElem = document.getElementById('loadingDynamicText');
+        if (textElem) textElem.textContent = message || "Executing parallel neural inference and pixel metrics...";
+    } else {
+        stopFeatureCanvasAnimation();
+        loadingBar.style.display = 'none';
+        resultsDashboard.style.display = 'block';
+    }
 }
 
-/**
- * Pure JavaScript Computer Vision Engine
- */
-function runComputerVision(img) {
-    ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    const imgData = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    const data = imgData.data;
-    const totalPixels = CANVAS_WIDTH * CANVAS_HEIGHT;
-
-    const lumArray = new Float32Array(totalPixels);
-    const lumHist = new Uint32Array(256);
-
-    let sumLum = 0;
-    let sumLumSq = 0;
-    let sumSat = 0;
-    let warmCount = 0;
-    let coolCount = 0;
-    let neutralCount = 0;
-    let darkCount = 0;
-    let lightCount = 0;
-
-    const colorSamples = [];
-
-    for (let i = 0; i < totalPixels; i++) {
-        const r = data[i * 4];
-        const g = data[i * 4 + 1];
-        const b = data[i * 4 + 2];
-
-        const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        lumArray[i] = lum;
-        sumLum += lum;
-        sumLumSq += lum * lum;
-
-        const lumByte = Math.min(255, Math.floor(lum));
-        lumHist[lumByte]++;
-
-        if (lum < 80) darkCount++;
-        if (lum > 180) lightCount++;
-
-        const warmth = (r * 1.0 + g * 0.5) - (b * 1.0 + g * 0.2);
-        if (warmth > 25) warmCount++;
-        else if (warmth < -25) coolCount++;
-        else neutralCount++;
-
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        const delta = max - min;
-        const sat = max === 0 ? 0 : (delta / max) * 255;
-        sumSat += sat;
-
-        if (i % 40 === 0) {
-            colorSamples.push([r, g, b]);
-        }
-    }
-
-    const avgBrightness = sumLum / totalPixels;
-    const variance = (sumLumSq / totalPixels) - (avgBrightness * avgBrightness);
-    const brightnessStd = Math.sqrt(Math.max(0, variance));
-    const avgSaturation = sumSat / totalPixels;
-
-    let entropy = 0;
-    for (let i = 0; i < 256; i++) {
-        if (lumHist[i] > 0) {
-            const p = lumHist[i] / totalPixels;
-            entropy -= p * Math.log2(p);
-        }
-    }
-
-    let edgeCount = 0;
-    const w = CANVAS_WIDTH;
-    const h = CANVAS_HEIGHT;
-
-    for (let y = 1; y < h - 1; y += 2) {
-        for (let x = 1; x < w - 1; x += 2) {
-            const gx =
-                -1 * lumArray[(y - 1) * w + (x - 1)] + 1 * lumArray[(y - 1) * w + (x + 1)] +
-                -2 * lumArray[y * w + (x - 1)] + 2 * lumArray[y * w + (x + 1)] +
-                -1 * lumArray[(y + 1) * w + (x - 1)] + 1 * lumArray[(y + 1) * w + (x + 1)];
-
-            const gy =
-                -1 * lumArray[(y - 1) * w + (x - 1)] + -2 * lumArray[(y - 1) * w + x] + -1 * lumArray[(y - 1) * w + (x + 1)] +
-                1 * lumArray[(y + 1) * w + (x - 1)] + 2 * lumArray[(y + 1) * w + x] + 1 * lumArray[(y + 1) * w + (x + 1)];
-
-            const magnitude = Math.sqrt(gx * gx + gy * gy);
-            if (magnitude > 45) edgeCount++;
-        }
-    }
-    const edgeDensity = (edgeCount / (totalPixels / 4)) * 100;
-
-    const centerStartX = Math.floor(w * 0.25);
-    const centerEndX = Math.floor(w * 0.75);
-    const centerStartY = Math.floor(h * 0.2);
-    const centerEndY = Math.floor(h * 0.8);
-
-    let centerSum = 0;
-    let centerCount = 0;
-    let borderSum = 0;
-    let borderCount = 0;
-
-    for (let y = 0; y < h; y += 3) {
-        for (let x = 0; x < w; x += 3) {
-            const val = lumArray[y * w + x];
-            if (x >= centerStartX && x <= centerEndX && y >= centerStartY && y <= centerEndY) {
-                centerSum += val;
-                centerCount++;
-            } else {
-                borderSum += val;
-                borderCount++;
-            }
-        }
-    }
-
-    const centerBrightness = centerSum / (centerCount || 1);
-    const borderBrightness = borderSum / (borderCount || 1);
-    const spotlightRatio = centerBrightness - borderBrightness;
-    const isCenterFocused = spotlightRatio > 0;
-
-    const dominantColors = extractDominantColors(colorSamples);
-    const textAnalysis = analyzeTitleText(data, lumArray, w, h);
-
-    return {
-        avgBrightness: round(avgBrightness, 1),
-        brightnessStd: round(brightnessStd, 1),
-        avgSaturation: round(avgSaturation, 1),
-        entropy: round(entropy, 2),
-        edgeDensity: round(edgeDensity, 2),
-        warmPct: round((warmCount / totalPixels) * 100, 1),
-        coolPct: round((coolCount / totalPixels) * 100, 1),
-        neutralPct: round((neutralCount / totalPixels) * 100, 1),
-        darkRatio: round((darkCount / totalPixels) * 100, 1),
-        lightRatio: round((lightCount / totalPixels) * 100, 1),
-        isCenterFocused: isCenterFocused,
-        spotlightRatio: round(spotlightRatio, 1),
-        dominantColors: dominantColors,
-        textAnalysis: textAnalysis,
-        titleZone: textAnalysis.zoneLabel,
-        titleZoneKey: textAnalysis.zoneKey,
-        titleSizePct: textAnalysis.sizePct,
-        titleSizeClass: textAnalysis.sizeClass,
-        titleSizeLabel: textAnalysis.sizeLabel,
-        titleContrast: textAnalysis.contrastRatio,
-        titleReadability: textAnalysis.readability,
-        titleReadabilityLabel: textAnalysis.readabilityLabel
-    };
-}
-
-/**
- * Detect Game Title Typography Position, Relative Size %, and Contrast Clarity
- * Isolates letter glyphs (vertical stroke run-lengths >= 10px) and finds the
- * primary horizontal title text baseline band, adhering to Steam graphical asset rules.
- */
-function analyzeTitleText(rgbaData, lumArray, w, h) {
-    const totalPixels = w * h;
-
-    // 1. Horizontal gradient steps across pixels (detecting letter glyph edges)
-    const diffX = new Uint8Array(totalPixels);
-    for (let y = 0; y < h; y++) {
-        const rowOffset = y * w;
-        for (let x = 0; x < w - 1; x++) {
-            const idx = rowOffset + x;
-            const diff = Math.abs(lumArray[idx + 1] - lumArray[idx]);
-            if (diff > 36) diffX[idx] = 1;
-        }
-    }
-
-    // 2. Vertical stroke run-length filter
-    // Letter stems (H, A, D, E, S) have continuous vertical edges spanning >= 10px.
-    // Particle noise, flame embers, and film grain span < 8px and are rejected.
-    const vertRun = new Int16Array(totalPixels);
-    for (let x = 0; x < w - 1; x++) {
-        let run = 0;
-        for (let y = 0; y < h; y++) {
-            const idx = y * w + x;
-            if (diffX[idx]) {
-                run++;
-                vertRun[idx] = run;
-            } else {
-                if (run > 0) {
-                    for (let k = 1; k <= run; k++) {
-                        vertRun[(y - k) * w + x] = run;
-                    }
-                    run = 0;
-                }
-            }
-        }
-        if (run > 0) {
-            for (let k = 1; k <= run; k++) {
-                vertRun[(h - k) * w + x] = run;
-            }
-        }
-    }
-
-    // 3. Block-level letter stem density (10x10 blocks)
-    const blockSize = 10;
-    const gridCols = Math.floor(w / blockSize);
-    const gridRows = Math.floor(h / blockSize);
-    const stemBlocks = new Float32Array(gridCols * gridRows);
-    const blockMinL = new Float32Array(gridCols * gridRows);
-    const blockMaxL = new Float32Array(gridCols * gridRows);
-    const blockLums = new Float32Array(gridCols * gridRows);
-
-    for (let by = 0; by < gridRows; by++) {
-        const y1 = by * blockSize;
-        const y2 = Math.min(h, (by + 1) * blockSize);
-        for (let bx = 0; bx < gridCols; bx++) {
-            const x1 = bx * blockSize;
-            const x2 = Math.min(w, (bx + 1) * blockSize);
-
-            let stemCount = 0;
-            let minL = 255;
-            let maxL = 0;
-            let sumL = 0;
-            let count = 0;
-
-            for (let y = y1; y < y2; y++) {
-                const rowOffset = y * w;
-                for (let x = x1; x < x2; x++) {
-                    const idx = rowOffset + x;
-                    const l = lumArray[idx];
-                    if (l < minL) minL = l;
-                    if (l > maxL) maxL = l;
-                    sumL += l;
-                    count++;
-
-                    if (vertRun[idx] >= 10) {
-                        stemCount++;
-                    }
-                }
-            }
-
-            const bRange = maxL - minL;
-            const bIdx = by * gridCols + bx;
-            blockLums[bIdx] = sumL / (count || 1);
-            blockMinL[bIdx] = minL;
-            blockMaxL[bIdx] = maxL;
-
-            if (stemCount >= 2 && bRange > 42) {
-                const cr = (maxL + 5.0) / (minL + 5.0);
-                stemBlocks[bIdx] = stemCount * (bRange / 255.0) * Math.min(10.0, cr);
-            }
-        }
-    }
-
-    // 4. Find the dominant horizontal text line band (sliding window of 3 to 6 rows)
-    let bestBandScore = -1;
-    let bestRStart = 0, bestREnd = gridRows;
-    let bestCStart = 0, bestCEnd = gridCols;
-
-    for (const bandH of [3, 4, 5, 6]) {
-        for (let r0 = 0; r0 <= gridRows - bandH; r0++) {
-            const r1 = r0 + bandH;
-            const colSums = new Float32Array(gridCols);
-
-            for (let r = r0; r < r1; r++) {
-                for (let c = 0; c < gridCols; c++) {
-                    colSums[c] += stemBlocks[r * gridCols + c];
-                }
-            }
-
-            let activeCols = [];
-            for (let c = 0; c < gridCols; c++) {
-                if (colSums[c] > 1.0) activeCols.push(c);
-            }
-
-            if (activeCols.length >= 3) {
-                const cMin = activeCols[0];
-                const cMax = activeCols[activeCols.length - 1];
-                const spanLen = cMax - cMin + 1;
-
-                let energy = 0;
-                for (let c = cMin; c <= cMax; c++) {
-                    energy += colSums[c];
-                }
-                const density = energy / Math.max(spanLen, 1);
-                const score = energy * Math.sqrt(density);
-
-                if (score > bestBandScore) {
-                    bestBandScore = score;
-                    bestRStart = r0;
-                    bestREnd = r1;
-                    bestCStart = cMin;
-                    bestCEnd = cMax;
-                }
-            }
-        }
-    }
-
-    // Calculate centroid of the dominant title text band
-    let cy = 0.5;
-    let cx = 0.5;
-    let minXNorm = 0.3;
-    let maxXNorm = 0.7;
-
-    let titleWeight = 0;
-    let sumR = 0;
-    let sumC = 0;
-
-    for (let r = bestRStart; r < bestREnd && r < gridRows; r++) {
-        for (let c = bestCStart; c <= bestCEnd && c < gridCols; c++) {
-            const score = stemBlocks[r * gridCols + c];
-            if (score > 0) {
-                titleWeight += score;
-                sumR += (r - bestRStart) * score;
-                sumC += (c - bestCStart) * score;
-            }
-        }
-    }
-
-    if (titleWeight > 0) {
-        const cyLocal = sumR / titleWeight;
-        const cxLocal = sumC / titleWeight;
-        cy = (bestRStart + cyLocal + 0.5) / gridRows;
-        cx = (bestCStart + cxLocal + 0.5) / gridCols;
-        minXNorm = bestCStart / gridCols;
-        maxXNorm = (bestCEnd + 1) / gridCols;
-    }
-
-    // Classify Y Axis
-    let yKey = 'mid';
-    let yLabel = 'Middle';
-    if (cy < 0.38) {
-        yKey = 'top';
-        yLabel = 'Top';
-    } else if (cy > 0.62) {
-        yKey = 'bot';
-        yLabel = 'Bottom';
-    }
-
-    // Classify X Axis
-    let xKey = 'center';
-    let xLabel = 'Center';
-    if (minXNorm < 0.12 && cx < 0.44) {
-        xKey = 'left';
-        xLabel = 'Left';
-    } else if (maxXNorm > 0.88 && cx > 0.56) {
-        xKey = 'right';
-        xLabel = 'Right';
-    } else if (cx < 0.38) {
-        xKey = 'left';
-        xLabel = 'Left';
-    } else if (cx > 0.62) {
-        xKey = 'right';
-        xLabel = 'Right';
-    }
-
-    const zoneKey = `${yKey}_${xKey}`;
-    const zoneLabel = `${yLabel} ${xLabel}`;
-
-    const spanW = (bestCEnd - bestCStart + 1) * blockSize;
-    const spanH = (bestREnd - bestRStart) * blockSize;
-    const sizePct = Math.min(45, Math.max(8, round((spanW * spanH / totalPixels) * 100, 1)));
-
-    // Size classification
-    let sizeClass = "medium";
-    let sizeLabel = "Optimal (14-28%)";
-    if (sizePct > 28) {
-        sizeClass = "large";
-        sizeLabel = "Dominant (>28%)";
-    } else if (sizePct < 14) {
-        sizeClass = "small";
-        sizeLabel = "Compact (<14%)";
-    }
-
-    // Contrast Ratio in Detected Title Text Region
-    let darkest = 255;
-    let brightest = 0;
-    let bgSamples = [];
-
-    for (let r = bestRStart; r < bestREnd && r < gridRows; r++) {
-        for (let c = bestCStart; c <= bestCEnd && c < gridCols; c++) {
-            const idx = r * gridCols + c;
-            if (stemBlocks[idx] > 0) {
-                if (blockMinL[idx] < darkest) darkest = blockMinL[idx];
-                if (blockMaxL[idx] > brightest) brightest = blockMaxL[idx];
-                bgSamples.push(blockLums[idx]);
-            }
-        }
-    }
-
-    let contrastRatio = 3.5;
-    if (brightest > darkest && bgSamples.length > 0) {
-        bgSamples.sort((a, b) => a - b);
-        const bgEst = bgSamples[Math.floor(bgSamples.length * 0.3)];
-        const l1 = brightest / 255.0;
-        const l2 = Math.max(0, (darkest + bgEst) / (2 * 255.0));
-        contrastRatio = round((Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05), 1);
-        if (contrastRatio < 1.1) contrastRatio = 1.2;
-        if (contrastRatio > 21.0) contrastRatio = 21.0;
-    }
-
-    let readability = "good";
-    let readabilityLabel = "High Clarity (≥4.5:1)";
-    if (contrastRatio >= 4.5) {
-        readability = "good";
-        readabilityLabel = "High Clarity (≥4.5:1)";
-    } else if (contrastRatio >= 3.0) {
-        readability = "fair";
-        readabilityLabel = "Moderate (3.0–4.5:1)";
-    } else {
-        readability = "poor";
-        readabilityLabel = "Low Contrast (<3.0:1)";
-    }
-
-    return {
-        zoneKey: zoneKey,
-        zoneLabel: zoneLabel,
-        sizePct: sizePct,
-        sizeClass: sizeClass,
-        sizeLabel: sizeLabel,
-        contrastRatio: contrastRatio,
-        readability: readability,
-        readabilityLabel: readabilityLabel
-    };
-}
-
-function extractDominantColors(samples) {
-    if (!samples || !samples.length) return [];
-
-    const buckets = {};
-    samples.forEach(s => {
-        const r = Array.isArray(s) ? s[0] : (s.r || 0);
-        const g = Array.isArray(s) ? s[1] : (s.g || 0);
-        const b = Array.isArray(s) ? s[2] : (s.b || 0);
-        const qr = Math.floor(r / 32) * 32;
-        const qg = Math.floor(g / 32) * 32;
-        const qb = Math.floor(b / 32) * 32;
-        const key = `${qr},${qg},${qb}`;
-        if (!buckets[key]) buckets[key] = { count: 0, r: 0, g: 0, b: 0 };
-        buckets[key].count++;
-        buckets[key].r += r;
-        buckets[key].g += g;
-        buckets[key].b += b;
-    });
-
-    const sorted = Object.values(buckets).sort((a, b) => b.count - a.count).slice(0, 5);
-    const total = samples.length;
-
-    return sorted.map(b => {
-        const r = Math.round(b.r / b.count);
-        const g = Math.round(b.g / b.count);
-        const blue = Math.round(b.b / b.count);
-        return {
-            hex: rgbToHex(r, g, blue),
-            pct: round((b.count / total) * 100, 1)
-        };
-    });
-}
-
-function rgbToHex(r, g, b) {
-    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-/**
- * Score Evaluation Engine (Strict Multi-Flaw Penalty & Full 0-100 Dynamic Range)
- */
-function evaluateScores(cv) {
-    // 1. Dynamic Contrast (Mega-Hit Benchmark: 63.0)
-    let contrastScore = 100;
-    if (cv.brightnessStd >= 63.0) {
-        contrastScore = Math.min(100, 95 + (cv.brightnessStd - 63.0) * 0.8);
-    } else {
-        contrastScore = Math.max(0, 100 - (63.0 - cv.brightnessStd) * 3.5);
-    }
-
-    // 2. Warmth / Saliency (Mega-Hit Benchmark: 45.0%)
-    let warmthScore = 100;
-    if (cv.warmPct >= 45.0) {
-        warmthScore = Math.min(100, 95 + (cv.warmPct - 45.0) * 0.2);
-    } else {
-        warmthScore = Math.max(0, 100 - (45.0 - cv.warmPct) * 2.0);
-    }
-
-    // 3. Shannon Entropy (Mega-Hit Benchmark: 6.90 bits)
-    let entropyScore = 100;
-    if (cv.entropy >= 6.90) {
-        entropyScore = 98;
-    } else {
-        entropyScore = Math.max(0, 100 - (6.90 - cv.entropy) * 50.0);
-    }
-
-    // 4. Edge Density (Mega-Hit Benchmark: 13.5%)
-    let edgeScore = 100;
-    if (cv.edgeDensity >= 13.5) {
-        edgeScore = 95;
-    } else {
-        edgeScore = Math.max(0, 100 - (13.5 - cv.edgeDensity) * 8.0);
-    }
-
-    // 5. Hero Spotlight / Composition
-    let focusScore = 45;
-    if (cv.isCenterFocused) {
-        focusScore = cv.spotlightRatio > 10.0 ? 98 : 85;
-    }
-
-    // 6. Title Typography Contrast (Benchmark: 4.5:1, Floor: 1.2:1)
-    let textScore = 90;
-    if (cv.titleContrast >= 4.5) {
-        textScore = Math.min(100, Math.round(92 + (cv.titleContrast - 4.5) * 2.0));
-    } else if (cv.titleContrast >= 3.0) {
-        textScore = Math.round(60 + ((cv.titleContrast - 3.0) / 1.5) * 25.0);
-    } else {
-        textScore = Math.max(0, Math.round(cv.titleContrast * 18.0));
-    }
-
-    const subScores = [contrastScore, warmthScore, entropyScore, edgeScore, focusScore, textScore];
-    const baseScore = (
-        contrastScore * 0.25 +
-        warmthScore * 0.15 +
-        entropyScore * 0.15 +
-        edgeScore * 0.15 +
-        focusScore * 0.15 +
-        textScore * 0.15
-    );
-
-    // Strict Flaw Penalty:
-    // Any section below benchmark (< 60 for warmth/contrast, or < 75 for other critical metrics)
-    const isContrastFlaw = cv.brightnessStd < 58.0;
-    const isWarmthFlaw = cv.warmPct < 35.0;
-    const isEntropyFlaw = cv.entropy < 6.2;
-    const isEdgeFlaw = cv.edgeDensity < 8.0;
-    const isFocusFlaw = !cv.isCenterFocused;
-    const isTextFlaw = cv.titleContrast < 3.0;
-
-    const flawCount = [isContrastFlaw, isWarmthFlaw, isEntropyFlaw, isEdgeFlaw, isFocusFlaw, isTextFlaw].filter(Boolean).length;
-    const minSub = Math.min(...subScores);
+function startFeatureCanvasAnimation() {
+    const canvas = document.getElementById('aiScanFeatureCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
     
-    let flawPenalty = 0;
-    if (flawCount > 0) {
-        flawPenalty = flawCount * 13.0 + Math.max(0, (40 - minSub) * 0.8);
+    stopFeatureCanvasAnimation();
+
+    const nodes = [];
+    for (let i = 0; i < 20; i++) {
+        nodes.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 1.4,
+            vy: (Math.random() - 0.5) * 1.4,
+            radius: Math.random() * 2.2 + 1.2
+        });
     }
 
-    const overallScore = Math.max(0, Math.min(100, Math.round(baseScore - flawPenalty)));
+    aiScanAnimInterval = setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw connection lines
+        ctx.strokeStyle = 'rgba(0, 242, 254, 0.18)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dist = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+                if (dist < 75) {
+                    ctx.beginPath();
+                    ctx.moveTo(nodes[i].x, nodes[i].y);
+                    ctx.lineTo(nodes[j].x, nodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
 
-    let tierName = "🏆 Mega-Hit Grade";
-    let tierBadgeClass = "badge-gold";
-    let percentile = "Top 10% of Steam Capsules";
-    let headline = "Exceptional";
-    let summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
+        // Draw glowing nodes
+        for (const n of nodes) {
+            ctx.fillStyle = '#00f2fe';
+            ctx.shadowColor = '#00f2fe';
+            ctx.shadowBlur = 8;
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+            ctx.fill();
 
-    if (overallScore >= 88) {
-        tierName = "🏆 Mega-Hit Grade";
-        tierBadgeClass = "badge-gold";
-        percentile = "Top 10% of Steam Capsules";
-        headline = "Exceptional";
-        summary = "Your capsule features punchy contrast, crisp silhouettes, and vibrant accents that stand out against Steam's dark store interface.";
-    } else if (overallScore >= 72) {
-        tierName = "🌟 Solid Indie Grade";
-        tierBadgeClass = "badge-green";
-        percentile = "Top 35% of Steam Capsules";
-        headline = "Strong";
-        summary = "Well-balanced capsule with solid contrast and focal hierarchy. Minor tweaks to highlight contrast can push it to top-tier.";
-    } else if (overallScore >= 50) {
-        tierName = "📊 Moderate Visibility";
-        tierBadgeClass = "badge-blue";
-        percentile = "Median 50% Distribution";
-        headline = "Average";
-        summary = "Readable, but risks blending into the browse queue due to neutral color temperatures or softer midtone contrast.";
-    } else if (overallScore >= 30) {
-        tierName = "📉 Struggling Grade";
-        tierBadgeClass = "badge-orange";
-        percentile = "Bottom 30% of Steam Capsules";
-        headline = "Low";
-        summary = "Artwork is too flat or dark. When scaled down to small browse cards, character details and title text will blur together.";
-    } else {
-        tierName = "🕳️ Near-Zero Flop Risk";
-        tierBadgeClass = "badge-red";
-        percentile = "Bottom 15% of Steam Capsules";
-        headline = "Critical";
-        summary = "Your capsule lacks dynamic highlights, deep shadows, or color punch. Highly recommended to re-render with higher contrast lighting.";
+            n.x += n.vx;
+            n.y += n.vy;
+            if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+            if (n.y < 0 || n.y > canvas.height) n.y *= -1;
+        }
+        ctx.shadowBlur = 0;
+    }, 40);
+}
+
+function stopFeatureCanvasAnimation() {
+    if (aiScanAnimInterval) {
+        clearInterval(aiScanAnimInterval);
+        aiScanAnimInterval = null;
     }
-
-    return {
-        overallScore,
-        baseScore: Math.round(baseScore),
-        flawPenalty: Math.round(flawPenalty),
-        contrastScore: Math.round(contrastScore),
-        warmthScore: Math.round(warmthScore),
-        entropyScore: Math.round(entropyScore),
-        edgeScore: Math.round(edgeScore),
-        focusScore: Math.round(focusScore),
-        textScore: Math.round(textScore),
-        tierName,
-        tierBadgeClass,
-        percentile,
-        headline,
-        summary
-    };
 }
 
-function round(val, dec) {
-    return Number(val.toFixed(dec));
-}
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
+ * True Dual-Engine Parallel AI Flow (Minimum ~2.2s Total Visual Experience):
+ * Parallel Track A: Computer Vision Deterministic Engine (1.8s)
+ * Parallel Track B: PyTorch Deep Learning CNN Model (2.2s)
+ */
+async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
+    showLoading(true, "Executing Parallel Neural & Vision Engines...", imgSrc);
+
+    const cardCv = document.getElementById('engineCardCv');
+    const barCv = document.getElementById('engineBarCv');
+    const statusCv = document.getElementById('engineStatusCv');
+
+    const cardNn = document.getElementById('engineCardNn');
+    const barNn = document.getElementById('engineBarNn');
+    const statusNn = document.getElementById('engineStatusNn');
+
+    const loaderBar = document.getElementById('aiLoaderBar');
+    const textElem = document.getElementById('loadingDynamicText');
+
+    // Reset Engine Visual States
+    if (cardCv) cardCv.className = 'loading-engine-section engine-active';
+    if (barCv) barCv.style.width = '15%';
+    if (statusCv) statusCv.textContent = 'Evaluating...';
+
+    if (cardNn) cardNn.className = 'loading-engine-section loading-cnn-section engine-active';
+    if (barNn) barNn.style.width = '10%';
+    if (statusNn) statusNn.textContent = 'Inferencing...';
+
+    // === PARALLEL TRACK A: Computer Vision Heuristics Engine (1.7s) ===
+    const cvPromise = (async () => {
+        setTimeout(() => { if (barCv) barCv.style.width = '55%'; }, 500);
+        setTimeout(() => { if (barCv) barCv.style.width = '85%'; }, 1200);
+
+        const cv = runComputerVision(img);
+        const scores = evaluateScores(cv);
+
+        await delay(1700);
+
+        if (barCv) barCv.style.width = '100%';
+        if (statusCv) statusCv.textContent = '✓ 6 Metrics Done';
+        if (cardCv) cardCv.className = 'loading-engine-section engine-done';
+
+        return { cv, scores };
+    })();
+
+    // === PARALLEL TRACK B: PyTorch Deep Learning CNN Model (MobileNetV3) (2.2s) ===
+    const nnPromise = (async () => {
+        setTimeout(() => { if (barNn) barNn.style.width = '40%'; }, 650);
+        setTimeout(() => { if (barNn) barNn.style.width = '75%'; }, 1500);
+
+        const cvData = await cvPromise;
+        await updateCommercialForecast(cvData.scores, cvData.cv, null, null, img);
+
+        await delay(450);
+
+        if (barNn) barNn.style.width = '100%';
+        if (statusNn) statusNn.textContent = '✓ Milestones Evaluated';
+        if (cardNn) cardNn.className = 'loading-engine-section loading-cnn-section engine-done';
+
+        return true;
+    })();
+
+    // Await both parallel engines
+    const [cvResult] = await Promise.all([cvPromise, nnPromise]);
+
+    await delay(200);
+
+    // Complete & Reveal Dashboard
+    if (typeof onComplete === 'function') {
+        onComplete(cvResult.cv, cvResult.scores);
+    }
+    showLoading(false);
+}
 
 /**
  * Genre & Subcategory Detection Helper
@@ -2469,9 +2147,9 @@ function findKnownReviews(appid, gameName) {
 /**
  * Main Analysis and Dashboard Update
  */
-function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, genres = [], reviews = null) {
-    const cv = runComputerVision(img);
-    const scores = evaluateScores(cv);
+function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, genres = [], reviews = null, precomputedCv = null, precomputedScores = null) {
+    const cv = precomputedCv || runComputerVision(img);
+    const scores = precomputedScores || evaluateScores(cv);
 
     // Save global state
     currentCvResult = cv;
@@ -2610,8 +2288,9 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
 
     const gaugeFill = document.getElementById('gaugeFill');
     const offset = 440 - (440 * scores.overallScore / 100);
+    const themeColor = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
     gaugeFill.style.strokeDashoffset = offset;
-    gaugeFill.style.stroke = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
+    gaugeFill.style.stroke = themeColor;
 
     const tierBadge = document.getElementById('predictedTierBadge');
     if (tierBadge) {
@@ -2625,6 +2304,9 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     }
     document.getElementById('scoreHeadline').textContent = scores.headline;
     document.getElementById('scoreSummary').textContent = scores.summary;
+
+    // 5.4 Update AI Commercial Forecast Card
+    updateCommercialForecast(scores, cv, effectiveReviews, appid, img);
 
     // 5.5 Update Dominant Scorecard Quick-Metrics Table with Color-Coded Ratings
     // Contrast (Mega-Hit Benchmark: 63.0)

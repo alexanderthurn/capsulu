@@ -159,18 +159,58 @@
         </header>
 
         <main class="app-main">
-            <!-- Loading State in Content Area -->
-            <div class="steam-panel loading-panel" id="loadingBar" style="display: none;">
-                <div class="loading-inner">
-                    <div class="loading-spinner-wrapper">
-                        <div class="loading-spin-ring"></div>
-                        <div class="loading-capsule-icon">🎨</div>
+            <!-- Loading State with Clean 2-Section Dual AI Engine -->
+            <div class="steam-panel loading-panel loading-clean-panel" id="loadingBar" style="display: none;">
+                <div class="loading-simple-container">
+                    
+                    <!-- Section A: ⚡ Computer Vision Engine -->
+                    <div class="loading-engine-section" id="engineCardCv">
+                        <div class="engine-section-header">
+                            <div class="engine-title-left">
+                                <span class="engine-icon">⚡</span>
+                                <h4 class="engine-main-title">Computer Vision Engine</h4>
+                            </div>
+                            <span class="engine-status-badge" id="engineStatusCv">Evaluating...</span>
+                        </div>
+                        <div class="engine-progress-track">
+                            <div class="engine-progress-bar" id="engineBarCv" style="width: 0%;"></div>
+                        </div>
                     </div>
-                    <h3 class="loading-heading">Analyzing Steam Capsule Artwork</h3>
-                    <div class="steam-loader-track">
-                        <div class="steam-loader-bar"></div>
+
+                    <!-- Section B: 🧠 Deep Learning Vision AI with Convolutional Artwork Scanner -->
+                    <div class="loading-engine-section loading-cnn-section" id="engineCardNn">
+                        <div class="engine-section-header">
+                            <div class="engine-title-left">
+                                <span class="engine-icon">🧠</span>
+                                <h4 class="engine-main-title">Deep Learning Vision AI (MobileNetV3)</h4>
+                            </div>
+                            <span class="engine-status-badge" id="engineStatusNn">Inferencing...</span>
+                        </div>
+
+                        <!-- Visual AI Scanner Viewport with Actual Capsule Image + Convolution Grid -->
+                        <div class="ai-scanner-viewport" id="aiScannerViewport">
+                            <img id="aiScanPreviewImg" class="ai-scan-img" src="" alt="">
+                            <div class="ai-kernel-box" id="aiKernelBox" style="display: none;">
+                                <span class="kernel-corner tl"></span>
+                                <span class="kernel-corner tr"></span>
+                                <span class="kernel-corner bl"></span>
+                                <span class="kernel-corner br"></span>
+                                <span class="kernel-label">Conv 3×3</span>
+                            </div>
+                            <div class="ai-scan-laser" id="aiScanLaser" style="display: none;"></div>
+                            <canvas id="aiScanFeatureCanvas" class="ai-feature-canvas" width="460" height="215"></canvas>
+                            <div class="ai-scanner-placeholder" id="aiScanPlaceholder">
+                                <div class="ai-placeholder-spinner"></div>
+                                <span>Connecting to Steam Store CDN...</span>
+                            </div>
+                        </div>
+
+                        <!-- Dedicated Progress Bar Below Convolution Viewport -->
+                        <div class="engine-progress-track">
+                            <div class="engine-progress-bar" id="engineBarNn" style="width: 0%;"></div>
+                        </div>
                     </div>
-                    <p class="loading-label" id="loadingDynamicText">Evaluating...</p>
+
                 </div>
             </div>
 
@@ -248,15 +288,22 @@
                     <!-- Right 50% Column: Big Dominant Scorecard Banner -->
                     <div class="top-right-col">
                         <section class="score-card-banner dominant-score-card">
-                            <!-- Huge Centered Radial Score Gauge -->
-                            <div class="score-radial-group-huge">
-                                <svg class="radial-svg-huge" viewBox="0 0 160 160">
-                                    <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
-                                    <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70"></circle>
-                                </svg>
-                                <div class="radial-center-text-huge">
-                                    <span class="score-huge-num" id="overallScoreNum">--</span>
-                                    <span class="score-huge-denom">/ 100</span>
+                            <!-- Top Duo: Score Gauge + Big Sales Hero Number -->
+                            <div class="score-top-duo-row">
+                                <div class="score-radial-group-huge">
+                                    <svg class="radial-svg-huge" viewBox="0 0 160 160">
+                                        <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
+                                        <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70"></circle>
+                                    </svg>
+                                    <div class="radial-center-text-huge">
+                                        <span class="score-huge-num" id="overallScoreNum">--</span>
+                                        <span class="score-huge-denom">/ 100</span>
+                                    </div>
+                                </div>
+
+                                <div class="sales-top-hero-card">
+                                    <span class="sales-top-num" id="salesHeroTop">--</span>
+                                    <span class="sales-top-label">Sales</span>
                                 </div>
                             </div>
 
@@ -266,6 +313,26 @@
                                 <p class="score-desc" id="scoreSummary">Your capsule has strong visual saliency with
                                     punchy contrast and intentional lighting that will stand out on Steam's dark store
                                     theme.</p>
+                            </div>
+
+                            <!-- AI Commercial Forecast Section -->
+                            <div class="ai-forecast-card" id="aiForecastCard" onclick="scrollToAiMethodology()" role="button" tabindex="0" title="Click to view full methodology & AI analysis explanation">
+                                <div class="forecast-hero-row">
+                                    <span class="forecast-hero-num" id="forecastHeroNum">~240</span>
+                                    <span class="forecast-hero-label">Reviews</span>
+                                </div>
+                                <div class="forecast-subline" id="forecastSubline">
+                                    <span class="forecast-range-badge" id="forecastRange">Expected Range: 160 – 380 reviews</span>
+                                    <span class="forecast-dot">•</span>
+                                    <span class="forecast-copies" id="forecastCopies">~7,200 copies sold</span>
+                                </div>
+                                <p class="forecast-sentence" id="forecastSentence">
+                                    Your capsule has a <strong class="hl-green">94% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">81% probability</strong> of reaching community traction (50+ reviews).
+                                </p>
+                                <div class="forecast-footer-link">
+                                    <span>🔬 View AI Methodology & Analysis Details</span>
+                                    <span class="arrow-down">↓</span>
+                                </div>
                             </div>
 
                             <div class="quick-metrics-table">
@@ -687,6 +754,74 @@
                                 <span class="legend-user" id="mTextVal">Your: --</span>
                                 <span class="legend-target">Mega-Hit Avg: 5.2:1 (WCAG AA) | Flop Avg: 3.5:1</span>
                             </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 6. DEDICATED AI ANALYSIS METHODOLOGY & COMMERCIAL FORECAST EXPLANATION -->
+                <section class="steam-panel ai-methodology-panel" id="aiMethodologySection">
+                    <div class="methodology-header">
+                        <div class="methodology-badge">
+                            <span class="methodology-icon">🔬</span>
+                            <span>Methodology & Neural Network Architecture</span>
+                        </div>
+                        <h2 class="methodology-title">How Capsulu Evaluates Your Artwork & Estimates Sales</h2>
+                        <p class="methodology-desc">
+                            Capsulu uses client-side Deep Learning Vision Neural Networks (MobileNetV3 CNN) trained on tens of thousands of Steam store capsules, analyzing raw image features to predict real-world commercial outcomes.
+                        </p>
+                    </div>
+
+                    <div class="methodology-grid">
+                        <!-- Pillar 1: Dual Neural Networks -->
+                        <div class="methodology-card">
+                            <div class="mcard-icon">🧠</div>
+                            <h3 class="mcard-title">Dual Deep Learning Vision Models</h3>
+                            <p class="mcard-text">
+                                We train specialized Convolutional Neural Networks directly on raw 224×224 RGB capsule tensors:
+                            </p>
+                            <ul class="mcard-list">
+                                <li><strong>Indie Milestone Model:</strong> Evaluates visual cues and composition to predict probability across 5 critical review thresholds (0, 1–5, 6–10, 11–100, 100–500 reviews).</li>
+                                <li><strong>Global Market Model:</strong> Assesses artistic rendering quality and macro commercial potential against top Steam sellers.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Pillar 2: Feature Extraction & Convolution -->
+                        <div class="methodology-card">
+                            <div class="mcard-icon">⚡</div>
+                            <h3 class="mcard-title">Convolutional Feature Extraction</h3>
+                            <p class="mcard-text">
+                                Deep neural layers extract high-level visual representations without manual feature engineering:
+                            </p>
+                            <ul class="mcard-list">
+                                <li><strong>Spatial Hierarchies:</strong> Depthwise separable convolutions detect lighting accents, silhouette readability, and focal character framing.</li>
+                                <li><strong>Pure Client-Side Inference:</strong> Models execute in WebAssembly inside your browser with ONNX Runtime Web.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Pillar 3: Algorithmic Thresholds -->
+                        <div class="methodology-card">
+                            <div class="mcard-icon">🔓</div>
+                            <h3 class="mcard-title">The 10 & 50 Review Thresholds</h3>
+                            <p class="mcard-text">
+                                Why review milestones matter to Steam's internal discovery algorithms:
+                            </p>
+                            <ul class="mcard-list">
+                                <li><strong>10-Review Unlock:</strong> Until 10 reviews, Steam hides the review badge and limits discovery queue impressions. Crossing 10 unlocks organic traffic.</li>
+                                <li><strong>50-Review Traction:</strong> Proves organic interest beyond friends/family and unlocks broader recommendation carousels.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Pillar 4: The Boxleiter Sales Multiplier -->
+                        <div class="methodology-card">
+                            <div class="mcard-icon">📈</div>
+                            <h3 class="mcard-title">The Boxleiter / Carless Multiplier</h3>
+                            <p class="mcard-text">
+                                Steam does not publish private revenue figures, but user reviews correlate strongly with total unit sales:
+                            </p>
+                            <ul class="mcard-list">
+                                <li><strong>The ~30:1 Ratio:</strong> Empirical studies by Simon Carless and Jake Boxleiter show modern Steam games sell ~30 units per user review.</li>
+                                <li><strong>Expected Sales:</strong> Calculated as <code>Predicted Reviews × 30</code> with an interquartile confidence range.</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
@@ -1264,7 +1399,14 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
         </div>
     </footer>
 
-    <!-- Pure JavaScript Engine -->
+    <!-- ONNX Runtime Web for In-Browser Deep Learning Neural Network Inference -->
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.min.js"></script>
+
+    <!-- Modular Capsulu JavaScript Architecture -->
+    <script src="js/cv_engine.js"></script>
+    <script src="js/ai_forecast.js"></script>
+
+    <!-- Main Controller & UI Engine -->
     <script src="app.js"></script>
 </body>
 
