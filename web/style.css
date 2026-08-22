@@ -3645,6 +3645,17 @@ body {
     transform: translateY(-1px);
 }
 
+.forecast-card-title {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.02em;
+    width: 100%;
+}
+
 .forecast-hero-row {
     display: flex;
     align-items: baseline;
