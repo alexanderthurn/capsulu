@@ -218,7 +218,7 @@
             <!-- Analysis Dashboard -->
             <div class="dashboard" id="resultsDashboard" style="display: none;">
 
-                <!-- 1. HUGE FULL-WIDTH GAME TITLE HEADER (Huge Title + Tags & Metadata) -->
+                <!-- 100% Full-Width Header: Game Title & Key Metadata -->
                 <section class="game-huge-title-banner" id="gameHugeTitleBanner">
                     <div class="game-huge-title-row">
                         <h2 class="game-huge-title">
@@ -233,39 +233,36 @@
                                 </svg>
                             </a>
                         </h2>
-                        <a id="resultStoreBtnLink" href="#" target="_blank" rel="noopener noreferrer"
-                            class="btn btn-steam-store-direct btn-steam-store-huge">
-                            Open on Steam ↗
-                        </a>
                     </div>
                     <div class="game-huge-meta-row">
                         <span class="meta-pill" id="resultAppIdTag">App ID: --</span>
                         <span class="meta-pill price-pill" id="resultPriceTag">--</span>
                         <span class="meta-pill reviews-pill" id="resultReviewsTag" style="display: none;">💬 --
                             reviews</span>
-                        <div class="meta-group" id="resultHeroGenresGroup" style="display: none;">
-                            <span class="meta-group-label">Genre:</span>
-                            <div class="game-hero-genres" id="resultHeroGenres"></div>
-                        </div>
-                        <div class="meta-group" id="resultHeroTagsGroup" style="display: none;">
-                            <span class="meta-group-label">Tags:</span>
-                            <div class="game-hero-tags" id="resultHeroTags"></div>
-                        </div>
                     </div>
                 </section>
 
-                <!-- 2. MAIN 2-COLUMN RATER LAYOUT -->
+                <!-- MAIN 2-COLUMN RATER LAYOUT -->
                 <div class="top-hero-two-col-grid" id="mainTwoColGrid">
 
                     <!-- Left Column: Visual Assets & Storefront Visual Check -->
                     <div class="top-left-col">
-                        <!-- Upper: Dedicated Capsule Artwork Display Card -->
+                        <!-- Dedicated Capsule Artwork Display Card (Top-Aligned with Right Scorecard) -->
                         <section class="game-result-hero-card capsule-preview-only-card">
                             <div class="game-result-capsule-box-full">
                                 <a id="resultHeroCapsuleLink" href="" target="_blank" rel="noopener noreferrer"
                                     title="Open on Steam">
                                     <img id="resultHeroCapsuleImg" src="" alt="Capsule Artwork">
                                 </a>
+                            </div>
+                            <!-- Tags & Genres row directly below image -->
+                            <div class="capsule-below-tags-row">
+                                <div class="meta-group" id="resultHeroGenresGroup" style="display: none;">
+                                    <div class="game-hero-genres" id="resultHeroGenres"></div>
+                                </div>
+                                <div class="meta-group" id="resultHeroTagsGroup" style="display: none;">
+                                    <div class="game-hero-tags" id="resultHeroTags"></div>
+                                </div>
                             </div>
                         </section>
 

@@ -3915,17 +3915,19 @@ body {
 
 .game-huge-title {
     font-family: var(--font-heading);
-    font-size: 2.4rem;
+    font-size: 2.2rem;
     font-weight: 800;
     line-height: 1.15;
     letter-spacing: -0.02em;
+    word-break: break-word;
+    margin: 0;
 }
 
 .game-huge-title a {
     color: #ffffff;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     transition: var(--transition);
 }
 
@@ -3940,16 +3942,17 @@ body {
 }
 
 .btn-steam-store-huge {
-    font-size: 0.92rem;
-    padding: 9px 20px;
+    font-size: 0.82rem;
+    padding: 6px 14px;
     border-radius: 3px;
+    white-space: nowrap;
 }
 
 .game-huge-meta-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 12px;
+    gap: 8px;
+    margin-top: 8px;
     flex-wrap: wrap;
 }
 
@@ -3958,13 +3961,22 @@ body {
     padding: 0;
     background: transparent;
     border-radius: 0;
-    overflow: hidden;
     border: none;
     box-shadow: none;
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    margin-bottom: 0;
+    margin-bottom: 12px;
+}
+
+.capsule-below-tags-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .game-result-capsule-box-full {
