@@ -1453,7 +1453,7 @@ function switchGenreLens(genreKey) {
 }
 
 /**
- * Update Dedicated Genre/Tag Benchmark Intelligence Card
+ * Update Dedicated Genre/Tag Benchmark Intelligence & Metric Breakdown Panel
  */
 function updateGenreBenchmarkDisplay(cv, genreKey) {
     const card = document.getElementById('genreBenchmarkCard');
@@ -1462,72 +1462,38 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const iconElem = document.getElementById('genreCardIcon');
     const titleElem = document.getElementById('genreCardTitle');
     const subtitleElem = document.getElementById('genreCardSubtitle');
-    const matchBadge = document.getElementById('genreMatchBadge');
-    const medContrastElem = document.getElementById('genreMedContrast');
-    const deltaContrastElem = document.getElementById('genreDeltaContrast');
-    const warmShareElem = document.getElementById('genreWarmShare');
-    const deltaWarmElem = document.getElementById('genreDeltaWarm');
-    const entropyElem = document.getElementById('genreEntropy');
-    const deltaEntropyElem = document.getElementById('genreDeltaEntropy');
-    const edgeElem = document.getElementById('genreEdgeDensity');
-    const deltaEdgeElem = document.getElementById('genreDeltaEdge');
     const recElem = document.getElementById('genreRecommendationText');
+
+    const mContrastTarget = document.getElementById('mContrastTarget');
+    const mContrastPin = document.getElementById('mContrastPin');
+    const mWarmthTarget = document.getElementById('mWarmthTarget');
+    const mWarmthPin = document.getElementById('mWarmthPin');
+    const mEntropyTarget = document.getElementById('mEntropyTarget');
+    const mEntropyPin = document.getElementById('mEntropyPin');
+    const mEdgeTarget = document.getElementById('mEdgeTarget');
+    const mEdgePin = document.getElementById('mEdgePin');
+    const mTextTarget = document.getElementById('mTextTarget');
+    const mTextPin = document.getElementById('mTextPin');
 
     if (!genreKey || genreKey === 'all') {
         if (iconElem) iconElem.textContent = "🌐";
-        if (titleElem) titleElem.textContent = "All Steam Games Market Benchmark";
-        if (subtitleElem) subtitleElem.textContent = "Empirical baseline derived from 28,754 verified Steam games";
-        if (matchBadge) matchBadge.textContent = "All Games Active";
+        if (titleElem) titleElem.textContent = "All Steam Games Market Benchmark Breakdown";
+        if (subtitleElem) subtitleElem.textContent = "Empirical baselines derived from 28,754 verified Steam games";
 
-        const allContrast = 58.4;
-        const diffContrast = round(cv.brightnessStd - allContrast, 1);
-        if (medContrastElem) medContrastElem.textContent = `${allContrast} std dev`;
-        if (deltaContrastElem) {
-            deltaContrastElem.textContent = `This: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
-            deltaContrastElem.className = `genre-stat-delta ${diffContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
-        }
+        if (mContrastTarget) mContrastTarget.textContent = "Mega-Hit Avg: 63.0 | Flop Avg: 56.9";
+        if (mContrastPin) { mContrastPin.style.left = "74%"; mContrastPin.title = "Mega-Hit Avg (63.0)"; }
 
-        const allWarm = 42.8;
-        const diffWarm = round(cv.warmPct - allWarm, 1);
-        if (warmShareElem) warmShareElem.textContent = `${allWarm}% Warm`;
-        if (deltaWarmElem) {
-            deltaWarmElem.textContent = `This: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs all)`;
-            deltaWarmElem.className = `genre-stat-delta ${diffWarm >= 0 ? 'delta-pos' : 'delta-neutral'}`;
-        }
+        if (mWarmthTarget) mWarmthTarget.textContent = "Mega-Hit Avg: 50% | Flop Avg: 39%";
+        if (mWarmthPin) { mWarmthPin.style.left = "50%"; mWarmthPin.title = "Mega-Hit Avg (50%)"; }
 
-        const allEntropy = 6.72;
-        const diffEntropy = round(cv.entropy - allEntropy, 2);
-        if (entropyElem) entropyElem.textContent = `${allEntropy} bits`;
-        if (deltaEntropyElem) {
-            deltaEntropyElem.textContent = `This: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
-            deltaEntropyElem.className = `genre-stat-delta ${diffEntropy >= 0 ? 'delta-pos' : 'delta-neg'}`;
-        }
+        if (mEntropyTarget) mEntropyTarget.textContent = "Mega-Hit Avg: 6.99 | Flop Avg: 6.18";
+        if (mEntropyPin) { mEntropyPin.style.left = "88%"; mEntropyPin.title = "Mega-Hit Avg (6.99 bits)"; }
 
-        const allEdge = 13.1;
-        const diffEdge = round(cv.edgeDensity - allEdge, 1);
-        if (edgeElem) edgeElem.textContent = `${allEdge}% Edge`;
-        if (deltaEdgeElem) {
-            deltaEdgeElem.textContent = `This: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
-            deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
-        }
+        if (mEdgeTarget) mEdgeTarget.textContent = "Mega-Hit Avg: 14.2% | Flop Avg: 11.2%";
+        if (mEdgePin) { mEdgePin.style.left = "70%"; mEdgePin.title = "Mega-Hit Avg (14.2%)"; }
 
-        const allTextContrast = 3.5;
-        const diffTextContrast = round(cv.titleContrast - allTextContrast, 1);
-        const textContrastElem = document.getElementById('genreTextContrast');
-        const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
-        if (textContrastElem) textContrastElem.textContent = `${allTextContrast}:1 WCAG`;
-        if (deltaTextContrastElem) {
-            deltaTextContrastElem.textContent = `This: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
-            deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
-        }
-
-        const textZoneElem = document.getElementById('genreTextZone');
-        const deltaTextZoneElem = document.getElementById('genreDeltaTextZone');
-        if (textZoneElem) textZoneElem.textContent = "Middle Center";
-        if (deltaTextZoneElem) {
-            deltaTextZoneElem.textContent = `This: ${cv.titleZone} (${cv.titleSizePct}% Area)`;
-            deltaTextZoneElem.className = `genre-stat-delta delta-pos`;
-        }
+        if (mTextTarget) mTextTarget.textContent = "Mega-Hit Avg: 5.2:1 (WCAG AA) | Flop Avg: 3.5:1";
+        if (mTextPin) { mTextPin.style.left = "55%"; mTextPin.title = "Mega-Hit Avg (5.2:1)"; }
 
         if (recElem) recElem.innerHTML = `<strong>Global Steam Benchmark:</strong> High-converting capsules maintain contrast std dev > 63.0, sharp title contrast > 4.5:1, and strong center focal hierarchy across all categories.`;
         card.style.display = 'block';
@@ -1542,67 +1508,29 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
 
     const icon = getGenreIcon(genreKey);
     if (iconElem) iconElem.textContent = icon;
-    if (titleElem) titleElem.textContent = `${icon} ${gData.name || genreKey} Benchmark`;
+    if (titleElem) titleElem.textContent = `${icon} ${gData.name || genreKey} Benchmark Breakdown`;
     if (subtitleElem) subtitleElem.textContent = `Empirical baseline derived from ${gData.count.toLocaleString()} verified Steam games with "${genreKey}" ${gData.categoryType || 'Tag'}`;
-    if (matchBadge) matchBadge.textContent = `${genreKey} Active`;
 
-    // 1. Contrast
     const catContrast = gData.contrast.median;
-    const diffContrast = round(cv.brightnessStd - catContrast, 1);
-    if (medContrastElem) medContrastElem.textContent = `${catContrast} std dev`;
-    if (deltaContrastElem) {
-        deltaContrastElem.textContent = `This: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
-        deltaContrastElem.className = `genre-stat-delta ${diffContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
-    }
-
-    // 2. Warmth
     const catWarm = gData.warm_palette_pct;
-    const diffWarm = round(cv.warmPct - catWarm, 1);
-    if (warmShareElem) warmShareElem.textContent = `${catWarm}% Warm`;
-    if (deltaWarmElem) {
-        deltaWarmElem.textContent = `This: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs market)`;
-        deltaWarmElem.className = `genre-stat-delta ${diffWarm >= 0 ? 'delta-pos' : 'delta-neutral'}`;
-    }
-
-    // 3. Entropy
     const catEntropy = gData.entropy.median;
-    const diffEntropy = round(cv.entropy - catEntropy, 2);
-    if (entropyElem) entropyElem.textContent = `${catEntropy} bits`;
-    if (deltaEntropyElem) {
-        deltaEntropyElem.textContent = `This: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
-        deltaEntropyElem.className = `genre-stat-delta ${diffEntropy >= 0 ? 'delta-pos' : 'delta-neg'}`;
-    }
-
-    // 4. Edge Density
     const catEdge = gData.edge_density.median;
-    const diffEdge = round(cv.edgeDensity - catEdge, 1);
-    if (edgeElem) edgeElem.textContent = `${catEdge}% Edge`;
-    if (deltaEdgeElem) {
-        deltaEdgeElem.textContent = `This: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
-        deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
-    }
-
-    // 5. Title Contrast
     const catTextContrast = (gData.text && gData.text.contrast && gData.text.contrast.median) || 3.5;
-    const diffTextContrast = round(cv.titleContrast - catTextContrast, 1);
-    const textContrastElem = document.getElementById('genreTextContrast');
-    const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
-    if (textContrastElem) textContrastElem.textContent = `${catTextContrast}:1 WCAG`;
-    if (deltaTextContrastElem) {
-        deltaTextContrastElem.textContent = `This: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
-        deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
-    }
 
-    // 6. Dominant Placement Zone
-    const catTextZone = formatZoneName((gData.text && gData.text.top_zone) || 'mid_center');
-    const textZoneElem = document.getElementById('genreTextZone');
-    const deltaTextZoneElem = document.getElementById('genreDeltaTextZone');
-    if (textZoneElem) textZoneElem.textContent = catTextZone;
-    if (deltaTextZoneElem) {
-        const isMatch = cv.titleZone.toLowerCase() === catTextZone.toLowerCase();
-        deltaTextZoneElem.textContent = `This: ${cv.titleZone} ${isMatch ? '(Matches)' : ''}`;
-        deltaTextZoneElem.className = `genre-stat-delta ${isMatch ? 'delta-pos' : 'delta-neutral'}`;
-    }
+    if (mContrastTarget) mContrastTarget.textContent = `${genreKey} Median: ${catContrast} std dev | Mega-Hit Avg: 63.0`;
+    if (mContrastPin) { mContrastPin.style.left = `${Math.min(95, Math.max(5, (catContrast / 85) * 100))}%`; mContrastPin.title = `${genreKey} Median (${catContrast})`; }
+
+    if (mWarmthTarget) mWarmthTarget.textContent = `${genreKey} Median: ${catWarm}% Warm | Mega-Hit Avg: 50%`;
+    if (mWarmthPin) { mWarmthPin.style.left = `${Math.min(95, Math.max(5, catWarm * 1.5))}%`; mWarmthPin.title = `${genreKey} Median (${catWarm}%)`; }
+
+    if (mEntropyTarget) mEntropyTarget.textContent = `${genreKey} Median: ${catEntropy} bits | Mega-Hit Avg: 6.99`;
+    if (mEntropyPin) { mEntropyPin.style.left = `${Math.min(95, Math.max(5, (catEntropy / 7.5) * 100))}%`; mEntropyPin.title = `${genreKey} Median (${catEntropy})`; }
+
+    if (mEdgeTarget) mEdgeTarget.textContent = `${genreKey} Median: ${catEdge}% Edge | Mega-Hit Avg: 14.2%`;
+    if (mEdgePin) { mEdgePin.style.left = `${Math.min(95, Math.max(5, (catEdge / 22) * 100))}%`; mEdgePin.title = `${genreKey} Median (${catEdge}%)`; }
+
+    if (mTextTarget) mTextTarget.textContent = `${genreKey} Median: ${catTextContrast}:1 WCAG | Mega-Hit Avg: 5.2:1`;
+    if (mTextPin) { mTextPin.style.left = `${Math.min(95, Math.max(5, (catTextContrast / 10) * 100))}%`; mTextPin.title = `${genreKey} Median (${catTextContrast}:1)`; }
 
     // Tailored Recommendation Tip
     if (recElem) recElem.innerHTML = `<strong>Tailored "${genreKey}" Advice:</strong> ${gData.tip}`;

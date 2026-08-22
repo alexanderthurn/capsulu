@@ -164,11 +164,13 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 }
 
 /**
- * Smoothly scrolls to the AI Methodology & Deep Analysis Section
+ * Smoothly switches to the Benchmark Tab & scrolls to the AI Methodology Section
  */
 window.scrollToAiMethodology = function() {
-    if (typeof currentTab !== 'undefined' && currentTab !== 'home') {
-        if (typeof setActiveTab === 'function') setActiveTab('home');
+    if (typeof window.setActiveTab === 'function') {
+        window.setActiveTab('benchmark');
+    } else if (typeof setActiveTab === 'function') {
+        setActiveTab('benchmark');
     }
     
     const executeScroll = () => {
@@ -192,6 +194,6 @@ window.scrollToAiMethodology = function() {
         }
     };
 
-    setTimeout(executeScroll, 50);
+    setTimeout(executeScroll, 60);
     setTimeout(executeScroll, 250);
 };
