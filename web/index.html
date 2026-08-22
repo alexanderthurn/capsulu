@@ -249,6 +249,22 @@
                     <div class="top-left-col">
                         <!-- Dedicated Capsule Artwork Display Card (Top-Aligned with Right Scorecard) -->
                         <section class="game-result-hero-card capsule-preview-only-card">
+                            <!-- Interactive Capsule Version Switcher -->
+                            <div class="capsule-version-switcher" id="capsuleVersionSwitcher">
+                                <span class="version-switch-label">Version:</span>
+                                <div class="version-pills-group">
+                                    <button type="button" class="version-pill active" id="pillVersionOriginal" data-version="original" title="View original capsule analysis">
+                                        <span>📷</span> <span>Original</span>
+                                    </button>
+                                    <button type="button" class="version-pill" id="pillVersionAutofix" data-version="autofix" style="display: none;" title="Switch to Simple Manipulation analysis">
+                                        <span>🪄</span> <span>Simple Manipulation</span>
+                                    </button>
+                                    <button type="button" class="version-pill" id="pillVersionWebGpu" data-version="webgpu" style="display: none;" title="Switch to WebGPU Neural Inpainting analysis">
+                                        <span>🧠</span> <span>WebGPU Neural</span>
+                                    </button>
+                                </div>
+                            </div>
+
                             <div class="game-result-capsule-box-full">
                                 <a id="resultHeroCapsuleLink" href="" target="_blank" rel="noopener noreferrer"
                                     title="Open on Steam">
@@ -636,33 +652,43 @@
                                 </p>
                             </div>
 
-                            <!-- Interactive Before / After Split Slider -->
-                            <div class="before-after-slider-wrapper" id="beforeAfterSlider">
-                                <div class="slider-canvas-box">
-                                    <canvas id="autofixCanvasBefore" width="460" height="215"
-                                        class="slider-layer slider-before-layer"></canvas>
-                                    <canvas id="autofixCanvasAfter" width="460" height="215"
-                                        class="slider-layer slider-after-layer"></canvas>
-                                    <div class="slider-handle" id="sliderHandle">
-                                        <div class="slider-handle-line"></div>
-                                        <div class="slider-handle-knob">⬌</div>
-                                    </div>
-                                    <span class="slider-tag tag-before">Original</span>
-                                    <span class="slider-tag tag-after">Enhanced</span>
-                                </div>
+                            <!-- Run Action Trigger Button -->
+                            <div class="autofix-trigger-row" id="autofixTriggerRow">
+                                <button type="button" id="btnRunAutofix" class="btn-ai-action btn-run-autofix"
+                                    title="Run instant pixel-level contrast & lighting optimization">
+                                    <span>🚀</span> <span id="runAutofixText">Run Simple Manipulation</span>
+                                </button>
                             </div>
 
-                            <!-- Actions Row -->
-                            <div class="autofix-actions-row">
-                                <button type="button" id="btnDownloadAutofix" class="btn-ai-action btn-download-capsule"
-                                    title="Download enhanced artwork">
-                                    <span>⬇️</span> <span>Download (Free to Use)</span>
-                                </button>
-                                <button type="button" id="btnTestAutofixInSim" class="btn-ai-action btn-copy-prompt"
-                                    title="Preview enhanced artwork in the 3x3 storefront simulator">
-                                    <span id="testSimIcon">👁️</span> <span id="testSimText">Test in 3×3
-                                        Simulator</span>
-                                </button>
+                            <!-- Result Card (Revealed only after Run button is pressed) -->
+                            <div class="autofix-result-card" id="autofixResultCard" style="display: none;">
+                                <!-- Interactive Before / After Split Slider -->
+                                <div class="before-after-slider-wrapper" id="beforeAfterSlider">
+                                    <div class="slider-canvas-box">
+                                        <canvas id="autofixCanvasBefore" width="460" height="215"
+                                            class="slider-layer slider-before-layer"></canvas>
+                                        <canvas id="autofixCanvasAfter" width="460" height="215"
+                                            class="slider-layer slider-after-layer"></canvas>
+                                        <div class="slider-handle" id="sliderHandle">
+                                            <div class="slider-handle-line"></div>
+                                            <div class="slider-handle-knob">⬌</div>
+                                        </div>
+                                        <span class="slider-tag tag-before">Original</span>
+                                        <span class="slider-tag tag-after">Enhanced</span>
+                                    </div>
+                                </div>
+
+                                <!-- Actions Row -->
+                                <div class="autofix-actions-row">
+                                    <button type="button" id="btnAnalyzeAutofix" class="btn-ai-action btn-analyze-version"
+                                        title="View and re-analyze this Simple Manipulation version in the main scorecard">
+                                        <span>⚡</span> <span>Analyze in Scorecard</span>
+                                    </button>
+                                    <button type="button" id="btnDownloadAutofix" class="btn-ai-action btn-download-capsule"
+                                        title="Download enhanced artwork">
+                                        <span>⬇️</span> <span>Download (Free to Use)</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -744,15 +770,14 @@
                                 </div>
 
                                 <div class="webgpu-result-actions">
+                                    <button type="button" id="btnAnalyzeWebGpu" class="btn-ai-action btn-analyze-version"
+                                        title="View and re-analyze this WebGPU Neural Inpainting version in the main scorecard">
+                                        <span>⚡</span> <span>Analyze in Scorecard</span>
+                                    </button>
                                     <button type="button" id="btnDownloadWebGpuArt"
                                         class="btn-ai-action btn-download-capsule"
                                         title="Download neural inpainting capsule artwork">
                                         <span>⬇️</span> <span>Download (Free to Use)</span>
-                                    </button>
-                                    <button type="button" id="btnTestWebGpuInSim" class="btn-ai-action btn-copy-prompt"
-                                        title="Preview in the 3x3 storefront simulator">
-                                        <span id="testWebGpuSimIcon">👁️</span> <span id="testWebGpuSimText">Test in 3×3
-                                            Simulator</span>
                                     </button>
                                 </div>
                             </div>

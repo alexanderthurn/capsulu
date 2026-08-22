@@ -128,6 +128,18 @@ let currentLoadedAppId = null;
 let currentLoadedTags = [];
 let currentLoadedGenres = [];
 
+// Permanent un-manipulated original media snapshot
+let currentOriginalMedia = null;
+let currentOriginalImgSrc = null;
+
+// Multi-version analysis state (Original, Simple Manipulation, WebGPU Neural)
+let currentVersions = {
+    original: null,
+    autofix: null,
+    webgpu: null
+};
+let activeVersionKey = 'original';
+
 // DOM Elements
 const dropZoneArea = document.getElementById('dropZoneArea');
 const fileInput = document.getElementById('fileInput');
@@ -584,6 +596,15 @@ function setupEventListeners() {
         });
     }
 
+    // 1-Click Simple Manipulation Run Button
+    const btnRunAutofix = document.getElementById('btnRunAutofix');
+    if (btnRunAutofix) {
+        btnRunAutofix.addEventListener('click', (e) => {
+            e.preventDefault();
+            executeAutofixGeneration();
+        });
+    }
+
     // 1-Click Autofix Download Button
     const btnDownloadAutofix = document.getElementById('btnDownloadAutofix');
     if (btnDownloadAutofix) {
@@ -606,52 +627,6 @@ function setupEventListeners() {
         });
     }
 
-    // Test in 3x3 Simulator Button
-    const btnTestAutofixInSim = document.getElementById('btnTestAutofixInSim');
-    if (btnTestAutofixInSim) {
-        btnTestAutofixInSim.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!currentAutofixCanvas) {
-                const heroImg = document.getElementById('resultHeroCapsuleImg') || document.getElementById('cvCanvas');
-                if (window.CapsuluAutofix && heroImg) {
-                    currentAutofixCanvas = window.CapsuluAutofix.applyCapsuluAutofix(heroImg);
-                }
-            }
-            if (!currentAutofixCanvas) return;
-
-            const userSimImgs = document.querySelectorAll('.user-capsule-item img, [data-is-user="true"] img');
-            const testBtnText = document.getElementById('testSimText');
-            const testBtnIcon = document.getElementById('testSimIcon');
-
-            if (!isAutofixAppliedToSim) {
-                // Apply autofixed image
-                const enhancedDataUrl = currentAutofixCanvas.toDataURL('image/jpeg', 0.95);
-                userSimImgs.forEach(img => {
-                    img.src = enhancedDataUrl;
-                });
-                isAutofixAppliedToSim = true;
-                if (testBtnText) testBtnText.textContent = '✓ Applied! (Click to Revert)';
-                if (testBtnIcon) testBtnIcon.textContent = '↩️';
-            } else {
-                // Revert to original image
-                userSimImgs.forEach(img => {
-                    if (currentLoadedImgSrc) {
-                        img.src = currentLoadedImgSrc;
-                    }
-                });
-                isAutofixAppliedToSim = false;
-                if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
-                if (testBtnIcon) testBtnIcon.textContent = '👁️';
-            }
-
-            // Scroll to visual check panel
-            const visualPanel = document.getElementById('visualCheckPanel');
-            if (visualPanel) {
-                visualPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        });
-    }
-
     // In-Browser WebGPU Neural Diffusion Runner
     const btnRunWebGpu = document.getElementById('btnRunWebGpuDiffusion');
     const btnCancelWebGpu = document.getElementById('btnCancelWebGpu');
@@ -668,15 +643,16 @@ function setupEventListeners() {
             e.preventDefault();
             if (!window.CapsuluWebGpu) return;
 
-            let sourceImg = (cvCanvas && cvCanvas.width > 0) ? cvCanvas : document.getElementById('resultHeroCapsuleImg');
+            // Always use the TRUE original un-manipulated image as input
+            let sourceImg = currentOriginalMedia || (currentVersions.original ? (currentVersions.original.canvas || currentVersions.original.img) : null) || cvCanvas;
             if (!sourceImg || (sourceImg.naturalWidth === 0 && sourceImg.width === 0)) {
-                if (currentLoadedImgSrc) {
+                if (currentOriginalImgSrc || currentLoadedImgSrc) {
                     sourceImg = new Image();
                     sourceImg.crossOrigin = 'anonymous';
                     await new Promise((res) => {
                         sourceImg.onload = res;
                         sourceImg.onerror = res;
-                        sourceImg.src = currentLoadedImgSrc;
+                        sourceImg.src = currentOriginalImgSrc || currentLoadedImgSrc;
                     });
                 }
             }
@@ -738,6 +714,33 @@ function setupEventListeners() {
                     window.CapsuluAutofix.initBeforeAfterSlider('webgpuBeforeAfterSlider');
                 }
 
+                // Evaluate Computer Vision & Scorecard for WebGPU Version
+                try {
+                    const cv_wg = (typeof runComputerVision === 'function') ? runComputerVision(result.canvas) : null;
+                    if (cv_wg && typeof evaluateScores === 'function') {
+                        const scores_wg = evaluateScores(cv_wg);
+                        currentVersions.webgpu = {
+                            canvas: result.canvas,
+                            imgSrc: result.canvas.toDataURL('image/jpeg', 0.95),
+                            cv: cv_wg,
+                            scores: scores_wg
+                        };
+                        const pillWg = document.getElementById('pillVersionWebGpu');
+                        if (pillWg) pillWg.style.display = 'inline-flex';
+
+                        if (currentVersions.original && currentVersions.original.scores) {
+                            const diff = scores_wg.overallScore - currentVersions.original.scores.overallScore;
+                            const deltaElem = document.getElementById('pillDeltaWebGpu');
+                            if (deltaElem) {
+                                deltaElem.textContent = (diff >= 0 ? `+${diff}` : `${diff}`) + ' pts';
+                                deltaElem.style.display = 'inline-block';
+                            }
+                        }
+                    }
+                } catch (wgEvalErr) {
+                    console.warn('WebGPU scorecard eval error:', wgEvalErr);
+                }
+
                 if (webgpuTelemetryBadge) {
                     webgpuTelemetryBadge.textContent = `⚡ WebGPU Inpainted in ${(result.durationMs / 1000).toFixed(1)}s (${result.vramUsedMB} MB VRAM)`;
                 }
@@ -794,45 +797,33 @@ function setupEventListeners() {
         });
     }
 
-    // WebGPU Test in 3x3 Simulator Button
-    const btnTestWebGpuInSim = document.getElementById('btnTestWebGpuInSim');
-    if (btnTestWebGpuInSim) {
-        btnTestWebGpuInSim.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!currentWebGpuCanvas) return;
+    // Interactive Version Switcher Pills
+    document.getElementById('pillVersionOriginal')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToVersion('original');
+    });
 
-            const userSimImgs = document.querySelectorAll('.user-capsule-item img, [data-is-user="true"] img');
-            const testBtnText = document.getElementById('testWebGpuSimText');
-            const testBtnIcon = document.getElementById('testWebGpuSimIcon');
+    document.getElementById('pillVersionAutofix')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToVersion('autofix');
+    });
 
-            if (!isWebGpuAppliedToSim) {
-                // Apply WebGPU neural image
-                const neuralDataUrl = currentWebGpuCanvas.toDataURL('image/jpeg', 0.95);
-                userSimImgs.forEach(img => {
-                    img.src = neuralDataUrl;
-                });
-                isWebGpuAppliedToSim = true;
-                if (testBtnText) testBtnText.textContent = '✓ Applied! (Click to Revert)';
-                if (testBtnIcon) testBtnIcon.textContent = '↩️';
-            } else {
-                // Revert to original image
-                userSimImgs.forEach(img => {
-                    if (currentLoadedImgSrc) {
-                        img.src = currentLoadedImgSrc;
-                    }
-                });
-                isWebGpuAppliedToSim = false;
-                if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
-                if (testBtnIcon) testBtnIcon.textContent = '👁️';
-            }
+    document.getElementById('pillVersionWebGpu')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToVersion('webgpu');
+    });
 
-            // Scroll to visual check panel
-            const visualPanel = document.getElementById('visualCheckPanel');
-            if (visualPanel) {
-                visualPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        });
-    }
+    // Box 2: Analyze in Scorecard Button
+    document.getElementById('btnAnalyzeAutofix')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToVersion('autofix', true);
+    });
+
+    // Box 3: Analyze in Scorecard Button
+    document.getElementById('btnAnalyzeWebGpu')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        switchToVersion('webgpu', true);
+    });
 
     // Footer Global Reset Button (Clears all state, recent items, caches, and resets to landing)
     const btnFooterResetRecent = document.getElementById('btnFooterResetRecent');
@@ -1800,10 +1791,11 @@ function switchGenreLens(genreKey) {
     });
 
     if (typeof currentCvResult !== 'undefined' && currentCvResult) {
+        const activeImg = (currentVersions && currentVersions[activeVersionKey] && currentVersions[activeVersionKey].imgSrc) || currentLoadedImgSrc;
         updateGenreBenchmarkDisplay(currentCvResult, currentGenreLens);
-        renderSimulatorLineups(currentLoadedImgSrc, currentLoadedGameName, currentLoadedAppId, currentGenreLens);
+        renderSimulatorLineups(activeImg, currentLoadedGameName, currentLoadedAppId, currentGenreLens);
         generateChecklist(currentCvResult, currentScores, currentGenreLens);
-        updateAiPromptCard(currentCvResult, currentScores, currentLoadedGameName, currentLoadedAppId, currentLoadedImgSrc, currentGenreLens);
+        updateAiPromptCard(currentCvResult, currentScores, currentLoadedGameName, currentLoadedAppId, activeImg, currentGenreLens);
     }
 }
 
@@ -2516,6 +2508,48 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     currentLoadedTags = tags || [];
     currentLoadedGenres = genres || [];
 
+    // Create an immutable snapshot canvas of the original image
+    const origCanvas = document.createElement('canvas');
+    const srcW = img.naturalWidth || img.videoWidth || img.width || 460;
+    const srcH = img.naturalHeight || img.videoHeight || img.height || 215;
+    origCanvas.width = srcW;
+    origCanvas.height = srcH;
+    const origCtx = origCanvas.getContext('2d');
+    origCtx.imageSmoothingEnabled = true;
+    origCtx.imageSmoothingQuality = 'high';
+    origCtx.drawImage(img, 0, 0, srcW, srcH);
+
+    currentOriginalMedia = origCanvas;
+    currentOriginalImgSrc = imgSrc;
+
+    // Save Original Version in multi-version store
+    currentVersions.original = {
+        img: img,
+        canvas: origCanvas,
+        imgSrc: imgSrc,
+        cv: cv,
+        scores: scores
+    };
+    currentVersions.autofix = null;
+    currentVersions.webgpu = null;
+    activeVersionKey = 'original';
+
+    // Reset Version Switcher Pills — only show Original initially
+    document.getElementById('pillVersionOriginal')?.classList.add('active');
+    const pillAf = document.getElementById('pillVersionAutofix');
+    if (pillAf) {
+        pillAf.classList.remove('active');
+        pillAf.style.display = 'none';
+    }
+    const pillWg = document.getElementById('pillVersionWebGpu');
+    if (pillWg) {
+        pillWg.classList.remove('active');
+        pillWg.style.display = 'none';
+    }
+
+    // Reset Box 2 (Autofix) and Box 3 (WebGPU) studio cards
+    resetImprovePanelsForNewCapsule();
+
     // Default comparison selection is always All Steam Games ('all')
     currentGenreLens = 'all';
 
@@ -2639,170 +2673,8 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     // 4. Render Contextual Simulator Lineups
     renderSimulatorLineups(imgSrc, gameName || "Your Game", appid, currentGenreLens);
 
-    // 5. Update Top Score Banner
-    document.getElementById('overallScoreNum').textContent = scores.overallScore;
-
-    const gaugeFill = document.getElementById('gaugeFill');
-    const offset = 440 - (440 * scores.overallScore / 100);
-    const themeColor = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
-    gaugeFill.style.strokeDashoffset = offset;
-    gaugeFill.style.stroke = themeColor;
-
-    const tierBadge = document.getElementById('predictedTierBadge');
-    if (tierBadge) {
-        tierBadge.textContent = scores.tierName;
-        tierBadge.className = `tier-badge ${scores.tierBadgeClass}`;
-    }
-
-    const percentileElem = document.getElementById('percentileText');
-    if (percentileElem) {
-        percentileElem.textContent = scores.percentile;
-    }
-    document.getElementById('scoreHeadline').textContent = scores.headline;
-    document.getElementById('scoreSummary').textContent = scores.summary;
-
-    // 5.4 Update AI Commercial Forecast Card
-    updateCommercialForecast(scores, cv, effectiveReviews, appid, img);
-
-    // 5.5 Update Dominant Scorecard Quick-Metrics Table with Color-Coded Ratings
-    // Contrast (Mega-Hit Benchmark: 63.0)
-    const qsContrastElem = document.getElementById('qsContrast');
-    if (qsContrastElem) {
-        qsContrastElem.textContent = `${cv.brightnessStd} std dev`;
-        qsContrastElem.className = `qm-val ${cv.brightnessStd >= 63 ? 'val-green' : cv.brightnessStd >= 58 ? 'val-gold' : 'val-red'}`;
-    }
-    const qmBadgeContrast = document.getElementById('qmBadgeContrast');
-    if (qmBadgeContrast) {
-        qmBadgeContrast.textContent = cv.brightnessStd >= 63 ? 'High Punch' : cv.brightnessStd >= 58 ? 'Moderate' : 'Flat Midtones';
-        qmBadgeContrast.className = `qm-badge ${cv.brightnessStd >= 63 ? 'qm-badge-green' : cv.brightnessStd >= 58 ? 'qm-badge-gold' : 'qm-badge-red'}`;
-    }
-    const qmSubContrast = document.getElementById('qmSubContrast');
-    if (qmSubContrast) {
-        qmSubContrast.textContent = cv.brightnessStd >= 63 ? '✓ Beats Mega-Hit Avg (63.0)' : '⚠️ Below 63.0 Mega-Hit Avg (Flat Midtones)';
-    }
-
-    // Warmth / Saliency (Mega-Hit Benchmark: 45%)
-    const qsPaletteElem = document.getElementById('qsPalette');
-    if (qsPaletteElem) {
-        qsPaletteElem.textContent = `${cv.warmPct}% Warm Saliency`;
-        qsPaletteElem.className = `qm-val ${cv.warmPct >= 45 ? 'val-green' : cv.warmPct >= 35 ? 'val-gold' : 'val-red'}`;
-    }
-    const qmBadgePalette = document.getElementById('qmBadgePalette');
-    if (qmBadgePalette) {
-        qmBadgePalette.textContent = cv.warmPct >= 45 ? 'High Pop' : cv.warmPct >= 35 ? 'Moderate' : 'Low Pop (Cold Blend)';
-        qmBadgePalette.className = `qm-badge ${cv.warmPct >= 45 ? 'qm-badge-green' : cv.warmPct >= 35 ? 'qm-badge-gold' : 'qm-badge-red'}`;
-    }
-    const qmSubPalette = document.getElementById('qmSubPalette');
-    if (qmSubPalette) {
-        qmSubPalette.textContent = cv.warmPct >= 45 ? '✓ Strong against Steam UI' : '⚠️ Mostly cool/neutral palette (Needs Warm Accent)';
-    }
-
-    // Entropy / Texture
-    const qsEntropyElem = document.getElementById('qsEntropy');
-    if (qsEntropyElem) {
-        qsEntropyElem.textContent = `${cv.entropy} bits depth`;
-        qsEntropyElem.className = `qm-val ${cv.entropy >= 6.8 ? 'val-green' : cv.entropy >= 6.2 ? 'val-gold' : 'val-red'}`;
-    }
-    const qmBadgeEntropy = document.getElementById('qmBadgeEntropy');
-    if (qmBadgeEntropy) {
-        qmBadgeEntropy.textContent = cv.entropy >= 6.8 ? 'Rich Detail' : cv.entropy >= 6.2 ? 'Adequate' : 'Low Detail';
-        qmBadgeEntropy.className = `qm-badge ${cv.entropy >= 6.8 ? 'qm-badge-green' : cv.entropy >= 6.2 ? 'qm-badge-gold' : 'qm-badge-red'}`;
-    }
-    const qmSubEntropy = document.getElementById('qmSubEntropy');
-    if (qmSubEntropy) {
-        qmSubEntropy.textContent = cv.entropy >= 6.8 ? '✓ Deep tonal rendering' : '⚠️ Washed midtone gradients';
-    }
-
-    // Focal Lighting / Spotlight
-    const qsFocusElem = document.getElementById('qsFocus');
-    if (qsFocusElem) {
-        qsFocusElem.textContent = cv.isCenterFocused ? `Spotlight (+${cv.spotlightRatio})` : 'Border-Heavy';
-        qsFocusElem.className = `qm-val ${cv.isCenterFocused ? 'val-green' : 'val-gold'}`;
-    }
-    const qmBadgeFocus = document.getElementById('qmBadgeFocus');
-    if (qmBadgeFocus) {
-        qmBadgeFocus.textContent = cv.isCenterFocused ? 'Spotlit' : 'Needs Vignette';
-        qmBadgeFocus.className = `qm-badge ${cv.isCenterFocused ? 'qm-badge-green' : 'qm-badge-gold'}`;
-    }
-    const qmSubFocus = document.getElementById('qmSubFocus');
-    if (qmSubFocus) {
-        qmSubFocus.textContent = cv.isCenterFocused ? '✓ Central hero illuminated' : '⚠️ Outer edges need vignette';
-    }
-
-    // Title Contrast & Clarity Quick Metric
-    const qsTextElem = document.getElementById('qsText');
-    if (qsTextElem) {
-        qsTextElem.textContent = `${cv.titleContrast}:1 WCAG`;
-        qsTextElem.className = `qm-val ${cv.titleContrast >= 4.5 ? 'val-green' : cv.titleContrast >= 3.0 ? 'val-gold' : 'val-red'}`;
-    }
-    const qmBadgeText = document.getElementById('qmBadgeText');
-    if (qmBadgeText) {
-        qmBadgeText.textContent = cv.titleContrast >= 4.5 ? 'High Clarity' : cv.titleContrast >= 3.0 ? 'Moderate' : 'Low Contrast';
-        qmBadgeText.className = `qm-badge ${cv.titleContrast >= 4.5 ? 'qm-badge-green' : cv.titleContrast >= 3.0 ? 'qm-badge-gold' : 'qm-badge-red'}`;
-    }
-    const qmSubText = document.getElementById('qmSubText');
-    if (qmSubText) {
-        qmSubText.textContent = cv.titleContrast >= 4.5 ? '✓ Meets WCAG AA standard' : '⚠️ Text risks blending into art';
-    }
-
-    // Title Placement & Coverage Quick Metric
-    const qsLogoZoneElem = document.getElementById('qsLogoZone');
-    if (qsLogoZoneElem) {
-        qsLogoZoneElem.textContent = `${cv.titleZone} (${cv.titleSizePct}%)`;
-        qsLogoZoneElem.className = `qm-val ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'val-green' : 'val-gold'}`;
-    }
-    const qmBadgeLogoZone = document.getElementById('qmBadgeLogoZone');
-    if (qmBadgeLogoZone) {
-        qmBadgeLogoZone.textContent = cv.titleSizeLabel || cv.titleSizeClass;
-        qmBadgeLogoZone.className = `qm-badge ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'qm-badge-green' : 'qm-badge-gold'}`;
-    }
-    const qmSubLogoZone = document.getElementById('qmSubLogoZone');
-    if (qmSubLogoZone) {
-        qmSubLogoZone.textContent = cv.titleSizePct >= 14 ? '✓ Clear at 120px scale' : '⚠️ Title text may be too small in queue';
-    }
-
-    // 6. Update Palette Swatches & D3 Cake Diagram
-    renderPalettePieChart(cv.dominantColors);
-
-    const swatchesContainer = document.getElementById('paletteSwatches');
-    swatchesContainer.innerHTML = '';
-    cv.dominantColors.forEach((c, index) => {
-        const swatch = document.createElement('div');
-        swatch.className = 'swatch-item';
-        swatch.innerHTML = `
-            <div class="swatch-preview" style="background-color: ${c.hex};"></div>
-            <div class="swatch-hex">${c.hex}</div>
-            <div class="swatch-pct">${c.pct}%</div>
-        `;
-        swatch.addEventListener("mouseenter", () => {
-            const slices = d3.selectAll("#palettePieChart path");
-            slices.filter((d, idx) => idx === index).transition().duration(150).attr("d", d3.arc().innerRadius(36).outerRadius(64).padAngle(0.03));
-            const centerLabel = document.getElementById("pieCenterPct");
-            if (centerLabel) centerLabel.textContent = c.pct + "%";
-        });
-        swatch.addEventListener("mouseleave", () => {
-            const slices = d3.selectAll("#palettePieChart path");
-            slices.filter((d, idx) => idx === index).transition().duration(150).attr("d", d3.arc().innerRadius(36).outerRadius(60).padAngle(0.03));
-            const centerLabel = document.getElementById("pieCenterPct");
-            if (centerLabel) centerLabel.textContent = "100%";
-        });
-        swatchesContainer.appendChild(swatch);
-    });
-
-    // 7. Update 6 Metric Rows
-    updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `This: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
-    updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `This: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
-    updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `This: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
-    updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `This: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
-    updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
-    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', scores.textScore, `This: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
-
-    // 8. Generate Tailored Checklist & AI Art Fix Prompt
-    generateChecklist(cv, scores, currentGenreLens);
-    updateAiPromptCard(cv, scores, gameName, appid, imgSrc, currentGenreLens);
-
-    // 8.5 Bind Click-to-Scroll on Quick Metric Cells
-    bindQuickMetricsScroll();
+    // 5. Render Scorecard, AI Forecast, Palette & Metrics
+    renderScorecardData(cv, scores, img, imgSrc, effectiveReviews);
 
     // Show Dashboard & Smooth Scroll
     resultsDashboard.style.display = 'block';
@@ -2819,6 +2691,222 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
             });
         }
     }, 50);
+}
+
+/**
+ * Render all Scorecard UI elements (Score wheel, Quick metrics, Category bars, Palette, Checklist, AI Forecast, Sim preview)
+ */
+function renderScorecardData(cv, scores, mediaSource, imgSrc, effectiveReviews = null) {
+    // 1. Update Top Score Banner
+    const scoreNum = document.getElementById('overallScoreNum');
+    if (scoreNum) scoreNum.textContent = scores.overallScore;
+
+    const gaugeFill = document.getElementById('gaugeFill');
+    if (gaugeFill) {
+        const offset = 440 - (440 * scores.overallScore / 100);
+        const themeColor = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
+        gaugeFill.style.strokeDashoffset = offset;
+        gaugeFill.style.stroke = themeColor;
+    }
+
+    const tierBadge = document.getElementById('predictedTierBadge');
+    if (tierBadge) {
+        tierBadge.textContent = scores.tierName;
+        tierBadge.className = `tier-badge ${scores.tierBadgeClass}`;
+    }
+
+    const percentileElem = document.getElementById('percentileText');
+    if (percentileElem) {
+        percentileElem.textContent = scores.percentile;
+    }
+    const scoreHeadline = document.getElementById('scoreHeadline');
+    if (scoreHeadline) scoreHeadline.textContent = scores.headline;
+    const scoreSummary = document.getElementById('scoreSummary');
+    if (scoreSummary) scoreSummary.textContent = scores.summary;
+
+    // 2. Update AI Commercial Forecast Card
+    updateCommercialForecast(scores, cv, effectiveReviews, currentLoadedAppId, mediaSource);
+
+    // 3. Update Dominant Scorecard Quick-Metrics Table
+    const qsContrastElem = document.getElementById('qsContrast');
+    if (qsContrastElem) {
+        qsContrastElem.textContent = `${cv.brightnessStd} std dev`;
+        qsContrastElem.className = `qm-val ${cv.brightnessStd >= 63 ? 'val-green' : cv.brightnessStd >= 58 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeContrast = document.getElementById('qmBadgeContrast');
+    if (qmBadgeContrast) {
+        qmBadgeContrast.textContent = cv.brightnessStd >= 63 ? 'High Punch' : cv.brightnessStd >= 58 ? 'Moderate' : 'Flat Midtones';
+        qmBadgeContrast.className = `qm-badge ${cv.brightnessStd >= 63 ? 'qm-badge-green' : cv.brightnessStd >= 58 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubContrast = document.getElementById('qmSubContrast');
+    if (qmSubContrast) {
+        qmSubContrast.textContent = cv.brightnessStd >= 63 ? '✓ Beats Mega-Hit Avg (63.0)' : '⚠️ Below 63.0 Mega-Hit Avg (Flat Midtones)';
+    }
+
+    const qsPaletteElem = document.getElementById('qsPalette');
+    if (qsPaletteElem) {
+        qsPaletteElem.textContent = `${cv.warmPct}% Warm Saliency`;
+        qsPaletteElem.className = `qm-val ${cv.warmPct >= 45 ? 'val-green' : cv.warmPct >= 35 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgePalette = document.getElementById('qmBadgePalette');
+    if (qmBadgePalette) {
+        qmBadgePalette.textContent = cv.warmPct >= 45 ? 'High Pop' : cv.warmPct >= 35 ? 'Moderate' : 'Low Pop (Cold Blend)';
+        qmBadgePalette.className = `qm-badge ${cv.warmPct >= 45 ? 'qm-badge-green' : cv.warmPct >= 35 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubPalette = document.getElementById('qmSubPalette');
+    if (qmSubPalette) {
+        qmSubPalette.textContent = cv.warmPct >= 45 ? '✓ Strong against Steam UI' : '⚠️ Mostly cool/neutral palette (Needs Warm Accent)';
+    }
+
+    const qsEntropyElem = document.getElementById('qsEntropy');
+    if (qsEntropyElem) {
+        qsEntropyElem.textContent = `${cv.entropy} bits depth`;
+        qsEntropyElem.className = `qm-val ${cv.entropy >= 6.8 ? 'val-green' : cv.entropy >= 6.2 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeEntropy = document.getElementById('qmBadgeEntropy');
+    if (qmBadgeEntropy) {
+        qmBadgeEntropy.textContent = cv.entropy >= 6.8 ? 'Rich Detail' : cv.entropy >= 6.2 ? 'Adequate' : 'Low Detail';
+        qmBadgeEntropy.className = `qm-badge ${cv.entropy >= 6.8 ? 'qm-badge-green' : cv.entropy >= 6.2 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubEntropy = document.getElementById('qmSubEntropy');
+    if (qmSubEntropy) {
+        qmSubEntropy.textContent = cv.entropy >= 6.8 ? '✓ Deep tonal rendering' : '⚠️ Washed midtone gradients';
+    }
+
+    const qsFocusElem = document.getElementById('qsFocus');
+    if (qsFocusElem) {
+        qsFocusElem.textContent = cv.isCenterFocused ? `Spotlight (+${cv.spotlightRatio})` : 'Border-Heavy';
+        qsFocusElem.className = `qm-val ${cv.isCenterFocused ? 'val-green' : 'val-gold'}`;
+    }
+    const qmBadgeFocus = document.getElementById('qmBadgeFocus');
+    if (qmBadgeFocus) {
+        qmBadgeFocus.textContent = cv.isCenterFocused ? 'Spotlit' : 'Needs Vignette';
+        qmBadgeFocus.className = `qm-badge ${cv.isCenterFocused ? 'qm-badge-green' : 'qm-badge-gold'}`;
+    }
+    const qmSubFocus = document.getElementById('qmSubFocus');
+    if (qmSubFocus) {
+        qmSubFocus.textContent = cv.isCenterFocused ? '✓ Central hero illuminated' : '⚠️ Outer edges need vignette';
+    }
+
+    const qsTextElem = document.getElementById('qsText');
+    if (qsTextElem) {
+        qsTextElem.textContent = `${cv.titleContrast}:1 WCAG`;
+        qsTextElem.className = `qm-val ${cv.titleContrast >= 4.5 ? 'val-green' : cv.titleContrast >= 3.0 ? 'val-gold' : 'val-red'}`;
+    }
+    const qmBadgeText = document.getElementById('qmBadgeText');
+    if (qmBadgeText) {
+        qmBadgeText.textContent = cv.titleContrast >= 4.5 ? 'High Clarity' : cv.titleContrast >= 3.0 ? 'Moderate' : 'Low Contrast';
+        qmBadgeText.className = `qm-badge ${cv.titleContrast >= 4.5 ? 'qm-badge-green' : cv.titleContrast >= 3.0 ? 'qm-badge-gold' : 'qm-badge-red'}`;
+    }
+    const qmSubText = document.getElementById('qmSubText');
+    if (qmSubText) {
+        qmSubText.textContent = cv.titleContrast >= 4.5 ? '✓ Meets WCAG AA standard' : '⚠️ Text risks blending into art';
+    }
+
+    const qsLogoZoneElem = document.getElementById('qsLogoZone');
+    if (qsLogoZoneElem) {
+        qsLogoZoneElem.textContent = `${cv.titleZone} (${cv.titleSizePct}%)`;
+        qsLogoZoneElem.className = `qm-val ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'val-green' : 'val-gold'}`;
+    }
+    const qmBadgeLogoZone = document.getElementById('qmBadgeLogoZone');
+    if (qmBadgeLogoZone) {
+        qmBadgeLogoZone.textContent = cv.titleSizeLabel || cv.titleSizeClass;
+        qmBadgeLogoZone.className = `qm-badge ${cv.titleSizePct >= 12 && cv.titleSizePct <= 35 ? 'qm-badge-green' : 'qm-badge-gold'}`;
+    }
+    const qmSubLogoZone = document.getElementById('qmSubLogoZone');
+    if (qmSubLogoZone) {
+        qmSubLogoZone.textContent = cv.titleSizePct >= 14 ? '✓ Clear at 120px scale' : '⚠️ Title text may be too small in queue';
+    }
+
+    // 4. Update Palette Swatches & D3 Cake Diagram
+    renderPalettePieChart(cv.dominantColors);
+
+    const swatchesContainer = document.getElementById('paletteSwatches');
+    if (swatchesContainer) {
+        swatchesContainer.innerHTML = '';
+        cv.dominantColors.forEach((c, index) => {
+            const swatch = document.createElement('div');
+            swatch.className = 'swatch-item';
+            swatch.innerHTML = `
+                <div class="swatch-preview" style="background-color: ${c.hex};"></div>
+                <div class="swatch-hex">${c.hex}</div>
+                <div class="swatch-pct">${c.pct}%</div>
+            `;
+            swatch.addEventListener("mouseenter", () => {
+                if (typeof d3 !== 'undefined') {
+                    const slices = d3.selectAll("#palettePieChart path");
+                    slices.filter((d, idx) => idx === index).transition().duration(150).attr("d", d3.arc().innerRadius(36).outerRadius(64).padAngle(0.03));
+                }
+                const centerLabel = document.getElementById("pieCenterPct");
+                if (centerLabel) centerLabel.textContent = c.pct + "%";
+            });
+            swatch.addEventListener("mouseleave", () => {
+                if (typeof d3 !== 'undefined') {
+                    const slices = d3.selectAll("#palettePieChart path");
+                    slices.filter((d, idx) => idx === index).transition().duration(150).attr("d", d3.arc().innerRadius(36).outerRadius(60).padAngle(0.03));
+                }
+                const centerLabel = document.getElementById("pieCenterPct");
+                if (centerLabel) centerLabel.textContent = "100%";
+            });
+            swatchesContainer.appendChild(swatch);
+        });
+    }
+
+    // 5. Update 6 Metric Rows
+    updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `This: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
+    updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `This: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
+    updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `This: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
+    updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `This: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
+    updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
+    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', scores.textScore, `This: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
+
+    // 6. Generate Tailored Checklist & AI Art Fix Prompt
+    generateChecklist(cv, scores, currentGenreLens);
+    updateAiPromptCard(cv, scores, currentLoadedGameName, currentLoadedAppId, imgSrc, currentGenreLens);
+
+    // 7. Update 3x3 Simulator Center Artwork
+    document.querySelectorAll('.user-capsule-item img, [data-is-user="true"] img').forEach(imgEl => {
+        imgEl.src = imgSrc;
+    });
+
+    // 8. Bind Click-to-Scroll on Quick Metric Cells
+    bindQuickMetricsScroll();
+}
+
+/**
+ * Switch Active Capsule Version (Original, Simple Manipulation, WebGPU Neural)
+ */
+function switchToVersion(versionKey, scrollToTop = false) {
+    if (!currentVersions || !currentVersions[versionKey]) return;
+    activeVersionKey = versionKey;
+
+    // Update pill button classes
+    document.querySelectorAll('.version-pill').forEach(pill => {
+        pill.classList.toggle('active', pill.dataset.version === versionKey);
+    });
+
+    const v = currentVersions[versionKey];
+    const heroImg = document.getElementById('resultHeroCapsuleImg');
+    if (heroImg) heroImg.src = v.imgSrc;
+
+    const effectiveReviews = (typeof currentLoadedAppId !== 'undefined' && currentLoadedAppId)
+        ? findKnownReviews(currentLoadedAppId, currentLoadedGameName)
+        : null;
+
+    renderScorecardData(v.cv, v.scores, v.canvas || v.img, v.imgSrc, effectiveReviews);
+
+    if (scrollToTop) {
+        const target = document.getElementById('gameHugeTitleBanner') || document.querySelector('.top-hero-two-col-grid') || resultsDashboard;
+        if (target) {
+            const nav = document.querySelector('.steam-global-nav');
+            const navHeight = nav ? nav.offsetHeight : 64;
+            const targetY = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
+            window.scrollTo({
+                top: Math.max(0, targetY),
+                behavior: 'smooth'
+            });
+        }
+    }
 }
 
 /**
@@ -3154,9 +3242,7 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
 }
 
 let currentAutofixCanvas = null;
-let isAutofixAppliedToSim = false;
 let currentWebGpuCanvas = null;
-let isWebGpuAppliedToSim = false;
 
 /**
  * Update the 3-Box Improve Master Section (AI Chat, 1-Click Autofix, WebGPU Diffusion)
@@ -3182,75 +3268,111 @@ function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
         inlineTargets.style.display = 'none';
     }
 
-    // Update 1-Click Autofix Pane
-    updateAutofixPane(cv, scores, gameName, imgSrc);
-
     // Update WebGPU Hardware Status Pane
     updateWebGpuPane(cv, scores, gameName);
 }
 
 /**
- * Generates instant classical computer vision enhancement & updates before/after split slider
+ * Resets Box 2 and Box 3 state when a brand new capsule is loaded
  */
-function updateAutofixPane(cv, scores, gameName, imgSrc) {
+function resetImprovePanelsForNewCapsule() {
+    // Reset Box 2 (Simple Manipulation)
+    currentAutofixCanvas = null;
+    const autofixResultCard = document.getElementById('autofixResultCard');
+    if (autofixResultCard) autofixResultCard.style.display = 'none';
+    const runAutofixText = document.getElementById('runAutofixText');
+    if (runAutofixText) runAutofixText.textContent = 'Run Simple Manipulation';
+
+    // Reset Box 3 (WebGPU Neural Diffusion)
+    currentWebGpuCanvas = null;
+    const webgpuResultCard = document.getElementById('webgpuResultCard');
+    if (webgpuResultCard) webgpuResultCard.style.display = 'none';
+    const webgpuProgressCard = document.getElementById('webgpuProgressCard');
+    if (webgpuProgressCard) webgpuProgressCard.style.display = 'none';
+    const runWebGpuText = document.getElementById('runWebGpuText');
+    if (runWebGpuText) runWebGpuText.textContent = 'Run In-Browser WebGPU Diffusion (~1 GB)';
+    const btnRunWebGpu = document.getElementById('btnRunWebGpuDiffusion');
+    if (btnRunWebGpu) btnRunWebGpu.disabled = false;
+}
+
+/**
+ * Generates instant classical computer vision enhancement upon explicit button click
+ */
+function executeAutofixGeneration() {
     if (!window.CapsuluAutofix) return;
 
-    function renderWithSource(sourceObj) {
-        try {
-            const enhancedCanvas = window.CapsuluAutofix.applyCapsuluAutofix(sourceObj);
-            currentAutofixCanvas = enhancedCanvas;
+    const sourceObj = currentOriginalMedia || (currentVersions.original ? (currentVersions.original.canvas || currentVersions.original.img) : null) || cvCanvas;
+    if (!sourceObj) return;
 
-            const nativeW = sourceObj.naturalWidth || sourceObj.videoWidth || sourceObj.width || 460;
-            const nativeH = sourceObj.naturalHeight || sourceObj.videoHeight || sourceObj.height || 215;
+    try {
+        const enhancedCanvas = window.CapsuluAutofix.applyCapsuluAutofix(sourceObj);
+        currentAutofixCanvas = enhancedCanvas;
 
-            // Render before canvas
-            const canvasBefore = document.getElementById('autofixCanvasBefore');
-            if (canvasBefore) {
-                canvasBefore.width = nativeW;
-                canvasBefore.height = nativeH;
-                const ctxB = canvasBefore.getContext('2d');
-                ctxB.imageSmoothingEnabled = true;
-                ctxB.imageSmoothingQuality = 'high';
-                ctxB.clearRect(0, 0, nativeW, nativeH);
-                ctxB.drawImage(sourceObj, 0, 0, nativeW, nativeH);
-            }
+        const nativeW = sourceObj.naturalWidth || sourceObj.videoWidth || sourceObj.width || 460;
+        const nativeH = sourceObj.naturalHeight || sourceObj.videoHeight || sourceObj.height || 215;
 
-            // Render after canvas
-            const canvasAfter = document.getElementById('autofixCanvasAfter');
-            if (canvasAfter) {
-                canvasAfter.width = nativeW;
-                canvasAfter.height = nativeH;
-                const ctxA = canvasAfter.getContext('2d');
-                ctxA.imageSmoothingEnabled = true;
-                ctxA.imageSmoothingQuality = 'high';
-                ctxA.clearRect(0, 0, nativeW, nativeH);
-                ctxA.drawImage(enhancedCanvas, 0, 0, nativeW, nativeH);
-            }
-
-            // Initialize Before / After Slider
-            window.CapsuluAutofix.initBeforeAfterSlider('beforeAfterSlider');
-
-            // Reset Sim toggle button state
-            isAutofixAppliedToSim = false;
-            const testBtnText = document.getElementById('testSimText');
-            const testBtnIcon = document.getElementById('testSimIcon');
-            if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
-            if (testBtnIcon) testBtnIcon.textContent = '👁️';
-        } catch (err) {
-            console.warn('Autofix generation error:', err);
+        // Render before canvas with TRUE ORIGINAL
+        const canvasBefore = document.getElementById('autofixCanvasBefore');
+        if (canvasBefore) {
+            canvasBefore.width = nativeW;
+            canvasBefore.height = nativeH;
+            const ctxB = canvasBefore.getContext('2d');
+            ctxB.imageSmoothingEnabled = true;
+            ctxB.imageSmoothingQuality = 'high';
+            ctxB.clearRect(0, 0, nativeW, nativeH);
+            ctxB.drawImage(sourceObj, 0, 0, nativeW, nativeH);
         }
-    }
 
-    const heroImg = document.getElementById('resultHeroCapsuleImg');
-    if (cvCanvas && cvCanvas.width > 0) {
-        renderWithSource(cvCanvas);
-    } else if (heroImg && heroImg.complete && heroImg.naturalWidth > 0) {
-        renderWithSource(heroImg);
-    } else if (imgSrc) {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => renderWithSource(img);
-        img.src = imgSrc;
+        // Render after canvas with enhanced result
+        const canvasAfter = document.getElementById('autofixCanvasAfter');
+        if (canvasAfter) {
+            canvasAfter.width = nativeW;
+            canvasAfter.height = nativeH;
+            const ctxA = canvasAfter.getContext('2d');
+            ctxA.imageSmoothingEnabled = true;
+            ctxA.imageSmoothingQuality = 'high';
+            ctxA.clearRect(0, 0, nativeW, nativeH);
+            ctxA.drawImage(enhancedCanvas, 0, 0, nativeW, nativeH);
+        }
+
+        // Initialize Before / After Slider
+        window.CapsuluAutofix.initBeforeAfterSlider('beforeAfterSlider');
+
+        // Evaluate Computer Vision & Scorecard for Autofix Version
+        try {
+            const cv_af = (typeof runComputerVision === 'function') ? runComputerVision(enhancedCanvas) : null;
+            if (cv_af && typeof evaluateScores === 'function') {
+                const scores_af = evaluateScores(cv_af);
+                currentVersions.autofix = {
+                    canvas: enhancedCanvas,
+                    imgSrc: enhancedCanvas.toDataURL('image/jpeg', 0.95),
+                    cv: cv_af,
+                    scores: scores_af
+                };
+            }
+        } catch (evalErr) {
+            console.warn('Autofix scorecard eval error:', evalErr);
+        }
+
+        // Reveal the result card in Box 2
+        const resultCard = document.getElementById('autofixResultCard');
+        if (resultCard) {
+            resultCard.style.display = 'block';
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Reveal the top pill in the Version Switcher
+        const pillAf = document.getElementById('pillVersionAutofix');
+        if (pillAf) {
+            pillAf.style.display = 'inline-flex';
+        }
+
+        // Update button text
+        const runText = document.getElementById('runAutofixText');
+        if (runText) runText.textContent = 'Re-Run Simple Manipulation';
+
+    } catch (err) {
+        console.warn('Autofix generation error:', err);
     }
 }
 
