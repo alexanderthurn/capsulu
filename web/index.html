@@ -288,6 +288,11 @@
                     <!-- Right 50% Column: Big Dominant Scorecard Banner -->
                     <div class="top-right-col">
                         <section class="score-card-banner dominant-score-card">
+                            <!-- Card Header: Capsule Scent Title -->
+                            <div class="score-card-banner-header">
+                                <span class="score-card-kicker-text">This capsule smells like</span>
+                            </div>
+
                             <!-- Top Duo: Score Gauge + Big Sales Hero Number -->
                             <div class="score-top-duo-row">
                                 <div class="score-radial-group-huge">
@@ -318,13 +323,18 @@
                             <!-- AI Commercial Forecast Section -->
                             <div class="ai-forecast-card" id="aiForecastCard" onclick="scrollToAiMethodology()" role="button" tabindex="0" title="Click to view full methodology & AI analysis explanation">
                                 <div class="forecast-hero-row">
-                                    <span class="forecast-hero-num" id="forecastHeroNum">~240</span>
-                                    <span class="forecast-hero-label">Reviews</span>
+                                    <div class="forecast-hero-stat">
+                                        <span class="forecast-hero-num" id="forecastHeroNum">~240</span>
+                                        <span class="forecast-hero-label">Reviews</span>
+                                    </div>
+                                    <span class="forecast-hero-sep">•</span>
+                                    <div class="forecast-hero-stat">
+                                        <span class="forecast-hero-num forecast-hero-copies-num" id="forecastHeroCopies">~7,200</span>
+                                        <span class="forecast-hero-label forecast-copies-label">Copies Sold</span>
+                                    </div>
                                 </div>
                                 <div class="forecast-subline" id="forecastSubline">
-                                    <span class="forecast-range-badge" id="forecastRange">Expected Range: 160 – 380 reviews</span>
-                                    <span class="forecast-dot">•</span>
-                                    <span class="forecast-copies" id="forecastCopies">~7,200 copies sold</span>
+                                    <span class="forecast-range-badge" id="forecastRange">Expected: 4,800 – 11,400 copies sold (160 – 380 reviews)</span>
                                 </div>
                                 <p class="forecast-sentence" id="forecastSentence">
                                     Your capsule has a <strong class="hl-green">94% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">81% probability</strong> of reaching community traction (50+ reviews).

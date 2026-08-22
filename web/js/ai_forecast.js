@@ -107,11 +107,11 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
         const heroElem = document.getElementById('forecastHeroNum');
         if (heroElem) heroElem.textContent = "AI Offline";
 
-        const rangeElem = document.getElementById('forecastRange');
-        if (rangeElem) rangeElem.textContent = "WebAssembly Acceleration Unavailable";
+        const heroCopiesElem = document.getElementById('forecastHeroCopies');
+        if (heroCopiesElem) heroCopiesElem.textContent = "--";
 
-        const copiesElem = document.getElementById('forecastCopies');
-        if (copiesElem) copiesElem.textContent = "Modern Browser Required";
+        const rangeElem = document.getElementById('forecastRange');
+        if (rangeElem) rangeElem.textContent = "Modern Browser with WebAssembly Required";
 
         const salesTopElem = document.getElementById('salesHeroTop');
         if (salesTopElem) salesTopElem.textContent = "N/A";
@@ -126,6 +126,8 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
     const minRange = Math.max(0, Math.round(expReviews * 0.65));
     const maxRange = Math.round(expReviews * 1.55);
     const estCopies = Math.round(expReviews * 30);
+    const minCopies = Math.round(minRange * 30);
+    const maxCopies = Math.round(maxRange * 30);
 
     const fmtNum = (n) => n >= 10000 ? `${(n / 1000).toFixed(1)}k` : n.toLocaleString();
 
@@ -134,14 +136,14 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
         heroElem.textContent = `~${fmtNum(expReviews)}`;
     }
 
-    const rangeElem = document.getElementById('forecastRange');
-    if (rangeElem) {
-        rangeElem.textContent = `Expected: ${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews`;
+    const heroCopiesElem = document.getElementById('forecastHeroCopies');
+    if (heroCopiesElem) {
+        heroCopiesElem.textContent = `~${fmtNum(estCopies)}`;
     }
 
-    const copiesElem = document.getElementById('forecastCopies');
-    if (copiesElem) {
-        copiesElem.textContent = `~${fmtNum(estCopies)} copies sold`;
+    const rangeElem = document.getElementById('forecastRange');
+    if (rangeElem) {
+        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} copies sold (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
     }
 
     const salesTopElem = document.getElementById('salesHeroTop');
