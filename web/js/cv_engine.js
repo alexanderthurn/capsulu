@@ -1,5 +1,5 @@
 /**
- * cv_engine.js — Pure Client-Side Computer Vision & Heuristic Scoring Engine
+ * cv_engine.js — Computer Vision & Heuristic Scoring Engine
  * Part of Capsulu — Steam Capsule Rater
  * Matches capsulu_scoring.py canonical implementation
  */
@@ -23,7 +23,7 @@ function runComputerVision(img) {
     cvCanvas.width = CANVAS_WIDTH;
     cvCanvas.height = CANVAS_HEIGHT;
     const ctx = cvCanvas.getContext('2d');
-    
+
     ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     const imgData = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     const data = imgData.data;

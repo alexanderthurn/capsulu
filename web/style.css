@@ -5011,3 +5011,15 @@ body {
     font-size: 0.8rem;
     color: var(--gold);
 }
+
+.methodology-inline-link {
+    color: var(--steam-cyan);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+
+.methodology-inline-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}

@@ -20,7 +20,7 @@
 
 ## 🌟 Key Features
 
-- **⚡ Instant In-Browser Computer Vision**: Pure client-side pixel analysis calculating Dynamic Contrast (Luminance Standard Deviation), Shannon Entropy (tonal depth), Sobel Edge Density, Warm Accent Share, and Central Spotlight Lighting.
+- **⚡ Instant In-Browser Computer Vision**: Pixel analysis calculating Dynamic Contrast (Luminance Standard Deviation), Shannon Entropy (tonal depth), Sobel Edge Density, Warm Accent Share, and Central Spotlight Lighting.
 - **🏪 Storefront Competition Simulator (Visual Check)**:
   - **120px Discovery Matrix**: 3×3 gapless micro-thumbnail glance test with your capsule positioned in the exact center against competing Steam hits.
   - **Large Browse Matrix**: Full-scale 3×3 storefront grid view to assess art scale and composition.

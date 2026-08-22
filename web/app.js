@@ -111,7 +111,7 @@ window.switchSimView = function (mode) {
 };
 
 /**
- * Capsulu — Pure Client-Side JavaScript Computer Vision & Scoring Engine
+ * Capsulu - Computer Vision & Scoring Engine
  * Supports Deep Linking (?app=...), 3x3 Large Grid & Seamless 3x3 Micro Matrix (User in Center).
  */
 
@@ -292,11 +292,11 @@ function setupEventListeners() {
     if (navAiBtn) navAiBtn.addEventListener('click', () => setActiveTab('ai'));
 
     // Global helper to smoothly scroll to AI Methodology & Analysis Section on the AI Tab
-    window.scrollToAiMethodology = function() {
+    window.scrollToAiMethodology = function () {
         if (typeof currentTab !== 'undefined' && currentTab !== 'ai') {
             if (typeof setActiveTab === 'function') setActiveTab('ai');
         }
-        
+
         const executeScroll = () => {
             const methodSection = document.getElementById('aiMethodologySection');
             if (methodSection) {
@@ -304,13 +304,13 @@ function setupEventListeners() {
                 const rect = methodSection.getBoundingClientRect();
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
                 const targetY = Math.max(0, rect.top + scrollTop - 70);
-                
+
                 try {
                     window.scrollTo({ top: targetY, behavior: 'smooth' });
                 } catch (e) {
                     window.scrollTo(0, targetY);
                 }
-                
+
                 methodSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 methodSection.classList.remove('pulse-highlight');
                 void methodSection.offsetWidth; // trigger reflow
@@ -753,10 +753,10 @@ const PINNED_SAMPLES = [
 
 function ensurePinnedInList(items) {
     if (!Array.isArray(items)) items = [];
-    
+
     for (const pinned of PINNED_SAMPLES) {
-        const exists = items.some(x => 
-            (x.appid && String(x.appid) === String(pinned.appid)) || 
+        const exists = items.some(x =>
+            (x.appid && String(x.appid) === String(pinned.appid)) ||
             (x.name && x.name.toLowerCase() === pinned.name.toLowerCase())
         );
         if (!exists) {
@@ -1152,7 +1152,7 @@ function startFeatureCanvasAnimation() {
     const canvas = document.getElementById('aiScanFeatureCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
     stopFeatureCanvasAnimation();
 
     const nodes = [];
@@ -1168,7 +1168,7 @@ function startFeatureCanvasAnimation() {
 
     aiScanAnimInterval = setInterval(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         // Draw connection lines
         ctx.strokeStyle = 'rgba(0, 242, 254, 0.18)';
         ctx.lineWidth = 1;
@@ -1575,7 +1575,7 @@ function drawBenchmarkRadar(cv, genreKey) {
         const labelDist = radius + 22;
         const xLabel = cx + labelDist * Math.cos(angle);
         const yLabel = cy + labelDist * Math.sin(angle);
-        
+
         let textAnchor = "middle";
         if (Math.abs(Math.cos(angle)) > 0.3) {
             textAnchor = Math.cos(angle) > 0 ? "start" : "end";
@@ -1653,7 +1653,7 @@ function openSimulatorGame(appid, imageUrl, name, isUser) {
     const homeView = document.getElementById('homeView');
     const benchmarkView = document.getElementById('benchmarkView');
     const aiView = document.getElementById('aiView');
-    
+
     if (navHomeBtn) {
         navHomeBtn.click();
     } else {
@@ -1991,7 +1991,7 @@ function createBenchmarkCard(game, index, type) {
     const revCount = Number(game.reviews !== undefined ? game.reviews : 0);
     const revText = `${revCount.toLocaleString()} ${revCount === 1 ? 'review' : 'reviews'}`;
     const tooltip = `${game.name} • #${index + 1} • ${game.palette_type || 'neutral'} • ${revText} (Click to Analyze)`;
-    
+
     return `
         <div class="benchmark-capsule-card ${cardClass}" 
              data-appid="${game.appid}" 
