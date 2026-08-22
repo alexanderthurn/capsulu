@@ -4,8 +4,8 @@
  */
 
 // Global ONNX Runtime Web State
-let onnxIndieSession = null;
-let onnxIndieClasses = null;
+let onnxGlobalSession = null;
+let onnxGlobalClasses = null;
 
 /**
  * Initializes the PyTorch ONNX Vision Model in the browser via WebAssembly
@@ -19,14 +19,14 @@ async function initOnnxModel() {
         if (ort.env && ort.env.wasm) {
             ort.env.wasm.numThreads = 1;
         }
-        onnxIndieSession = await ort.InferenceSession.create('models/capsulu_indie_model.onnx', {
+        onnxGlobalSession = await ort.InferenceSession.create('models/capsulu_global_model.onnx', {
             executionProviders: ['wasm']
         });
-        const metaResp = await fetch('models/capsulu_indie_classes.json');
-        onnxIndieClasses = await metaResp.json();
-        console.log('🤖 Capsulu PyTorch Neural Network loaded in browser:', onnxIndieClasses?.classes);
+        const metaResp = await fetch('models/capsulu_global_classes.json');
+        onnxGlobalClasses = await metaResp.json();
+        console.log('🤖 Capsulu PyTorch Global Vision Network loaded in browser:', onnxGlobalClasses?.classes);
     } catch (e) {
-        console.log('Note: ONNX Model deferred or fallback active:', e.message);
+        console.log('Note: Global ONNX Model deferred or fallback active:', e.message);
     }
 }
 
@@ -41,7 +41,7 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
     let p50 = Math.min(95, Math.max(2, Math.round(s * 0.95 - 18)));
 
     // 1. Try running pure PyTorch neural network via ONNX Runtime Web
-    if (onnxIndieSession && img) {
+    if (onnxGlobalSession && img) {
         try {
             const canvas = document.createElement('canvas');
             canvas.width = 224;
@@ -65,7 +65,7 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
             }
 
             const inputTensor = new ort.Tensor('float32', floatArr, [1, 3, 224, 224]);
-            const results = await onnxIndieSession.run({ input: inputTensor });
+            const results = await onnxGlobalSession.run({ input: inputTensor });
             const rawProbs = results.probabilities.data;
 
             // Softmax
@@ -81,21 +81,30 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
             for (let i = 0; i < probs.length; i++) probs[i] /= sumExp;
 
             const classMap = {};
-            if (onnxIndieClasses && onnxIndieClasses.classes) {
-                onnxIndieClasses.classes.forEach((c, idx) => { classMap[c] = probs[idx]; });
+            if (onnxGlobalClasses && onnxGlobalClasses.classes) {
+                onnxGlobalClasses.classes.forEach((c, idx) => { classMap[c] = probs[idx]; });
             }
 
-            const pZero = classMap['indie_0_zero'] || 0.1;
-            const p1_5 = classMap['indie_1_to_5'] || 0.2;
-            const p6_10 = classMap['indie_6_to_10'] || 0.2;
-            const p11_100 = classMap['indie_11_to_100'] || 0.3;
-            const p100_500 = classMap['indie_100_to_500'] || 0.2;
+            const pFlops = classMap['1_flops'] || 0.05;
+            const pLow = classMap['2_low_visibility'] || 0.15;
+            const pMod = classMap['3_moderate'] || 0.30;
+            const pSolid = classMap['4_solid_indies'] || 0.35;
+            const pMega = classMap['5_megahits'] || 0.15;
 
-            const nnExpReviews = Math.round(pZero * 0 + p1_5 * 3 + p6_10 * 8 + p11_100 * 45 + p100_500 * 260);
+            // Weighted review estimate across full Steam commercial tiers:
+            // 1_flops: ~3 reviews | 2_low: ~45 reviews | 3_mod: ~250 reviews | 4_solid: ~2,400 reviews | 5_mega: ~95,000 reviews
+            const nnExpReviews = Math.round(
+                pFlops * 3 +
+                pLow * 45 +
+                pMod * 250 +
+                pSolid * 2400 +
+                pMega * 95000
+            );
+
             if (nnExpReviews > 0) {
                 expReviews = nnExpReviews;
-                p10 = Math.min(99, Math.max(5, Math.round((p6_10 * 0.5 + p11_100 + p100_500) * 100)));
-                p50 = Math.min(95, Math.max(2, Math.round((p100_500 + p11_100 * 0.45) * 100)));
+                p10 = Math.min(99, Math.max(5, Math.round((pMod + pSolid + pMega) * 100)));
+                p50 = Math.min(98, Math.max(2, Math.round((pSolid * 0.7 + pMega) * 100)));
             }
         } catch (err) {
             console.log('Neural inference fallback:', err.message);
@@ -129,26 +138,26 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
     const minCopies = Math.round(minRange * 30);
     const maxCopies = Math.round(maxRange * 30);
 
-    const fmtNum = (n) => n >= 10000 ? `${(n / 1000).toFixed(1)}k` : n.toLocaleString();
+    const fmtFull = (n) => Math.round(Number(n) || 0).toLocaleString('en-US');
 
     const heroElem = document.getElementById('forecastHeroNum');
     if (heroElem) {
-        heroElem.textContent = `~${fmtNum(expReviews)}`;
+        heroElem.textContent = `~${fmtFull(expReviews)}`;
     }
 
     const heroCopiesElem = document.getElementById('forecastHeroCopies');
     if (heroCopiesElem) {
-        heroCopiesElem.textContent = `~${fmtNum(estCopies)}`;
+        heroCopiesElem.textContent = `~${fmtFull(estCopies)}`;
     }
 
     const rangeElem = document.getElementById('forecastRange');
     if (rangeElem) {
-        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} sales (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
+        rangeElem.textContent = `Expected: ${fmtFull(minCopies)} – ${fmtFull(maxCopies)} sales (${fmtFull(minRange)} – ${fmtFull(maxRange)} reviews)`;
     }
 
     const salesTopElem = document.getElementById('salesHeroTop');
     if (salesTopElem) {
-        salesTopElem.textContent = `~${fmtNum(estCopies)}`;
+        salesTopElem.textContent = `~${fmtFull(estCopies)}`;
     }
 
     const sentElem = document.getElementById('forecastSentence');

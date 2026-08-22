@@ -1,9 +1,11 @@
 {
   "dataset": "global",
   "classes": [
+    "1_flops",
+    "2_low_visibility",
     "3_moderate",
     "4_solid_indies",
     "5_megahits"
   ],
-  "num_classes": 3
+  "num_classes": 5
 }

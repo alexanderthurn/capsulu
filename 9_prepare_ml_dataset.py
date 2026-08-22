@@ -39,17 +39,16 @@ INDIE_DIR = os.path.join(DATA_DIR, "ml_indie_milestones")
 
 
 def classify_global_tier(app: dict) -> str:
-    """Classify into 5 macro commercial tiers based on owners & review volume."""
-    owners = app.get("owners_estimate", 0)
+    """Classify into 5 commercial tiers based on review volume (Boxleiter conversion metric)."""
     total_rev = app.get("positive_reviews", 0) + app.get("negative_reviews", 0)
 
-    if owners >= 500_000 or total_rev >= 5_000:
+    if total_rev >= 5_000:
         return "5_megahits"
-    elif owners >= 50_000 or total_rev >= 500:
+    elif total_rev >= 500:
         return "4_solid_indies"
-    elif owners >= 10_000 or total_rev >= 100:
+    elif total_rev >= 100:
         return "3_moderate"
-    elif owners >= 1_000 or total_rev >= 10:
+    elif total_rev >= 10:
         return "2_low_visibility"
     else:
         return "1_flops"
@@ -75,6 +74,10 @@ def classify_indie_milestone(app: dict) -> str:
 
 def build_split(items: list, target_dir: str, val_split: float, copy_files: bool):
     """Create train/val folder structure and populate with image symlinks/copies."""
+    if os.path.exists(target_dir):
+        shutil.rmtree(target_dir, ignore_errors=True)
+    os.makedirs(target_dir, exist_ok=True)
+
     random.seed(42)
     random.shuffle(items)
 

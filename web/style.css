@@ -3517,12 +3517,14 @@ body {
 
 .sales-top-num {
     font-family: var(--font-heading);
-    font-size: 3.2rem;
+    font-size: clamp(1.8rem, 3.2vw, 3.0rem);
     font-weight: 800;
     color: #ffffff !important;
     letter-spacing: -0.03em;
-    line-height: 1;
+    line-height: 1.1;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    text-align: center;
+    word-break: break-word;
 }
 
 .sales-top-label {
