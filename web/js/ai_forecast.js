@@ -143,7 +143,7 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 
     const rangeElem = document.getElementById('forecastRange');
     if (rangeElem) {
-        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} copies sold (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
+        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} copies (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
     }
 
     const salesTopElem = document.getElementById('salesHeroTop');

@@ -3295,30 +3295,32 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
-.score-card-banner-header {
-    width: 100%;
+.score-top-duo-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding-bottom: 2px;
+    gap: 36px;
+    width: 100%;
+    margin-top: 6px;
 }
 
-.score-card-kicker-text {
-    font-size: 1.28rem;
+.score-duo-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.score-duo-title {
+    font-size: 1.32rem;
     font-weight: 800;
     letter-spacing: -0.01em;
     color: #ffffff;
     font-family: var(--font-heading);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-}
-
-.score-top-duo-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 28px;
-    width: 100%;
-    margin-top: 4px;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .score-radial-group-huge {
@@ -3473,7 +3475,7 @@ body {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap: 12px;
+    gap: 22px;
     flex-wrap: wrap;
 }
 
@@ -3481,12 +3483,6 @@ body {
     display: inline-flex;
     align-items: baseline;
     gap: 6px;
-}
-
-.forecast-hero-sep {
-    color: rgba(255, 255, 255, 0.22);
-    font-size: 1.2rem;
-    font-weight: 300;
 }
 
 .forecast-hero-num {
@@ -3562,34 +3558,6 @@ body {
 
 .forecast-sentence .hl-red {
     color: #ff6b6b;
-}
-
-.forecast-footer-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 4px;
-    font-size: 0.74rem;
-    font-weight: 600;
-    color: var(--steam-cyan);
-    opacity: 0.85;
-    transition: all 0.2s ease;
-    border-bottom: 1px dashed rgba(102, 192, 244, 0.4);
-    padding-bottom: 1px;
-}
-
-.ai-forecast-card:hover .forecast-footer-link {
-    opacity: 1;
-    color: #ffffff;
-    border-bottom-color: var(--steam-cyan);
-}
-
-.forecast-footer-link .arrow-down {
-    transition: transform 0.2s ease;
-}
-
-.ai-forecast-card:hover .forecast-footer-link .arrow-down {
-    transform: translateY(2px);
 }
 
 .dominant-score-card .quick-metrics-table {

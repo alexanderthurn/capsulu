@@ -288,27 +288,30 @@
                     <!-- Right 50% Column: Big Dominant Scorecard Banner -->
                     <div class="top-right-col">
                         <section class="score-card-banner dominant-score-card">
-                            <!-- Card Header: Capsule Scent Title -->
-                            <div class="score-card-banner-header">
-                                <span class="score-card-kicker-text">This capsule smells like</span>
-                            </div>
-
-                            <!-- Top Duo: Score Gauge + Big Sales Hero Number -->
+                            <!-- Top Duo: Rating Circle + Big Sales Hero with Split Column Titles -->
                             <div class="score-top-duo-row">
-                                <div class="score-radial-group-huge">
-                                    <svg class="radial-svg-huge" viewBox="0 0 160 160">
-                                        <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
-                                        <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70"></circle>
-                                    </svg>
-                                    <div class="radial-center-text-huge">
-                                        <span class="score-huge-num" id="overallScoreNum">--</span>
-                                        <span class="score-huge-denom">/ 100</span>
+                                <!-- Left Column: Rating Circle -->
+                                <div class="score-duo-col">
+                                    <span class="score-duo-title">This capsule</span>
+                                    <div class="score-radial-group-huge">
+                                        <svg class="radial-svg-huge" viewBox="0 0 160 160">
+                                            <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
+                                            <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70"></circle>
+                                        </svg>
+                                        <div class="radial-center-text-huge">
+                                            <span class="score-huge-num" id="overallScoreNum">--</span>
+                                            <span class="score-huge-denom">/ 100</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="sales-top-hero-card">
-                                    <span class="sales-top-num" id="salesHeroTop">--</span>
-                                    <span class="sales-top-label">Sales</span>
+                                <!-- Right Column: Sales Hero -->
+                                <div class="score-duo-col">
+                                    <span class="score-duo-title">smells like</span>
+                                    <div class="sales-top-hero-card">
+                                        <span class="sales-top-num" id="salesHeroTop">--</span>
+                                        <span class="sales-top-label">Sales</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -327,22 +330,17 @@
                                         <span class="forecast-hero-num" id="forecastHeroNum">~240</span>
                                         <span class="forecast-hero-label">Reviews</span>
                                     </div>
-                                    <span class="forecast-hero-sep">•</span>
                                     <div class="forecast-hero-stat">
                                         <span class="forecast-hero-num forecast-hero-copies-num" id="forecastHeroCopies">~7,200</span>
-                                        <span class="forecast-hero-label forecast-copies-label">Copies Sold</span>
+                                        <span class="forecast-hero-label forecast-copies-label">Copies</span>
                                     </div>
                                 </div>
                                 <div class="forecast-subline" id="forecastSubline">
-                                    <span class="forecast-range-badge" id="forecastRange">Expected: 4,800 – 11,400 copies sold (160 – 380 reviews)</span>
+                                    <span class="forecast-range-badge" id="forecastRange">Expected: 4,800 – 11,400 copies (160 – 380 reviews)</span>
                                 </div>
                                 <p class="forecast-sentence" id="forecastSentence">
                                     Your capsule has a <strong class="hl-green">94% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">81% probability</strong> of reaching community traction (50+ reviews).
                                 </p>
-                                <div class="forecast-footer-link">
-                                    <span>🔬 View AI Methodology & Analysis Details</span>
-                                    <span class="arrow-down">↓</span>
-                                </div>
                             </div>
 
                             <div class="quick-metrics-table">
