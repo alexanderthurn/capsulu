@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Capsulu – The Steam Capsule Rater | Benchmark Against 28,754 Games</title>
+    <title>Capsulu – The Steam Capsule Rater | Benchmark Against 28,754 Capsules</title>
     <meta name="description"
-        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Instantly benchmark contrast, saliency, lighting, and 120px discovery queue visibility against 28,754 real Steam games.">
+        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Instantly benchmark contrast, saliency, lighting, and 120px discovery queue visibility against 28,754 real Steam capsules.">
     <meta name="keywords"
         content="Steam capsule, Steam capsule rater, Steam key art, Steam capsule size, Steam CTR, Steam store simulator, indie game marketing, steam capsule benchmark, video game marketing, game developer tools">
     <meta name="author" content="Capsulu">
@@ -21,7 +21,7 @@
     <meta property="og:url" content="https://capsulu.feuerware.com/">
     <meta property="og:title" content="Capsulu – The Steam Capsule Rater">
     <meta property="og:description"
-        content="Analyze Steam capsules against 28,754 real games. Instant in-browser computer vision analysis of contrast, saliency, lighting, and 120px discovery queue performance.">
+        content="Analyze Steam capsules against 28,754 real Steam capsules. Instant in-browser computer vision analysis of contrast, saliency, lighting, and 120px discovery queue performance.">
     <meta property="og:image" content="/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Capsulu – The Steam Capsule Rater">
     <meta name="twitter:description"
-        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 Steam games.">
+        content="Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 Steam capsules.">
     <meta name="twitter:image" content="/og-image.png">
 
     <!-- AI & LLM Discovery Standard -->
@@ -44,7 +44,7 @@
       "@type": "WebApplication",
       "name": "Capsulu – The Steam Capsule Rater",
       "url": "https://capsulu.feuerware.com/",
-      "description": "Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 real Steam games.",
+      "description": "Free Computer Vision rater and storefront competition simulator for Steam capsule art. Benchmarked against 28,754 real Steam capsules.",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "All (Web Browser)",
       "offers": {
@@ -56,7 +56,7 @@
         "Instant In-Browser Computer Vision Scoring",
         "Dynamic Contrast & Shannon Entropy Analysis",
         "Storefront Competition Simulator (120px & Large 3x3 Matrices)",
-        "Empirical Benchmark against 28,754 Verified Steam Games",
+        "Empirical Benchmark against 28,754 Verified Steam Capsules",
         "Interactive D3.js Dominant Color Palette Breakdown",
         "Public AI Agent API Endpoint (/api/rate)"
       ]
@@ -253,13 +253,18 @@
                             <div class="capsule-version-switcher" id="capsuleVersionSwitcher" style="display: none;">
                                 <span class="version-switch-label">Version:</span>
                                 <div class="version-pills-group">
-                                    <button type="button" class="version-pill active" id="pillVersionOriginal" data-version="original" title="View original capsule analysis">
+                                    <button type="button" class="version-pill active" id="pillVersionOriginal"
+                                        data-version="original" title="View original capsule analysis">
                                         <span>📷</span> <span>Original</span>
                                     </button>
-                                    <button type="button" class="version-pill" id="pillVersionAutofix" data-version="autofix" style="display: none;" title="Switch to Simple Manipulation analysis">
+                                    <button type="button" class="version-pill" id="pillVersionAutofix"
+                                        data-version="autofix" style="display: none;"
+                                        title="Switch to Simple Manipulation analysis">
                                         <span>🪄</span> <span>Simple Manipulation</span>
                                     </button>
-                                    <button type="button" class="version-pill" id="pillVersionWebGpu" data-version="webgpu" style="display: none;" title="Switch to WebGPU Neural Inpainting analysis">
+                                    <button type="button" class="version-pill" id="pillVersionWebGpu"
+                                        data-version="webgpu" style="display: none;"
+                                        title="Switch to WebGPU Neural Inpainting analysis">
                                         <span>🧠</span> <span>WebGPU Neural</span>
                                     </button>
                                 </div>
@@ -439,7 +444,8 @@
                                         <span class="forecast-hero-label">Reviews</span>
                                     </div>
                                     <div class="forecast-hero-stat">
-                                        <span class="forecast-hero-num forecast-hero-copies-num" id="forecastHeroCopies">--</span>
+                                        <span class="forecast-hero-num forecast-hero-copies-num"
+                                            id="forecastHeroCopies">--</span>
                                         <span class="forecast-hero-label forecast-copies-label">Sales</span>
                                     </div>
                                 </div>
@@ -459,7 +465,8 @@
                                 <div class="score-radial-group-compact">
                                     <svg class="radial-svg-compact" viewBox="0 0 100 100">
                                         <circle class="radial-track-compact" cx="50" cy="50" r="42"></circle>
-                                        <circle class="radial-fill-compact" id="gaugeFill" cx="50" cy="50" r="42"></circle>
+                                        <circle class="radial-fill-compact" id="gaugeFill" cx="50" cy="50" r="42">
+                                        </circle>
                                     </svg>
                                     <div class="radial-center-text-compact">
                                         <span class="score-compact-num" id="overallScoreNum">--</span>
@@ -469,7 +476,9 @@
 
                                 <div class="score-verdict-text-col">
                                     <h3 class="score-title" id="scoreHeadline">Exceptional Visual</h3>
-                                    <p class="score-desc" id="scoreSummary">This capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.</p>
+                                    <p class="score-desc" id="scoreSummary">This capsule has strong visual saliency with
+                                        punchy contrast and intentional lighting that will stand out on Steam's dark
+                                        store theme.</p>
                                 </div>
                             </div>
 
@@ -569,7 +578,7 @@
                 <!-- 3-BOX IMPROVE SECTION (50% AI Chat, 50% 1-Click Autofix, 100% WebGPU) -->
                 <section class="improve-master-section" id="improveMasterSection">
                     <div class="improve-section-header">
-                        <h2 class="improve-section-title">✨ Improve the capsule</h2>
+                        <h2 class="improve-section-title">✨ Improve the capsule (Experimental)</h2>
                         <p class="improve-section-subtitle">
                             Copy a prompt, do a simple image manipulation or use a full blown ai neuronal network
                         </p>
@@ -665,12 +674,13 @@
 
                                 <!-- Actions Row -->
                                 <div class="autofix-actions-row">
-                                    <button type="button" id="btnAnalyzeAutofix" class="btn-ai-action btn-analyze-version"
+                                    <button type="button" id="btnAnalyzeAutofix"
+                                        class="btn-ai-action btn-analyze-version"
                                         title="View and re-analyze this Simple Manipulation version in the main scorecard">
                                         <span>⚡</span> <span>Analyze in Scorecard</span>
                                     </button>
-                                    <button type="button" id="btnDownloadAutofix" class="btn-ai-action btn-download-capsule"
-                                        title="Download enhanced artwork">
+                                    <button type="button" id="btnDownloadAutofix"
+                                        class="btn-ai-action btn-download-capsule" title="Download enhanced artwork">
                                         <span>⬇️</span> <span>Download (Free to Use)</span>
                                     </button>
                                 </div>
@@ -755,7 +765,8 @@
                                 </div>
 
                                 <div class="webgpu-result-actions">
-                                    <button type="button" id="btnAnalyzeWebGpu" class="btn-ai-action btn-analyze-version"
+                                    <button type="button" id="btnAnalyzeWebGpu"
+                                        class="btn-ai-action btn-analyze-version"
                                         title="View and re-analyze this WebGPU Neural Inpainting version in the main scorecard">
                                         <span>⚡</span> <span>Analyze in Scorecard</span>
                                     </button>
