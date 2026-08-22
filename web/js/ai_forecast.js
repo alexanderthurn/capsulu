@@ -165,7 +165,6 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
     // 3. Known Reality Reviews Indicator (if game has known Steam reviews)
     const realityRow = document.getElementById('forecastRealityRow');
     const realityText = document.getElementById('forecastRealityText');
-    const salesRealityPill = document.getElementById('salesRealityPill');
 
     if (knownReviews !== null && knownReviews !== undefined && !isNaN(knownReviews) && Number(knownReviews) > 0) {
         const revCount = Number(knownReviews);
@@ -177,13 +176,8 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 
         if (realityRow) realityRow.style.display = 'flex';
         if (realityText) realityText.textContent = `Reality: ${revCount.toLocaleString()} reviews (${dateFormatted})`;
-        if (salesRealityPill) {
-            salesRealityPill.style.display = 'inline-block';
-            salesRealityPill.textContent = `(Reality: ${fmtNum(revCount)} reviews)`;
-        }
     } else {
         if (realityRow) realityRow.style.display = 'none';
-        if (salesRealityPill) salesRealityPill.style.display = 'none';
     }
 }
 

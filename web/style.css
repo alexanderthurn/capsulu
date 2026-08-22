@@ -3763,19 +3763,6 @@ body {
     font-size: 0.85rem;
 }
 
-.sales-reality-pill {
-    margin-top: 5px;
-    font-size: 0.72rem;
-    color: #67c1f5;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 2px 8px;
-    border-radius: 3px;
-    border: 1px solid rgba(103, 193, 245, 0.3);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-}
-
 @keyframes fadeInReality {
     from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
