@@ -1088,20 +1088,148 @@ body {
     padding-bottom: 3px;
 }
 
-/* Metrics Stack */
-.metrics-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+/* ==========================================================================
+   Ultra-Compact Market Benchmark Radar / Spider Chart
+   ========================================================================== */
+
+.benchmark-radar-panel {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    margin-bottom: 0;
 }
 
-.metric-item {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--steam-border);
-    border-radius: var(--radius-sm);
-    padding: 12px 14px;
+.radar-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-md);
+    padding: 12px 14px 10px 14px;
+    margin-top: 8px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.radar-svg-wrapper {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    justify-content: center;
+}
+
+.radar-svg {
+    width: 100%;
+    height: auto;
+    max-height: 270px;
+    overflow: visible;
+}
+
+.radar-grid-polygon {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 1px;
+}
+
+.radar-grid-polygon.outer {
+    stroke: rgba(255, 255, 255, 0.15);
+}
+
+.radar-axis-line {
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 1px;
+    stroke-dasharray: 2, 2;
+}
+
+.radar-axis-label {
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--steam-text-muted);
+    text-anchor: middle;
+    dominant-baseline: central;
+    transition: fill 0.15s ease;
+}
+
+.radar-axis-label:hover {
+    fill: #ffffff;
+}
+
+.radar-poly-megahit {
+    fill: rgba(46, 204, 113, 0.08);
+    stroke: #2ecc71;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+    transition: all 0.3s ease;
+}
+
+.radar-poly-genre {
+    fill: rgba(241, 196, 15, 0.08);
+    stroke: #f1c40f;
+    stroke-width: 1.5px;
+    transition: all 0.3s ease;
+}
+
+.radar-poly-user {
+    fill: rgba(103, 193, 245, 0.3);
+    stroke: #67c1f5;
+    stroke-width: 2.2px;
+    filter: drop-shadow(0 0 6px rgba(103, 193, 245, 0.6));
+    transition: all 0.3s ease;
+}
+
+.radar-vertex-circle {
+    fill: #67c1f5;
+    stroke: #ffffff;
+    stroke-width: 1.5px;
+    r: 3.5px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: r 0.15s ease;
+}
+
+.radar-vertex-circle:hover {
+    r: 5.5px;
+    fill: #ffffff;
+}
+
+.radar-legend-strip {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    width: 100%;
+}
+
+.radar-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    color: #e0e0e0;
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.dot-user {
+    background: #67c1f5;
+    box-shadow: 0 0 6px rgba(103, 193, 245, 0.8);
+}
+
+.dot-benchmark {
+    background: #2ecc71;
+}
+
+.dot-genre {
+    background: #f1c40f;
 }
 
 .metric-item:hover {
@@ -2922,6 +3050,50 @@ body {
     border: none;
 }
 
+/* User Capsule Center Highlight */
+.sim-capsule-large-grid .user-capsule-item {
+    position: relative;
+    box-shadow: inset 0 0 0 2px #67c1f5, 0 0 16px rgba(103, 193, 245, 0.4);
+    z-index: 3;
+}
+
+.sim-capsule-large-grid .user-capsule-item::after {
+    content: "THIS CAPSULE";
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #67c1f5;
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    border: 1px solid rgba(103, 193, 245, 0.6);
+    pointer-events: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Full-Width Expanded Mode Slot */
+.visual-check-fullwidth-slot {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.visual-check-panel.sim-panel-fullwidth {
+    width: 100%;
+    margin-bottom: 20px;
+    animation: fadeInSim 0.25s ease forwards;
+}
+
+@keyframes fadeInSim {
+    from { opacity: 0.7; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* 2. Seamless 120px Discovery Queue 3x3 Matrix (Gapless, Borderless, User in Exact Center) */
 .sim-micro-matrix {
     display: grid;
@@ -3192,20 +3364,22 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    align-items: stretch;
+    align-items: start;
     margin-bottom: 20px;
 }
 
 .top-left-col {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     justify-content: flex-start;
 }
 
 .top-right-col {
     display: flex;
     flex-direction: column;
+    gap: 20px;
+    justify-content: flex-start;
 }
 
 .game-result-hero-card {
@@ -3558,6 +3732,53 @@ body {
 
 .forecast-sentence .hl-red {
     color: #ff6b6b;
+}
+
+/* Forecast Reality Steam User Reviews Badge */
+.forecast-reality-row {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInReality 0.3s ease forwards;
+}
+
+.forecast-reality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(103, 193, 245, 0.12);
+    border: 1px solid rgba(103, 193, 245, 0.35);
+    color: #67c1f5;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.forecast-reality-badge .reality-icon {
+    font-size: 0.85rem;
+}
+
+.sales-reality-pill {
+    margin-top: 5px;
+    font-size: 0.72rem;
+    color: #67c1f5;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(103, 193, 245, 0.3);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes fadeInReality {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .dominant-score-card .quick-metrics-table {
@@ -4104,7 +4325,7 @@ body {
 }
 
 .ai-chat-quick-group {
-    display: none; /* Hidden until 2. Copy Prompt is clicked */
+    display: inline-flex; /* Always visible */
     align-items: center;
     gap: 8px;
     background: rgba(255, 255, 255, 0.04);
@@ -4112,11 +4333,6 @@ body {
     border-radius: var(--radius-sm);
     padding: 5px 10px 5px 12px;
     transition: all 0.3s ease;
-    animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-chat-quick-group.visible {
-    display: inline-flex;
 }
 
 .ai-chat-quick-group.step-suggested {
@@ -4145,10 +4361,16 @@ body {
 }
 
 .ai-chat-targets-inline {
-    display: inline-flex;
+    display: none;
     align-items: center;
     gap: 6px;
     flex-wrap: wrap;
+    animation: fadeInSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ai-chat-quick-group.visible .ai-chat-targets-inline,
+.ai-chat-targets-inline.visible {
+    display: inline-flex;
 }
 
 .ai-target-pill {
@@ -4188,6 +4410,25 @@ body {
     100% {
         box-shadow: 0 0 18px rgba(103, 193, 245, 0.35);
     }
+}
+
+.ai-prompt-label-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+    margin-bottom: 6px;
+    padding-left: 2px;
+}
+
+.ai-prompt-section-label {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #c4b5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.9;
 }
 
 .ai-prompt-box {

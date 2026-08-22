@@ -163,12 +163,12 @@
             <div class="steam-panel loading-panel loading-clean-panel" id="loadingBar" style="display: none;">
                 <div class="loading-simple-container">
                     
-                    <!-- Section A: ⚡ Computer Vision Engine -->
+                    <!-- Section A: ⚡ Classical image analysis -->
                     <div class="loading-engine-section" id="engineCardCv">
                         <div class="engine-section-header">
                             <div class="engine-title-left">
                                 <span class="engine-icon">⚡</span>
-                                <h4 class="engine-main-title">Computer Vision Engine</h4>
+                                <h4 class="engine-main-title">Classical image analysis</h4>
                             </div>
                             <span class="engine-status-badge" id="engineStatusCv">Evaluating...</span>
                         </div>
@@ -252,10 +252,10 @@
                     </div>
                 </section>
 
-                <!-- 2. TOP 2-COLUMN SECTION (Left: Capsule Art Card + Dominant Palette | Right: Big Dominant Scorecard) -->
-                <div class="top-hero-two-col-grid">
+                <!-- 2. MAIN 2-COLUMN RATER LAYOUT -->
+                <div class="top-hero-two-col-grid" id="mainTwoColGrid">
 
-                    <!-- Left 50% Column -->
+                    <!-- Left Column: Visual Assets & Storefront Visual Check -->
                     <div class="top-left-col">
                         <!-- Upper: Dedicated Capsule Artwork Display Card -->
                         <section class="game-result-hero-card capsule-preview-only-card">
@@ -266,7 +266,7 @@
                             </div>
                         </section>
 
-                        <!-- Lower: Dedicated Dominant Color Palette Panel with D3 Pie / Donut Chart -->
+                        <!-- Middle: Dedicated Dominant Color Palette Panel with D3 Pie / Donut Chart -->
                         <section class="steam-panel palette-dedicated-panel">
                             <div class="panel-header">
                                 <h3>🎨 Dominant Color Palette</h3>
@@ -283,10 +283,121 @@
                                 </div>
                             </div>
                         </section>
+
+                        <!-- Lower: Visual Check / Storefront Discovery Queue Simulation -->
+                        <section class="steam-panel visual-check-panel" id="visualCheckPanel">
+                            <div class="panel-header sim-panel-header">
+                                <div class="sim-header-left">
+                                    <h3>🏪 Visual Check</h3>
+                                    <div class="sim-view-toggle-group">
+                                        <button class="btn-sim-toggle active" id="simToggleSmall"
+                                            onclick="switchSimView('small')" type="button">Small</button>
+                                        <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')"
+                                            type="button">Large</button>
+                                    </div>
+                                </div>
+                                <div class="panel-header-right-controls">
+                                    <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                        title="Select comparison lens">
+                                        <option value="all">All Steam Games</option>
+                                        <optgroup label="Genre">
+                                            <option value="Action">Action</option>
+                                            <option value="Adventure">Adventure</option>
+                                            <option value="RPG">RPG</option>
+                                            <option value="Strategy">Strategy</option>
+                                            <option value="Simulation">Simulation</option>
+                                            <option value="Casual">Casual</option>
+                                            <option value="Indie">Indie</option>
+                                        </optgroup>
+                                        <optgroup label="Tags">
+                                            <option value="Auto Battler">Auto Battler</option>
+                                            <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                            <option value="Action Roguelike">Action Roguelike</option>
+                                            <option value="Metroidvania">Metroidvania</option>
+                                            <option value="Souls-like">Souls-like</option>
+                                            <option value="Survival Horror">Survival Horror</option>
+                                            <option value="Cozy Sim">Cozy Sim</option>
+                                            <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                            <option value="City Builder">City Builder</option>
+                                            <option value="Retro FPS">Retro FPS</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <p class="sim-explainer">See how this artwork compares against competitors in crowded Steam discovery queues.</p>
+
+                            <!-- In-Situ 3x3 Capsule Lineup (User in Exact Center) -->
+                            <div class="sim-view-container" id="simViewMain" style="display: block;">
+                                <div class="sim-capsule-large-grid" id="largeSimRow">
+                                    <!-- Injected dynamically via JS -->
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 4. Ultra-Compact Market Benchmark Radar / Spider Chart -->
+                        <section class="steam-panel benchmark-radar-panel" id="genreBenchmarkCard">
+                            <div class="panel-header">
+                                <div class="genre-card-header-left">
+                                    <span class="genre-card-icon" id="genreCardIcon">🏷️</span>
+                                    <h3 id="genreCardTitle">Market Benchmark Radar</h3>
+                                </div>
+                                <div class="panel-header-right-controls">
+                                    <select id="genreSelectDropdown"
+                                        class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                        title="Select comparison lens">
+                                        <option value="all">All Steam Games</option>
+                                        <optgroup label="Genre">
+                                            <option value="Action">Action</option>
+                                            <option value="Adventure">Adventure</option>
+                                            <option value="RPG">RPG</option>
+                                            <option value="Strategy">Strategy</option>
+                                            <option value="Simulation">Simulation</option>
+                                            <option value="Casual">Casual</option>
+                                            <option value="Indie">Indie</option>
+                                        </optgroup>
+                                        <optgroup label="Tags">
+                                            <option value="Auto Battler">Auto Battler</option>
+                                            <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                            <option value="Action Roguelike">Action Roguelike</option>
+                                            <option value="Metroidvania">Metroidvania</option>
+                                            <option value="Souls-like">Souls-like</option>
+                                            <option value="Survival Horror">Survival Horror</option>
+                                            <option value="Cozy Sim">Cozy Sim</option>
+                                            <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                            <option value="City Builder">City Builder</option>
+                                            <option value="Retro FPS">Retro FPS</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Radar SVG Container -->
+                            <div class="radar-chart-container">
+                                <div class="radar-svg-wrapper">
+                                    <svg id="benchmarkRadarSvg" viewBox="0 0 380 320" class="radar-svg"></svg>
+                                </div>
+                                <div class="radar-legend-strip">
+                                    <div class="radar-legend-item legend-user" title="This capsule's normalized metric profile">
+                                        <span class="legend-dot dot-user"></span>
+                                        <span class="legend-label">This Capsule</span>
+                                    </div>
+                                    <div class="radar-legend-item legend-benchmark" title="Top 10% commercial benchmark ($5M+ sales)">
+                                        <span class="legend-dot dot-benchmark"></span>
+                                        <span class="legend-label" id="radarMegaHitLabel">Mega-Hit Avg</span>
+                                    </div>
+                                    <div class="radar-legend-item legend-genre" id="radarGenreLegendItem" title="Category median benchmark">
+                                        <span class="legend-dot dot-genre"></span>
+                                        <span class="legend-label" id="radarGenreLabel">Genre Median</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
-                    <!-- Right 50% Column: Big Dominant Scorecard Banner -->
+                    <!-- Right Column: Scorecard & Recommendations -->
                     <div class="top-right-col">
+                        <!-- 1. Big Dominant Scorecard Banner -->
                         <section class="score-card-banner dominant-score-card">
                             <!-- Top Duo: Rating Circle + Big Sales Hero with Split Column Titles -->
                             <div class="score-top-duo-row">
@@ -311,6 +422,7 @@
                                     <div class="sales-top-hero-card">
                                         <span class="sales-top-num" id="salesHeroTop">--</span>
                                         <span class="sales-top-label">Sales</span>
+                                        <span class="sales-reality-pill" id="salesRealityPill" style="display: none;"></span>
                                     </div>
                                 </div>
                             </div>
@@ -341,6 +453,12 @@
                                 <p class="forecast-sentence" id="forecastSentence">
                                     This capsule has a <strong class="hl-green">94% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">81% probability</strong> of reaching community traction (50+ reviews).
                                 </p>
+                                <div class="forecast-reality-row" id="forecastRealityRow" style="display: none;">
+                                    <span class="forecast-reality-badge">
+                                        <span class="reality-icon">📊</span>
+                                        <span class="reality-text" id="forecastRealityText">Reality: -- reviews</span>
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="quick-metrics-table">
@@ -394,300 +512,92 @@
                                 </div>
                             </div>
                         </section>
-                    </div>
 
-                </div>
-
-                <!-- 3. DYNAMIC VISUAL CHECK & RECOMMENDATIONS SECTION (Half Width in Small Mode, Full Width in Large Mode) -->
-                <div class="sim-and-recs-wrapper mode-small" id="simAndRecsWrapper">
-
-                    <!-- Visual Check Panel -->
-                    <section class="steam-panel visual-check-panel" id="visualCheckPanel">
-                        <div class="panel-header sim-panel-header">
-                            <div class="sim-header-left">
-                                <h3>🏪 Visual Check</h3>
-                                <div class="sim-view-toggle-group">
-                                    <button class="btn-sim-toggle active" id="simToggleSmall"
-                                        onclick="switchSimView('small')" type="button">Small</button>
-                                    <button class="btn-sim-toggle" id="simToggleLarge" onclick="switchSimView('large')"
-                                        type="button">Large</button>
+                        <!-- 2. Design Recommendations Panel -->
+                        <section class="steam-panel recs-panel" id="recsPanel">
+                            <div class="panel-header">
+                                <h3>🛠️ Design Recommendations</h3>
+                                <div class="panel-header-right-controls">
+                                    <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
+                                        title="Select comparison lens">
+                                        <option value="all">All Steam Games</option>
+                                        <optgroup label="Genre">
+                                            <option value="Action">Action</option>
+                                            <option value="Adventure">Adventure</option>
+                                            <option value="RPG">RPG</option>
+                                            <option value="Strategy">Strategy</option>
+                                            <option value="Simulation">Simulation</option>
+                                            <option value="Casual">Casual</option>
+                                            <option value="Indie">Indie</option>
+                                        </optgroup>
+                                        <optgroup label="Tags">
+                                            <option value="Auto Battler">Auto Battler</option>
+                                            <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
+                                            <option value="Action Roguelike">Action Roguelike</option>
+                                            <option value="Metroidvania">Metroidvania</option>
+                                            <option value="Souls-like">Souls-like</option>
+                                            <option value="Survival Horror">Survival Horror</option>
+                                            <option value="Cozy Sim">Cozy Sim</option>
+                                            <option value="Turn-Based Tactics">Turn-Based Tactics</option>
+                                            <option value="City Builder">City Builder</option>
+                                            <option value="Retro FPS">Retro FPS</option>
+                                        </optgroup>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
-                                    title="Select comparison lens">
-                                    <option value="all">All Steam Games</option>
-                                    <optgroup label="Genre">
-                                        <option value="Action">Action</option>
-                                        <option value="Adventure">Adventure</option>
-                                        <option value="RPG">RPG</option>
-                                        <option value="Strategy">Strategy</option>
-                                        <option value="Simulation">Simulation</option>
-                                        <option value="Casual">Casual</option>
-                                        <option value="Indie">Indie</option>
-                                    </optgroup>
-                                    <optgroup label="Tags">
-                                        <option value="Auto Battler">Auto Battler</option>
-                                        <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
-                                        <option value="Action Roguelike">Action Roguelike</option>
-                                        <option value="Metroidvania">Metroidvania</option>
-                                        <option value="Souls-like">Souls-like</option>
-                                        <option value="Survival Horror">Survival Horror</option>
-                                        <option value="Cozy Sim">Cozy Sim</option>
-                                        <option value="Turn-Based Tactics">Turn-Based Tactics</option>
-                                        <option value="City Builder">City Builder</option>
-                                        <option value="Retro FPS">Retro FPS</option>
-                                    </optgroup>
-                                </select>
+                            <div class="checklist-grid" id="checklistContainer">
+                                <!-- Injected via JS -->
                             </div>
-                        </div>
 
-                        <p class="sim-explainer">See how this artwork compares against competitors in crowded Steam
-                            discovery queues.</p>
+                            <!-- Improve with AI Card -->
+                            <div class="ai-prompt-card" id="aiPromptCard">
+                                <div class="ai-prompt-header">
+                                    <div class="ai-prompt-title-group">
+                                        <h3 class="ai-prompt-title">✨ Improve with AI</h3>
+                                    </div>
+                                    <div class="ai-prompt-steps-bar">
+                                        <!-- Step 1: Download -->
+                                        <button type="button" id="btnDownloadCapsule" class="btn-ai-action btn-download-capsule"
+                                            title="Download capsule image to your computer">
+                                            <span>⬇️</span> <span id="downloadBtnText">1. Download Art</span>
+                                        </button>
 
-                        <!-- Small View (Default) -->
-                        <div class="sim-view-container" id="simViewSmall" style="display: block;">
-                            <div class="sim-micro-matrix" id="microSimQueue">
-                                <!-- Injected dynamically via JS -->
-                            </div>
-                        </div>
+                                        <!-- Step 2: Copy Prompt -->
+                                        <button type="button" class="btn-ai-action btn-copy-prompt" id="btnCopyAiPrompt"
+                                            title="Copy fix prompt to clipboard">
+                                            <span id="copyPromptIcon">📋</span> <span id="copyPromptText">2. Copy Prompt</span>
+                                        </button>
 
-                        <!-- Large View -->
-                        <div class="sim-view-container" id="simViewLarge" style="display: none;">
-                            <div class="sim-capsule-large-grid" id="largeSimRow">
-                                <!-- Injected dynamically via JS -->
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Design Recommendations Panel (Sits next to Small Visual Check) -->
-                    <section class="steam-panel recs-panel" id="recsPanel">
-                        <div class="panel-header">
-                            <h3>🛠️ Design Recommendations</h3>
-                            <div class="panel-header-right-controls">
-                                <select class="select-steam-genre select-genre-compact genre-sync-dropdown"
-                                    title="Select comparison lens">
-                                    <option value="all">All Steam Games</option>
-                                    <optgroup label="Genre">
-                                        <option value="Action">Action</option>
-                                        <option value="Adventure">Adventure</option>
-                                        <option value="RPG">RPG</option>
-                                        <option value="Strategy">Strategy</option>
-                                        <option value="Simulation">Simulation</option>
-                                        <option value="Casual">Casual</option>
-                                        <option value="Indie">Indie</option>
-                                    </optgroup>
-                                    <optgroup label="Tags">
-                                        <option value="Auto Battler">Auto Battler</option>
-                                        <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
-                                        <option value="Action Roguelike">Action Roguelike</option>
-                                        <option value="Metroidvania">Metroidvania</option>
-                                        <option value="Souls-like">Souls-like</option>
-                                        <option value="Survival Horror">Survival Horror</option>
-                                        <option value="Cozy Sim">Cozy Sim</option>
-                                        <option value="Turn-Based Tactics">Turn-Based Tactics</option>
-                                        <option value="City Builder">City Builder</option>
-                                        <option value="Retro FPS">Retro FPS</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="checklist-grid" id="checklistContainer">
-                            <!-- Injected via JS -->
-                        </div>
-
-                        <!-- Improve with AI Card -->
-                        <div class="ai-prompt-card" id="aiPromptCard">
-                            <div class="ai-prompt-header">
-                                <div class="ai-prompt-title-group">
-                                    <h3 class="ai-prompt-title">✨ Improve with AI</h3>
-                                </div>
-                                <div class="ai-prompt-steps-bar">
-                                    <!-- Step 1: Download -->
-                                    <button type="button" id="btnDownloadCapsule" class="btn-ai-action btn-download-capsule"
-                                        title="Download capsule image to your computer">
-                                        <span>⬇️</span> <span id="downloadBtnText">1. Download Art</span>
-                                    </button>
-
-                                    <!-- Step 2: Copy Prompt -->
-                                    <button type="button" class="btn-ai-action btn-copy-prompt" id="btnCopyAiPrompt"
-                                        title="Copy tailored fix prompt to clipboard">
-                                        <span id="copyPromptIcon">📋</span> <span id="copyPromptText">2. Copy Prompt</span>
-                                    </button>
-
-                                    <!-- Step 3: Paste in AI Chat (Inline quick launch targets) -->
-                                    <div class="ai-chat-quick-group" id="aiStep3Group">
-                                        <span class="ai-chat-group-label">3. Paste in AI:</span>
-                                        <div class="ai-chat-targets-inline">
-                                            <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
-                                                class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
-                                            <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
-                                                class="ai-target-pill" title="Open Claude in new tab">Claude ↗</a>
-                                            <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
-                                                class="ai-target-pill" title="Open Google Gemini in new tab">Gemini ↗</a>
-                                            <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer"
-                                                class="ai-target-pill" title="Open Cursor in new tab">Cursor ↗</a>
+                                        <!-- Step 3: Paste in your AI Chat (Inline quick launch targets) -->
+                                        <div class="ai-chat-quick-group" id="aiStep3Group">
+                                            <span class="ai-chat-group-label">Paste in your AI Chat:</span>
+                                            <div class="ai-chat-targets-inline" id="aiChatTargetsInline" style="display: none;">
+                                                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+                                                    class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
+                                                <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
+                                                    class="ai-target-pill" title="Open Claude in new tab">Claude ↗</a>
+                                                <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
+                                                    class="ai-target-pill" title="Open Google Gemini in new tab">Gemini ↗</a>
+                                                <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer"
+                                                    class="ai-target-pill" title="Open Cursor in new tab">Cursor ↗</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="ai-prompt-label-header">
+                                    <span class="ai-prompt-section-label">Prompt</span>
+                                </div>
+                                <div class="ai-prompt-box">
+                                    <pre id="aiPromptTextarea" class="ai-prompt-content"></pre>
+                                </div>
                             </div>
-                            <div class="ai-prompt-box">
-                                <pre id="aiPromptTextarea" class="ai-prompt-content"></pre>
-                            </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
 
                 </div>
 
-                <!-- 4. STATISTICAL METRIC BREAKDOWN & TAG BENCHMARK -->
-                <section class="steam-panel detailed-breakdown-panel" id="genreBenchmarkCard" style="margin-top: 20px;">
-                    <div class="panel-header">
-                        <div class="genre-card-header-left">
-                            <span class="genre-card-icon" id="genreCardIcon">🏷️</span>
-                            <div>
-                                <h3 id="genreCardTitle">Steam Tag & Market Benchmark Breakdown</h3>
-                                <p class="genre-card-subtitle" id="genreCardSubtitle">Empirical baselines comparing this capsule directly against 28,754 Steam games and matching tags.</p>
-                            </div>
-                        </div>
-                        <div class="panel-header-right-controls">
-                            <select id="genreSelectDropdown"
-                                class="select-steam-genre select-genre-compact genre-sync-dropdown"
-                                title="Select comparison lens">
-                                <option value="all">All Steam Games</option>
-                                <optgroup label="Genre">
-                                    <option value="Action">Action</option>
-                                    <option value="Adventure">Adventure</option>
-                                    <option value="RPG">RPG</option>
-                                    <option value="Strategy">Strategy</option>
-                                    <option value="Simulation">Simulation</option>
-                                    <option value="Casual">Casual</option>
-                                    <option value="Indie">Indie</option>
-                                </optgroup>
-                                <optgroup label="Tags">
-                                    <option value="Auto Battler">Auto Battler</option>
-                                    <option value="Roguelike Deckbuilder">Roguelike Deckbuilder</option>
-                                    <option value="Action Roguelike">Action Roguelike</option>
-                                    <option value="Metroidvania">Metroidvania</option>
-                                    <option value="Souls-like">Souls-like</option>
-                                    <option value="Survival Horror">Survival Horror</option>
-                                    <option value="Cozy Sim">Cozy Sim</option>
-                                    <option value="Turn-Based Tactics">Turn-Based Tactics</option>
-                                    <option value="City Builder">City Builder</option>
-                                    <option value="Retro FPS">Retro FPS</option>
-                                </optgroup>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="metric-grid">
-                        <!-- 1. Contrast -->
-                        <div class="metric-item" id="mRowContrast" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">⚡ Dynamic Contrast (Luminance Std Dev)</span>
-                                <span class="metric-tag" id="mContrastScore">--</span>
-                            </div>
-                            <p class="metric-help">Separation between deep shadows and bright highlights. Prevents flat midtones.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mContrastBar"></div>
-                                <div class="benchmark-pin" id="mContrastPin" style="left: 74%;" title="Mega-Hit Avg (63.0)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mContrastVal">This: --</span>
-                                <span class="legend-target" id="mContrastTarget">Mega-Hit Avg: 63.0 | Flop Avg: 56.9</span>
-                            </div>
-                        </div>
-
-                        <!-- 2. Warmth / Saliency -->
-                        <div class="metric-item" id="mRowWarmth" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">🎨 Steam UI Chromatic Saliency (Warm Accents)</span>
-                                <span class="metric-tag" id="mWarmthScore">--</span>
-                            </div>
-                            <p class="metric-help">Warm color share (gold/amber/crimson) that pops against Steam's navy UI.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mWarmthBar"></div>
-                                <div class="benchmark-pin" id="mWarmthPin" style="left: 50%;" title="Mega-Hit Avg (50%)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mWarmthVal">This: --</span>
-                                <span class="legend-target" id="mWarmthTarget">Mega-Hit Avg: 50% | Flop Avg: 39%</span>
-                            </div>
-                        </div>
-
-                        <!-- 3. Entropy -->
-                        <div class="metric-item" id="mRowEntropy" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">🔍 Shannon Entropy (Tonal Depth)</span>
-                                <span class="metric-tag" id="mEntropyScore">--</span>
-                            </div>
-                            <p class="metric-help">Information richness of visual lighting without muddy compression noise.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mEntropyBar"></div>
-                                <div class="benchmark-pin" id="mEntropyPin" style="left: 88%;" title="Mega-Hit Avg (6.99 bits)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mEntropyVal">This: --</span>
-                                <span class="legend-target" id="mEntropyTarget">Mega-Hit Avg: 6.99 | Flop Avg: 6.18</span>
-                            </div>
-                        </div>
-
-                        <!-- 4. Edge Density -->
-                        <div class="metric-item" id="mRowEdge" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">📐 Edge Density & Structural Sharpness</span>
-                                <span class="metric-tag" id="mEdgeScore">--</span>
-                            </div>
-                            <p class="metric-help">Clean silhouettes and well-defined line art vs blurry unedited screenshots.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mEdgeBar"></div>
-                                <div class="benchmark-pin" id="mEdgePin" style="left: 70%;" title="Mega-Hit Avg (14.2%)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mEdgeVal">This: --</span>
-                                <span class="legend-target" id="mEdgeTarget">Mega-Hit Avg: 14.2% | Flop Avg: 11.2%</span>
-                            </div>
-                        </div>
-
-                        <!-- 5. Composition / Spotlight -->
-                        <div class="metric-item" id="mRowFocus" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">💡 Central Hero Spotlighting</span>
-                                <span class="metric-tag" id="mFocusScore">--</span>
-                            </div>
-                            <p class="metric-help">Concentrating illumination on the central hero with subtle edge vignetting.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mFocusBar"></div>
-                                <div class="benchmark-pin" id="mFocusPin" style="left: 72%;" title="Mega-Hit Avg (72%)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mFocusVal">This: --</span>
-                                <span class="legend-target" id="mFocusTarget">72% of Mega-Hits use center spotlights</span>
-                            </div>
-                        </div>
-
-                        <!-- 6. Title Typography & Clarity -->
-                        <div class="metric-item" id="mRowText" title="Click to view design recommendation">
-                            <div class="metric-top-bar">
-                                <span class="metric-title">🔤 Title Typography Contrast (WCAG Ratio)</span>
-                                <span class="metric-tag" id="mTextScore">--</span>
-                            </div>
-                            <p class="metric-help">Luminance separation between title typography and background art. Guarantees thumbnail readability on mobile and small Steam browse feeds.</p>
-                            <div class="metric-progress-track">
-                                <div class="metric-progress-fill" id="mTextBar"></div>
-                                <div class="benchmark-pin" id="mTextPin" style="left: 55%;" title="Mega-Hit Avg (5.2:1)"></div>
-                            </div>
-                            <div class="metric-legend">
-                                <span class="legend-user" id="mTextVal">This: --</span>
-                                <span class="legend-target" id="mTextTarget">Mega-Hit Avg: 5.2:1 (WCAG AA) | Flop Avg: 3.5:1</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="genre-recommendation-box" id="genreRecommendationBox" style="margin-top: 18px;">
-                        <span class="rec-icon">💡</span>
-                        <p id="genreRecommendationText">Select a Steam tag or genre above or analyze a Steam game to see tailored market recommendations.</p>
-                    </div>
-                </section>
+                <!-- Full-Width Container Slot for Visual Check when toggled to Large Mode -->
+                <div id="visualCheckFullWidthSlot" class="visual-check-fullwidth-slot"></div>
 
             </div>
         </main>
@@ -701,74 +611,6 @@
                 <p class="benchmark-sub">Empirical Computer Vision Analysis of 28,754 Steam Capsules Across 5 Commercial
                     Sales Tiers.</p>
             </header>
-
-            <!-- DEDICATED AI & COMPUTER VISION ANALYSIS METHODOLOGY -->
-            <section class="steam-panel ai-methodology-panel" id="aiMethodologySection" style="margin-top: 0; margin-bottom: 28px;">
-                <div class="methodology-header">
-                    <div class="methodology-badge">
-                        <span class="methodology-icon">🔬</span>
-                        <span>Methodology & Neural Network Architecture</span>
-                    </div>
-                    <h2 class="methodology-title">How Capsulu Evaluates Capsule Artwork & Estimates Sales</h2>
-                    <p class="methodology-desc">
-                        Capsulu uses client-side Deep Learning Vision Neural Networks (MobileNetV3 CNN) trained on tens of thousands of Steam store capsules, analyzing raw image features to predict real-world commercial outcomes.
-                    </p>
-                </div>
-
-                <div class="methodology-grid">
-                    <!-- Pillar 1: Dual Neural Networks -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">🧠</div>
-                        <h3 class="mcard-title">Dual Deep Learning Vision Models</h3>
-                        <p class="mcard-text">
-                            The platform trains specialized Convolutional Neural Networks directly on raw 224×224 RGB capsule tensors:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>Indie Milestone Model:</strong> Evaluates visual cues and composition to predict probability across 5 critical review thresholds (0, 1–5, 6–10, 11–100, 100–500 reviews).</li>
-                            <li><strong>Global Market Model:</strong> Assesses artistic rendering quality and macro commercial potential against top Steam sellers.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 2: Feature Extraction & Convolution -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">⚡</div>
-                        <h3 class="mcard-title">Convolutional Feature Extraction</h3>
-                        <p class="mcard-text">
-                            Deep neural layers extract high-level visual representations without manual feature engineering:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>Spatial Hierarchies:</strong> Depthwise separable convolutions detect lighting accents, silhouette readability, and focal character framing.</li>
-                            <li><strong>Pure Client-Side Inference:</strong> Models execute in WebAssembly inside the browser with ONNX Runtime Web.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 3: Algorithmic Thresholds -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">🔓</div>
-                        <h3 class="mcard-title">The 10 & 50 Review Thresholds</h3>
-                        <p class="mcard-text">
-                            Why review milestones matter to Steam's internal discovery algorithms:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>10-Review Unlock:</strong> Until 10 reviews, Steam hides the review badge and limits discovery queue impressions. Crossing 10 unlocks organic traffic.</li>
-                            <li><strong>50-Review Traction:</strong> Proves organic interest beyond friends/family and unlocks broader recommendation carousels.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 4: The Boxleiter Sales Multiplier -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">📈</div>
-                        <h3 class="mcard-title">The Boxleiter / Carless Multiplier</h3>
-                        <p class="mcard-text">
-                            Steam does not publish private revenue figures, but user reviews correlate strongly with total unit sales:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>The ~30:1 Ratio:</strong> Empirical studies by Simon Carless and Jake Boxleiter show modern Steam games sell ~30 units per user review.</li>
-                            <li><strong>Expected Sales:</strong> Calculated as <code>Predicted Reviews × 30</code> with an interquartile confidence range.</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
 
             <!-- 5-Tier Data Table -->
             <div class="steam-panel" style="margin-bottom: 24px;">
@@ -1160,6 +1002,74 @@
                 </div>
             </div>
 
+            <!-- DEDICATED AI & COMPUTER VISION ANALYSIS METHODOLOGY -->
+            <section class="steam-panel ai-methodology-panel" id="aiMethodologySection" style="margin-top: 24px; margin-bottom: 24px;">
+                <div class="methodology-header">
+                    <div class="methodology-badge">
+                        <span class="methodology-icon">🔬</span>
+                        <span>Methodology & Neural Network Architecture</span>
+                    </div>
+                    <h2 class="methodology-title">How Capsulu Evaluates Capsule Artwork & Estimates Sales</h2>
+                    <p class="methodology-desc">
+                        Capsulu uses client-side Deep Learning Vision Neural Networks (MobileNetV3 CNN) trained on tens of thousands of Steam store capsules, analyzing raw image features to predict real-world commercial outcomes.
+                    </p>
+                </div>
+
+                <div class="methodology-grid">
+                    <!-- Pillar 1: Dual Neural Networks -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🧠</div>
+                        <h3 class="mcard-title">Dual Deep Learning Vision Models</h3>
+                        <p class="mcard-text">
+                            The platform trains specialized Convolutional Neural Networks directly on raw 224×224 RGB capsule tensors:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>Indie Milestone Model:</strong> Evaluates visual cues and composition to predict probability across 5 critical review thresholds (0, 1–5, 6–10, 11–100, 100–500 reviews).</li>
+                            <li><strong>Global Market Model:</strong> Assesses artistic rendering quality and macro commercial potential against top Steam sellers.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 2: Feature Extraction & Convolution -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">⚡</div>
+                        <h3 class="mcard-title">Convolutional Feature Extraction</h3>
+                        <p class="mcard-text">
+                            Deep neural layers extract high-level visual representations without manual feature engineering:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>Spatial Hierarchies:</strong> Depthwise separable convolutions detect lighting accents, silhouette readability, and focal character framing.</li>
+                            <li><strong>Pure Client-Side Inference:</strong> Models execute in WebAssembly inside the browser with ONNX Runtime Web.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 3: Algorithmic Thresholds -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🔓</div>
+                        <h3 class="mcard-title">The 10 & 50 Review Thresholds</h3>
+                        <p class="mcard-text">
+                            Why review milestones matter to Steam's internal discovery algorithms:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>10-Review Unlock:</strong> Until 10 reviews, Steam hides the review badge and limits discovery queue impressions. Crossing 10 unlocks organic traffic.</li>
+                            <li><strong>50-Review Traction:</strong> Proves organic interest beyond friends/family and unlocks broader recommendation carousels.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 4: The Boxleiter Sales Multiplier -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">📈</div>
+                        <h3 class="mcard-title">The Boxleiter / Carless Multiplier</h3>
+                        <p class="mcard-text">
+                            Steam does not publish private revenue figures, but user reviews correlate strongly with total unit sales:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>The ~30:1 Ratio:</strong> Empirical studies by Simon Carless and Jake Boxleiter show modern Steam games sell ~30 units per user review.</li>
+                            <li><strong>Expected Sales:</strong> Calculated as <code>Predicted Reviews × 30</code> with an interquartile confidence range.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
             <!-- Expandable Advanced Developer Section (Collapsed by Default) -->
             <div class="ai-advanced-accordion">
                 <button type="button" class="btn-toggle-advanced" id="btnToggleAiAdvanced" aria-expanded="false">
@@ -1227,7 +1137,7 @@ Workflow:
                                 <span class="panel-badge">Prompt Template</span>
                             </div>
                             <p class="ai-card-explainer">When analyzing any game on the Home tab, Capsulu automatically
-                                generates a custom prompt tailored to that capsule's exact CV deficits. Here is the
+                                generates a custom prompt for that capsule's exact CV deficits. Here is the
                                 general structure:</p>
 
                             <div class="ai-code-wrapper">

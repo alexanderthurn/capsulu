@@ -74,32 +74,38 @@ function renderPalettePieChart(dominantColors) {
 }
 
 /**
- * Visual Check View Switcher (Small / Large)
+ * Visual Check View Switcher (Small: 1 Column in Left Column | Large: Full Width spanning 2 Columns)
  */
 window.switchSimView = function (mode) {
     const simToggleSmall = document.getElementById('simToggleSmall');
     const simToggleLarge = document.getElementById('simToggleLarge');
-    const simViewSmall = document.getElementById('simViewSmall');
-    const simViewLarge = document.getElementById('simViewLarge');
-    const wrapper = document.getElementById('simAndRecsWrapper');
+    const panel = document.getElementById('visualCheckPanel');
+    const leftCol = document.querySelector('.top-left-col');
+    const genreBenchmarkCard = document.getElementById('genreBenchmarkCard');
+    const fullWidthSlot = document.getElementById('visualCheckFullWidthSlot');
+
+    if (!panel) return;
 
     if (mode === 'small') {
         if (simToggleSmall) simToggleSmall.classList.add('active');
         if (simToggleLarge) simToggleLarge.classList.remove('active');
-        if (simViewSmall) simViewSmall.style.display = 'block';
-        if (simViewLarge) simViewLarge.style.display = 'none';
-        if (wrapper) {
-            wrapper.classList.add('mode-small');
-            wrapper.classList.remove('mode-large');
+        panel.classList.remove('sim-panel-fullwidth');
+
+        if (leftCol) {
+            if (genreBenchmarkCard && genreBenchmarkCard.parentNode === leftCol) {
+                leftCol.insertBefore(panel, genreBenchmarkCard);
+            } else {
+                leftCol.appendChild(panel);
+            }
         }
     } else if (mode === 'large') {
         if (simToggleLarge) simToggleLarge.classList.add('active');
         if (simToggleSmall) simToggleSmall.classList.remove('active');
-        if (simViewSmall) simViewSmall.style.display = 'none';
-        if (simViewLarge) simViewLarge.style.display = 'block';
-        if (wrapper) {
-            wrapper.classList.add('mode-large');
-            wrapper.classList.remove('mode-small');
+        panel.classList.add('sim-panel-fullwidth');
+
+        if (fullWidthSlot) {
+            fullWidthSlot.appendChild(panel);
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
 };
@@ -285,10 +291,10 @@ function setupEventListeners() {
     if (navBenchmarkBtn) navBenchmarkBtn.addEventListener('click', () => setActiveTab('benchmark'));
     if (navAiBtn) navAiBtn.addEventListener('click', () => setActiveTab('ai'));
 
-    // Global helper to smoothly scroll to AI Methodology & Analysis Section
+    // Global helper to smoothly scroll to AI Methodology & Analysis Section on the AI Tab
     window.scrollToAiMethodology = function() {
-        if (typeof currentTab !== 'undefined' && currentTab !== 'home') {
-            if (typeof setActiveTab === 'function') setActiveTab('home');
+        if (typeof currentTab !== 'undefined' && currentTab !== 'ai') {
+            if (typeof setActiveTab === 'function') setActiveTab('ai');
         }
         
         const executeScroll = () => {
@@ -557,6 +563,10 @@ function setupEventListeners() {
                 if (aiStep3Group) {
                     aiStep3Group.classList.add('visible');
                     aiStep3Group.classList.add('step-suggested');
+                }
+                const inlineTargets = document.getElementById('aiChatTargetsInline');
+                if (inlineTargets) {
+                    inlineTargets.style.display = 'inline-flex';
                 }
 
                 setTimeout(() => {
@@ -1422,7 +1432,7 @@ function getCategoryBenchmark(categoryKey) {
     return {
         name: categoryKey,
         count: (benchmarksData.overall && benchmarksData.overall.total_games_analyzed) || 28754,
-        tip: `Ensure high contrast and distinct hero readability tailored for "${categoryKey}" audiences.`,
+        tip: `Ensure high contrast and distinct hero readability for "${categoryKey}" audiences.`,
         contrast: { median: 58.4, mean: 59.2 },
         brightness: { median: 86.4, mean: 92.1 },
         saturation: { median: 104.2, mean: 108.5 },
@@ -1453,7 +1463,149 @@ function switchGenreLens(genreKey) {
 }
 
 /**
- * Update Dedicated Genre/Tag Benchmark Intelligence & Metric Breakdown Panel
+ * Render Ultra-Compact SVG Market Benchmark Radar / Spider Chart
+ * Compares: This Capsule vs. Mega-Hit Benchmark vs. Selected Genre/Tag Median
+ */
+function drawBenchmarkRadar(cv, genreKey) {
+    const svg = document.getElementById('benchmarkRadarSvg');
+    if (!svg) return;
+
+    const width = 380;
+    const height = 320;
+    const cx = 190;
+    const cy = 155;
+    const radius = 100;
+
+    const axes = [
+        { label: "⚡ Contrast", key: "contrast" },
+        { label: "🎨 Warm Pop", key: "warmth" },
+        { label: "🔍 Tonal Depth", key: "entropy" },
+        { label: "📐 Sharpness", key: "edge" },
+        { label: "💡 Spotlight", key: "focus" },
+        { label: "🔤 Title AA", key: "text" }
+    ];
+    const totalAxes = axes.length;
+
+    function getAngle(i) {
+        return -Math.PI / 2 + (i * 2 * Math.PI / totalAxes);
+    }
+
+    function getPoint(score, i, rMax = radius) {
+        const r = (Math.max(10, Math.min(100, score)) / 100) * rMax;
+        const angle = getAngle(i);
+        return {
+            x: cx + r * Math.cos(angle),
+            y: cy + r * Math.sin(angle)
+        };
+    }
+
+    function pointsToString(pts) {
+        return pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    }
+
+    // 1. Compute Normalized Scores for Mega-Hit (Green Polygon)
+    // Mega-Hit Baselines: Contrast 63.0 (74%), Warmth 50% (72%), Entropy 6.99 (88%), Edge 14.2% (70%), Spotlight (78%), Title 5.2:1 (70%)
+    const megaHitScores = [74, 72, 88, 70, 78, 70];
+    const megaHitPoints = megaHitScores.map((s, i) => getPoint(s, i));
+
+    // 2. Compute Normalized Scores for Genre Median (Yellow Polygon)
+    let genreScores = null;
+    let genreName = null;
+    if (genreKey && genreKey !== 'all') {
+        const gData = getCategoryBenchmark(genreKey);
+        if (gData) {
+            genreName = gData.name || genreKey;
+            const cScore = Math.min(100, Math.max(15, (gData.contrast.median / 85) * 100));
+            const wScore = Math.min(100, Math.max(15, (gData.warm_palette_pct / 70) * 100));
+            const eScore = Math.min(100, Math.max(15, ((gData.entropy.median - 4.0) / 3.4) * 100));
+            const dScore = Math.min(100, Math.max(15, (gData.edge_density.median / 20) * 100));
+            const fScore = 65;
+            const tVal = (gData.text && gData.text.contrast && gData.text.contrast.median) || 3.8;
+            const tScore = Math.min(100, Math.max(15, (tVal / 7.5) * 100));
+            genreScores = [cScore, wScore, eScore, dScore, fScore, tScore];
+        }
+    }
+
+    // 3. Compute Normalized Scores for This Capsule (Blue Polygon)
+    let userScores = [50, 50, 50, 50, 50, 50];
+    if (cv) {
+        const cScore = Math.min(100, Math.max(15, (cv.brightnessStd / 85) * 100));
+        const wScore = Math.min(100, Math.max(15, (cv.warmPct / 70) * 100));
+        const eScore = Math.min(100, Math.max(15, ((cv.entropy - 4.0) / 3.4) * 100));
+        const dScore = Math.min(100, Math.max(15, (cv.edgeDensity / 20) * 100));
+        const fScore = cv.isCenterFocused ? 88 : 45;
+        const tScore = Math.min(100, Math.max(15, (cv.titleContrast / 7.5) * 100));
+        userScores = [cScore, wScore, eScore, dScore, fScore, tScore];
+    }
+    const userPoints = userScores.map((s, i) => getPoint(s, i));
+
+    // Update Legends
+    const genreLegendItem = document.getElementById('radarGenreLegendItem');
+    const genreLegendLabel = document.getElementById('radarGenreLabel');
+    if (genreScores && genreName) {
+        if (genreLegendItem) genreLegendItem.style.display = 'inline-flex';
+        if (genreLegendLabel) genreLegendLabel.textContent = `${genreName} Median`;
+    } else {
+        if (genreLegendItem) genreLegendItem.style.display = 'none';
+    }
+
+    // Build SVG Inner Elements
+    let svgContent = '';
+
+    // Concentric Web Grid Polygons (25%, 50%, 75%, 100%)
+    const levels = [0.25, 0.50, 0.75, 1.0];
+    levels.forEach((lvl, idx) => {
+        const isOuter = idx === levels.length - 1;
+        const pts = axes.map((_, i) => {
+            const angle = getAngle(i);
+            const r = lvl * radius;
+            return `${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`;
+        }).join(' ');
+        svgContent += `<polygon points="${pts}" class="radar-grid-polygon ${isOuter ? 'outer' : ''}"></polygon>`;
+    });
+
+    // Radiating Axes Lines & Outer Labels
+    axes.forEach((axis, i) => {
+        const angle = getAngle(i);
+        const xOuter = cx + radius * Math.cos(angle);
+        const yOuter = cy + radius * Math.sin(angle);
+        svgContent += `<line x1="${cx}" y1="${cy}" x2="${xOuter.toFixed(1)}" y2="${yOuter.toFixed(1)}" class="radar-axis-line"></line>`;
+
+        // Axis Label Position
+        const labelDist = radius + 22;
+        const xLabel = cx + labelDist * Math.cos(angle);
+        const yLabel = cy + labelDist * Math.sin(angle);
+        
+        let textAnchor = "middle";
+        if (Math.abs(Math.cos(angle)) > 0.3) {
+            textAnchor = Math.cos(angle) > 0 ? "start" : "end";
+        }
+
+        svgContent += `<text x="${xLabel.toFixed(1)}" y="${yLabel.toFixed(1)}" class="radar-axis-label" text-anchor="${textAnchor}">${axis.label}</text>`;
+    });
+
+    // 1. Mega-Hit Benchmark Polygon (Green Dashed)
+    svgContent += `<polygon points="${pointsToString(megaHitPoints)}" class="radar-poly-megahit" title="Mega-Hit Avg Benchmark (Top 10%)"></polygon>`;
+
+    // 2. Genre Polygon (Yellow)
+    if (genreScores) {
+        const genrePoints = genreScores.map((s, i) => getPoint(s, i));
+        svgContent += `<polygon points="${pointsToString(genrePoints)}" class="radar-poly-genre" title="${genreName} Category Median"></polygon>`;
+    }
+
+    // 3. User Capsule Polygon (Cyan Glowing)
+    svgContent += `<polygon points="${pointsToString(userPoints)}" class="radar-poly-user" title="This Capsule"></polygon>`;
+
+    // User Vertex Dots with Glow
+    userPoints.forEach((p, idx) => {
+        svgContent += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" class="radar-vertex-circle" data-axis="${axes[idx].label}"><title>${axes[idx].label}: ${userScores[idx].toFixed(0)}/100</title></circle>`;
+    });
+
+    svg.innerHTML = svgContent;
+}
+
+/**
+ * Update Dedicated Genre/Tag Benchmark Intelligence & Radar Panel
  */
 function updateGenreBenchmarkDisplay(cv, genreKey) {
     const card = document.getElementById('genreBenchmarkCard');
@@ -1461,41 +1613,14 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
 
     const iconElem = document.getElementById('genreCardIcon');
     const titleElem = document.getElementById('genreCardTitle');
-    const subtitleElem = document.getElementById('genreCardSubtitle');
-    const recElem = document.getElementById('genreRecommendationText');
 
-    const mContrastTarget = document.getElementById('mContrastTarget');
-    const mContrastPin = document.getElementById('mContrastPin');
-    const mWarmthTarget = document.getElementById('mWarmthTarget');
-    const mWarmthPin = document.getElementById('mWarmthPin');
-    const mEntropyTarget = document.getElementById('mEntropyTarget');
-    const mEntropyPin = document.getElementById('mEntropyPin');
-    const mEdgeTarget = document.getElementById('mEdgeTarget');
-    const mEdgePin = document.getElementById('mEdgePin');
-    const mTextTarget = document.getElementById('mTextTarget');
-    const mTextPin = document.getElementById('mTextPin');
+    // 1. Draw SVG Radar Chart
+    drawBenchmarkRadar(cv, genreKey);
 
+    // 2. Update Header (Single Icon & Clean Title)
     if (!genreKey || genreKey === 'all') {
         if (iconElem) iconElem.textContent = "🌐";
-        if (titleElem) titleElem.textContent = "All Steam Games Market Benchmark Breakdown";
-        if (subtitleElem) subtitleElem.textContent = "Empirical baselines derived from 28,754 verified Steam games";
-
-        if (mContrastTarget) mContrastTarget.textContent = "Mega-Hit Avg: 63.0 | Flop Avg: 56.9";
-        if (mContrastPin) { mContrastPin.style.left = "74%"; mContrastPin.title = "Mega-Hit Avg (63.0)"; }
-
-        if (mWarmthTarget) mWarmthTarget.textContent = "Mega-Hit Avg: 50% | Flop Avg: 39%";
-        if (mWarmthPin) { mWarmthPin.style.left = "50%"; mWarmthPin.title = "Mega-Hit Avg (50%)"; }
-
-        if (mEntropyTarget) mEntropyTarget.textContent = "Mega-Hit Avg: 6.99 | Flop Avg: 6.18";
-        if (mEntropyPin) { mEntropyPin.style.left = "88%"; mEntropyPin.title = "Mega-Hit Avg (6.99 bits)"; }
-
-        if (mEdgeTarget) mEdgeTarget.textContent = "Mega-Hit Avg: 14.2% | Flop Avg: 11.2%";
-        if (mEdgePin) { mEdgePin.style.left = "70%"; mEdgePin.title = "Mega-Hit Avg (14.2%)"; }
-
-        if (mTextTarget) mTextTarget.textContent = "Mega-Hit Avg: 5.2:1 (WCAG AA) | Flop Avg: 3.5:1";
-        if (mTextPin) { mTextPin.style.left = "55%"; mTextPin.title = "Mega-Hit Avg (5.2:1)"; }
-
-        if (recElem) recElem.innerHTML = `<strong>Global Steam Benchmark:</strong> High-converting capsules maintain contrast std dev > 63.0, sharp title contrast > 4.5:1, and strong center focal hierarchy across all categories.`;
+        if (titleElem) titleElem.textContent = "Market Benchmark Radar";
         card.style.display = 'block';
         return;
     }
@@ -1508,32 +1633,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
 
     const icon = getGenreIcon(genreKey);
     if (iconElem) iconElem.textContent = icon;
-    if (titleElem) titleElem.textContent = `${icon} ${gData.name || genreKey} Benchmark Breakdown`;
-    if (subtitleElem) subtitleElem.textContent = `Empirical baseline derived from ${gData.count.toLocaleString()} verified Steam games with "${genreKey}" ${gData.categoryType || 'Tag'}`;
-
-    const catContrast = gData.contrast.median;
-    const catWarm = gData.warm_palette_pct;
-    const catEntropy = gData.entropy.median;
-    const catEdge = gData.edge_density.median;
-    const catTextContrast = (gData.text && gData.text.contrast && gData.text.contrast.median) || 3.5;
-
-    if (mContrastTarget) mContrastTarget.textContent = `${genreKey} Median: ${catContrast} std dev | Mega-Hit Avg: 63.0`;
-    if (mContrastPin) { mContrastPin.style.left = `${Math.min(95, Math.max(5, (catContrast / 85) * 100))}%`; mContrastPin.title = `${genreKey} Median (${catContrast})`; }
-
-    if (mWarmthTarget) mWarmthTarget.textContent = `${genreKey} Median: ${catWarm}% Warm | Mega-Hit Avg: 50%`;
-    if (mWarmthPin) { mWarmthPin.style.left = `${Math.min(95, Math.max(5, catWarm * 1.5))}%`; mWarmthPin.title = `${genreKey} Median (${catWarm}%)`; }
-
-    if (mEntropyTarget) mEntropyTarget.textContent = `${genreKey} Median: ${catEntropy} bits | Mega-Hit Avg: 6.99`;
-    if (mEntropyPin) { mEntropyPin.style.left = `${Math.min(95, Math.max(5, (catEntropy / 7.5) * 100))}%`; mEntropyPin.title = `${genreKey} Median (${catEntropy})`; }
-
-    if (mEdgeTarget) mEdgeTarget.textContent = `${genreKey} Median: ${catEdge}% Edge | Mega-Hit Avg: 14.2%`;
-    if (mEdgePin) { mEdgePin.style.left = `${Math.min(95, Math.max(5, (catEdge / 22) * 100))}%`; mEdgePin.title = `${genreKey} Median (${catEdge}%)`; }
-
-    if (mTextTarget) mTextTarget.textContent = `${genreKey} Median: ${catTextContrast}:1 WCAG | Mega-Hit Avg: 5.2:1`;
-    if (mTextPin) { mTextPin.style.left = `${Math.min(95, Math.max(5, (catTextContrast / 10) * 100))}%`; mTextPin.title = `${genreKey} Median (${catTextContrast}:1)`; }
-
-    // Tailored Recommendation Tip
-    if (recElem) recElem.innerHTML = `<strong>Tailored "${genreKey}" Advice:</strong> ${gData.tip}`;
+    if (titleElem) titleElem.textContent = `${gData.name || genreKey} Market Radar`;
 
     card.style.display = 'block';
 }
@@ -1986,7 +2086,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
         others[7] || fallbackGame
     ];
 
-    // 1. Large Browse 3x3 Grid (9 Entries)
+    // In-Situ 3x3 Capsule Lineup (User in Exact Center)
     const largeGrid = document.getElementById('largeSimRow');
     if (largeGrid) {
         largeGrid.innerHTML = items9.map(g => `
@@ -2001,23 +2101,6 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
                 <div class="sim-capsule-thumb">
                     <img src="${g.imageUrl}" alt="${g.name}" loading="lazy" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg';">
                 </div>
-            </div>
-        `).join('');
-    }
-
-    // 2. Seamless 120px Discovery Queue 3x3 Matrix (9 Entries, gapless, borderless)
-    const microMatrix = document.getElementById('microSimQueue');
-    if (microMatrix) {
-        microMatrix.innerHTML = items9.map(g => `
-            <div class="micro-matrix-item ${g.isUser ? 'user-micro-item' : 'clickable-sim-item'}" 
-                 data-appid="${g.appid || ''}" 
-                 data-image-url="${g.imageUrl || ''}" 
-                 data-name="${g.name || ''}" 
-                 data-is-user="${g.isUser ? 'true' : 'false'}"
-                 title="${g.isUser ? 'This Capsule (Current Analysis)' : `Click to analyze ${g.name}`}"
-                 tabindex="${g.isUser ? '-1' : '0'}"
-                 role="${g.isUser ? 'img' : 'button'}">
-                <img src="${g.imageUrl}" alt="${g.name}" loading="lazy" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg';">
             </div>
         `).join('');
     }
@@ -2205,7 +2288,7 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     // 2. Populate Synchronized Dropdowns with this Game's Exact Genres & Tags
     populateGenreDropdowns(currentLoadedGenres, currentLoadedTags);
 
-    // 3. Update Dedicated Genre Benchmark Intelligence Card
+    // 3. Update Dedicated Genre Benchmark Radar Intelligence Card
     updateGenreBenchmarkDisplay(cv, currentGenreLens);
 
     // 4. Render Contextual Simulator Lineups
@@ -2743,6 +2826,10 @@ function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
     if (step3) {
         step3.classList.remove('visible');
         step3.classList.remove('step-suggested');
+    }
+    const inlineTargets = document.getElementById('aiChatTargetsInline');
+    if (inlineTargets) {
+        inlineTargets.style.display = 'none';
     }
 }
 

@@ -155,6 +155,15 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=WEB_DIR, **kwargs)
 
+    def translate_path(self, path):
+        # Strip /web prefix if present so /web and / map identically
+        clean_path = path
+        if clean_path.startswith("/web/"):
+            clean_path = clean_path[4:]
+        elif clean_path == "/web":
+            clean_path = "/"
+        return super().translate_path(clean_path)
+
     def end_headers(self):
         self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
         self.send_header("Pragma", "no-cache")
@@ -162,6 +171,14 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
     def do_GET(self):
+        # Allow accessing via /web/ as well as root /
+        if self.path.startswith("/web/"):
+            self.path = self.path[4:]
+        elif self.path.startswith("/web?"):
+            self.path = "/?" + self.path[5:]
+        elif self.path == "/web":
+            self.path = "/"
+
         parsed = urllib.parse.urlparse(self.path)
         params = urllib.parse.parse_qs(parsed.query)
 
@@ -193,7 +210,7 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                 if target_appid:
                     steam_api_url = f"https://store.steampowered.com/api/appdetails?appids={target_appid}"
                     req = urllib.request.Request(steam_api_url, headers={"User-Agent": "Mozilla/5.0"})
-                    with urllib.request.urlopen(req, timeout=6) as response:
+                    with urllib.request.urlopen(req, timeout=4) as response:
                         s_data = json.loads(response.read().decode("utf-8"))
                         s_info = s_data.get(str(target_appid), {}).get("data", {})
                         if s_info:
@@ -220,7 +237,7 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                     if not u: continue
                     try:
                         img_req = urllib.request.Request(u, headers={"User-Agent": "Mozilla/5.0"})
-                        with urllib.request.urlopen(img_req, timeout=6) as img_res:
+                        with urllib.request.urlopen(img_req, timeout=4) as img_res:
                             image_bytes = img_res.read()
                             if image_bytes: break
                     except Exception:
@@ -343,40 +360,62 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
                 self.wfile.write(err_payload)
                 return
 
-        # 2. Existing Steam AppDetails proxy endpoint
-        if parsed.path == "/api/steam-details":
+        # 2. Existing Steam AppDetails proxy endpoint (and api.php alias)
+        if parsed.path in ("/api/steam-details", "/api.php"):
             appid = params.get("appid", [None])[0]
             if not appid:
                 self.send_error(400, "Missing appid parameter")
                 return
 
             try:
+                # 1. Fetch official Steam Store App Details
                 steam_api_url = f"https://store.steampowered.com/api/appdetails?appids={appid}"
                 req = urllib.request.Request(
-                    steam_api_url, 
+                    steam_api_url,
                     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
                 )
-                with urllib.request.urlopen(req, timeout=5) as response:
+                with urllib.request.urlopen(req, timeout=4) as response:
                     data = json.loads(response.read().decode("utf-8"))
 
-                app_data = data.get(str(appid), {}).get("data", {})
+                app_data = data.get(str(appid), {}).get("data", None)
                 if not app_data:
-                    res_payload = {"success": False, "error": "Game data not found on Steam"}
+                    res_payload = {
+                        "success": False,
+                        "error": "Game not found on Steam",
+                        "appid": int(appid),
+                        "header_image": f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/header.jpg",
+                        "capsule_image": f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{appid}/capsule_616x353.jpg",
+                        "name": f"Steam App {appid}"
+                    }
                 else:
-                    rel_info = app_data.get("release_date", {})
-                    is_coming_soon = rel_info.get("coming_soon", False)
-                    rel_date = rel_info.get("date", "")
-                    
-                    if app_data.get("is_free"):
-                        price_str = "Free to Play"
-                    elif app_data.get("price_overview"):
-                        price_str = app_data.get("price_overview", {}).get("final_formatted", "N/A")
-                    elif is_coming_soon:
-                        price_str = "Coming Soon"
-                    else:
-                        price_str = "Free"
+                    price_str = "Free" if app_data.get("is_free") else "N/A"
+                    if "price_overview" in app_data:
+                        price_str = app_data["price_overview"].get("final_formatted", "N/A")
 
-                    review_status = "Coming Soon" if is_coming_soon else "Positive"
+                    release_info = app_data.get("release_date", {})
+                    rel_date = release_info.get("date", "N/A")
+                    is_coming_soon = release_info.get("coming_soon", False)
+                    if is_coming_soon and price_str == "N/A":
+                        price_str = "Coming Soon"
+
+                    # Fetch user reviews
+                    review_status = "No reviews yet"
+                    total_revs = 0
+                    try:
+                        rev_url = f"https://store.steampowered.com/appreviews/{appid}?json=1&language=all&purchase_type=all"
+                        rev_req = urllib.request.Request(
+                            rev_url,
+                            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+                        )
+                        with urllib.request.urlopen(rev_req, timeout=3) as rev_resp:
+                            rev_data = json.loads(rev_resp.read().decode("utf-8"))
+                            query_summary = rev_data.get("query_summary", {})
+                            total_revs = query_summary.get("total_reviews", 0)
+                            rev_desc = query_summary.get("review_score_desc", "")
+                            if total_revs > 0:
+                                review_status = f"{rev_desc} ({total_revs:,} reviews)"
+                    except Exception as rev_err:
+                        print(f"Error fetching reviews for {appid}: {rev_err}", flush=True)
 
                     # Scrape rich user tags from store page HTML
                     tags = []
@@ -389,13 +428,12 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
                                 "Cookie": "birthtime=283993201; mature_content=1; wants_mature_content=1; lastagecheckage=1-0-1990"
                             }
                         )
-                        with urllib.request.urlopen(page_req, timeout=5) as page_resp:
+                        with urllib.request.urlopen(page_req, timeout=4) as page_resp:
                             html = page_resp.read().decode("utf-8", errors="ignore")
                             raw_tags = re.findall(r'class=["\']app_tag[^"\']*["\'][^>]*>\s*([^<]+?)\s*<', html)
                             tags = [t.strip() for t in raw_tags if t.strip() and t.strip() not in ["+", "(?)"]]
                     except Exception as tag_err:
                         print(f"Error scraping store page tags for {appid}: {tag_err}", flush=True)
-                        tags = []
 
                     raw_genres = [g.get("description") for g in app_data.get("genres", []) if isinstance(g, dict)]
 
@@ -409,6 +447,7 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
                         "is_coming_soon": is_coming_soon,
                         "release_date": rel_date,
                         "review_status": review_status,
+                        "total_reviews": total_revs,
                         "genres": raw_genres,
                         "tags": tags if tags else raw_genres
                     }
@@ -435,8 +474,13 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
         # Default static file handler
         return super().do_GET()
 
+
 if __name__ == "__main__":
-    socketserver.TCPServer.allow_reuse_address = True
-    with socketserver.TCPServer(("", PORT), SteamCapsuluHandler) as httpd:
-        print(f"🚀 Capsulu Server running at http://localhost:{PORT}")
-        httpd.serve_forever()
+    server = http.server.ThreadingHTTPServer(("", PORT), SteamCapsuluHandler)
+    server.daemon_threads = True
+    print(f"🚀 Capsulu Server running at http://localhost:{PORT}")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nServer shutting down.")
+        server.server_close()

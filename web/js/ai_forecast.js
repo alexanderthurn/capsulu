@@ -161,16 +161,40 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
             sentElem.innerHTML = `This capsule is at risk of remaining under the 10-review visibility barrier (<strong class="hl-red">${p10}% odds</strong>). Key fixes needed on lighting hierarchy and text readability.`;
         }
     }
+
+    // 3. Known Reality Reviews Indicator (if game has known Steam reviews)
+    const realityRow = document.getElementById('forecastRealityRow');
+    const realityText = document.getElementById('forecastRealityText');
+    const salesRealityPill = document.getElementById('salesRealityPill');
+
+    if (knownReviews !== null && knownReviews !== undefined && !isNaN(knownReviews) && Number(knownReviews) > 0) {
+        const revCount = Number(knownReviews);
+        const now = new Date();
+        const d = String(now.getDate()).padStart(2, '0');
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+        const dateFormatted = `${d}.${m}.${y}`;
+
+        if (realityRow) realityRow.style.display = 'flex';
+        if (realityText) realityText.textContent = `Reality: ${revCount.toLocaleString()} reviews (${dateFormatted})`;
+        if (salesRealityPill) {
+            salesRealityPill.style.display = 'inline-block';
+            salesRealityPill.textContent = `(Reality: ${fmtNum(revCount)} reviews)`;
+        }
+    } else {
+        if (realityRow) realityRow.style.display = 'none';
+        if (salesRealityPill) salesRealityPill.style.display = 'none';
+    }
 }
 
 /**
- * Smoothly switches to the Benchmark Tab & scrolls to the AI Methodology Section
+ * Smoothly switches to the AI Tab & scrolls to the AI Methodology Section
  */
 window.scrollToAiMethodology = function() {
     if (typeof window.setActiveTab === 'function') {
-        window.setActiveTab('benchmark');
+        window.setActiveTab('ai');
     } else if (typeof setActiveTab === 'function') {
-        setActiveTab('benchmark');
+        setActiveTab('ai');
     }
     
     const executeScroll = () => {
