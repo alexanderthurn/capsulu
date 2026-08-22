@@ -1039,97 +1039,8 @@
                 </div>
             </div>
 
-            <!-- DEDICATED AI & COMPUTER VISION ANALYSIS METHODOLOGY -->
-            <section class="steam-panel ai-methodology-panel" id="aiMethodologySection"
-                style="margin-top: 24px; margin-bottom: 24px;">
-                <div class="methodology-header">
-                    <div class="methodology-badge">
-                        <span class="methodology-icon">🔬</span>
-                        <span>How does it work?</span>
-                    </div>
-                    <h2 class="methodology-title"> Trained on tens of thousands of Steam store capsules.
-                    </h2>
-                    <p class="methodology-desc">
-                        Capsulu uses Deep Learning Vision Neural Networks (MobileNetV3 CNN)
-                    </p>
-                </div>
-
-                <div class="methodology-grid">
-                    <!-- Pillar 1: Dual Neural Networks -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">🧠</div>
-                        <h3 class="mcard-title">Dual Deep Learning Vision Models</h3>
-                        <p class="mcard-text">
-                            The platform trains specialized Convolutional Neural Networks directly on raw 224×224 RGB
-                            capsule tensors:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>Indie Milestone Model:</strong> Evaluates visual cues and composition to predict
-                                probability across 5 critical review thresholds (0, 1–5, 6–10, 11–100, 100–500 reviews).
-                            </li>
-                            <li><strong>Global Market Model:</strong> Assesses artistic rendering quality and macro
-                                commercial potential against top Steam sellers.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 2: Feature Extraction & Convolution -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">⚡</div>
-                        <h3 class="mcard-title">Convolutional Feature Extraction</h3>
-                        <p class="mcard-text">
-                            Deep neural layers extract high-level visual representations without manual feature
-                            engineering:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>Spatial Hierarchies:</strong> Depthwise separable convolutions detect lighting
-                                accents, silhouette readability, and focal character framing.</li>
-                            <li><strong>Inference:</strong> Models execute in WebAssembly inside the
-                                browser with ONNX Runtime Web.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 3: Algorithmic Thresholds -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">🔓</div>
-                        <h3 class="mcard-title">The 10 & 50 Review Thresholds</h3>
-                        <p class="mcard-text">
-                            Why review milestones matter to Steam's internal discovery algorithms:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>10-Review Unlock:</strong> Until 10 reviews, Steam hides the review badge and
-                                limits discovery queue impressions. Crossing 10 unlocks organic traffic.</li>
-                            <li><strong>50-Review Traction:</strong> Proves organic interest beyond friends/family and
-                                unlocks broader recommendation carousels.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Pillar 4: The Boxleiter Sales Multiplier -->
-                    <div class="methodology-card">
-                        <div class="mcard-icon">📈</div>
-                        <h3 class="mcard-title">The Boxleiter / Carless Multiplier</h3>
-                        <p class="mcard-text">
-                            Steam does not publish private revenue figures, but user reviews correlate strongly with
-                            total unit sales:
-                        </p>
-                        <ul class="mcard-list">
-                            <li><strong>The ~30:1 Ratio:</strong> Empirical industry research by <a
-                                    href="https://newsletter.gamediscover.co/p/how-that-steam-game-is-doing-the"
-                                    target="_blank" rel="noopener noreferrer" class="methodology-inline-link"
-                                    title="Read GameDiscoverCo Newsletter on Steam sales multipliers">Simon Carless
-                                    (GameDiscoverCo) ↗</a> and <a
-                                    href="https://www.gamedeveloper.com/business/evaluating-steam-sales-with-the-boxleiter-method"
-                                    target="_blank" rel="noopener noreferrer" class="methodology-inline-link"
-                                    title="Read classic Boxleiter Method breakdown">Jake Boxleiter ↗</a> shows modern
-                                Steam games sell ~30 units per user review.</li>
-                            <li><strong>Expected Sales:</strong> Calculated as <code>Predicted Reviews × 30</code> with
-                                an interquartile confidence range.</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
             <!-- Expandable Advanced Developer Section (Collapsed by Default) -->
-            <div class="ai-advanced-accordion">
+            <div class="ai-advanced-accordion" style="margin-top: 24px;">
                 <button type="button" class="btn-toggle-advanced" id="btnToggleAiAdvanced" aria-expanded="false">
                     <div class="toggle-left">
                         <span class="toggle-icon">⚙️</span>
@@ -1251,6 +1162,129 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
                     </div>
                 </div>
             </div>
+
+            <!-- DEDICATED AI & COMPUTER VISION ANALYSIS METHODOLOGY -->
+            <section class="steam-panel ai-methodology-panel" id="aiMethodologySection"
+                style="margin-top: 24px; margin-bottom: 24px;">
+                <div class="methodology-header">
+                    <div class="methodology-badge">
+                        <span class="methodology-icon">🔬</span>
+                        <span>How does it work?</span>
+                    </div>
+                    <h2 class="methodology-title"> Trained on tens of thousands of Steam store capsules.
+                    </h2>
+                    <p class="methodology-desc">
+                        Capsulu uses Deep Learning Vision Neural Networks (MobileNetV3 CNN)
+                    </p>
+                </div>
+
+                <div class="methodology-grid">
+                    <!-- Pillar 1: Dual Neural Networks -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🧠</div>
+                        <h3 class="mcard-title">Dual Deep Learning Vision Models</h3>
+                        <p class="mcard-text">
+                            The platform trains specialized Convolutional Neural Networks directly on raw 224×224 RGB
+                            capsule tensors:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>Indie Milestone Model:</strong> Evaluates visual cues and composition to predict
+                                probability across 5 critical review thresholds (0, 1–5, 6–10, 11–100, 100–500 reviews).
+                            </li>
+                            <li><strong>Global Market Model:</strong> Assesses artistic rendering quality and macro
+                                commercial potential against top Steam sellers.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 2: Feature Extraction & Convolution -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">⚡</div>
+                        <h3 class="mcard-title">Convolutional Feature Extraction</h3>
+                        <p class="mcard-text">
+                            Deep neural layers extract high-level visual representations without manual feature
+                            engineering:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>Spatial Hierarchies:</strong> Depthwise separable convolutions detect lighting
+                                accents, silhouette readability, and focal character framing.</li>
+                            <li><strong>Inference:</strong> Models execute in WebAssembly inside the
+                                browser with ONNX Runtime Web.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 3: Algorithmic Thresholds -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🔓</div>
+                        <h3 class="mcard-title">The 10 & 50 Review Thresholds</h3>
+                        <p class="mcard-text">
+                            Why review milestones matter to Steam's internal discovery algorithms:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>10-Review Unlock:</strong> Until 10 reviews, Steam hides the review badge and
+                                limits discovery queue impressions. Crossing 10 unlocks organic traffic.</li>
+                            <li><strong>50-Review Traction:</strong> Proves organic interest beyond friends/family and
+                                unlocks broader recommendation carousels.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 4: The Boxleiter Sales Multiplier -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">📈</div>
+                        <h3 class="mcard-title">The Boxleiter / Carless Multiplier</h3>
+                        <p class="mcard-text">
+                            Steam does not publish private revenue figures, but user reviews correlate strongly with
+                            total unit sales:
+                        </p>
+                        <ul class="mcard-list">
+                            <li><strong>The ~30:1 Ratio:</strong> Empirical industry research by <a
+                                    href="https://newsletter.gamediscover.co/p/how-that-steam-game-is-doing-the"
+                                    target="_blank" rel="noopener noreferrer" class="methodology-inline-link"
+                                    title="Read GameDiscoverCo Newsletter on Steam sales multipliers">Simon Carless
+                                    (GameDiscoverCo) ↗</a> and <a
+                                    href="https://www.gamedeveloper.com/business/evaluating-steam-sales-with-the-boxleiter-method"
+                                    target="_blank" rel="noopener noreferrer" class="methodology-inline-link"
+                                    title="Read classic Boxleiter Method breakdown">Jake Boxleiter ↗</a> shows modern
+                                Steam games sell ~30 units per user review.</li>
+                            <li><strong>Expected Sales:</strong> Calculated as <code>Predicted Reviews × 30</code> with
+                                an interquartile confidence range.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Box 5: Indie Milestone Model -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🧠</div>
+                        <h3 class="mcard-title">Indie Milestone Vision Model</h3>
+                        <p class="mcard-text">
+                            MobileNetV3 CNN predicting 5 review milestones (0, 1–5, 6–10, 11–100, 100–500 reviews) directly from 224×224 RGB capsule tensors.
+                        </p>
+                        <div class="mcard-actions">
+                            <a href="models/capsulu_indie_model.onnx" download="capsulu_indie_model.onnx" class="btn-mcard-action btn-mcard-download" title="Download ONNX model weights (6.1 MB)">
+                                <span>⬇️</span> <span>Download ONNX (6.1 MB)</span>
+                            </a>
+                            <a href="models/capsulu_indie_classes.json" target="_blank" rel="noopener noreferrer" class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
+                                <span>📄</span> <span>Open Classes JSON ↗</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Box 6: Global Market Tier Model -->
+                    <div class="methodology-card">
+                        <div class="mcard-icon">🌐</div>
+                        <h3 class="mcard-title">Global Market Tier Model</h3>
+                        <p class="mcard-text">
+                            MobileNetV3 CNN classifying artwork against 5 global Steam sales tiers from Mega-Hits down to Near-Zero commercial flops.
+                        </p>
+                        <div class="mcard-actions">
+                            <a href="models/capsulu_global_model.onnx" download="capsulu_global_model.onnx" class="btn-mcard-action btn-mcard-download" title="Download ONNX model weights (6.1 MB)">
+                                <span>⬇️</span> <span>Download ONNX (6.1 MB)</span>
+                            </a>
+                            <a href="models/capsulu_global_classes.json" target="_blank" rel="noopener noreferrer" class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
+                                <span>📄</span> <span>Open Classes JSON ↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 

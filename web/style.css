@@ -5023,3 +5023,49 @@ body {
     color: #ffffff;
     text-decoration: underline;
 }
+
+/* Card Action Links & Download Buttons inside methodology-card */
+.mcard-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+}
+
+.btn-mcard-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-mcard-download {
+    background: rgba(103, 193, 245, 0.12);
+    border: 1px solid rgba(103, 193, 245, 0.35);
+    color: #67c1f5;
+}
+
+.btn-mcard-download:hover {
+    background: rgba(103, 193, 245, 0.25);
+    border-color: #67c1f5;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-mcard-json {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e0e7ff;
+}
+
+.btn-mcard-json:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
