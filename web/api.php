@@ -290,7 +290,7 @@ function analyze_image_php($img_url) {
     if ($overall_score >= 88) {
         $tier = "🏆 Mega-Hit Grade";
         $percentile = "Top 10% on Steam";
-        $headline = "Exceptional";
+        $headline = "Exceptional Visual";
     } elseif ($overall_score >= 72) {
         $tier = "🌟 Solid Indie Grade";
         $percentile = "Top 35% on Steam";

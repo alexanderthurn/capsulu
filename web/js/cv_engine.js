@@ -526,14 +526,14 @@ function evaluateScores(cv) {
     let tierName = "Top Commercial Tier";
     let tierBadgeClass = "tier-top";
     let percentile = "Top 5% of Steam Capsules";
-    let headline = "Exceptional";
+    let headline = "Exceptional Visual";
     let summary = "This capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.";
 
     if (overallScore >= 90) {
         tierName = "Top Commercial Tier";
         tierBadgeClass = "tier-top";
         percentile = "Top 5% of Steam Capsules";
-        headline = "Exceptional";
+        headline = "Exceptional Visual";
         summary = "This capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.";
     } else if (overallScore >= 75) {
         tierName = "Solid Indie Performer";

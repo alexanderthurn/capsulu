@@ -142,17 +142,12 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 
     const heroElem = document.getElementById('forecastHeroNum');
     if (heroElem) {
-        heroElem.textContent = `~${fmtFull(expReviews)}`;
+        heroElem.textContent = `${fmtFull(minRange)} – ${fmtFull(maxRange)}`;
     }
 
     const heroCopiesElem = document.getElementById('forecastHeroCopies');
     if (heroCopiesElem) {
-        heroCopiesElem.textContent = `~${fmtFull(estCopies)}`;
-    }
-
-    const rangeElem = document.getElementById('forecastRange');
-    if (rangeElem) {
-        rangeElem.textContent = `Expected: ${fmtFull(minCopies)} – ${fmtFull(maxCopies)} sales (${fmtFull(minRange)} – ${fmtFull(maxRange)} reviews)`;
+        heroCopiesElem.textContent = `${fmtFull(minCopies)} – ${fmtFull(maxCopies)}`;
     }
 
     const salesTopElem = document.getElementById('salesHeroTop');

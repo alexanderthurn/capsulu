@@ -250,7 +250,7 @@
                         <!-- Dedicated Capsule Artwork Display Card (Top-Aligned with Right Scorecard) -->
                         <section class="game-result-hero-card capsule-preview-only-card">
                             <!-- Interactive Capsule Version Switcher -->
-                            <div class="capsule-version-switcher" id="capsuleVersionSwitcher">
+                            <div class="capsule-version-switcher" id="capsuleVersionSwitcher" style="display: none;">
                                 <span class="version-switch-label">Version:</span>
                                 <div class="version-pills-group">
                                     <button type="button" class="version-pill active" id="pillVersionOriginal" data-version="original" title="View original capsule analysis">
@@ -419,72 +419,57 @@
                     <div class="top-right-col">
                         <!-- 1. Big Dominant Scorecard Banner -->
                         <section class="score-card-banner dominant-score-card">
-                            <!-- Top Duo: Rating Circle + Big Sales Hero with Split Column Titles -->
-                            <div class="score-top-duo-row">
-                                <!-- Left Column: Rating Circle -->
-                                <div class="score-duo-col">
-                                    <span class="score-duo-title">This capsule</span>
-                                    <div class="score-radial-group-huge">
-                                        <svg class="radial-svg-huge" viewBox="0 0 160 160">
-                                            <circle class="radial-track-huge" cx="80" cy="80" r="70"></circle>
-                                            <circle class="radial-fill-huge" id="gaugeFill" cx="80" cy="80" r="70">
-                                            </circle>
-                                        </svg>
-                                        <div class="radial-center-text-huge">
-                                            <span class="score-huge-num" id="overallScoreNum">--</span>
-                                            <span class="score-huge-denom">/ 100</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Right Column: Sales Hero -->
-                                <div class="score-duo-col">
-                                    <span class="score-duo-title">smells like</span>
-                                    <div class="sales-top-hero-card">
-                                        <span class="sales-top-num" id="salesHeroTop">--</span>
-                                        <span class="sales-top-label">Sales</span>
-                                    </div>
+                            <!-- Top Section: "This capsule smells like" + Prominent Sales Hero -->
+                            <div class="sales-smells-hero-section">
+                                <h2 class="sales-smells-title">This capsule smells like</h2>
+                                <div class="sales-top-hero-card">
+                                    <span class="sales-top-num" id="salesHeroTop">--</span>
+                                    <span class="sales-top-label">Sales</span>
                                 </div>
                             </div>
 
-                            <!-- Centered Rating Verdict & Summary -->
-                            <div class="score-meta-group-centered">
-                                <h2 class="score-title" id="scoreHeadline">Exceptional</h2>
-                                <p class="score-desc" id="scoreSummary">This capsule has strong visual saliency with
-                                    punchy contrast and intentional lighting that will stand out on Steam's dark store
-                                    theme.</p>
-                            </div>
-
-                            <!-- AI Commercial Forecast Section -->
+                            <!-- AI Commercial Forecast Section (Estimation Ranges) -->
                             <div class="ai-forecast-card" id="aiForecastCard" onclick="scrollToAiMethodology()"
                                 role="button" tabindex="0"
                                 title="Click to view full methodology & AI analysis explanation">
                                 <h3 class="forecast-card-title">Estimation</h3>
                                 <div class="forecast-hero-row">
                                     <div class="forecast-hero-stat">
-                                        <span class="forecast-hero-num" id="forecastHeroNum">~240</span>
+                                        <span class="forecast-hero-num" id="forecastHeroNum">--</span>
                                         <span class="forecast-hero-label">Reviews</span>
                                     </div>
                                     <div class="forecast-hero-stat">
-                                        <span class="forecast-hero-num forecast-hero-copies-num"
-                                            id="forecastHeroCopies">~7,200</span>
-                                        <span class="forecast-hero-label forecast-copies-label">Copies</span>
+                                        <span class="forecast-hero-num forecast-hero-copies-num" id="forecastHeroCopies">--</span>
+                                        <span class="forecast-hero-label forecast-copies-label">Sales</span>
                                     </div>
                                 </div>
-                                <div class="forecast-subline" id="forecastSubline">
-                                    <span class="forecast-range-badge" id="forecastRange">Expected: 4,800 – 11,400
-                                        sales (160 – 380 reviews)</span>
-                                </div>
                                 <p class="forecast-sentence" id="forecastSentence">
-                                    This capsule has a <strong class="hl-green">94% chance</strong> to unlock the Steam
-                                    algorithm (10+ reviews), with an <strong class="hl-blue">81% probability</strong> of
-                                    reaching community traction (50+ reviews).
+                                    Calculating commercial forecast...
                                 </p>
                                 <div class="forecast-reality-row" id="forecastRealityRow" style="display: none;">
                                     <span class="forecast-reality-badge">
                                         <span class="reality-icon">📊</span>
                                         <span class="reality-text" id="forecastRealityText">Reality: -- reviews</span>
                                     </span>
+                                </div>
+                            </div>
+
+                            <!-- Rating Section: Score Gauge Circle on Left + Verdict & Description on Right -->
+                            <div class="score-rating-split-row">
+                                <div class="score-radial-group-compact">
+                                    <svg class="radial-svg-compact" viewBox="0 0 100 100">
+                                        <circle class="radial-track-compact" cx="50" cy="50" r="42"></circle>
+                                        <circle class="radial-fill-compact" id="gaugeFill" cx="50" cy="50" r="42"></circle>
+                                    </svg>
+                                    <div class="radial-center-text-compact">
+                                        <span class="score-compact-num" id="overallScoreNum">--</span>
+                                        <span class="score-compact-denom">/ 100</span>
+                                    </div>
+                                </div>
+
+                                <div class="score-verdict-text-col">
+                                    <h3 class="score-title" id="scoreHeadline">Exceptional Visual</h3>
+                                    <p class="score-desc" id="scoreSummary">This capsule has strong visual saliency with punchy contrast and intentional lighting that will stand out on Steam's dark store theme.</p>
                                 </div>
                             </div>
 

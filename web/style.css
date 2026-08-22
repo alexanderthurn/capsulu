@@ -3538,60 +3538,44 @@ body {
 }
 
 
-/* Huge Centered Radial Gauge Styles */
+/* Dominant Scorecard Banner */
 .dominant-score-card {
-    height: 100%;
+    height: auto;
     margin-bottom: 0;
-    padding: 20px 20px 22px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    gap: 16px;
-    background: linear-gradient(135deg, rgba(27, 40, 56, 0.92) 0%, rgba(20, 29, 41, 0.96) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-md);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-}
-
-.score-top-duo-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 36px;
-    width: 100%;
-    margin-top: 6px;
-}
-
-.score-duo-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-    gap: 12px;
+    gap: 20px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-.score-duo-title {
-    font-size: 1.32rem;
+/* Top Section: "This capsule smells like" + Sales Hero */
+.sales-smells-hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding: 0;
+    min-height: 250px;
+    box-sizing: border-box;
+}
+
+.sales-smells-title {
+    font-size: 1.35rem;
     font-weight: 800;
     letter-spacing: -0.01em;
-    color: #ffffff;
+    color: #c7d5e0;
     font-family: var(--font-heading);
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
     line-height: 1.2;
-    white-space: nowrap;
-}
-
-.score-radial-group-huge {
-    position: relative;
-    width: 160px;
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.6));
-    flex-shrink: 0;
+    margin: 0;
 }
 
 .sales-top-hero-card {
@@ -3599,61 +3583,90 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+    margin: 8px 0 0 0;
     padding: 0;
     background: none;
     border: none;
     box-shadow: none;
-    min-width: 140px;
-    height: 160px;
-    flex-shrink: 0;
 }
 
 .sales-top-num {
     font-family: var(--font-heading);
-    font-size: clamp(1.8rem, 3.2vw, 3.0rem);
+    font-size: clamp(2.6rem, 4.2vw, 3.8rem);
     font-weight: 800;
     color: #ffffff !important;
     letter-spacing: -0.03em;
-    line-height: 1.1;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    line-height: 1.0;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
     text-align: center;
-    word-break: break-word;
 }
 
 .sales-top-label {
     font-family: var(--font-heading);
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #ffffff !important;
-    letter-spacing: 0.08em;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--steam-cyan) !important;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    margin-top: 8px;
-    opacity: 0.9;
+    text-shadow: 0 0 14px rgba(103, 193, 245, 0.4);
+    margin: 0;
 }
 
-.radial-svg-huge {
+@media (max-width: 899px) {
+    .sales-smells-hero-section {
+        min-height: auto;
+        padding: 16px 0;
+    }
+}
+
+/* Rating Split Row: Gauge Circle on Left + Verdict & Description on Right */
+.score-rating-split-row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.score-radial-group-compact {
+    position: relative;
+    width: 82px;
+    height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.5));
+    flex-shrink: 0;
+}
+
+.radial-svg-compact {
     width: 100%;
     height: 100%;
     transform: rotate(-90deg);
 }
 
-.radial-track-huge {
+.radial-track-compact {
     fill: none;
     stroke: rgba(255, 255, 255, 0.08);
-    stroke-width: 10;
+    stroke-width: 7;
 }
 
-.radial-fill-huge {
+.radial-fill-compact {
     fill: none;
     stroke: var(--green-pass);
-    stroke-width: 10;
+    stroke-width: 7;
     stroke-linecap: round;
-    stroke-dasharray: 440;
-    stroke-dashoffset: 88;
-    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+    stroke-dasharray: 264;
+    stroke-dashoffset: 52;
+    transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.35s ease;
 }
 
-.radial-center-text-huge {
+.radial-center-text-compact {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -3662,65 +3675,59 @@ body {
     line-height: 1;
 }
 
-.score-huge-num {
+.score-compact-num {
     font-family: var(--font-heading);
-    font-size: 3.4rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #ffffff;
-    letter-spacing: -0.03em;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-.score-huge-denom {
-    font-size: 0.88rem;
+.score-compact-denom {
+    font-size: 0.64rem;
     color: #8f9ea6;
     font-weight: 700;
-    margin-top: 2px;
+    margin-top: 1px;
 }
 
-.score-meta-group-centered {
+.score-verdict-text-col {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
+    align-items: flex-start;
+    text-align: left;
+    gap: 4px;
+    flex: 1;
 }
 
-.tier-pill-row-centered {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    align-items: center;
-}
-
-.score-meta-group-centered .score-title {
+.score-verdict-text-col .score-title {
     font-family: var(--font-heading);
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: #ffffff;
-    margin: 4px 0 2px 0;
+    margin: 0;
+    line-height: 1.2;
 }
 
-.score-meta-group-centered .score-desc {
-    font-size: 0.84rem;
+.score-verdict-text-col .score-desc {
+    font-size: 0.82rem;
     color: #c7d5e0;
     line-height: 1.4;
-    max-width: 440px;
-    margin: 0 auto;
+    margin: 0;
 }
 
 /* AI Commercial Forecast Card inside Dominant Scorecard */
 .ai-forecast-card {
     width: 100%;
-    background: linear-gradient(135deg, rgba(102, 192, 244, 0.08) 0%, rgba(33, 70, 105, 0.16) 100%);
-    border: 1px solid rgba(102, 192, 244, 0.25);
-    border-radius: var(--radius-sm);
-    padding: 14px 18px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    box-shadow: none;
     transition: all 0.3s ease;
     margin: 2px 0;
     cursor: pointer;
@@ -3728,9 +3735,9 @@ body {
 }
 
 .ai-forecast-card:hover {
-    border-color: var(--steam-cyan);
-    box-shadow: 0 6px 22px rgba(102, 192, 244, 0.22);
-    transform: translateY(-1px);
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
 }
 
 .forecast-card-title {
@@ -3745,64 +3752,51 @@ body {
 }
 
 .forecast-hero-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 22px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    margin: 4px 0 6px 0;
 }
 
 .forecast-hero-stat {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 6px;
-}
-
-.forecast-hero-num {
-    font-family: var(--font-heading);
-    font-size: 2.1rem;
-    font-weight: 800;
-    color: #ffffff;
-    background: linear-gradient(135deg, #ffffff 0%, var(--steam-cyan) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.02em;
-    line-height: 1;
-}
-
-.forecast-hero-copies-num {
-    background: linear-gradient(135deg, #ffffff 0%, #ffd700 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-sm);
+    text-align: center;
 }
 
 .forecast-hero-label {
     font-family: var(--font-heading);
-    font-size: 0.95rem;
-    font-weight: 700;
+    font-size: 0.82rem;
+    font-weight: 800;
     color: var(--steam-cyan);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 .forecast-copies-label {
-    color: #f1c40f;
+    color: #ffd700;
 }
 
-.forecast-subline {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 0.78rem;
-    color: #8f9ea6;
-    font-weight: 500;
+.forecast-hero-num {
+    font-family: var(--font-heading);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
-.forecast-range-badge {
-    color: #c7d5e0;
-    font-weight: 600;
+.forecast-hero-copies-num {
+    color: #ffffff;
 }
 
 .forecast-sentence {

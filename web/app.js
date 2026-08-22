@@ -725,17 +725,7 @@ function setupEventListeners() {
                             cv: cv_wg,
                             scores: scores_wg
                         };
-                        const pillWg = document.getElementById('pillVersionWebGpu');
-                        if (pillWg) pillWg.style.display = 'inline-flex';
-
-                        if (currentVersions.original && currentVersions.original.scores) {
-                            const diff = scores_wg.overallScore - currentVersions.original.scores.overallScore;
-                            const deltaElem = document.getElementById('pillDeltaWebGpu');
-                            if (deltaElem) {
-                                deltaElem.textContent = (diff >= 0 ? `+${diff}` : `${diff}`) + ' pts';
-                                deltaElem.style.display = 'inline-block';
-                            }
-                        }
+                        updateVersionSwitcherVisibility();
                     }
                 } catch (wgEvalErr) {
                     console.warn('WebGPU scorecard eval error:', wgEvalErr);
@@ -2534,18 +2524,11 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     currentVersions.webgpu = null;
     activeVersionKey = 'original';
 
-    // Reset Version Switcher Pills — only show Original initially
+    // Reset Version Switcher Pills — hide version switcher until variants are generated
     document.getElementById('pillVersionOriginal')?.classList.add('active');
-    const pillAf = document.getElementById('pillVersionAutofix');
-    if (pillAf) {
-        pillAf.classList.remove('active');
-        pillAf.style.display = 'none';
-    }
-    const pillWg = document.getElementById('pillVersionWebGpu');
-    if (pillWg) {
-        pillWg.classList.remove('active');
-        pillWg.style.display = 'none';
-    }
+    document.getElementById('pillVersionAutofix')?.classList.remove('active');
+    document.getElementById('pillVersionWebGpu')?.classList.remove('active');
+    updateVersionSwitcherVisibility();
 
     // Reset Box 2 (Autofix) and Box 3 (WebGPU) studio cards
     resetImprovePanelsForNewCapsule();
@@ -2703,8 +2686,10 @@ function renderScorecardData(cv, scores, mediaSource, imgSrc, effectiveReviews =
 
     const gaugeFill = document.getElementById('gaugeFill');
     if (gaugeFill) {
-        const offset = 440 - (440 * scores.overallScore / 100);
+        const circumference = 264;
+        const offset = circumference - (circumference * scores.overallScore / 100);
         const themeColor = scores.overallScore >= 80 ? 'var(--green-pass)' : scores.overallScore >= 65 ? 'var(--gold)' : 'var(--red)';
+        gaugeFill.style.strokeDasharray = `${circumference}`;
         gaugeFill.style.strokeDashoffset = offset;
         gaugeFill.style.stroke = themeColor;
     }
@@ -2871,6 +2856,31 @@ function renderScorecardData(cv, scores, mediaSource, imgSrc, effectiveReviews =
 
     // 8. Bind Click-to-Scroll on Quick Metric Cells
     bindQuickMetricsScroll();
+}
+
+/**
+ * Update visibility of the top Capsule Version Switcher bar
+ * Collapses and hides the entire switcher line if only Original exists.
+ */
+function updateVersionSwitcherVisibility() {
+    const switcher = document.getElementById('capsuleVersionSwitcher');
+    if (!switcher) return;
+
+    const hasAutofix = !!(currentVersions && currentVersions.autofix);
+    const hasWebGpu = !!(currentVersions && currentVersions.webgpu);
+
+    const pillAf = document.getElementById('pillVersionAutofix');
+    if (pillAf) pillAf.style.display = hasAutofix ? 'inline-flex' : 'none';
+
+    const pillWg = document.getElementById('pillVersionWebGpu');
+    if (pillWg) pillWg.style.display = hasWebGpu ? 'inline-flex' : 'none';
+
+    // Collapse and hide switcher completely when only Original is available
+    if (!hasAutofix && !hasWebGpu) {
+        switcher.style.display = 'none';
+    } else {
+        switcher.style.display = 'flex';
+    }
 }
 
 /**
@@ -3361,11 +3371,8 @@ function executeAutofixGeneration() {
             resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // Reveal the top pill in the Version Switcher
-        const pillAf = document.getElementById('pillVersionAutofix');
-        if (pillAf) {
-            pillAf.style.display = 'inline-flex';
-        }
+        // Update Version Switcher bar visibility
+        updateVersionSwitcherVisibility();
 
         // Update button text
         const runText = document.getElementById('runAutofixText');
