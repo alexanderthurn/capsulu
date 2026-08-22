@@ -674,7 +674,7 @@ def write_markdown_report(df, stats, chart_paths):
 - 🌟 **Successful (1,000–10,000 Reviews / ~30k–300k sales)**: **{succ.get('count', 0):,} games**
 - 📊 **Moderate (100–1,000 Reviews / ~3k–30k sales)**: **{mod.get('count', 0):,} games**
 - 📉 **Struggling (10–100 Reviews / ~300–3k sales)**: **{strug.get('count', 0):,} games**
-- 🕳️ **Near-Zero Flops (<10 Reviews / <300 copies sold)**: **{zero.get('count', 0):,} games**
+- 🕳️ **Near-Zero Flops (<10 Reviews / <300 sales)**: **{zero.get('count', 0):,} games**
 
 ---
 

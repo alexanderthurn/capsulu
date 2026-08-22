@@ -834,6 +834,66 @@ function setupEventListeners() {
         });
     }
 
+    // Footer Global Reset Button (Clears all state, recent items, caches, and resets to landing)
+    const btnFooterResetRecent = document.getElementById('btnFooterResetRecent');
+    if (btnFooterResetRecent) {
+        btnFooterResetRecent.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Reset and clear all application data, analysis history, and caches?')) {
+                try {
+                    // 1. Clear LocalStorage and SessionStorage
+                    localStorage.clear();
+                    sessionStorage.clear();
+
+                    // 2. Clear WebGPU tensor cache if available
+                    if (window.CapsuluWebGpu && window.CapsuluWebGpu.clearModelCache) {
+                        window.CapsuluWebGpu.clearModelCache().catch(() => {});
+                    }
+
+                    // 3. Clear Inputs and Search URL parameters
+                    const steamInput = document.getElementById('steamUrlInput');
+                    if (steamInput) steamInput.value = '';
+                    const fileInp = document.getElementById('fileInput');
+                    if (fileInp) fileInp.value = '';
+
+                    const cleanUrl = new URL(window.location);
+                    cleanUrl.searchParams.delete('app');
+                    cleanUrl.searchParams.delete('url');
+                    cleanUrl.searchParams.delete('appid');
+                    window.history.pushState({}, '', cleanUrl.pathname);
+
+                    // 4. Reset Active In-Memory Analysis State
+                    currentLoadedAppId = null;
+                    currentLoadedGameName = null;
+                    currentLoadedImgSrc = null;
+                    currentCvData = null;
+                    currentScores = null;
+                    currentAutofixCanvas = null;
+                    currentWebGpuCanvas = null;
+                    isAutofixAppliedToSim = false;
+                    isWebGpuAppliedToSim = false;
+
+                    // 5. Hide Dashboard & Loading Views
+                    if (resultsDashboard) resultsDashboard.style.display = 'none';
+                    if (loadingBar) loadingBar.style.display = 'none';
+
+                    // 6. Re-populate Default Recent List
+                    initRecentList(true);
+
+                    // 7. Scroll to Top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                    btnFooterResetRecent.textContent = '✓ Cleared!';
+                    setTimeout(() => {
+                        btnFooterResetRecent.textContent = 'Reset';
+                    }, 2000);
+                } catch (err) {
+                    console.warn('Reset error:', err);
+                }
+            }
+        });
+    }
+
     browseBtn.addEventListener('click', (e) => {
         e.preventDefault();
         fileInput.click();

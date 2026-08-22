@@ -6,7 +6,7 @@
 - 🌟 **Successful (1,000–10,000 Reviews / ~30k–300k sales)**: **5,418 games**
 - 📊 **Moderate (100–1,000 Reviews / ~3k–30k sales)**: **10,505 games**
 - 📉 **Struggling (10–100 Reviews / ~300–3k sales)**: **6,609 games**
-- 🕳️ **Near-Zero Flops (<10 Reviews / <300 copies sold)**: **3,445 games**
+- 🕳️ **Near-Zero Flops (<10 Reviews / <300 sales)**: **3,445 games**
 
 ---
 

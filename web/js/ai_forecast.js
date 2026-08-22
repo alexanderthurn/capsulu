@@ -143,7 +143,7 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 
     const rangeElem = document.getElementById('forecastRange');
     if (rangeElem) {
-        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} copies (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
+        rangeElem.textContent = `Expected: ${fmtNum(minCopies)} – ${fmtNum(maxCopies)} sales (${fmtNum(minRange)} – ${fmtNum(maxRange)} reviews)`;
     }
 
     const salesTopElem = document.getElementById('salesHeroTop');
@@ -184,26 +184,26 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 /**
  * Smoothly switches to the AI Tab & scrolls to the AI Methodology Section
  */
-window.scrollToAiMethodology = function() {
+window.scrollToAiMethodology = function () {
     if (typeof window.setActiveTab === 'function') {
         window.setActiveTab('ai');
     } else if (typeof setActiveTab === 'function') {
         setActiveTab('ai');
     }
-    
+
     const executeScroll = () => {
         const methodSection = document.getElementById('aiMethodologySection');
         if (methodSection) {
             const rect = methodSection.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
             const targetY = Math.max(0, rect.top + scrollTop - 70);
-            
+
             try {
                 window.scrollTo({ top: targetY, behavior: 'smooth' });
             } catch (e) {
                 window.scrollTo(0, targetY);
             }
-            
+
             methodSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
             methodSection.classList.remove('pulse-highlight');
             void methodSection.offsetWidth;
