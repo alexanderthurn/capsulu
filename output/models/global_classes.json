@@ -1,0 +1,9 @@
+{
+  "dataset": "global",
+  "classes": [
+    "3_moderate",
+    "4_solid_indies",
+    "5_megahits"
+  ],
+  "num_classes": 3
+}

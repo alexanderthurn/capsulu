@@ -1,0 +1,11 @@
+{
+  "dataset": "indie",
+  "classes": [
+    "indie_0_zero",
+    "indie_100_to_500",
+    "indie_11_to_100",
+    "indie_1_to_5",
+    "indie_6_to_10"
+  ],
+  "num_classes": 5
+}
