@@ -118,7 +118,7 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
 
         const sentElem = document.getElementById('forecastSentence');
         if (sentElem) {
-            sentElem.innerHTML = `<span style="color:#ff8585; font-weight:600;">⚠️ The PyTorch Vision Neural Network requires a modern browser (Chrome, Edge, Safari 16+, Firefox) with WebAssembly enabled. Please update your browser to unlock AI commercial sales forecasting.</span>`;
+            sentElem.innerHTML = `<span style="color:#ff8585; font-weight:600;">⚠️ The PyTorch Vision Neural Network requires a modern browser (Chrome, Edge, Safari 16+, Firefox) with WebAssembly enabled to run commercial sales forecasting.</span>`;
         }
         return;
     }
@@ -154,11 +154,11 @@ async function updateCommercialForecast(scores, cv, knownReviews = null, appid =
     const sentElem = document.getElementById('forecastSentence');
     if (sentElem) {
         if (s >= 80) {
-            sentElem.innerHTML = `Your capsule has a <strong class="hl-green">${p10}% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">${p50}% probability</strong> of reaching community traction (50+ reviews).`;
+            sentElem.innerHTML = `This capsule has a <strong class="hl-green">${p10}% chance</strong> to unlock the Steam algorithm (10+ reviews), with an <strong class="hl-blue">${p50}% probability</strong> of reaching community traction (50+ reviews).`;
         } else if (s >= 60) {
-            sentElem.innerHTML = `Your capsule has a <strong class="hl-gold">${p10}% chance</strong> to cross the 10-review Steam threshold. Pushing contrast and typography sharpness can boost traction odds above 75%.`;
+            sentElem.innerHTML = `This capsule has a <strong class="hl-gold">${p10}% chance</strong> to cross the 10-review Steam threshold. Pushing contrast and typography sharpness can boost traction odds above 75%.`;
         } else {
-            sentElem.innerHTML = `Your capsule is at risk of remaining under the 10-review visibility barrier (<strong class="hl-red">${p10}% odds</strong>). Key fixes needed on lighting hierarchy and text readability.`;
+            sentElem.innerHTML = `This capsule is at risk of remaining under the 10-review visibility barrier (<strong class="hl-red">${p10}% odds</strong>). Key fixes needed on lighting hierarchy and text readability.`;
         }
     }
 }

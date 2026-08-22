@@ -1483,7 +1483,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const diffContrast = round(cv.brightnessStd - allContrast, 1);
         if (medContrastElem) medContrastElem.textContent = `${allContrast} std dev`;
         if (deltaContrastElem) {
-            deltaContrastElem.textContent = `Your: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
+            deltaContrastElem.textContent = `This: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
             deltaContrastElem.className = `genre-stat-delta ${diffContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
         }
 
@@ -1491,7 +1491,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const diffWarm = round(cv.warmPct - allWarm, 1);
         if (warmShareElem) warmShareElem.textContent = `${allWarm}% Warm`;
         if (deltaWarmElem) {
-            deltaWarmElem.textContent = `Your: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs all)`;
+            deltaWarmElem.textContent = `This: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs all)`;
             deltaWarmElem.className = `genre-stat-delta ${diffWarm >= 0 ? 'delta-pos' : 'delta-neutral'}`;
         }
 
@@ -1499,7 +1499,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const diffEntropy = round(cv.entropy - allEntropy, 2);
         if (entropyElem) entropyElem.textContent = `${allEntropy} bits`;
         if (deltaEntropyElem) {
-            deltaEntropyElem.textContent = `Your: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
+            deltaEntropyElem.textContent = `This: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
             deltaEntropyElem.className = `genre-stat-delta ${diffEntropy >= 0 ? 'delta-pos' : 'delta-neg'}`;
         }
 
@@ -1507,7 +1507,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const diffEdge = round(cv.edgeDensity - allEdge, 1);
         if (edgeElem) edgeElem.textContent = `${allEdge}% Edge`;
         if (deltaEdgeElem) {
-            deltaEdgeElem.textContent = `Your: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
+            deltaEdgeElem.textContent = `This: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
             deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
         }
 
@@ -1517,7 +1517,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
         if (textContrastElem) textContrastElem.textContent = `${allTextContrast}:1 WCAG`;
         if (deltaTextContrastElem) {
-            deltaTextContrastElem.textContent = `Your: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
+            deltaTextContrastElem.textContent = `This: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
             deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
         }
 
@@ -1525,7 +1525,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
         const deltaTextZoneElem = document.getElementById('genreDeltaTextZone');
         if (textZoneElem) textZoneElem.textContent = "Middle Center";
         if (deltaTextZoneElem) {
-            deltaTextZoneElem.textContent = `Your: ${cv.titleZone} (${cv.titleSizePct}% Area)`;
+            deltaTextZoneElem.textContent = `This: ${cv.titleZone} (${cv.titleSizePct}% Area)`;
             deltaTextZoneElem.className = `genre-stat-delta delta-pos`;
         }
 
@@ -1551,7 +1551,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const diffContrast = round(cv.brightnessStd - catContrast, 1);
     if (medContrastElem) medContrastElem.textContent = `${catContrast} std dev`;
     if (deltaContrastElem) {
-        deltaContrastElem.textContent = `Your: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
+        deltaContrastElem.textContent = `This: ${cv.brightnessStd} (${diffContrast >= 0 ? '+' : ''}${diffContrast} vs median)`;
         deltaContrastElem.className = `genre-stat-delta ${diffContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
     }
 
@@ -1560,7 +1560,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const diffWarm = round(cv.warmPct - catWarm, 1);
     if (warmShareElem) warmShareElem.textContent = `${catWarm}% Warm`;
     if (deltaWarmElem) {
-        deltaWarmElem.textContent = `Your: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs market)`;
+        deltaWarmElem.textContent = `This: ${cv.warmPct}% (${diffWarm >= 0 ? '+' : ''}${diffWarm}% vs market)`;
         deltaWarmElem.className = `genre-stat-delta ${diffWarm >= 0 ? 'delta-pos' : 'delta-neutral'}`;
     }
 
@@ -1569,7 +1569,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const diffEntropy = round(cv.entropy - catEntropy, 2);
     if (entropyElem) entropyElem.textContent = `${catEntropy} bits`;
     if (deltaEntropyElem) {
-        deltaEntropyElem.textContent = `Your: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
+        deltaEntropyElem.textContent = `This: ${cv.entropy} (${diffEntropy >= 0 ? '+' : ''}${diffEntropy} bits)`;
         deltaEntropyElem.className = `genre-stat-delta ${diffEntropy >= 0 ? 'delta-pos' : 'delta-neg'}`;
     }
 
@@ -1578,7 +1578,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const diffEdge = round(cv.edgeDensity - catEdge, 1);
     if (edgeElem) edgeElem.textContent = `${catEdge}% Edge`;
     if (deltaEdgeElem) {
-        deltaEdgeElem.textContent = `Your: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
+        deltaEdgeElem.textContent = `This: ${cv.edgeDensity}% (${diffEdge >= 0 ? '+' : ''}${diffEdge}%)`;
         deltaEdgeElem.className = `genre-stat-delta ${diffEdge >= 0 ? 'delta-pos' : 'delta-neg'}`;
     }
 
@@ -1589,7 +1589,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     const deltaTextContrastElem = document.getElementById('genreDeltaTextContrast');
     if (textContrastElem) textContrastElem.textContent = `${catTextContrast}:1 WCAG`;
     if (deltaTextContrastElem) {
-        deltaTextContrastElem.textContent = `Your: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
+        deltaTextContrastElem.textContent = `This: ${cv.titleContrast}:1 (${diffTextContrast >= 0 ? '+' : ''}${diffTextContrast})`;
         deltaTextContrastElem.className = `genre-stat-delta ${diffTextContrast >= 0 ? 'delta-pos' : 'delta-neg'}`;
     }
 
@@ -1600,7 +1600,7 @@ function updateGenreBenchmarkDisplay(cv, genreKey) {
     if (textZoneElem) textZoneElem.textContent = catTextZone;
     if (deltaTextZoneElem) {
         const isMatch = cv.titleZone.toLowerCase() === catTextZone.toLowerCase();
-        deltaTextZoneElem.textContent = `Your: ${cv.titleZone} ${isMatch ? '(Matches)' : ''}`;
+        deltaTextZoneElem.textContent = `This: ${cv.titleZone} ${isMatch ? '(Matches)' : ''}`;
         deltaTextZoneElem.className = `genre-stat-delta ${isMatch ? 'delta-pos' : 'delta-neutral'}`;
     }
 
@@ -2051,7 +2051,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
         others[1] || fallbackGame,
         others[2] || fallbackGame,
         others[3] || fallbackGame,
-        { name: userGameName || "Your Game", imageUrl: userImgSrc, isUser: true, appid: appid }, // Center (Row 2, Col 2)
+        { name: userGameName || "This Game", imageUrl: userImgSrc, isUser: true, appid: appid }, // Center (Row 2, Col 2)
         others[4] || fallbackGame,
         others[5] || fallbackGame,
         others[6] || fallbackGame,
@@ -2067,7 +2067,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
                  data-image-url="${g.imageUrl || ''}" 
                  data-name="${g.name || ''}" 
                  data-is-user="${g.isUser ? 'true' : 'false'}"
-                 title="${g.isUser ? 'Your Game (Current Analysis)' : `Click to analyze ${g.name}`}"
+                 title="${g.isUser ? 'This Capsule (Current Analysis)' : `Click to analyze ${g.name}`}"
                  tabindex="${g.isUser ? '-1' : '0'}"
                  role="${g.isUser ? 'img' : 'button'}">
                 <div class="sim-capsule-thumb">
@@ -2086,7 +2086,7 @@ function renderSimulatorLineups(userImgSrc, userGameName, appid, genreKey = 'all
                  data-image-url="${g.imageUrl || ''}" 
                  data-name="${g.name || ''}" 
                  data-is-user="${g.isUser ? 'true' : 'false'}"
-                 title="${g.isUser ? 'Your Game (Current Analysis)' : `Click to analyze ${g.name}`}"
+                 title="${g.isUser ? 'This Capsule (Current Analysis)' : `Click to analyze ${g.name}`}"
                  tabindex="${g.isUser ? '-1' : '0'}"
                  role="${g.isUser ? 'img' : 'button'}">
                 <img src="${g.imageUrl}" alt="${g.name}" loading="lazy" onerror="this.onerror=null; this.src='https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg';">
@@ -2434,12 +2434,12 @@ function analyzeAndDisplay(img, imgSrc, gameName, price, tags, appid, storeUrl, 
     });
 
     // 7. Update 6 Metric Rows
-    updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `Your: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
-    updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `Your: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
-    updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `Your: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
-    updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `Your: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
+    updateMetricRow('mContrastScore', 'mContrastBar', 'mContrastVal', scores.contrastScore, `This: ${cv.brightnessStd} std dev`, (cv.brightnessStd / 85) * 100);
+    updateMetricRow('mWarmthScore', 'mWarmthBar', 'mWarmthVal', scores.warmthScore, `This: ${cv.warmPct}% Warm`, Math.min(100, cv.warmPct * 1.5));
+    updateMetricRow('mEntropyScore', 'mEntropyBar', 'mEntropyVal', scores.entropyScore, `This: ${cv.entropy} bits`, (cv.entropy / 7.5) * 100);
+    updateMetricRow('mEdgeScore', 'mEdgeBar', 'mEdgeVal', scores.edgeScore, `This: ${cv.edgeDensity}% Edge`, (cv.edgeDensity / 22) * 100);
     updateMetricRow('mFocusScore', 'mFocusBar', 'mFocusVal', scores.focusScore, cv.isCenterFocused ? `Center Focused (+${cv.spotlightRatio})` : 'Border-Heavy', cv.isCenterFocused ? 85 : 45);
-    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', scores.textScore, `Your: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
+    updateMetricRow('mTextScore', 'mTextBar', 'mTextVal', scores.textScore, `This: ${cv.titleContrast}:1 (${cv.titleReadabilityLabel})`, Math.min(100, (cv.titleContrast / 10) * 100));
 
     // 8. Generate Tailored Checklist & AI Art Fix Prompt
     generateChecklist(cv, scores, currentGenreLens);
@@ -2591,7 +2591,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-text',
             status: 'pass',
             title: 'Title Typography Contrast & Legibility',
-            desc: `Your title typography achieves a strong ${cv.titleContrast}:1 contrast ratio against the backdrop (WCAG AA standard). It will remain sharp on small mobile screens and browse carousels.`
+            desc: `The title typography achieves a strong ${cv.titleContrast}:1 contrast ratio against the backdrop (WCAG AA standard). It will remain sharp on small mobile screens and browse carousels.`
         });
     } else if (cv.titleContrast >= 3.0) {
         items.push({
@@ -2605,7 +2605,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-text',
             status: 'fail',
             title: 'Critical: Low Title Contrast (< 3.0:1)',
-            desc: `Your title contrast (${cv.titleContrast}:1) is very low. The title text blends directly into the artwork and may be unreadable at 120px browse resolutions. Add a dark scrim, heavy drop shadow, or highlight stroke.`
+            desc: `The title contrast (${cv.titleContrast}:1) is very low. The title text blends directly into the artwork and may be unreadable at 120px browse resolutions. Add a dark scrim, heavy drop shadow, or highlight stroke.`
         });
     }
 
@@ -2615,7 +2615,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-logo-zone',
             status: 'pass',
             title: 'Title Placement & Sizing',
-            desc: `Your title text occupies ${cv.titleSizePct}% of the capsule in the ${cv.titleZone} zone, hitting the optimal commercial balance between title readability and hero art visibility.`
+            desc: `The title text occupies ${cv.titleSizePct}% of the capsule in the ${cv.titleZone} zone, hitting the optimal commercial balance between title readability and hero art visibility.`
         });
     } else if (cv.titleSizePct < 14) {
         items.push({
@@ -2629,7 +2629,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-logo-zone',
             status: 'warn',
             title: 'Scale Down Title Text to Reveal Artwork',
-            desc: `Title text occupies ${cv.titleSizePct}% of the frame (dominant coverage). It may obscure key character silhouettes, action focal points, or environmental lighting. Trim outer text padding by 10-15%.`
+            desc: `The title text occupies ${cv.titleSizePct}% of the frame (dominant coverage). It may obscure key character silhouettes, action focal points, or environmental lighting. Trim outer text padding by 10-15%.`
         });
     }
 
@@ -2639,14 +2639,14 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-contrast',
             status: 'pass',
             title: 'Dynamic Range & Contrast',
-            desc: `Your contrast score (${cv.brightnessStd}) matches or exceeds the Mega-Hit average (63.0). Highlights and shadow values are clearly separated.`
+            desc: `The contrast score (${cv.brightnessStd}) matches or exceeds the Mega-Hit average (63.0). Highlights and shadow values are clearly separated.`
         });
     } else {
         items.push({
             id: 'rec-contrast',
             status: 'fail',
             title: 'Low Dynamic Range (Flat Midtones)',
-            desc: `Your contrast (${cv.brightnessStd}) is below the Mega-Hit benchmark (63.0). Increase the brightness of your key light and deepen background shadows by 15-20%.`
+            desc: `The contrast (${cv.brightnessStd}) is below the Mega-Hit benchmark (63.0). Increase the brightness of the key light and deepen background shadows by 15-20%.`
         });
     }
 
@@ -2663,7 +2663,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-palette',
             status: 'warn',
             title: 'Add Warm Accent Lighting',
-            desc: `Your palette is primarily neutral/cool (${cv.neutralPct}% neutral). Add a warm rim-light, fire ember, or golden title glow to immediately pop on Steam.`
+            desc: `The palette is primarily neutral/cool (${cv.neutralPct}% neutral). Add a warm rim-light, fire ember, or golden title glow to immediately pop on Steam.`
         });
     }
 
@@ -2697,7 +2697,7 @@ function generateChecklist(cv, scores, genreKey = 'all') {
             id: 'rec-focus',
             status: 'warn',
             title: 'Apply Edge Vignetting',
-            desc: `Light is currently scattered around the outer borders. Darken the outer 15% borders with a radial vignette to lock attention on your central hero.`
+            desc: `Light is currently scattered around the outer borders. Darken the outer 15% borders with a radial vignette to lock attention on the central hero subject.`
         });
     }
 
