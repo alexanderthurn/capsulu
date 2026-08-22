@@ -57,6 +57,7 @@ Thumbs.db
 
 # Large Datasets & Bulk Images (Do not commit raw gigabytes of scraped images/JSON)
 data/
+output/rated_capsules/
 output/mosaic_*.jpg
 output/charts/
 *.csv

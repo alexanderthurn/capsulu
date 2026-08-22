@@ -22,164 +22,21 @@ from PIL import Image
 PORT = 8000
 WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "web")
 
+from capsulu_scoring import analyze_capsule, evaluate_scores, CANVAS_W, CANVAS_H
+
+
 def analyze_capsule_image(img_bytes):
-    """Pure Python / PIL Computer Vision evaluation matching client-side engine."""
-    img = Image.open(BytesIO(img_bytes)).convert('RGB')
-    w, h = 460, 215
-    img = img.resize((w, h), Image.Resampling.BILINEAR)
-    pixels = img.load()
+    """Computer Vision evaluation using the canonical shared scoring engine."""
+    cv = analyze_capsule(img_bytes)
+    scores = evaluate_scores(cv)
 
-    total_pixels = w * h
-    lum_list = []
-    lum_hist = [0] * 256
-    warm_count = 0
-    cool_count = 0
-    neutral_count = 0
-    sum_sat = 0
-    color_samples = []
-
-    for y in range(h):
-        for x in range(w):
-            r, g, b = pixels[x, y]
-            lum = 0.2126 * r + 0.7152 * g + 0.0722 * b
-            lum_list.append(lum)
-            lum_byte = min(255, int(lum))
-            lum_hist[lum_byte] += 1
-
-            warmth = (r * 1.0 + g * 0.5) - (b * 1.0 + g * 0.2)
-            if warmth > 25:
-                warm_count += 1
-            elif warmth < -25:
-                cool_count += 1
-            else:
-                neutral_count += 1
-
-            max_c = max(r, g, b)
-            min_c = min(r, g, b)
-            delta = max_c - min_c
-            sat = 0 if max_c == 0 else (delta / max_c) * 255
-            sum_sat += sat
-
-            if (y * w + x) % 40 == 0:
-                color_samples.append((r, g, b))
-
-    avg_brightness = sum(lum_list) / total_pixels
-    variance = (sum(x * x for x in lum_list) / total_pixels) - (avg_brightness * avg_brightness)
-    contrast_std = math.sqrt(max(0, variance))
-    avg_sat = sum_sat / total_pixels
-
-    # Shannon Entropy
-    entropy = 0.0
-    for count in lum_hist:
-        if count > 0:
-            p = count / total_pixels
-            entropy -= p * math.log2(p)
-
-    # Sobel Edge Density (step 2)
-    edge_count = 0
-    for y in range(1, h - 1, 2):
-        for x in range(1, w - 1, 2):
-            gx = (
-                -1 * lum_list[(y - 1) * w + (x - 1)] + 1 * lum_list[(y - 1) * w + (x + 1)] +
-                -2 * lum_list[y * w + (x - 1)]       + 2 * lum_list[y * w + (x + 1)] +
-                -1 * lum_list[(y + 1) * w + (x - 1)] + 1 * lum_list[(y + 1) * w + (x + 1)]
-            )
-            gy = (
-                -1 * lum_list[(y - 1) * w + (x - 1)] + -2 * lum_list[(y - 1) * w + x] + -1 * lum_list[(y - 1) * w + (x + 1)] +
-                 1 * lum_list[(y + 1) * w + (x - 1)] +  2 * lum_list[(y + 1) * w + x] +  1 * lum_list[(y + 1) * w + (x + 1)]
-            )
-            magnitude = math.sqrt(gx * gx + gy * gy)
-            if magnitude > 45:
-                edge_count += 1
-    edge_density = (edge_count / (total_pixels / 4)) * 100
-
-    # Center vs Border Spotlight Ratio
-    cx_start, cx_end = int(w * 0.25), int(w * 0.75)
-    cy_start, cy_end = int(h * 0.2), int(h * 0.8)
-    c_sum, c_cnt, b_sum, b_cnt = 0, 0, 0, 0
-    for y in range(0, h, 3):
-        for x in range(0, w, 3):
-            val = lum_list[y * w + x]
-            if cx_start <= x <= cx_end and cy_start <= y <= cy_end:
-                c_sum += val
-                c_cnt += 1
-            else:
-                b_sum += val
-                b_cnt += 1
-    spotlight_ratio = (c_sum / max(1, c_cnt)) - (b_sum / max(1, b_cnt))
-    is_center_focused = spotlight_ratio > 0
-
-    # Dominant Colors
-    buckets = {}
-    for r, g, b in color_samples:
-        key = (r // 32 * 32, g // 32 * 32, b // 32 * 32)
-        if key not in buckets:
-            buckets[key] = {'count': 0, 'r': 0, 'g': 0, 'b': 0}
-        buckets[key]['count'] += 1
-        buckets[key]['r'] += r
-        buckets[key]['g'] += g
-        buckets[key]['b'] += b
-
-    sorted_b = sorted(buckets.values(), key=lambda x: x['count'], reverse=True)[:5]
-    dominant_palette = []
-    for b in sorted_b:
-        cr = int(round(b['r'] / b['count']))
-        cg = int(round(b['g'] / b['count']))
-        cb = int(round(b['b'] / b['count']))
-        hex_code = f"#{cr:02x}{cg:02x}{cb:02x}"
-        pct = round((b['count'] / len(color_samples)) * 100, 1)
-        dominant_palette.append({"hex": hex_code, "pct": pct})
-
-    # Scoring Formulas (Strict Multi-Flaw Penalty & Full 0-100 Dynamic Range)
-    if contrast_std >= 63.0:
-        contrast_score = min(100.0, 95.0 + (contrast_std - 63.0) * 0.8)
-    else:
-        contrast_score = max(0.0, 100.0 - (63.0 - contrast_std) * 3.5)
-
-    warmth_pct = (warm_count / total_pixels) * 100
-    if warmth_pct >= 45.0:
-        warmth_score = min(100.0, 95.0 + (warmth_pct - 45.0) * 0.2)
-    else:
-        warmth_score = max(0.0, 100.0 - (45.0 - warmth_pct) * 2.0)
-
-    if entropy >= 6.90:
-        entropy_score = 98.0
-    else:
-        entropy_score = max(0.0, 100.0 - (6.90 - entropy) * 50.0)
-
-    if edge_density >= 13.5:
-        edge_score = 95.0
-    else:
-        edge_score = max(0.0, 100.0 - (13.5 - edge_density) * 8.0)
-
-    if spotlight_ratio > 10.0:
-        focus_score = 98.0
-    elif is_center_focused:
-        focus_score = 85.0
-    else:
-        focus_score = 45.0
-
-    sub_scores = [contrast_score, warmth_score, entropy_score, edge_score, focus_score]
-    base_score = (
-        contrast_score * 0.30 +
-        warmth_score * 0.20 +
-        entropy_score * 0.20 +
-        edge_score * 0.15 +
-        focus_score * 0.15
-    )
-
-    # Strict Flaw Penalty
-    is_contrast_flaw = contrast_std < 58.0
-    is_warmth_flaw = warmth_pct < 35.0
-    is_focus_flaw = not is_center_focused
-
-    flaw_count = sum([is_contrast_flaw, is_warmth_flaw, is_focus_flaw])
-    min_sub = min(sub_scores)
-    flaw_penalty = 0.0
-    if flaw_count > 0:
-        flaw_penalty = flaw_count * 13.0 + max(0.0, (40.0 - min_sub) * 0.8)
-
-    overall_score = max(0, min(100, round(base_score - flaw_penalty)))
+    overall_score = scores["overallScore"]
+    contrast_std = cv["brightnessStd"]
+    warmth_pct = cv["warmPct"]
+    entropy = cv["entropy"]
+    edge_density = cv["edgeDensity"]
+    is_center_focused = cv["isCenterFocused"]
+    spotlight_ratio = cv["spotlightRatio"]
 
     if overall_score >= 88:
         tier = "🏆 Mega-Hit Grade"
@@ -224,25 +81,73 @@ def analyze_capsule_image(img_bytes):
     else:
         recommendations.append("! Apply Edge Vignetting: Outer borders are too bright. Feather outer 15% edges to lock attention on your central hero.")
 
+    if cv["titleContrast"] >= 4.5:
+        recommendations.append(f"✓ Title Clarity: Text contrast ratio ({cv['titleContrast']}:1) exceeds WCAG AA threshold.")
+    elif cv["titleContrast"] >= 3.0:
+        recommendations.append(f"! Moderate Title Contrast ({cv['titleContrast']}:1): Consider adding a subtle text shadow or outline for sharper legibility.")
+    else:
+        recommendations.append(f"✕ Low Title Contrast ({cv['titleContrast']}:1): Title text blends into the background. Add drop shadow, outline, or brighter text color.")
+
+    # Dominant palette (simple extraction from the image)
+    from PIL import Image as PILImage
+    from io import BytesIO as BIO
+    pil_img = PILImage.open(BIO(img_bytes)).convert("RGB")
+    pil_img = pil_img.resize((CANVAS_W, CANVAS_H), PILImage.Resampling.BILINEAR)
+    px = pil_img.load()
+    color_samples = []
+    for y in range(CANVAS_H):
+        for x in range(CANVAS_W):
+            i = y * CANVAS_W + x
+            if i % 40 == 0:
+                color_samples.append(px[x, y])
+
+    buckets = {}
+    for r, g, b in color_samples:
+        key = (r // 32 * 32, g // 32 * 32, b // 32 * 32)
+        if key not in buckets:
+            buckets[key] = {'count': 0, 'r': 0, 'g': 0, 'b': 0}
+        buckets[key]['count'] += 1
+        buckets[key]['r'] += r
+        buckets[key]['g'] += g
+        buckets[key]['b'] += b
+
+    sorted_b = sorted(buckets.values(), key=lambda x: x['count'], reverse=True)[:5]
+    dominant_palette = []
+    for b in sorted_b:
+        cr = int(round(b['r'] / b['count']))
+        cg = int(round(b['g'] / b['count']))
+        cb = int(round(b['b'] / b['count']))
+        hex_code = f"#{cr:02x}{cg:02x}{cb:02x}"
+        pct = round((b['count'] / len(color_samples)) * 100, 1)
+        dominant_palette.append({"hex": hex_code, "pct": pct})
+
     return {
-        "overall_score": overall_score,
+        "overallScore": overall_score,
         "tier": tier,
         "percentile": percentile,
         "headline": headline,
         "metrics": {
-            "contrast_std": round(contrast_std, 1),
-            "contrast_benchmark_megahit": 63.0,
-            "warm_palette_pct": round(warmth_pct, 1),
-            "warm_benchmark_megahit": 49.9,
-            "shannon_entropy": round(entropy, 2),
-            "entropy_benchmark_megahit": 6.99,
-            "edge_density_pct": round(edge_density, 2),
-            "edge_benchmark_megahit": 14.2,
-            "is_center_focused": is_center_focused,
-            "spotlight_ratio": round(spotlight_ratio, 1)
+            "brightnessStd": round(contrast_std, 1),
+            "warmPct": round(warmth_pct, 1),
+            "entropy": round(entropy, 2),
+            "edgeDensity": round(edge_density, 2),
+            "isCenterFocused": is_center_focused,
+            "spotlightRatio": round(spotlight_ratio, 1),
+            "titleContrast": cv["titleContrast"],
+            "titleReadability": cv["titleReadability"],
+            "titleZoneKey": cv["titleZoneKey"],
+            "titleSizePct": cv["titleSizePct"],
         },
-        "dominant_palette": dominant_palette,
-        "recommendations": recommendations
+        "subScores": {
+            "contrastScore": scores["contrastScore"],
+            "warmthScore": scores["warmthScore"],
+            "entropyScore": scores["entropyScore"],
+            "edgeScore": scores["edgeScore"],
+            "focusScore": scores["focusScore"],
+            "textScore": scores["textScore"],
+        },
+        "dominantPalette": dominant_palette,
+        "recommendations": recommendations,
     }
 
 
@@ -333,9 +238,9 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
 
                 ai_summary = (
                     f"Based on Capsulu (benchmarked against 28,754 real Steam games), '{game_name}' scores "
-                    f"{cv_res['overall_score']}/100 ({cv_res['tier']}, {cv_res['percentile']}). "
-                    f"Dynamic contrast is {cv_res['metrics']['contrast_std']} (Mega-Hit avg: 63.0) with "
-                    f"{cv_res['metrics']['warm_palette_pct']}% warm color saliency. "
+                    f"{cv_res['overallScore']}/100 ({cv_res['tier']}, {cv_res['percentile']}). "
+                    f"Dynamic contrast is {cv_res['metrics']['brightnessStd']} (Mega-Hit avg: 63.0) with "
+                    f"{cv_res['metrics']['warmPct']}% warm color saliency. "
                     f"Key recommendation: {cv_res['recommendations'][0]} "
                     f"View full interactive storefront simulator: {web_link}"
                 )
@@ -350,28 +255,29 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
                     "release_date": release_date,
                     "genres": genres,
                     "score": {
-                        "overall": cv_res["overall_score"],
+                        "overallScore": cv_res["overallScore"],
                         "tier": cv_res["tier"],
                         "percentile": cv_res["percentile"],
                         "headline": cv_res["headline"]
                     },
+                    "subScores": cv_res["subScores"],
                     "metrics": cv_res["metrics"],
-                    "dominant_palette": cv_res["dominant_palette"],
+                    "dominantPalette": cv_res["dominantPalette"],
                     "recommendations": cv_res["recommendations"],
                     "web_report_url": web_link,
                     "ai_summary": ai_summary
                 }
 
                 if out_format in ("markdown", "md", "text"):
-                    c_std = cv_res['metrics']['contrast_std']
-                    w_pct = cv_res['metrics']['warm_palette_pct']
-                    is_cf = cv_res['metrics']['is_center_focused']
+                    c_std = cv_res['metrics']['brightnessStd']
+                    w_pct = cv_res['metrics']['warmPct']
+                    is_cf = cv_res['metrics']['isCenterFocused']
                     
                     contrast_fix = f"Maintain strong lighting contrast ({c_std} std dev)." if c_std >= 63.0 else f"Deepen cast shadows and push specular highlights on the main hero/subject to increase dynamic contrast std dev from {c_std} up to the Steam Mega-Hit benchmark of >= 63.0."
                     warmth_fix = f"Color temperature is well balanced ({w_pct}% warm color share)." if w_pct >= 45.0 else f"Introduce warm accents (golden rim-lighting, torch flame, magical particle glow) to increase warm pixel share from {w_pct}% towards ~45% so the capsule pops against Steam dark navy #171a21 interface."
                     focus_fix = "Good hero illumination. Keep secondary background elements subdued." if is_cf else "Apply a subtle 15% radial edge vignette (darkening borders) to funnel viewer gaze toward the center hero character."
 
-                    md_text = f"""# 🏆 Capsule Score: {cv_res['overall_score']} / 100
+                    md_text = f"""# 🏆 Capsule Score: {cv_res['overallScore']} / 100
 
 **Global Rating**: {cv_res['tier']} ({cv_res['percentile']})
 **Game**: {game_name}
@@ -381,9 +287,10 @@ class SteamCapsuluHandler(http.server.SimpleHTTPRequestHandler):
 ## 📊 Computer Vision Metrics (vs. 28,754 Steam Games)
 - **Dynamic Contrast**: `{c_std}` (Mega-Hit benchmark: `63.0` | Flop avg: `56.9`)
 - **Warm UI Saliency**: `{w_pct}%` (Mega-Hit benchmark: `49.9%` | Flop avg: `39.0%`)
-- **Shannon Entropy (Tonal Depth)**: `{cv_res['metrics']['shannon_entropy']} bits` (Mega-Hit benchmark: `6.99 bits`)
-- **Edge Density (Sharpness)**: `{cv_res['metrics']['edge_density_pct']}%` (Mega-Hit benchmark: `14.2%`)
+- **Shannon Entropy (Tonal Depth)**: `{cv_res['metrics']['entropy']} bits` (Mega-Hit benchmark: `6.99 bits`)
+- **Edge Density (Sharpness)**: `{cv_res['metrics']['edgeDensity']}%` (Mega-Hit benchmark: `14.2%`)
 - **Hero Spotlight Vignetting**: `{'Yes' if is_cf else 'No'}` (71.9% of Mega-Hits use center spotlights)
+- **Title Contrast Ratio**: `{cv_res['metrics']['titleContrast']}:1` ({cv_res['metrics']['titleReadability']} readability)
 
 ## 🛠️ Key Recommendations
 {chr(10).join(f"- {r}" for r in cv_res['recommendations'])}
