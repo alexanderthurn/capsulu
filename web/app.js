@@ -584,6 +584,105 @@ function setupEventListeners() {
         });
     }
 
+    // 1-Click Autofix Download Button
+    const btnDownloadAutofix = document.getElementById('btnDownloadAutofix');
+    if (btnDownloadAutofix) {
+        btnDownloadAutofix.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentAutofixCanvas) return;
+            const filename = `${(currentLoadedGameName || 'steam_capsule').toLowerCase().replace(/[^a-z0-9]/g, '_')}_autofix.jpg`;
+            currentAutofixCanvas.toBlob((blob) => {
+                if (!blob) return;
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+            }, 'image/jpeg', 0.95);
+        });
+    }
+
+    // Test in 3x3 Simulator Button
+    const btnTestAutofixInSim = document.getElementById('btnTestAutofixInSim');
+    if (btnTestAutofixInSim) {
+        btnTestAutofixInSim.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (!currentAutofixCanvas) {
+                const heroImg = document.getElementById('resultHeroCapsuleImg') || document.getElementById('cvCanvas');
+                if (window.CapsuluAutofix && heroImg) {
+                    currentAutofixCanvas = window.CapsuluAutofix.applyCapsuluAutofix(heroImg);
+                }
+            }
+            if (!currentAutofixCanvas) return;
+
+            const userSimImgs = document.querySelectorAll('.user-capsule-item img, [data-is-user="true"] img');
+            const testBtnText = document.getElementById('testSimText');
+            const testBtnIcon = document.getElementById('testSimIcon');
+
+            if (!isAutofixAppliedToSim) {
+                // Apply autofixed image
+                const enhancedDataUrl = currentAutofixCanvas.toDataURL('image/jpeg', 0.95);
+                userSimImgs.forEach(img => {
+                    img.src = enhancedDataUrl;
+                });
+                isAutofixAppliedToSim = true;
+                if (testBtnText) testBtnText.textContent = '✓ Applied! (Click to Revert)';
+                if (testBtnIcon) testBtnIcon.textContent = '↩️';
+            } else {
+                // Revert to original image
+                userSimImgs.forEach(img => {
+                    if (currentLoadedImgSrc) {
+                        img.src = currentLoadedImgSrc;
+                    }
+                });
+                isAutofixAppliedToSim = false;
+                if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
+                if (testBtnIcon) testBtnIcon.textContent = '👁️';
+            }
+
+            // Scroll to visual check panel
+            const visualPanel = document.getElementById('visualCheckPanel');
+            if (visualPanel) {
+                visualPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    }
+
+    // WebGPU Prompt Copy Button
+    const btnCopyWebGpuPrompt = document.getElementById('btnCopyWebGpuPrompt');
+    if (btnCopyWebGpuPrompt) {
+        btnCopyWebGpuPrompt.addEventListener('click', () => {
+            const prompt = `[Stable Diffusion / ControlNet Inpainting Guide for Steam Capsule]
+Game Title: ${currentLoadedGameName || 'Indie Game'}
+App ID: ${currentLoadedAppId || 'N/A'}
+Resolution: 460x215 (aspect ratio 2.14:1)
+
+Positive Prompt:
+masterpiece, high contrast dramatic studio lighting, golden hour amber rim light, sharp silhouette, deep rich dark background, commercial steam banner artwork, 8k render, octane render
+
+Inpainting Mask:
+Mask the outer 15% borders (vignette falloff) and cast shadows behind character silhouettes. Retain 100% clarity on logo typography.
+
+Denoising Strength: 0.35 - 0.45`;
+
+            navigator.clipboard.writeText(prompt).then(() => {
+                const icon = document.getElementById('copyWebGpuIcon');
+                const text = document.getElementById('copyWebGpuText');
+                if (icon) icon.textContent = '✓';
+                if (text) text.textContent = 'Copied Neural Prompt!';
+                btnCopyWebGpuPrompt.classList.add('copied');
+                setTimeout(() => {
+                    if (icon) icon.textContent = '📋';
+                    if (text) text.textContent = 'Copy Neural Inpainting Prompt';
+                    btnCopyWebGpuPrompt.classList.remove('copied');
+                }, 2500);
+            });
+        });
+    }
 
     browseBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1108,11 +1207,39 @@ function handleFile(file, customName) {
 }
 
 let aiScanAnimInterval = null;
+let currentAnalysisSessionId = 0;
 
 function showLoading(show, message = null, previewSrc = null) {
     if (show) {
         loadingBar.style.display = 'block';
         resultsDashboard.style.display = 'none';
+
+        // Immediately reset computational bars and states to 0%
+        const cardCv = document.getElementById('engineCardCv');
+        const barCv = document.getElementById('engineBarCv');
+        const statusCv = document.getElementById('engineStatusCv');
+
+        const cardNn = document.getElementById('engineCardNn');
+        const barNn = document.getElementById('engineBarNn');
+        const statusNn = document.getElementById('engineStatusNn');
+
+        if (cardCv) cardCv.className = 'loading-engine-section';
+        if (barCv) {
+            barCv.style.transition = 'none';
+            barCv.style.width = '0%';
+            void barCv.offsetWidth;
+            barCv.style.transition = '';
+        }
+        if (statusCv) statusCv.textContent = previewSrc ? 'Evaluating...' : 'Standby...';
+
+        if (cardNn) cardNn.className = 'loading-engine-section loading-cnn-section';
+        if (barNn) {
+            barNn.style.transition = 'none';
+            barNn.style.width = '0%';
+            void barNn.offsetWidth;
+            barNn.style.transition = '';
+        }
+        if (statusNn) statusNn.textContent = previewSrc ? 'Inferencing...' : 'Standby...';
 
         const previewImg = document.getElementById('aiScanPreviewImg');
         const kernelBox = document.getElementById('aiKernelBox');
@@ -1217,6 +1344,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
  * Parallel Track B: PyTorch Deep Learning CNN Model (2.2s)
  */
 async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
+    const sessionId = ++currentAnalysisSessionId;
     showLoading(true, "Executing Parallel Neural & Vision Engines...", imgSrc);
 
     const cardCv = document.getElementById('engineCardCv');
@@ -1227,10 +1355,7 @@ async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
     const barNn = document.getElementById('engineBarNn');
     const statusNn = document.getElementById('engineStatusNn');
 
-    const loaderBar = document.getElementById('aiLoaderBar');
-    const textElem = document.getElementById('loadingDynamicText');
-
-    // Reset Engine Visual States
+    // Reset Engine Visual States & Start Fill
     if (cardCv) cardCv.className = 'loading-engine-section engine-active';
     if (barCv) barCv.style.width = '15%';
     if (statusCv) statusCv.textContent = 'Evaluating...';
@@ -1241,13 +1366,14 @@ async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
 
     // === PARALLEL TRACK A: Computer Vision Heuristics Engine (1.7s) ===
     const cvPromise = (async () => {
-        setTimeout(() => { if (barCv) barCv.style.width = '55%'; }, 500);
-        setTimeout(() => { if (barCv) barCv.style.width = '85%'; }, 1200);
+        setTimeout(() => { if (sessionId === currentAnalysisSessionId && barCv) barCv.style.width = '55%'; }, 500);
+        setTimeout(() => { if (sessionId === currentAnalysisSessionId && barCv) barCv.style.width = '85%'; }, 1200);
 
         const cv = runComputerVision(img);
         const scores = evaluateScores(cv);
 
         await delay(1700);
+        if (sessionId !== currentAnalysisSessionId) return null;
 
         if (barCv) barCv.style.width = '100%';
         if (statusCv) statusCv.textContent = '✓ 6 Metrics Done';
@@ -1258,13 +1384,15 @@ async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
 
     // === PARALLEL TRACK B: PyTorch Deep Learning CNN Model (MobileNetV3) (2.2s) ===
     const nnPromise = (async () => {
-        setTimeout(() => { if (barNn) barNn.style.width = '40%'; }, 650);
-        setTimeout(() => { if (barNn) barNn.style.width = '75%'; }, 1500);
+        setTimeout(() => { if (sessionId === currentAnalysisSessionId && barNn) barNn.style.width = '40%'; }, 650);
+        setTimeout(() => { if (sessionId === currentAnalysisSessionId && barNn) barNn.style.width = '75%'; }, 1500);
 
         const cvData = await cvPromise;
+        if (!cvData || sessionId !== currentAnalysisSessionId) return false;
         await updateCommercialForecast(cvData.scores, cvData.cv, null, null, img);
 
         await delay(450);
+        if (sessionId !== currentAnalysisSessionId) return false;
 
         if (barNn) barNn.style.width = '100%';
         if (statusNn) statusNn.textContent = '✓ Milestones Evaluated';
@@ -1275,6 +1403,7 @@ async function runVisualAiAnalysisFlow(img, imgSrc, onComplete) {
 
     // Await both parallel engines
     const [cvResult] = await Promise.all([cvPromise, nnPromise]);
+    if (sessionId !== currentAnalysisSessionId || !cvResult) return;
 
     await delay(200);
 
@@ -2808,16 +2937,19 @@ Compliance: Adhere strictly to Steam asset rules (clean title typography only, n
     return prompt;
 }
 
+let currentAutofixCanvas = null;
+let isAutofixAppliedToSim = false;
+
 /**
- * Update the AI Art Fix Prompt Card
+ * Update the 3-Box Improve Master Section (AI Chat, 1-Click Autofix, WebGPU Diffusion)
  */
 function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
-    const card = document.getElementById('aiPromptCard');
     const textarea = document.getElementById('aiPromptTextarea');
-    if (!card || !textarea) return;
 
-    const promptText = generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey);
-    textarea.textContent = promptText;
+    if (textarea) {
+        const promptText = generateAiPrompt(cv, scores, gameName, appid, imgSrc, genreKey);
+        textarea.textContent = promptText;
+    }
 
     // Reset step suggestion highlights for new analysis
     const btnCopy = document.getElementById('btnCopyAiPrompt');
@@ -2830,6 +2962,114 @@ function updateAiPromptCard(cv, scores, gameName, appid, imgSrc, genreKey) {
     const inlineTargets = document.getElementById('aiChatTargetsInline');
     if (inlineTargets) {
         inlineTargets.style.display = 'none';
+    }
+
+    // Update 1-Click Autofix Pane
+    updateAutofixPane(cv, scores, gameName, imgSrc);
+
+    // Update WebGPU Hardware Status Pane
+    updateWebGpuPane(cv, scores, gameName);
+}
+
+/**
+ * Generates instant classical computer vision enhancement & updates before/after split slider
+ */
+function updateAutofixPane(cv, scores, gameName, imgSrc) {
+    if (!window.CapsuluAutofix) return;
+
+    function renderWithSource(sourceObj) {
+        try {
+            const enhancedCanvas = window.CapsuluAutofix.applyCapsuluAutofix(sourceObj);
+            currentAutofixCanvas = enhancedCanvas;
+
+            const nativeW = sourceObj.naturalWidth || sourceObj.videoWidth || sourceObj.width || 460;
+            const nativeH = sourceObj.naturalHeight || sourceObj.videoHeight || sourceObj.height || 215;
+
+            // Render before canvas
+            const canvasBefore = document.getElementById('autofixCanvasBefore');
+            if (canvasBefore) {
+                canvasBefore.width = nativeW;
+                canvasBefore.height = nativeH;
+                const ctxB = canvasBefore.getContext('2d');
+                ctxB.imageSmoothingEnabled = true;
+                ctxB.imageSmoothingQuality = 'high';
+                ctxB.clearRect(0, 0, nativeW, nativeH);
+                ctxB.drawImage(sourceObj, 0, 0, nativeW, nativeH);
+            }
+
+            // Render after canvas
+            const canvasAfter = document.getElementById('autofixCanvasAfter');
+            if (canvasAfter) {
+                canvasAfter.width = nativeW;
+                canvasAfter.height = nativeH;
+                const ctxA = canvasAfter.getContext('2d');
+                ctxA.imageSmoothingEnabled = true;
+                ctxA.imageSmoothingQuality = 'high';
+                ctxA.clearRect(0, 0, nativeW, nativeH);
+                ctxA.drawImage(enhancedCanvas, 0, 0, nativeW, nativeH);
+            }
+
+            // Initialize Before / After Slider
+            window.CapsuluAutofix.initBeforeAfterSlider('beforeAfterSlider');
+
+            // Reset Sim toggle button state
+            isAutofixAppliedToSim = false;
+            const testBtnText = document.getElementById('testSimText');
+            const testBtnIcon = document.getElementById('testSimIcon');
+            if (testBtnText) testBtnText.textContent = 'Test in 3×3 Simulator';
+            if (testBtnIcon) testBtnIcon.textContent = '👁️';
+        } catch (err) {
+            console.warn('Autofix generation error:', err);
+        }
+    }
+
+    const heroImg = document.getElementById('resultHeroCapsuleImg');
+    if (cvCanvas && cvCanvas.width > 0) {
+        renderWithSource(cvCanvas);
+    } else if (heroImg && heroImg.complete && heroImg.naturalWidth > 0) {
+        renderWithSource(heroImg);
+    } else if (imgSrc) {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => renderWithSource(img);
+        img.src = imgSrc;
+    }
+}
+
+/**
+ * Checks hardware WebGPU capabilities and updates the WebGPU diffusion status panel
+ */
+async function updateWebGpuPane(cv, scores, gameName) {
+    if (!window.CapsuluAutofix) return;
+
+    const badge = document.getElementById('webgpuBadge');
+    const statusText = document.getElementById('webgpuStatusText');
+    const deviceLabel = document.getElementById('webgpuDeviceLabel');
+    const explainer = document.getElementById('webgpuExplainerText');
+
+    try {
+        const gpuStatus = await window.CapsuluAutofix.checkWebGpuStatus();
+        if (gpuStatus.available) {
+            if (badge) {
+                badge.className = 'webgpu-badge badge-supported';
+            }
+            if (statusText) statusText.textContent = 'WebGPU Hardware Accelerated';
+            if (deviceLabel) deviceLabel.textContent = gpuStatus.vendor ? `${gpuStatus.vendor} (${gpuStatus.architecture || 'GPU'})` : 'Hardware Accelerated Device';
+            if (explainer) {
+                explainer.textContent = `Your browser and GPU support direct hardware execution for in-browser diffusion (SD-Turbo/LCM) with 0ms server latency.`;
+            }
+        } else {
+            if (badge) {
+                badge.className = 'webgpu-badge badge-unsupported';
+            }
+            if (statusText) statusText.textContent = 'WebGPU: Software/Cloud Fallback';
+            if (deviceLabel) deviceLabel.textContent = gpuStatus.reason || 'No WebGPU adapter';
+            if (explainer) {
+                explainer.textContent = `WebGPU is not currently hardware accelerated on this device. Use our 1-Click Autofix or copy the neural prompt to your preferred AI studio.`;
+            }
+        }
+    } catch (e) {
+        console.warn('WebGPU check error:', e);
     }
 }
 

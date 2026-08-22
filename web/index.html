@@ -135,7 +135,7 @@
                                 stroke-width="2">
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
-                            Analyze URL (or App ID)
+                            Analyze Store URL
                         </button>
                         <button class="btn btn-steam-upload" id="browseBtn" type="button">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -560,63 +560,171 @@
                                 <!-- Injected via JS -->
                             </div>
 
-                            <!-- Improve with AI Card -->
-                            <div class="ai-prompt-card" id="aiPromptCard">
-                                <div class="ai-prompt-header">
-                                    <div class="ai-prompt-title-group">
-                                        <h3 class="ai-prompt-title">✨ Improve with AI</h3>
-                                    </div>
-                                    <div class="ai-prompt-steps-bar">
-                                        <!-- Step 1: Download -->
-                                        <button type="button" id="btnDownloadCapsule"
-                                            class="btn-ai-action btn-download-capsule"
-                                            title="Download capsule image to your computer">
-                                            <span>⬇️</span> <span id="downloadBtnText">1. Download Art</span>
-                                        </button>
-
-                                        <!-- Step 2: Copy Prompt -->
-                                        <button type="button" class="btn-ai-action btn-copy-prompt" id="btnCopyAiPrompt"
-                                            title="Copy fix prompt to clipboard">
-                                            <span id="copyPromptIcon">📋</span> <span id="copyPromptText">2. Copy
-                                                Prompt</span>
-                                        </button>
-
-                                        <!-- Step 3: Paste in your AI Chat (Inline quick launch targets) -->
-                                        <div class="ai-chat-quick-group" id="aiStep3Group">
-                                            <span class="ai-chat-group-label">Paste in your AI Chat:</span>
-                                            <div class="ai-chat-targets-inline" id="aiChatTargetsInline"
-                                                style="display: none;">
-                                                <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
-                                                    class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
-                                                <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
-                                                    class="ai-target-pill" title="Open Claude in new tab">Claude ↗</a>
-                                                <a href="https://gemini.google.com/" target="_blank"
-                                                    rel="noopener noreferrer" class="ai-target-pill"
-                                                    title="Open Google Gemini in new tab">Gemini ↗</a>
-                                                <a href="https://www.cursor.com/" target="_blank"
-                                                    rel="noopener noreferrer" class="ai-target-pill"
-                                                    title="Open Cursor in new tab">Cursor ↗</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="ai-prompt-label-header">
-                                    <span class="ai-prompt-section-label">Prompt</span>
-                                </div>
-                                <div class="ai-prompt-box">
-                                    <pre id="aiPromptTextarea" class="ai-prompt-content"></pre>
-                                </div>
-                            </div>
                         </section>
                     </div>
 
                 </div>
 
-                <!-- Full-Width Container Slot for Visual Check when toggled to Large Mode -->
-                <div id="visualCheckFullWidthSlot" class="visual-check-fullwidth-slot"></div>
+                <!-- 3-BOX IMPROVE SECTION (50% AI Chat, 50% 1-Click Autofix, 100% WebGPU) -->
+                <section class="improve-master-section" id="improveMasterSection">
+                    <div class="improve-section-header">
+                        <h2 class="improve-section-title">✨ Improve the capsule</h2>
+                        <p class="improve-section-subtitle">
+                            Copy a prompt, do a simple image manipulation or use a full blown ai neuronal network
+                        </p>
+                    </div>
+
+                    <div class="improve-grid-layout">
+                        <!-- BOX 1 (50%): Improve with your AI Chat -->
+                        <div class="improve-card improve-card-chat" id="improveCardChat">
+                            <div class="improve-card-header">
+                                <div class="improve-card-title-group">
+                                    <span class="improve-card-icon">🤖</span>
+                                    <h3 class="improve-card-title">Improve with your AI Chat</h3>
+                                </div>
+                            </div>
+                            <div class="ai-prompt-steps-bar">
+                                <!-- Step 1: Download -->
+                                <button type="button" id="btnDownloadCapsule" class="btn-ai-action btn-download-capsule"
+                                    title="Download capsule image to your computer">
+                                    <span>⬇️</span> <span id="downloadBtnText">1. Download Capsule</span>
+                                </button>
+
+                                <!-- Step 2: Copy Prompt -->
+                                <button type="button" class="btn-ai-action btn-copy-prompt" id="btnCopyAiPrompt"
+                                    title="Copy fix prompt to clipboard">
+                                    <span id="copyPromptIcon">📋</span> <span id="copyPromptText">2. Copy
+                                        Prompt</span>
+                                </button>
+
+                                <!-- Step 3: Paste in your AI Chat (Inline quick launch targets) -->
+                                <div class="ai-chat-quick-group" id="aiStep3Group">
+                                    <span class="ai-chat-group-label">Paste in your AI Chat:</span>
+                                    <div class="ai-chat-targets-inline" id="aiChatTargetsInline" style="display: none;">
+                                        <a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+                                            class="ai-target-pill" title="Open ChatGPT in new tab">ChatGPT ↗</a>
+                                        <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
+                                            class="ai-target-pill" title="Open Claude in new tab">Claude ↗</a>
+                                        <a href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
+                                            class="ai-target-pill" title="Open Google Gemini in new tab">Gemini ↗</a>
+                                        <a href="https://www.cursor.com/" target="_blank" rel="noopener noreferrer"
+                                            class="ai-target-pill" title="Open Cursor in new tab">Cursor ↗</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ai-prompt-label-header">
+                                <span class="ai-prompt-section-label">Prompt</span>
+                            </div>
+                            <div class="ai-prompt-box">
+                                <pre id="aiPromptTextarea" class="ai-prompt-content"></pre>
+                            </div>
+                        </div>
+
+                        <!-- BOX 2 (50%): Image Manipulation -->
+                        <div class="improve-card improve-card-autofix" id="improveCardAutofix">
+                            <div class="improve-card-header">
+                                <div class="improve-card-title-group">
+                                    <span class="improve-card-icon">⚡</span>
+                                    <h3 class="improve-card-title">Simple Manipulation</h3>
+                                </div>
+                            </div>
+
+                            <div class="autofix-score-diff-card">
+                                <p class="autofix-desc">
+                                    Pixel-level S-curve contrast expansion, radial spotlight vignette, warm
+                                    accentuation, and unsharp edge sharpening.
+                                </p>
+                            </div>
+
+                            <!-- Interactive Before / After Split Slider -->
+                            <div class="before-after-slider-wrapper" id="beforeAfterSlider">
+                                <div class="slider-canvas-box">
+                                    <canvas id="autofixCanvasBefore" width="460" height="215"
+                                        class="slider-layer slider-before-layer"></canvas>
+                                    <canvas id="autofixCanvasAfter" width="460" height="215"
+                                        class="slider-layer slider-after-layer"></canvas>
+                                    <div class="slider-handle" id="sliderHandle">
+                                        <div class="slider-handle-line"></div>
+                                        <div class="slider-handle-knob">⬌</div>
+                                    </div>
+                                    <span class="slider-tag tag-before">Original</span>
+                                    <span class="slider-tag tag-after">Enhanced</span>
+                                </div>
+                            </div>
+
+                            <!-- Actions Row -->
+                            <div class="autofix-actions-row">
+                                <button type="button" id="btnDownloadAutofix" class="btn-ai-action btn-download-capsule"
+                                    title="Download enhanced artwork">
+                                    <span>⬇️</span> <span>Download (Free to Use)</span>
+                                </button>
+                                <button type="button" id="btnTestAutofixInSim" class="btn-ai-action btn-copy-prompt"
+                                    title="Preview enhanced artwork in the 3x3 storefront simulator">
+                                    <span id="testSimIcon">👁️</span> <span id="testSimText">Test in 3×3
+                                        Simulator</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- BOX 3 (100%): WebGPU Neural Diffusion -->
+                        <div class="improve-card improve-card-webgpu" id="improveCardWebGpu">
+                            <div class="improve-card-header">
+                                <div class="improve-card-title-group">
+                                    <span class="improve-card-icon">🧠</span>
+                                    <h3 class="improve-card-title">Improve with WebGPU / Neural Diffusion</h3>
+                                </div>
+                                <div class="webgpu-badge badge-supported" id="webgpuBadge">
+                                    <span class="webgpu-dot" id="webgpuDot"></span>
+                                    <span id="webgpuStatusText">Detecting WebGPU Hardware...</span>
+                                </div>
+                            </div>
+
+                            <div class="webgpu-status-card" id="webgpuStatusCard">
+                                <div class="webgpu-header-row">
+                                    <span class="webgpu-device-label" id="webgpuDeviceLabel">--</span>
+                                </div>
+                                <p class="webgpu-explainer" id="webgpuExplainerText">
+                                    In-browser latent diffusion models (SD-Turbo / LCM) run locally on modern graphics
+                                    processors without server roundtrips.
+                                </p>
+                            </div>
+
+                            <div class="webgpu-pipeline-box">
+                                <div class="webgpu-pipeline-step">
+                                    <span class="step-num">1</span>
+                                    <div class="step-content">
+                                        <h4>Hardware Tensor Execution</h4>
+                                        <p>Direct WebGPU WGSL compute shaders map latent noise directly to 224×224 /
+                                            512×512 image tensors.</p>
+                                    </div>
+                                </div>
+                                <div class="webgpu-pipeline-step">
+                                    <span class="step-num">2</span>
+                                    <div class="step-content">
+                                        <h4>Deficit-Guided Inpainting</h4>
+                                        <p>Applies localized lighting repair and rim-light highlights while preserving
+                                            the original game title character art.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="webgpu-actions-row">
+                                <button type="button" id="btnCopyWebGpuPrompt" class="btn-ai-action btn-copy-prompt"
+                                    title="Copy Diffusion Inpainting Prompt">
+                                    <span id="copyWebGpuIcon">📋</span> <span id="copyWebGpuText">Copy Neural Inpainting
+                                        Prompt</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
             </div>
-        </main>
+
+            <!-- Full-Width Container Slot for Visual Check when toggled to Large Mode -->
+            <div id="visualCheckFullWidthSlot" class="visual-check-fullwidth-slot"></div>
+
+    </div>
+    </main>
     </div>
 
     <!-- VIEW 2: BENCHMARK (28,754 Games Dataset Report & Takeaways) -->
@@ -1253,13 +1361,17 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
                         <div class="mcard-icon">🧠</div>
                         <h3 class="mcard-title">Indie Milestone Vision Model</h3>
                         <p class="mcard-text">
-                            MobileNetV3 CNN predicting 5 review milestones (0, 1–5, 6–10, 11–100, 100–500 reviews) directly from 224×224 RGB capsule tensors.
+                            MobileNetV3 CNN predicting 5 review milestones (0, 1–5, 6–10, 11–100, 100–500 reviews)
+                            directly from 224×224 RGB capsule tensors.
                         </p>
                         <div class="mcard-actions">
-                            <a href="models/capsulu_indie_model.onnx" download="capsulu_indie_model.onnx" class="btn-mcard-action btn-mcard-download" title="Download ONNX model weights (6.1 MB)">
+                            <a href="models/capsulu_indie_model.onnx" download="capsulu_indie_model.onnx"
+                                class="btn-mcard-action btn-mcard-download"
+                                title="Download ONNX model weights (6.1 MB)">
                                 <span>⬇️</span> <span>Download ONNX (6.1 MB)</span>
                             </a>
-                            <a href="models/capsulu_indie_classes.json" target="_blank" rel="noopener noreferrer" class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
+                            <a href="models/capsulu_indie_classes.json" target="_blank" rel="noopener noreferrer"
+                                class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
                                 <span>📄</span> <span>Open Classes JSON ↗</span>
                             </a>
                         </div>
@@ -1270,13 +1382,17 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
                         <div class="mcard-icon">🌐</div>
                         <h3 class="mcard-title">Global Market Tier Model</h3>
                         <p class="mcard-text">
-                            MobileNetV3 CNN classifying artwork against 5 global Steam sales tiers from Mega-Hits down to Near-Zero commercial flops.
+                            MobileNetV3 CNN classifying artwork against 5 global Steam sales tiers from Mega-Hits down
+                            to Near-Zero commercial flops.
                         </p>
                         <div class="mcard-actions">
-                            <a href="models/capsulu_global_model.onnx" download="capsulu_global_model.onnx" class="btn-mcard-action btn-mcard-download" title="Download ONNX model weights (6.1 MB)">
+                            <a href="models/capsulu_global_model.onnx" download="capsulu_global_model.onnx"
+                                class="btn-mcard-action btn-mcard-download"
+                                title="Download ONNX model weights (6.1 MB)">
                                 <span>⬇️</span> <span>Download ONNX (6.1 MB)</span>
                             </a>
-                            <a href="models/capsulu_global_classes.json" target="_blank" rel="noopener noreferrer" class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
+                            <a href="models/capsulu_global_classes.json" target="_blank" rel="noopener noreferrer"
+                                class="btn-mcard-action btn-mcard-json" title="Open classes JSON in new tab">
                                 <span>📄</span> <span>Open Classes JSON ↗</span>
                             </a>
                         </div>
@@ -1335,6 +1451,7 @@ curl "http://localhost:8000/api/rate?image_url=https://example.com/capsule.jpg&a
     <!-- Modular Capsulu JavaScript Architecture -->
     <script src="js/cv_engine.js"></script>
     <script src="js/ai_forecast.js"></script>
+    <script src="js/autofix_engine.js"></script>
 
     <!-- Main Controller & UI Engine -->
     <script src="app.js"></script>
